@@ -614,11 +614,17 @@ namespace Supremacy.Client.Views
 
         private void ExecuteOutputMapCommand(object t)
         {
+
+
             //if (!_appContext.IsSinglePlayerGame)
             //{
             //    return;
             //}
             //string _path_Lib = ResourceManager.GetResourcePath(".\\lib");
+
+            System.Media.SoundPlayer wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
+            wav_player.Play();
+
             string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon");
             string _timeString = GameEngine.GetTimeString();
 
@@ -1722,7 +1728,7 @@ namespace Supremacy.Client.Views
 
             GameContext.Report_DiplomacyData();
 
-            System.Media.SoundPlayer wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
+            /*System.Media.SoundPlayer */wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
             wav_player.Play();
 
         }

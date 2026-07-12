@@ -3023,7 +3023,7 @@ namespace Supremacy.Game
             string _text;
 
             if (_civM_1.Assault_Location != null
-    && _civM_1.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
+                && _civM_1.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
             {
                 Diplomat _diplomatCiv1 = Diplomat.Get(_civ1);
                 Civilization _civ2 = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID].Civilization;

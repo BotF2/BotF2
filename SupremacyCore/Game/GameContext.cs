@@ -478,8 +478,18 @@ namespace Supremacy.Game
             CivilizationKeyedMap<Diplomat> _diplomats = GameContext.Current._diplomats;
 
             AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
-            Collections.IIndexedCollection<IAgreement> _active_agreements;
-            string _active_agreements_text = "";
+            var _active_agreements = new List<(int ID_1, int ID_2, string Treaty)>();
+            //_active_agreements.Add((0, 999, "x"));
+
+
+            //string _active_agreements_text = "";
+            string agreementText = "";
+
+            foreach (var item in GameContext.Current.AgreementMatrix)
+            {
+                string _proposal = item.Proposal.Clauses[0].ClauseType.ToString();
+                _active_agreements.Add((item.SenderID, item.RecipientID, _proposal));
+            }
 
             foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
             {
@@ -496,12 +506,12 @@ namespace Supremacy.Game
 
                     diplomacyData.Add(_civ1, _civ2, _diplomat.GetData(_civ2));
 
-                    _active_agreements = agreementMatrix[_civ1.CivID, _civ2.CivID];
+                    //_active_agreements = agreementMatrix[_civ1.CivID, _civ2.CivID];
 
                 }
             }
 
-            string _text_diplomacyData = ""; // "Step_1777:; no diplomacyData yet";
+            string _text_diplomacyData = ""; // "Step_17-77:; no diplomacyData yet";
 
             // going through civ managers better reflects which civ got spawned
             //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
@@ -513,10 +523,33 @@ namespace Supremacy.Game
             //{
             foreach (var item in diplomacyData)
             {
+                agreementText = "";
+                agreementText = string.Join("", _active_agreements
+                    .Where(x => x.ID_1 == item.OwnerID)
+                    .Select(x => x.Treaty)
+                    .ToList());
+
+                agreementText += string.Join("", _active_agreements
+                        .Where(x => x.ID_2 == item.OwnerID)
+                        .Select(x => x.Treaty)
+                        .ToList());
+
+                Console.WriteLine("Step_1774:; " + agreementText);
+
+                agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBordersTreatyOpenBorders",
+                    "TreatyOpenBorders");
+                agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBorders",
+                    "TreatyOpenBorders");
+
                 if (item.Status != ForeignPowerStatus.NoContact)
                 {
+                    // works but we want to have the agreementmatrix to find out the active treaties
+                    //Diplomat _diplomat = _diplomats[item.CounterpartyID];
+                    //Civilization _civ1 = GameContext.Current.CivilizationManagers[item.OwnerID].Civilization;
+                    //ForeignPower foreignPower = _diplomat.GetForeignPower(_civ1);
 
-                    //ForeignPower foreignPower = _diplomat.GetForeignPower(civ);
+                    //_agreement_text = _active_agreements.Where(_active_agreements.TryFindFirstItem == item.OwnerID).tolist();
+
 
                     var _sb = new StringBuilder();
                     _sb.Append("Step_1777:; ");
@@ -526,22 +559,26 @@ namespace Supremacy.Game
                     //_sb.Append("= ");
 
 
-                    _sb.Append(" vs ");
+                    _sb.Append(" vs  ");
                     //_foreignPower.CounterpartyDiplomacyData.Status;
                     //ForeignPowerStatus.coun
 
                     _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.CounterpartyID].Civilization.ToString()));
                     _sb.Append(" > ");
                     _sb.Append(GameEngine.Do_x_String(15, item.Status.ToString()));
+                    _sb.Append(" ");
+                    _sb.Append(GameEngine.Do_x_String(25, agreementText));
                     _sb.Append(" > R= ");
                     _sb.Append(GameEngine.Do_x_Digit_String(4, item.Regard.ToString()));
                     _sb.Append(" > T= ");
                     _sb.Append(GameEngine.Do_x_Digit_String(4, item.Trust.ToString()));
 
                     _sb.Append(" > FirePowerSpace: ");
-                    _sb.Append(GameContext.Current.CivilizationManagers[item.OwnerID].FirePowerSpace);
+                    _sb.Append(GameEngine.Do_x_Digit_String(5, 
+                        GameContext.Current.CivilizationManagers[item.OwnerID].FirePowerSpace.ToString()));
                     _sb.Append(" vs ");
-                    _sb.Append(GameContext.Current.CivilizationManagers[item.CounterpartyID].FirePowerSpace);
+                    _sb.Append(GameEngine.Do_x_Digit_String(5, 
+                        GameContext.Current.CivilizationManagers[item.CounterpartyID].FirePowerSpace.ToString()));
                     //_sb.Append(" > ContactDuration= ");
                     //_sb.Append(GameEngine.Do_x_Digit_String(3, item.ContactDuration.ToString()));
                     //_sb.Append(" > LastStatusChange= ");
