@@ -565,7 +565,7 @@ namespace Supremacy.Game
 
                     _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.CounterpartyID].Civilization.ToString()));
                     _sb.Append(" > ");
-                    _sb.Append(GameEngine.Do_x_String(15, item.Status.ToString()));
+                    _sb.Append(GameEngine.Do_x_String(20, item.Status.ToString()));
                     _sb.Append(" ");
                     _sb.Append(GameEngine.Do_x_String(25, agreementText));
                     _sb.Append(" > R= ");

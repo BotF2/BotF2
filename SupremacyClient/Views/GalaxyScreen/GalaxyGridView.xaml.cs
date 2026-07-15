@@ -622,8 +622,8 @@ namespace Supremacy.Client.Views
             //}
             //string _path_Lib = ResourceManager.GetResourcePath(".\\lib");
 
-            System.Media.SoundPlayer wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
-            wav_player.Play();
+            System.Media.SoundPlayer _wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
+            _wav_player.Play();
 
             string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon");
             string _timeString = GameEngine.GetTimeString();
@@ -1724,59 +1724,12 @@ namespace Supremacy.Client.Views
             //_also do for more output-files
             TechDatabase.Load();
 
-            //Report_Agreement_Matrix_in_GalaxyGridView();
-
             GameContext.Report_DiplomacyData();
 
-            /*System.Media.SoundPlayer */wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
-            wav_player.Play();
+            /*System.Media.SoundPlayer */_wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
+            _wav_player.Play();
 
         }
-
-        //private void Report_Agreement_Matrix_in_GalaxyGridView()
-        //{
-        //    string _text = "";
-        //    string _agreement_total_text = Environment.NewLine
-        //        + "Step_2278:; Report_Agreement_Matrix_in_GalaxyGridView" + Environment.NewLine;
-        //    foreach (IAgreement _agreement in GameContext.Current.AgreementMatrix)
-        //    {
-        //        //AgreementFulfillmentVisitor.Visit(_agreement);
-        //        _agreement_total_text +=
-        //            /*+ " for " + */_agreement.Proposal.Clauses[0].ClauseType.ToString()
-        //            + ", Start-Turn= " + _agreement.StartTurn
-        //            + ", End= " + _agreement.EndTurn
-
-        //            + ", Sender= " + _agreement.Sender
-        //            + " to " + _agreement.Recipient
-        //            //+ ", DATA= " + _agreement.Data
-
-        //            ;
-        //        //Console.WriteLine(_agreement_total_text);
-        //        //Debugger.Break();
-        //    }
-        //    Console.WriteLine(_agreement_total_text);
-        //    //Debugger.Break();
-        //}
-
-
-        //private string LocationString(MapLocation loc) // changes 1 numeric to 2 numeric
-        //{
-        //    string _locationString = loc.ToString();
-
-        //    return _locationString;
-        //}
-
-        //private string Do_x_Digit_String(string v)
-        //{
-        //    while (v.Length < 2)
-        //    {
-        //        v = " " + v;
-        //    }
-        //    return v;
-
-        //}
-
-
 
         private void ExecuteCheatMenuCommand(object t)
         {

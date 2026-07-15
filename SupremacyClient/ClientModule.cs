@@ -846,61 +846,57 @@ namespace Supremacy.Client
             catch { _ = MessageDialog.Show(file + " - Error occured !", MessageDialogButtons.Close); }
         }
 
-        private void Execute_Hotkey_Alt_D0(object obj) => StartFile(".\\lib\\Hotkey_Alt_0.bat");
-        private void Execute_Hotkey_Alt_D1(object obj) => StartFile(".\\lib\\Hotkey_Alt_1.bat");
-        private void Execute_Hotkey_Alt_D2(object obj) => StartFile(".\\lib\\Hotkey_Alt_2.bat");
-        private void Execute_Hotkey_Alt_D3(object obj) => StartFile(".\\lib\\Hotkey_Alt_3.bat");
-        private void Execute_Hotkey_Alt_D4(object obj) => StartFile(".\\lib\\Hotkey_Alt_4.bat");
-        private void Execute_Hotkey_Alt_D5(object obj) => StartFile(".\\lib\\Hotkey_Alt_5.bat");
-        private void Execute_Hotkey_Alt_D6(object obj) => StartFile(".\\lib\\Hotkey_Alt_6.bat");
-        private void Execute_Hotkey_Alt_D7(object obj) => StartFile(".\\lib\\Hotkey_Alt_7.bat");
-        private void Execute_Hotkey_Alt_D8(object obj) => StartFile(".\\lib\\Hotkey_Alt_8.bat");
-        private void Execute_Hotkey_Alt_D9(object obj) => StartFile(".\\lib\\Hotkey_Alt_9.bat");
+        private void Execute_Hotkey_Alt_D0(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_0.bat");
+        private void Execute_Hotkey_Alt_D1(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_1.bat");
+        private void Execute_Hotkey_Alt_D2(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_2.bat");
+        private void Execute_Hotkey_Alt_D3(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_3.bat");
+        private void Execute_Hotkey_Alt_D4(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_4.bat");
+        private void Execute_Hotkey_Alt_D5(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_5.bat");
+        private void Execute_Hotkey_Alt_D6(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_6.bat");
+        private void Execute_Hotkey_Alt_D7(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_7.bat");
+        private void Execute_Hotkey_Alt_D8(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_8.bat");
+        private void Execute_Hotkey_Alt_D9(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_9.bat");
 
 
-        private void Execute_Hotkey_Alt_F01(object obj) => StartFile(".\\lib\\Hotkey_Alt_F01.bat");
-        private void Execute_Hotkey_Alt_F02(object obj) => StartFile(".\\lib\\Hotkey_Alt_F02.bat");
-        private void Execute_Hotkey_Alt_F03(object obj) => StartFile(".\\lib\\Hotkey_Alt_F03.bat");
-        private void Execute_Hotkey_Alt_F04(object obj) => StartFile(".\\lib\\Hotkey_Alt_F04.bat");
-        private void Execute_Hotkey_Alt_F05(object obj) => StartFile(".\\lib\\Hotkey_Alt_F05.bat");
-        private void Execute_Hotkey_Alt_F06(object obj) => StartFile(".\\lib\\Hotkey_Alt_F06.bat");
-        private void Execute_Hotkey_Alt_F07(object obj) => StartFile(".\\lib\\Hotkey_Alt_F07.bat");
-        private void Execute_Hotkey_Alt_F08(object obj) => StartFile(".\\lib\\Hotkey_Alt_F08.bat");
-        private void Execute_Hotkey_Alt_F09(object obj) => StartFile(".\\lib\\Hotkey_Alt_F09.bat");
-        private void Execute_Hotkey_Alt_F10(object obj) => StartFile(".\\lib\\Hotkey_Alt_F10.bat");
-        private void Execute_Hotkey_Alt_F11(object obj) => StartFile(".\\lib\\Hotkey_Alt_F11.bat");
+        private void Execute_Hotkey_Alt_F01(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F01.bat");
+        private void Execute_Hotkey_Alt_F02(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F02.bat");
+        private void Execute_Hotkey_Alt_F03(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F03.bat");
+        private void Execute_Hotkey_Alt_F04(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F04.bat");
+        private void Execute_Hotkey_Alt_F05(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F05.bat");
+        private void Execute_Hotkey_Alt_F06(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F06.bat");
+        private void Execute_Hotkey_Alt_F07(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F07.bat");
+        private void Execute_Hotkey_Alt_F08(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F08.bat");
+        private void Execute_Hotkey_Alt_F09(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F09.bat");
+        private void Execute_Hotkey_Alt_F10(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F10.bat");
+        private void Execute_Hotkey_Alt_F11(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F11.bat");
 
-        private void Execute_Hotkey_Alt_A(object obj) => StartFile(".\\lib\\Hotkey_Alt_A.bat");
-        private void Execute_Hotkey_Alt_B(object obj) => StartFile(".\\lib\\Hotkey_Alt_B.bat");
-        private void Execute_Hotkey_Alt_C(object obj) => StartFile(".\\lib\\Hotkey_Alt_C.bat");
-        private void Execute_Hotkey_Alt_D(object obj) => StartFile(".\\lib\\Hotkey_Alt_D.bat");
-        private void Execute_Hotkey_Alt_E(object obj) => StartFile(".\\lib\\Hotkey_Alt_E.bat");
-        private void Execute_Hotkey_Alt_F(object obj) => StartFile(".\\lib\\Hotkey_Alt_F.bat");
-        private void Execute_Hotkey_Alt_G(object obj) => StartFile(".\\lib\\Hotkey_Alt_G.bat");
-        private void Execute_Hotkey_Alt_H(object obj) => StartFile(".\\lib\\Hotkey_Alt_H.bat");
-        private void Execute_Hotkey_Alt_I(object obj) => StartFile(".\\lib\\Hotkey_Alt_I.bat");
-        private void Execute_Hotkey_Alt_J(object obj) => StartFile(".\\lib\\Hotkey_Alt_J.bat");
-        private void Execute_Hotkey_Alt_K(object obj) => StartFile(".\\lib\\Hotkey_Alt_K.bat");
-        private void Execute_Hotkey_Alt_L(object obj) => StartFile(".\\lib\\Hotkey_Alt_L.bat");
-        private void Execute_Hotkey_Alt_M(object obj) => StartFile(".\\lib\\Hotkey_Alt_M.bat");
-        private void Execute_Hotkey_Alt_N(object obj) => StartFile(".\\lib\\Hotkey_Alt_N.bat");
-        private void Execute_Hotkey_Alt_O(object obj) => StartFile(".\\lib\\Hotkey_Alt_O.bat");
-        private void Execute_Hotkey_Alt_P(object obj) => StartFile(".\\lib\\Hotkey_Alt_P.bat");
-        private void Execute_Hotkey_Alt_Q(object obj) => StartFile(".\\lib\\Hotkey_Alt_Q.bat");
+        private void Execute_Hotkey_Alt_A(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_A.bat");
+        private void Execute_Hotkey_Alt_B(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_B.bat");
+        private void Execute_Hotkey_Alt_C(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_C.bat");
+        private void Execute_Hotkey_Alt_D(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_D.bat");
+        private void Execute_Hotkey_Alt_E(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_E.bat");
+        private void Execute_Hotkey_Alt_F(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_F.bat");
+        private void Execute_Hotkey_Alt_G(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_G.bat");
+        private void Execute_Hotkey_Alt_H(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_H.bat");
+        private void Execute_Hotkey_Alt_I(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_I.bat");
+        private void Execute_Hotkey_Alt_J(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_J.bat");
+        private void Execute_Hotkey_Alt_K(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_K.bat");
+        private void Execute_Hotkey_Alt_L(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_L.bat");
+        private void Execute_Hotkey_Alt_M(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_M.bat");
+        private void Execute_Hotkey_Alt_N(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_N.bat");
+        private void Execute_Hotkey_Alt_O(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_O.bat");
+        private void Execute_Hotkey_Alt_P(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_P.bat");
+        private void Execute_Hotkey_Alt_Q(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_Q.bat");
         private void Execute_Hotkey_Alt_R(object obj) => StartFile(".\\Resources\\Data\\Civilizations_View_List.bat");
-        //private void Execute_Hotkey_Alt_R(object obj) { StartFile(".\\lib\\Hotkey_Alt_R.bat"); }
-        private void Execute_Hotkey_Alt_S(object obj) => StartFile(".\\lib\\Hotkey_Alt_S.bat");
-        private void Execute_Hotkey_Alt_T(object obj) => StartFile(".\\lib\\Hotkey_Alt_T.bat");
-        private void Execute_Hotkey_Alt_U(object obj) => StartFile(".\\lib\\Hotkey_Alt_U.bat");
-        private void Execute_Hotkey_Alt_V(object obj) => StartFile(".\\lib\\Hotkey_Alt_V.bat");
-        private void Execute_Hotkey_Alt_W(object obj) => StartFile(".\\lib\\Hotkey_Alt_W.bat");
-        private void Execute_Hotkey_Alt_X(object obj) => StartFile(".\\lib\\Hotkey_Alt_X.bat");
-        private void Execute_Hotkey_Alt_Y(object obj) => StartFile(".\\lib\\Hotkey_Alt_Y.bat");
-        private void Execute_Hotkey_Alt_Z(object obj) => StartFile(".\\lib\\Hotkey_Alt_Z.bat");
-
-
-
-
+        //private void Execute_Hotkey_Alt_R(object obj) { StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_R.bat"); }
+        private void Execute_Hotkey_Alt_S(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_S.bat");
+        private void Execute_Hotkey_Alt_T(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_T.bat");
+        private void Execute_Hotkey_Alt_U(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_U.bat");
+        private void Execute_Hotkey_Alt_V(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_V.bat");
+        private void Execute_Hotkey_Alt_W(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_W.bat");
+        private void Execute_Hotkey_Alt_X(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_X.bat");
+        private void Execute_Hotkey_Alt_Y(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_Y.bat");
+        private void Execute_Hotkey_Alt_Z(object obj) => StartFile(".\\Resources\\Data\\Addon\\zzHotkey_Alt_Z.bat");
 
 
 
