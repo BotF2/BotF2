@@ -1465,7 +1465,7 @@ namespace Supremacy.Game
 
                         if (!colony.Owner.IsEmpire)
                         {
-                            //_use_value_from_XML = false;
+                            _use_value_from_XML = false;
                             _text = "OFFLINE > _use_value_from_XML = false;";
                         }
 
