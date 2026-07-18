@@ -68,15 +68,15 @@ namespace Supremacy.AI
             //int _required_Energy = 50 + (50 * _civM.AverageTechLevel);
 
             // foreach _colony
-            foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(_civ.CivID))
+            foreach (Colony _colony in GameContext.Current.Universe.FindOwned<Colony>(_civ.CivID))
             {
                 _writeDirectly_Colony = true;
                 try
                 {
                     // checkcolony
 
-                    _name_col = colony.Name; _text += " "; // dummy - please keep
-                    _owner_col = colony.Owner.Key;
+                    _name_col = _colony.Name; _text += " "; // dummy - please keep
+                    _owner_col = _colony.Owner.Key;
                     //string _net_industry_text = GameEngine.Do_x_Digit_String( 4, _colony.Industry_Net.ToString());
 
                     _colony_full_Report = _civ_text_ColonyAI; // _newline; // new one for each _colony
@@ -84,7 +84,7 @@ namespace Supremacy.AI
                     _itemToBuild = null;
                     _itemToBuild_Facility = null;
 
-                    var _all_Build_Projects = TechTreeHelper.GetBuildProjects(colony);
+                    var _all_Build_Projects = TechTreeHelper.GetBuildProjects(_colony);
 
                     Print_all_Build_Projects(_all_Build_Projects); // print to Debug _output = console
 
@@ -155,9 +155,9 @@ namespace Supremacy.AI
                     //if (_name_col == "Portas") Debugger.Break(); // Colony 9 // "CheckCardassia"
 
 
-                    if (colony.Owner.IsHuman)
+                    if (_colony.Owner.IsHuman)
                     {
-                        Print_Colony_Owner_IsHuman(colony);  // prints Step_1102 notification only
+                        Print_Colony_Owner_IsHuman(_colony);  // prints Step_1102 notification only
 
                         //Debugger.Break();
 
@@ -178,9 +178,9 @@ namespace Supremacy.AI
                     // which Colony > see Console Output
 
                     // next_Check / set Breakpoint
-                    //colony.ProcessQueue();
-                    Colony_Step_01_Check_Population(colony);  // + Colony_Step_03_Handle_Energy_Production(_colony); // done inside Colony_Step_01_Check_Population
-                    Colony_Step_05_Handle_Food_Production(colony);
+                    //_colony.ProcessQueue();
+                    Colony_Step_01_Check_Population(_colony);  // + Colony_Step_03_Handle_Energy_Production(_colony); // done inside Colony_Step_01_Check_Population
+                    Colony_Step_05_Handle_Food_Production(_colony);
 
                     //// just for info
                     //var most_expensive_Project_Available = TechTreeHelper
@@ -216,14 +216,14 @@ namespace Supremacy.AI
                     //    _colony_full_Report += _newline + _text;
                     //}
 
-                    if (colony.BuildQueue.Count > 0)
+                    if (_colony.BuildQueue.Count > 0)
                     {
-                        if (colony.Owner.IsHuman)
+                        if (_colony.Owner.IsHuman)
                         {
                             //Debugger.Break();
                         }
 
-                        Colony_Step_10_Build_Queue_Clean(colony);
+                        Colony_Step_10_Build_Queue_Clean(_colony);
                     }
 
 
@@ -244,75 +244,75 @@ namespace Supremacy.AI
                     //if (_writeDirectly_Colony) Console.WriteLine(_text);
                     //_colony_full_Report += _newline + _text;
 
-                    Build_Queue_Print(colony);
+                    Build_Queue_Print(_colony);
 
-                    if (colony.Owner.IsHuman)
+                    if (_colony.Owner.IsHuman)
                     {
                         //Debugger.Break();
                     }
 
                     int _buildDuration = 0; // just measure the duration (in Turns) to decide next build order
-                    foreach (var proj in colony.BuildQueue)
+                    foreach (var proj in _colony.BuildQueue)
                     {
                         _buildDuration += proj.TurnsRemaining;
                     }
 
 
                     //checkcolproduction
-                    if (colony.BuildQueue.Count < 3)  // ColonyAI ..foreach _colony
+                    if (_colony.BuildQueue.Count < 3)  // ColonyAI ..foreach _colony
                     {
                         // next_Check / set Breakpoint
                         if (_colonyAIControlled)  // not for human player
                         {
                             //if (_colony.Owner.IsHuman) { Debugger.Break(); }
 
-                            Colony_Step_40_Build_for_LaborPool(colony, _civ); // this first > if free labors, build facilities (no new upgrades!)
-                            Colony_Step_50_Handle_Upgrades(colony, _civ);
-                            Colony_Step_60_Handle_Basic_Structures(colony, _civ); // older code > Bunker Network, Extractors etc.
-                            Colony_Step_65_Handle_Buildings(colony, _civ);
-                            Colony_Step_70_Handle_Additional_Structures(colony, _civ);
-                            Colony_Step_75_CheckFor_All_Build_Projects(colony);
+                            Colony_Step_40_Build_for_LaborPool(_colony, _civ); // this first > if free labors, build facilities (no new upgrades!)
+                            Colony_Step_50_Handle_Upgrades(_colony, _civ);
+                            Colony_Step_60_Handle_Basic_Structures(_colony, _civ); // older code > Bunker Network, Extractors etc.
+                            Colony_Step_65_Handle_Buildings(_colony, _civ);
+                            Colony_Step_70_Handle_Additional_Structures(_colony, _civ);
+                            Colony_Step_75_CheckFor_All_Build_Projects(_colony);
 
-                            Colony_Step_80_Handle_Flex_Production(colony, _civ); // older code
-                            Colony_Step_85_Handle_Build_Anything(colony, _civ);
-                            Colony_Step_92_ClearUpColony(colony, _civ);
+                            Colony_Step_80_Handle_Flex_Production(_colony, _civ); // older code
+                            Colony_Step_85_Handle_Build_Anything(_colony, _civ);
+                            Colony_Step_92_ClearUpColony(_colony, _civ);
                         }
 
                         //if (_writeDirectly_Colony) Console.WriteLine(_text);
                         //_colony_full_Report += _newline + _text;
 
-                        //_text = "Step_2349:; " + GameEngine.LocationString(_colony.Location.ToString())
-                        //        + " Pop= " + _colony.Population + " of " + _colony.Population_Max
-                        //        + ", Active: Food= " + _colony.Facilities_Active1_Food + " of " + _colony.Facilities_Active1_Food
-                        //        + ", Ind= " + _colony.Facilities_Active2_Industry + " of " + _colony.Facilities_Active2_Industry
-                        //        + ", En= " + _colony.Facilities_Active3_Energy + " of " + _colony.Facilities_Active3_Energy
-                        //        + ", Res= " + _colony.Facilities_Active4_Research + " of " + _colony.Facilities_Active4_Research
-                        //        + ", Int= " + _colony.Facilities_Active5_Intelligence + " of " + _colony.Facilities_Active5_Intelligence
-                        //        + ", Pool= " + _colony.GetAvailableLabor() / 10
-                        //        + " for " + _name_col
-                        //        ;
-                        //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                        //_colony_full_Report += _newline + _text;
+                        _text = "Step_2349:; " + GameEngine.LocationString(_colony.Location.ToString())
+                                + " Pop= " + _colony.Population + " of " + _colony.Population_Max
+                                + ", Active: Food= " + _colony.Facilities_Active1_Food + " of " + _colony.Facilities_Active1_Food
+                                + ", Ind= " + _colony.Facilities_Active2_Industry + " of " + _colony.Facilities_Active2_Industry
+                                + ", En= " + _colony.Facilities_Active3_Energy + " of " + _colony.Facilities_Active3_Energy
+                                + ", Res= " + _colony.Facilities_Active4_Research + " of " + _colony.Facilities_Active4_Research
+                                + ", Int= " + _colony.Facilities_Active5_Intelligence + " of " + _colony.Facilities_Active5_Intelligence
+                                + ", Pool= " + _colony.GetAvailableLabor() / 10
+                                + " for " + _name_col
+                                ;
+                        if (_writeDirectly_Colony) Console.WriteLine(_text);
+                        _colony_full_Report += _newline + _text;
 
 
 
 
 
-                        colony.ProcessQueue();
+                        _colony.ProcessQueue();
 
-                        //if (_colonyAIControlled)  // not for human player
-                        //{
-                        //    Handle_Buy_Build(_colony, _civ);
-                        //    Handle_Industry_Production(_colony);
-                        //    //Handle_Research_Distribution(_colony);
-                        //}
+                        if (_colonyAIControlled)  // not for human player
+                        {
+                            Handle_Buy_Build(_colony, _civ);
+                            Handle_Industry_Production(_colony);
+                            //Handle_Research_Distribution(_colony);
+                        }
 
 
-                        Handle_Labors(colony); // fills up (if possible): Industry - Research - Intelligence - Fodd (Energy is done before)
+                        Handle_Labors(_colony); // fills up (if possible): Industry - Research - Intelligence - Fodd (Energy is done before)
 
-                        Handle_Food_Labors_UNDONE(colony); // in case too much food is produced
+                        Handle_Food_Labors_UNDONE(_colony); // in case too much food is produced
 
-                        Print_Labors(colony, colony.AvailableLabor, colony.AvailableLabor / 10);
+                        Print_Labors(_colony, _colony.AvailableLabor, _colony.AvailableLabor / 10);
                         //_text = "Step_2351:; " + GameEngine.LocationString(_colony.Location.ToString())
                         //        + " Pop= " + _colony.Population + " of max " + _colony.Population_Max
                         //        + ", Active: Food= " + _colony.Facilities_Active1_Food + " of " + _colony.Facilities_Active1_Food
@@ -326,13 +326,13 @@ namespace Supremacy.AI
                         //if (_writeDirectly_Colony) Console.WriteLine(_text);
                         //_colony_full_Report += _newline + _text;
 
-                        if (colony.BuildQueue.Count > 0) // not to often 
+                        if (_colony.BuildQueue.Count > 0) // not to often 
                         {
                             //Build_Queue_Print(_colony); 
                         }
                         else
                         {
-                            _text = "Step_1432:; " + GameEngine.LocationString(colony.Location.ToString()) /*+ " Check for Food on; "*/
+                            _text = "Step_1432:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Food on; "*/
                                     + " > " + _name_col + " ; " + _owner_col
                                     + " > BuildQueue is empty BEFORE Handling..."
                                     ;
@@ -341,9 +341,9 @@ namespace Supremacy.AI
 
 
                         int count = 0;
-                        foreach (BuildQueueItem buildQueueItem in colony.BuildQueue) // just > Console.WriteLine
+                        foreach (BuildQueueItem buildQueueItem in _colony.BuildQueue) // just > Console.WriteLine
                         {
-                            _text = "Step_1206:; " + GameEngine.LocationString(colony.Location.ToString()) + " > " + _name_col
+                            _text = "Step_1206:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
                                 + "; needs " + GameEngine.Do_x_Digit_String(2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
                                 + "; buildQueueItem # " + count + " = " + buildQueueItem.Description
 
@@ -355,13 +355,13 @@ namespace Supremacy.AI
                             count++;
                         }
 
-                        if (colony.BuildQueue.Count > 0) // not to often 
+                        if (_colony.BuildQueue.Count > 0) // not to often 
                         {
                             //Build_Queue_Print(_colony); 
                         }
                         else
                         {
-                            _text = "Step_1433:; " + GameEngine.LocationString(colony.Location.ToString()) /*+ " Check for Food on; "*/
+                            _text = "Step_1433:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Food on; "*/
                                     + " > " + _name_col + " ; " + _owner_col
                                     + " > BuildQueue is empty BEFORE Handling..."
                                     ;
@@ -370,42 +370,42 @@ namespace Supremacy.AI
 
                         if (_colonyAIControlled)  // not for human player
                         {
-                            Handle_Buy_Build(colony, _civ);
-                            Handle_Industry_Production(colony);
+                            Handle_Buy_Build(_colony, _civ);
+                            Handle_Industry_Production(_colony);
                             //Handle_Research_Distribution(_colony);
 
-                            colony.ProcessQueue();
+                            _colony.ProcessQueue();
 
                             //if (_colony.Owner.IsHuman)
                             //{
                             //    Debugger.Break();
                             //}
 
-                            Handle_Labors_for_Nothing_to_Build(colony);
+                            Handle_Labors_for_Nothing_to_Build(_colony);
                         }
 
-                        if (colony.Shipyard != null)
+                        if (_colony.Shipyard != null)
                         {
-                            //if (colony.Owner.IsHuman)
+                            //if (_colony.Owner.IsHuman)
                             //{
                             //    //Debugger.Break();
                             //}
 
-                            //CheckFor_OFF_ShipProduction(colony);
-                            if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(colony.Owner))
+                            //CheckFor_OFF_ShipProduction(_colony);
+                            if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
                             {
-                                Handle_Ship_Production(colony, colony.Owner);//, _listPrioShipBuild_tmp);
+                                Handle_Ship_Production(_colony, _colony.Owner);//, _listPrioShipBuild_tmp);
                                                                              //    old
                                                                              //    if (_civ.IsEmpire) { HandleShipProductionEmpire(_colony, _civ); }
                                                                              //    else { HandleShipProductionMinor(_colony, _civ); }
                             }
                             else
                             {
-                                _text = GameEngine.LocationString(colony.Location.ToString())
-                                    + " " + colony.Name
+                                _text = GameEngine.LocationString(_colony.Location.ToString())
+                                    + " " + _colony.Name
                                     + " > Empire is in financial problems and can not afford ShipBuilding ( Limit is -2000 )"
                                     ;
-                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, colony, _text, _text, "", SitRepPriority.RedYellow));
+                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.RedYellow));
 
                                 if (_writeDirectly_Colony) Console.WriteLine("Step_1426:; " + _text);
                                 _colony_full_Report += _newline + "Step_1426:; " + _text;
@@ -413,7 +413,7 @@ namespace Supremacy.AI
                         }
                         else
                         {
-                            _text = "Step_1437:; " + GameEngine.LocationString(colony.Location.ToString()) + " > " + _name_col
+                            _text = "Step_1437:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
                                     + " > has no Shipyard"
                                             ;
                             if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -426,7 +426,7 @@ namespace Supremacy.AI
                 catch (Exception e)
                 {
 
-                    _text = "Step_1105:; ##################### Problem at ColonyAI.Do_0_Turn_Unit ..." + colony.Name + _newline + e;
+                    _text = "Step_1105:; ##################### Problem at ColonyAI.Do_0_Turn_Unit ..." + _colony.Name + _newline + e;
                     //if (_writeDirectly_Colony) 
                     Console.WriteLine(_text);
                     Debugger.Break();
@@ -434,7 +434,7 @@ namespace Supremacy.AI
 
 
 
-                _text = "Step_1107:; " + GameEngine.LocationString(colony.Location.ToString()) + " Colony is done..................";
+                _text = "Step_1107:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony is done..................";
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
 
