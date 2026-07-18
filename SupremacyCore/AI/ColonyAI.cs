@@ -563,13 +563,13 @@ namespace Supremacy.AI
                 // Build as a prior
                 switch (_available_item.BuildDesign.Key)
                 {
-                    //case "SUBSPACE_SCANNER": // not so important to build first
                     case "SOLAR_ARRAY": // this is mostly needed
                     case "WIND_TURBINES": // this is mostly needed
                     case "CHARGE_COLLECTORS": // this is mostly needed
                     case "THERMAL_TETHER": // this is mostly needed
                     case "HEALTH_CORE": // this is mostly needed
                     case "IMMUNOLOGY_CORE": // this is mostly needed
+                    case "SUBSPACE_SCANNER": // not so important to build first
 
                         _itemToBuild_Facility = _available_item;
                         break;
