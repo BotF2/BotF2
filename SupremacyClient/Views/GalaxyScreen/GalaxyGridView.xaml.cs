@@ -1722,7 +1722,7 @@ namespace Supremacy.Client.Views
 
 
             //_also do for more output-files
-            TechDatabase.Load();
+            //TechDatabase.Load();  // don't do this at the moment
 
             GameContext.Report_DiplomacyData();
 

@@ -211,6 +211,7 @@ namespace Supremacy.Universe
                     }
                     catch (Exception e)
                     {
+                        Debugger.Break();
                         GameLog.Core.General.Error(e);
                     }
                 }
@@ -1563,7 +1564,9 @@ namespace Supremacy.Universe
         public int GetResourceProduction(ResourceType resource)
         {
             int baseValue = 0;
+
             OutputModifier modifier = GetResourceModifier(resource);
+
             if (resource == ResourceType.Duranium)
             {
                 baseValue = GetBaseResourceProduction(resource);
@@ -1572,7 +1575,13 @@ namespace Supremacy.Universe
             {
                 baseValue = GetBaseResourceProduction(ResourceType.Deuterium);
             }
-            return (int)(baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus + 2); // UPDATE X 28 july 2019 reduced a bit deuterium
+
+            //int _return = (int)(baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus + 2);
+            int _return = (int)((baseValue + modifier.Bonus) * modifier.Efficiency)  + 1;
+
+            return _return; // UPDATE X 28 july 2019 reduced a bit deuterium
+            //return (int)(baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus + 2); // UPDATE X 28 july 2019 reduced a bit deuterium
+
         }
 
         /// <summary>

@@ -998,13 +998,13 @@ namespace Supremacy.AI
             // if food is plus and active 3 and total 6 
             if (_colony.Food_Net > 10 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food + 2)
             {
-                _colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
-                _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
+                //_colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
+                _text = "Step_1434:; INACTIVATE > " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
                     + " > " + _name_col + " ; " + _owner_col
                     + " > Check for Food > "
                     + "current " + _colony.Facilities_Total1_Food
                     //+ ", calc by maxPop= (max) " + _researchCalc
-                    + " > removed ONE facility "
+                    + " > removed ONE facility (INACTIVE)"
                     ;
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += Environment.NewLine + _text;

@@ -1367,6 +1367,7 @@ namespace Supremacy.Game
                 HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
 
                 bool _bool_Fac_Count_Active = false;
+                //bool _bool_Fac_Count_Active = true;
 
                 foreach (CivilizationManager civManager in _civManagers)
                 {
@@ -1469,11 +1470,11 @@ namespace Supremacy.Game
                         }
 
 
-                        _bool_Fac_Count_Active = false;
+                        //_bool_Fac_Count_Active = false;
 
                         if (_bool_Fac_Count_Active == false)
                         {
-                            _text = "Step_1311:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            _text = "Step_1312:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
                             Console.WriteLine(_text);
                             GameLog.Client.GalaxyGenerator.InfoFormat(_text);
                             _bool_Fac_Count_Active = true; // just do once

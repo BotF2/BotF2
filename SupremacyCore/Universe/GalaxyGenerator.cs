@@ -15,6 +15,7 @@ using Supremacy.Types;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -169,8 +170,11 @@ namespace Supremacy.Universe
             {
                 if (o.count > 1)
                 {
-                    Console.WriteLine("###### Star Name {0} is used in StarNames.txt *{1}* times", o.num, o.count);
-                    GameLog.Core.GalaxyGenerator.ErrorFormat("###### Star Name {0} is used in StarNames.txt *{1}* times", o.num, o.count);
+                    _text = "Step_0517:; ### Star Name " + o.num
+                        + "is used in StarNames.txt * " + o.count + " * times"
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.GalaxyGenerator.ErrorFormat(_text);
                 }
             }
 
@@ -1186,7 +1190,7 @@ namespace Supremacy.Universe
             _text = "Step_0530:; Next: Placing Minors..."
                 ;
             Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
             minorRaces.RandomizeInPlace();
             //INFO: If you want to ensure that a race is in the game,
             //move it forward in the randomized minorRaces list
@@ -1194,10 +1198,13 @@ namespace Supremacy.Universe
             homeLocations = new CollectionBase<MapLocation>();
             List<Civilization> chosenCivs = new List<Civilization>();
 
-            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs
+                , GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+
             if (minorRaceFrequency != MinorRaceFrequency.None)
             {
-                _ = PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+                _ = PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs
+                    , GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
             }
 
             HashSet<int> unusedCivs = GameContext.Current.Civilizations.Except(chosenCivs).Select(o => o.CivID).ToHashSet();
@@ -1328,7 +1335,7 @@ namespace Supremacy.Universe
             int result = 0;
             foreach (PlanetDescriptor planetDescriptor in system.Planets)
             {
-                if (planetDescriptor.IsSinglePlanet)
+                if (!planetDescriptor.IsSinglePlanet)  // 2026-07-16
                 {
                     result++;
                 }
@@ -1343,6 +1350,17 @@ namespace Supremacy.Universe
             {
                 system.StarType = GetStarType(true);
             }
+
+            int _planets_count = 0;
+            try
+            {
+                _planets_count = system.Planets.Count;  // Crash ??
+            }
+            catch
+            {
+                Debugger.Break();
+            }
+
             for (int i = 0; i < system.Planets.Count; i++)
             {
                 if (!system.Planets[i].IsSinglePlanet)

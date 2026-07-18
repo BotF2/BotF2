@@ -22,6 +22,7 @@ Ist das gewollt? Bei der Föderation kann ich es bedingt nachvollziehen (auch we
 - MAPData > Minors are not building anything ?
 - Colors / Shade for umstrittene sectors
 - CeaseFire
+- Membership > Minor-Ships are beamed back to Minor homesystem
 
 
 
