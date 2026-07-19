@@ -46,7 +46,13 @@ namespace Supremacy.Diplomacy.Visitors
             //GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
             Response response = new Response(ResponseType.Reject, proposal);
-            GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
+            string _text = "Step_9051:; "
+                + " > RejectProposal from " + foreignPower
+                + " to " + diplomat
+                + " > " + agreement.Data.ToString()
+
+                ;
+            //GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
 
             foreignPower.ResponseSent = response;
             //foreignPower.UpdateStatus();

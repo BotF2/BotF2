@@ -1577,7 +1577,8 @@ namespace Supremacy.Universe
             }
 
             //int _return = (int)(baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus + 2);
-            int _return = (int)((baseValue + modifier.Bonus) * modifier.Efficiency)  + 1;
+            //int _return = (int)((baseValue + modifier.Bonus) * modifier.Efficiency)  + 1; // doesn't work ??
+            int _return = (int)((baseValue + modifier.Bonus) * (modifier.Efficiency + 1)) + 1;
 
             return _return; // UPDATE X 28 july 2019 reduced a bit deuterium
             //return (int)(baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus + 2); // UPDATE X 28 july 2019 reduced a bit deuterium

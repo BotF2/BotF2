@@ -775,7 +775,7 @@ namespace Supremacy.Client
                     {
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        _text = "Step_0718:; > DONE: " + presenter.ToString();
+                        _text = "Step_0717:; > DONE: " + presenter.ToString();
                         Console.WriteLine(_text);
                         //GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
                     }

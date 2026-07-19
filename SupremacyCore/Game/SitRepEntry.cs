@@ -8,7 +8,6 @@
 
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
-using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Tech;
@@ -27,89 +26,28 @@ namespace Supremacy.Game
     /// </summary>
     public enum SitRepPriority
     {
-
-        /// <summary>
-        /// A special event, like a battle, or an event.
-        /// </summary>
-        Blue,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        Blue2,
-        /// <summary>
-        /// A green situation report entry reflects a normal or informal status message.
-        /// </summary>
-        Green,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        GreenDark,
-        /// <summary>
-        /// A yellow situation report entry reflects a status message, where the player should consider to react.
-        /// </summary>
-        GreenDark2,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        Orange,
-        /// <summary>
-        /// A red siutation report entry reflects a urgend status message. The play must react.
-        /// </summary>
-        Red,
-        /// <summary>
-        /// A special event, like a battle, or an event.
-        /// </summary>
-        Gray,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        GrayDark,
-        /// <summary>
-        /// A special event, like a battle, or an event.
-        /// </summary>
-        Purple,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        Pink,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
+        // <summary> A special event, like a battle, or an event. </summary>
         Aqua,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
+        Blue,
+        Blue2,
+        BlueDark,
         Brown,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        Yellow,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        Crimson,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        RedYellow,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        Dilithium,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>        /// </summary>
-        Deuterium,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>        /// </summary>
-        Duranium,
-        /// <summary>
-        /// Shutdowns due to Energy or something else
-        /// </summary>
-        /// 
         Credits,
-        BlueDark
+        Crimson,  // Tip > TradeRoute
+        Deuterium,
+        Dilithium,
+        Duranium,
+        Gray,
+        GrayDark,
+        Green,
+        GreenDark,
+        GreenDark2,
+        Orange,
+        Purple,
+        Pink,
+        Red,
+        RedYellow,
+        Yellow
     }
 
     //public enum SitRepDone
@@ -328,7 +266,7 @@ namespace Supremacy.Game
             _image = image;
 
             //Console.WriteLine("Step_8025:; SR = " + report + "; " + owner + "; " + priority.ToString() + ";ReportEntry_NoAction");
-            
+
         }
 
         public string Report => _report;
@@ -951,10 +889,22 @@ namespace Supremacy.Game
             : base(owner)//, SitRepPriority.Blue)
         {
             _exchange = exchange ?? throw new ArgumentNullException("exchange");
+
+            var _exchange_type = _exchange.GetType();
+
+            string _text = "Step_6777:; " + DateTime.Now
+                + " > " + _exchange_type
+                + " > " + _exchange.Sender
+                + " to " + _exchange.Recipient
+
+                ;
+            Console.WriteLine(_text);
         }
 
         private string EnsureText(ref string text, ref bool resolved, bool detailed)
         {
+            string _return_text;
+
             if (resolved)
             {
                 return text;
@@ -1023,12 +973,21 @@ namespace Supremacy.Game
                                  new RuntimeScriptParameter(scriptParameters[1], recipient)
                              };
 
-            return scriptExpression.Evaluate<string>(parameters);
+
+            //return scriptExpression.Evaluate<string>(parameters);
+            _return_text = scriptExpression.Evaluate<string>(parameters);
+            if (_return_text.Contains("Federation")) 
+                {
+            Console.WriteLine("Step_5444:; " + _return_text);
+            }
+
+            return _return_text;
         }
 
         private DiplomacySitRepStringKey? ResolveTextKey(bool detailed) // \Resources\Data\DiplomacyText.xaml
         {
-            
+            string _return_text = "";
+
             IProposal proposal = _exchange as IProposal;
             IResponse response = _exchange as IResponse;
 
@@ -1043,53 +1002,77 @@ namespace Supremacy.Game
                 {
                     if (proposal.HasClause(ClauseType.TreatyCeaseFire))
                     {
+                        //return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
+                        _return_text = (detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText).ToString();
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
                     }
 
                     if (proposal.HasClause(ClauseType.TreatyNonAggression))
                     {
+                        _return_text = (detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText).ToString();
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText;
+
+                        //return _return_text;
                     }
 
                     if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                     {
+                        _return_text = (detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText).ToString();
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText;
+
+                        //return _return_text;
                     }
 
                     if (proposal.HasClause(ClauseType.TreatyAffiliation))
                     {
+                        _return_text = (detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText).ToString();
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText;
+
+                        //return _return_text;
                     }
 
                     if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
                     {
+                        _return_text = (detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceProposedSummaryText).ToString();
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceProposedSummaryText;
+
+                        //return _return_text;
                     }
 
                     if (proposal.HasClause(ClauseType.TreatyFullAlliance))
                     {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.FullAllianceProposedSummaryText;
+                        //_return_text = scriptExpression.Evaluate<string>(parameters);
+                        //return _return_text;
                     }
 
                     if (proposal.HasClause(ClauseType.TreatyMembership))
                     {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.MembershipProposedSummaryText;
+                        //_return_text = scriptExpression.Evaluate<string>(parameters);
+                        //return _return_text;
                     }
                 }
 
                 if (proposal.IsGift())
                 {
                     return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.GiftOfferedSummaryText;
+                    //_return_text = scriptExpression.Evaluate<string>(parameters);
+                    //return _return_text;
                 }
 
                 if (proposal.IsDemand())
                 {
                     return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeDemandedSummaryText;
+                    //_return_text = scriptExpression.Evaluate<string>(parameters);
+                    //return _return_text;
                 }
 
                 if (proposal.IsWarPact())
                 {
                     return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactProposedSummaryText;
+                    //_return_text = scriptExpression.Evaluate<string>(parameters);
+                    //return _return_text;
                 }
             }
 
@@ -1104,47 +1087,65 @@ namespace Supremacy.Game
                         if (proposal.HasClause(ClauseType.TreatyCeaseFire))
                         {
                             return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireAcceptedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
                         {
                             return detailed ? DiplomacySitRepStringKey.NonAggressionPactAcceptedDetailText : DiplomacySitRepStringKey.NonAggressionPactAcceptedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                         {
                             return detailed ? DiplomacySitRepStringKey.OpenBordersAcceptedDetailText : DiplomacySitRepStringKey.OpenBordersAcceptedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
                         {
-                            return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
+                            return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText; 
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
                         {
                             return detailed ? DiplomacySitRepStringKey.DefensiveAllianceAcceptedDetailText : DiplomacySitRepStringKey.DefensiveAllianceAcceptedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyFullAlliance))
                         {
                             return detailed ? DiplomacySitRepStringKey.FullAllianceAcceptedDetailText : DiplomacySitRepStringKey.FullAllianceAcceptedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyMembership))
                         {
                             return detailed ? DiplomacySitRepStringKey.MembershipAcceptedDetailText : DiplomacySitRepStringKey.MembershipAcceptedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
                     }
 
                     if (proposal.IsDemand())
                     {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeAcceptedSummaryText;
+                        //_return_text = scriptExpression.Evaluate<string>(parameters);
+                        //return _return_text;
                     }
 
                     if (proposal.IsWarPact())
                     {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactAcceptedSummaryText;
+                        //_return_text = scriptExpression.Evaluate<string>(parameters);
+                        //return _return_text;
                     }
                 }
                 else if (response.ResponseType == ResponseType.Reject)
@@ -1154,47 +1155,65 @@ namespace Supremacy.Game
                         if (proposal.HasClause(ClauseType.TreatyCeaseFire))
                         {
                             return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
                         {
                             return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                         {
                             return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
                         {
                             return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
                         {
                             return DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyFullAlliance))
                         {
                             return DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
 
                         if (proposal.HasClause(ClauseType.TreatyMembership))
                         {
                             return DiplomacySitRepStringKey.MembershipRejectedSummaryText;
+                            //_return_text = scriptExpression.Evaluate<string>(parameters);
+                            //return _return_text;
                         }
                     }
 
                     if (proposal.IsDemand())
                     {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeRejectedSummaryText;
+                        //_return_text = scriptExpression.Evaluate<string>(parameters);
+                        //return _return_text;
                     }
 
                     if (proposal.IsWarPact())
                     {
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactRejectedSummaryText;
+                        //_return_text = scriptExpression.Evaluate<string>(parameters);
+                        //return _return_text;
                     }
                 }
             }
@@ -1204,6 +1223,8 @@ namespace Supremacy.Game
                 if (statement.StatementType == StatementType.WarDeclaration)
                 {
                     return detailed ? DiplomacySitRepStringKey.WarDeclaredDetailText : DiplomacySitRepStringKey.WarDeclaredSummaryText;
+                    //_return_text = scriptExpression.Evaluate<string>(parameters);
+                    //return _return_text;
                 }
             }
 
@@ -2792,8 +2813,8 @@ namespace Supremacy.Game
                 _ = sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
                 {
-                    _ = sb.Append(Environment.NewLine 
-                        + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") 
+                    _ = sb.Append(Environment.NewLine
+                        + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE")
                         + Environment.NewLine);
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {

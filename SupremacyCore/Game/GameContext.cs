@@ -511,7 +511,7 @@ namespace Supremacy.Game
                 }
             }
 
-            string _text_diplomacyData = "Step_1777:; no diplomacyData yet";
+            string _text_diplomacyData = "Step_1777:; diplomacyData" + Environment.NewLine;
 
             // going through civ managers better reflects which civ got spawned
             //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)

@@ -2853,10 +2853,19 @@ namespace Supremacy.Game
                 {
                     if (_civ1 == _civ2) { continue; }
 
+                    _text = "Step_3192:; " + DateTime.Now
+                        + " > Diplomacy now > "
+                        + _civ1
+                        + " vs "
+                        + _civ2
+
+                        ;
+                    Console.WriteLine(_text);
+
                     ForeignPower _diplomatCiv2 = _diplomatCiv1.GetForeignPower(_civ2);
                     CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civ2];
 
-                    Diplomacy_9_ConsoleWriteline(_civ1, _civ2);
+                    //Diplomacy_9_ConsoleWriteline(_civ1, _civ2);
 
                     if (_diplomatCiv2.StatementReceived != null)//  Second.1 = StatementReceived
                     {
@@ -4227,15 +4236,15 @@ namespace Supremacy.Game
             Diplomat diplomat1 = Diplomat.Get(_civ_1);
 
             ForeignPower _diplomatCiv2 = diplomat1.GetForeignPower(civ2);
-            string _text;
+            string _text = "";
             bool _writeDirectly = true;
 
             IResponse responseSent = _diplomatCiv2.ResponseSent;
             if (responseSent != null)
             {
                 _diplomatCiv2.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over response sent to response received
-                _text =
-                    _diplomatCiv2.Owner.Key
+                _text = "Step_7721:; "
+                    + _diplomatCiv2.Owner.Key
                     + " sent Response " + _diplomatCiv2.ResponseSent.Proposal.ToString()
                     + " to " + _diplomatCiv2.Counterparty.Key
                     ;
@@ -4243,10 +4252,9 @@ namespace Supremacy.Game
                 //GameLog.Client.DiplomacyDetails.DebugFormat("{0} sent Response {1} to {2}"
                 //    , _diplomatForeignPower_Civ2.Owner.Key, _diplomatForeignPower_Civ2.ResponseSent.Proposal.ToString(), _diplomatForeignPower_Civ2.Counterparty.Key);
                 _diplomatCiv2.LastResponseSent = responseSent;
-                _text =
-                        /*_diplomatForeignPower_Civ2.Owner.Key
-                        + */
-                        " Response Sent stored in LastResponseSent " + _diplomatCiv2.ResponseSent.ToString()
+                _text = "Step_7722:; "
+                        // + _diplomatForeignPower_Civ2.Owner.Key
+                        + " Response Sent stored in LastResponseSent " + _diplomatCiv2.ResponseSent.ToString()
                         ;
                 if (_writeDirectly) Console.WriteLine(_text);
                 //GameLog.Client.DiplomacyDetails.DebugFormat("Response Sent stored in LastResponseSent, {0}", _diplomatForeignPower_Civ2.ResponseSent.ToString());
@@ -4353,12 +4361,13 @@ namespace Supremacy.Game
             IProposal proposalSent = _diplomatCiv2.ProposalSent;
             if (proposalSent != null)
             {
-                _diplomatCiv2.CounterpartyForeignPower.ProposalReceived = proposalSent;
+                _diplomatCiv2.CounterpartyForeignPower.ProposalSent = proposalSent;
                 _diplomatCiv2.LastProposalSent = proposalSent;
                 _diplomatCiv2.ProposalSent = null;
                 _text = "Step_8234:; "
+                    + DateTime.Now
                     + " > ProposalSent= "
-                     + _diplomatCiv2.LastProposalSent.Clauses[0].ClauseType.ToString() + " (ProposalReceived)"
+                     + _diplomatCiv2.ProposalSent.Clauses[0].ClauseType.ToString() + " (ProposalSent)"
                     + "; from " + _diplomatCiv2.Owner.ToString()
                     + "; to; " + _diplomatCiv2.Counterparty.ToString()
 
@@ -4389,44 +4398,55 @@ namespace Supremacy.Game
         {
             Diplomat _diplomatCiv1 = Diplomat.Get(civ1);
             ForeignPower _diplomatCiv2 = _diplomatCiv1.GetForeignPower(civ2);
-            string _newline = Environment.NewLine;
-            string _text = "";
+            //string _newline = Environment.NewLine;
+            string _text = "Step_0718:; " + DateTime.Now + " > ";
+
+            _text = "doesn't work well > Diplomacy_9_ConsoleWriteline";
+
 
             #region Gamelogs
             if (_diplomatCiv2.ProposalReceived != null)
             {
-                _text += Environment.NewLine + "ProposalReceived: "
+                _text += /*Environment.NewLine + */"ProposalReceived: "
                           + _diplomatCiv2.ProposalReceived.Sender + " to "
                           + _diplomatCiv2.ProposalReceived.Recipient + ": > "
                           + _diplomatCiv2.ProposalReceived.Clauses.ToString()
-                          + _newline;
+                          // + Environment.NewLine
+                          ;
+                Console.WriteLine(_text);
             }
 
             if (_diplomatCiv2.ProposalSent != null)
             {
-                _text += Environment.NewLine + "ProposalSent: "
+                _text += /*Environment.NewLine + */"ProposalSent: "
                           + _diplomatCiv2.ProposalSent.Sender + " to "
                           + _diplomatCiv2.ProposalSent.Recipient + ": > "
                           + _diplomatCiv2.ProposalSent.Clauses.ToString()
-                          + _newline;
+                          // + Environment.NewLine
+                          ;
+                Console.WriteLine(_text);
             }
 
             if (_diplomatCiv2.ResponseReceived != null)
             {
-                _text += Environment.NewLine + "ResponseReceived: "
+                _text += /*Environment.NewLine +*/ "ResponseReceived: "
                           + _diplomatCiv2.ResponseReceived.Sender + " to "
                           + _diplomatCiv2.ResponseReceived.Recipient + ": > "
                           + _diplomatCiv2.ResponseReceived.ResponseType.ToString()
-                          + _newline;
+                          // + Environment.NewLine
+                          ;
+                Console.WriteLine(_text);
             }
 
             if (_diplomatCiv2.ResponseSent != null)
             {
-                _text += Environment.NewLine + "ResponseSent: "
+                _text += "ResponseSent: "
                           + _diplomatCiv2.ResponseSent.Sender + " to "
                           + _diplomatCiv2.ResponseSent.Recipient + ": > "
                           + _diplomatCiv2.ResponseSent.ResponseType.ToString()
-                          + _newline;
+                          // + Environment.NewLine
+                          ;
+                Console.WriteLine(_text);
             }
 
             if (_diplomatCiv2.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
@@ -4434,66 +4454,63 @@ namespace Supremacy.Game
 
                 //string parameterString = _diplomatForeignPower_Civ2.StatementSent.Parameter.ToString() ?? "";
 
-                _text += Environment.NewLine + "StatementReceived: "
+                _text += /*Environment.NewLine + */"StatementReceived: "
                           + _diplomatCiv2.StatementReceived.Sender + " to "
                           + _diplomatCiv2.StatementReceived.Recipient + ": > "
                           + ", Parameter = " //+ parameterString
                           + Enum.GetName(typeof(StatementType), _diplomatCiv2.StatementReceived.StatementType)
-                          + _newline
+                          // + Environment.NewLine
                           ;
+                Console.WriteLine(_text);
             }
             if (_diplomatCiv2.StatementSent != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
             {
 
                 //string parameterString = _diplomatForeignPower_Civ2.StatementSent.Parameter.ToString() ?? "";
 
-                _text += Environment.NewLine + "StatementSent: "
+                _text += /*Environment.NewLine + */"StatementSent: "
                           + _diplomatCiv2.StatementSent.Sender + " to "
                           + _diplomatCiv2.StatementSent.Recipient + ": > "
                           + ", Parameter = " //+ parameterString
-                          + _newline
+                                             // + Environment.NewLine
                           ;
+                Console.WriteLine(_text);
             }
 
             // GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
             //GameLog.Core.DiplomacyDetails.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", _diplomatForeignPower_Civ2.StatementReceived.Tone.ToString());
 
-            if (_text.Length > 44)  // not only the entry phrase...
-            {
-                Console.WriteLine("Step_0718:; > " + _text);
-                //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
-            }
+            //if (_text.Length > 44)  // not only the entry phrase...
+            //{
+            //    Console.WriteLine(/*"Step_0718:; " + DateTime.Now + " > " + */_text);
+            //    //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
+            //}
 
             _text = "what's next + ";
 
             if (_diplomatCiv2.StatementSent != null)
             {
-                _text += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
+                _text += /*Environment.NewLine + */"(relevant is just the receive on HOSTING side.... StatementSent: "
                             + _diplomatCiv2.StatementSent.Sender + " vs "
                             + _diplomatCiv2.StatementSent.Recipient + ": > "
                             + _diplomatCiv2.StatementSent.StatementType.ToString()
                             + ", Parameter = " //+ parameterString
-                            + _newline;
+                            //+ Environment.NewLine
+                            ;
+                Console.WriteLine(_text);
             }
 
             if (_diplomatCiv2.PendingAction != PendingDiplomacyAction.None)
             {
-                _text += Environment.NewLine + "PendingAction: "
+                _text += /*Environment.NewLine + */"PendingAction: "
                             //+ _diplomatForeignPower_Civ2.PendingAction + " vs "
                             //+ _diplomatForeignPower_Civ2.PendingAction.Recipient
                             + _diplomatCiv2.PendingAction.ToString()
-                            + _newline;
+                            //+ Environment.NewLine
+                            ;
+                Console.WriteLine(_text);
             }
 
-            if (_text != "what's next + ")
-            {
-                Console.WriteLine("Step_0717:; > " + _text);
-                //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
-            }
-
-
-            #endregion Gamelogs
-            //}
         }
 
         private void DiplomacyDoStatus(Civilization _civ1, Civilization _civ2)
@@ -6779,7 +6796,7 @@ namespace Supremacy.Game
                                         _colony.Name, GameEngine.LocationString(_colony.Location.ToString()));
 
                                     //GameLog.Core.Production.DebugFormat(_text);
-                                    _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text, _text, "", SitRepPriority.Crimson));
+                                    _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text, _text, "", SitRepPriority.GreenDark2));
                                     Console.WriteLine("Step_4289:; Turn " + _turnNumber + "; " + _text);
                                 }
                             }
