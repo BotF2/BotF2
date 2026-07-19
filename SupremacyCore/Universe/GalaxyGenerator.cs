@@ -458,6 +458,10 @@ namespace Supremacy.Universe
                     break;
                 }
             }
+            catch
+            {
+                Debugger.Break();
+            }
             finally
             {
 
@@ -1164,7 +1168,9 @@ namespace Supremacy.Universe
             }
 
 
-            HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
+            //
+            HomeSystemsDatabase homeSystemDatabase_2 = HomeSystemsDatabase.Load();
+            //HomeSystemsDatabase.Load();
             MinorRaceFrequency minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency;
             List<Civilization> empires = new List<Civilization>();
             List<Civilization> minorRaces = new List<Civilization>();
@@ -1198,12 +1204,12 @@ namespace Supremacy.Universe
             homeLocations = new CollectionBase<MapLocation>();
             List<Civilization> chosenCivs = new List<Civilization>();
 
-            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs
+            bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase_2, empires, homeLocations, chosenCivs
                 , GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
 
             if (minorRaceFrequency != MinorRaceFrequency.None)
             {
-                _ = PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs
+                _ = PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase_2, minorRaces, homeLocations, chosenCivs
                     , GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
             }
 

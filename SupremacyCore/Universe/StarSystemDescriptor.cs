@@ -12,6 +12,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Markup;
@@ -92,23 +93,23 @@ namespace Supremacy.Universe
             string separator = " ;";
             string hyphen = "-";
             //var line = "";
-            StreamWriter streamWriter;
+            StreamWriter stream_writer;
             //StreamWriter streamWriter2;
-            string pathOutputFile = ".\\Resources\\Data\\";  // instead of ./Resources/Data/
+            //string pathOutputFile = ".\\Resources\\Data\\Addon\\";  // instead of ./Resources/Data/
 
             //if (1 == 2) // no output if no write acess
             //{
             //    string file = pathOutputFile + "test-Output.txt";
             //    //string file2 = "./lib/test2-FromHomeSystems.txt";
-            //    streamWriter = new StreamWriter(file);
+            //    stream_writer = new StreamWriter(file);
             //    //streamWriter2 = new StreamWriter(file2);
-            //    streamWriter.Close();
+            //    stream_writer.Close();
             //    //streamWriter2.Close();
             //}
             //ToDo: Search for more output avoid it on Ken's PC'
 
             string strHeader = "";  // first line of output files
-            string strLine = "";   // each civ gets one line
+            string stream_line = "";   // each civ gets one line
                                    //string strLine2 = "";   // each civ gets one line
 
             //if (1 == 2) // no output if no write acess
@@ -118,18 +119,27 @@ namespace Supremacy.Universe
 
                 //bool HomeSystemsXMLOutput = false;
                 bool HomeSystemsXMLOutput = true;
+
+                string _homesystems_techlevel_content_text = "";
+
                 //if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug)
                 //{
                 //    HomeSystemsXMLOutput = true;
                 //}
 
-                if (HomeSystemsXMLOutput) // no output if no write acess
-                {
-                    // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                    file = pathOutputFile + "_HomeSystems-xml_"
+                // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
+                string pathOutputFile = ".\\Resources\\Data\\Addon\\";
+
+                file = pathOutputFile + "HomeSystems-xml_"
                         + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
 
-                    Console.WriteLine("Step_9150: writing {0}", file); // _HomeSystems-xml_ + StartingLevel
+                    stream_writer = new StreamWriter(file);
+                
+                if (HomeSystemsXMLOutput) // no output if no write acess
+                {
+
+
+                    Console.WriteLine("Step_9150:; writing {0}", file); // _HomeSystems-xml_ + StartingLevel
 
                     //...but with the next lines it doesn't loaded the entries from HomeSystem.xml anymore
                     //file = null; // quick set to off
@@ -138,7 +148,7 @@ namespace Supremacy.Universe
                     //    goto WriterCloseHomeSystemsXML;
                     //}
 
-                    streamWriter = new StreamWriter(file);
+
 
                     var sb = new StringBuilder();
 
@@ -311,7 +321,7 @@ namespace Supremacy.Universe
 
                     //    separator;
 
-                    streamWriter.WriteLine(sb.ToString());
+                    stream_writer.WriteLine(sb.ToString());
                     //_fileText = strHeader;
                 }
                     // End of head line
@@ -496,7 +506,7 @@ namespace Supremacy.Universe
 
                         _startingIntelligencePF = _startingIntelligencePF.Replace("-1", "0");
 
-                        strLine =
+                        stream_line =
                             civId + separator +
                             GameContext.Current.Options.StartingTechLevel.ToString() + separator +
 
@@ -523,13 +533,16 @@ namespace Supremacy.Universe
                             _startingBuildingsSummary + separator +
                             separator;
 
-                        strLine = strLine.Replace("-1", " ");
-                        strLine = strLine.Replace("-", " ");
+                        stream_line = stream_line.Replace("-1", " ");
+                        stream_line = stream_line.Replace("-", " ");
 
-                        //Console.WriteLine(strLine);
-                        //streamWriter.WriteLine(strLine);
+                    _homesystems_techlevel_content_text += stream_line + Environment.NewLine;
 
-                        strLine = "";
+
+                        Console.WriteLine("Step_4377:; " + Environment.NewLine + stream_line);
+
+
+                        stream_line = "";
                         _text = " ";
                         _startingOrbitalBatteries = " ";
                         _startingShipyard = " ";
@@ -547,12 +560,14 @@ namespace Supremacy.Universe
 
 
                     }  // end of foreach
-                    //streamWriter.Close();
-                    //streamWriter2.Close();
-                }
+                stream_writer.WriteLine(_homesystems_techlevel_content_text);
+                stream_writer.Close();
+                //streamWriter2.Close();
+            }
                 catch (Exception e)
             {
-                _text = "Cannot write ... " + file + e;
+                _text = "Step_1776:; Cannot write ... " + file + e;
+                Console.WriteLine(_text);
                 GameLog.Core.GameData.ErrorFormat(_text);
             }
             //}
@@ -901,6 +916,7 @@ namespace Supremacy.Universe
                                 }
                                 catch (Exception e)
                                 {
+                                    Debugger.Break();
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
@@ -915,6 +931,7 @@ namespace Supremacy.Universe
                                 }
                                 catch (Exception e)
                                 {
+                                    Debugger.Break();
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
@@ -929,6 +946,7 @@ namespace Supremacy.Universe
                                 }
                                 catch (Exception e)
                                 {
+                                    Debugger.Break();
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
@@ -941,7 +959,7 @@ namespace Supremacy.Universe
                                     _dilithium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
                                 catch (Exception e)
-                                {
+                                {Debugger.Break();
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
@@ -954,7 +972,7 @@ namespace Supremacy.Universe
                                     _duranium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
                                 catch (Exception e)
-                                {
+                                {Debugger.Break();      
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
@@ -967,7 +985,7 @@ namespace Supremacy.Universe
                                     _food = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
                                 catch (Exception e)
-                                {
+                                {Debugger.Break();
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
@@ -981,10 +999,13 @@ namespace Supremacy.Universe
                                     _morale = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
                                 }
                                 catch (Exception e)
-                                {
+                                {Debugger.Break();
                                     GameLog.Core.GameData.Error(e);
                                 }
                             }
+
+
+                            bool _bool_active_not_empty = false;  // in HomeSystems.xml Active = ""
 
                             // Production Facilities
                             if (techLevel["Food"] != null)
@@ -1000,11 +1021,11 @@ namespace Supremacy.Universe
                                         _foodPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
-                                if (pf.HasAttribute("Active"))
+                                if (_bool_active_not_empty && pf.HasAttribute("Active"))
                                 {
                                     string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
@@ -1012,7 +1033,7 @@ namespace Supremacy.Universe
                                         _foodPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
@@ -1032,11 +1053,11 @@ namespace Supremacy.Universe
                                         _industryPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
-                                if (pf.HasAttribute("Active"))
+                                if (_bool_active_not_empty && pf.HasAttribute("Active"))
                                 {
                                     string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
@@ -1044,7 +1065,7 @@ namespace Supremacy.Universe
                                         _industryPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
@@ -1065,11 +1086,11 @@ namespace Supremacy.Universe
                                         _energyPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
-                                if (pf.HasAttribute("Active"))
+                                if (_bool_active_not_empty && pf.HasAttribute("Active"))
                                 {
                                     string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
@@ -1077,7 +1098,7 @@ namespace Supremacy.Universe
                                         _energyPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
@@ -1097,11 +1118,11 @@ namespace Supremacy.Universe
                                         _researchPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
-                                if (pf.HasAttribute("Active"))
+                                if (_bool_active_not_empty && pf.HasAttribute("Active"))
                                 {
                                     string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
@@ -1109,7 +1130,7 @@ namespace Supremacy.Universe
                                         _researchPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
@@ -1129,11 +1150,11 @@ namespace Supremacy.Universe
                                         _intelligencePF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }
-                                if (pf.HasAttribute("Active"))
+                                if (_bool_active_not_empty && pf.HasAttribute("Active"))
                                 {
                                     string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
@@ -1141,7 +1162,7 @@ namespace Supremacy.Universe
                                         _intelligencePF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
                                     }
                                     catch (Exception e)
-                                    {
+                                    {Debugger.Break();
                                         GameLog.Core.GameData.Error(e);
                                     }
                                 }

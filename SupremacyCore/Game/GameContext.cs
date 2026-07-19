@@ -511,7 +511,7 @@ namespace Supremacy.Game
                 }
             }
 
-            string _text_diplomacyData = ""; // "Step_17-77:; no diplomacyData yet";
+            string _text_diplomacyData = "Step_1777:; no diplomacyData yet";
 
             // going through civ managers better reflects which civ got spawned
             //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
@@ -534,12 +534,6 @@ namespace Supremacy.Game
                         .Select(x => x.Treaty)
                         .ToList());
 
-                Console.WriteLine("Step_1774:; " + agreementText);
-
-                agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBordersTreatyOpenBorders",
-                    "TreatyOpenBorders");
-                agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBorders",
-                    "TreatyOpenBorders");
 
                 if (item.Status != ForeignPowerStatus.NoContact)
                 {
@@ -549,6 +543,13 @@ namespace Supremacy.Game
                     //ForeignPower foreignPower = _diplomat.GetForeignPower(_civ1);
 
                     //_agreement_text = _active_agreements.Where(_active_agreements.TryFindFirstItem == item.OwnerID).tolist();
+
+                    agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBordersTreatyOpenBorders",
+                        "TreatyOpenBorders");
+                    agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBorders",
+                        "TreatyOpenBorders");
+
+                    Console.WriteLine("Step_1774:; " + agreementText);
 
 
                     var _sb = new StringBuilder();
@@ -592,9 +593,9 @@ namespace Supremacy.Game
                                                           //}
                 }
             }
-            Console.WriteLine(_text_diplomacyData);
+            Console.WriteLine(DateTime.Now + Environment.NewLine + _text_diplomacyData);
 
-            string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon");
+            string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon"); // "_diplomacyData.txt"
             string _file = Path.Combine(_path_Resources_Data_Addon, "_diplomacyData.txt"); // by ALT+M at GalaxyMap
             if (!string.IsNullOrEmpty(_file))
             {

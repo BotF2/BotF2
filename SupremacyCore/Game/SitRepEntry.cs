@@ -1026,9 +1026,9 @@ namespace Supremacy.Game
             return scriptExpression.Evaluate<string>(parameters);
         }
 
-        private DiplomacySitRepStringKey? ResolveTextKey(bool detailed)
+        private DiplomacySitRepStringKey? ResolveTextKey(bool detailed) // \Resources\Data\DiplomacyText.xaml
         {
-            // \Resources\Data\DiplomacyText.xaml
+            
             IProposal proposal = _exchange as IProposal;
             IResponse response = _exchange as IResponse;
 

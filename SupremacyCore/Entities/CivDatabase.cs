@@ -14,6 +14,7 @@ using Supremacy.Types;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -299,7 +300,7 @@ namespace Supremacy.Entities
         /// <returns></returns>
         public static CivDatabase Load()
         {
-            String _text = "Step_0824: CivDatabase: loading civilization database from " + ResourceManager.GetResourcePath(DefaultDatabasePath);   
+            String _text = "Step_0824:; CivDatabase: loading civilization database from " + ResourceManager.GetResourcePath(DefaultDatabasePath);   
             Console.WriteLine(_text);
             //GameLog.Core.GameData.Debug("Loading civilization database....");
             try
@@ -333,13 +334,14 @@ namespace Supremacy.Entities
                         GameLog.Core.GameData.Error(string.Format("Problem adding civilization {0} to CivDatabase", civElement.ToString()), e);
                     }
                 }
-                _text = "Step_0829: CivDatabase: loaded " + civDatabase.Count + " civilizations";
+                _text = "Step_0829:; "+DateTime.Now +" > CivDatabase: loaded " + civDatabase.Count + " civilizations";
                 Console.WriteLine(_text);
                 //GameLog.Core.GameData.Debug("Civilization database loaded");
                 return civDatabase;
             }
             catch (SupremacyException)
             {
+                Debugger.Break();
                 throw;
             }
             catch (Exception e)
