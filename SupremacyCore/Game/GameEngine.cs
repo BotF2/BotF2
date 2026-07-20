@@ -4366,8 +4366,8 @@ namespace Supremacy.Game
                 _diplomatCiv2.ProposalSent = null;
                 _text = "Step_8234:; "
                     + DateTime.Now
-                    + " > ProposalSent= "
-                     + _diplomatCiv2.ProposalSent.Clauses[0].ClauseType.ToString() + " (ProposalSent)"
+                    + " > ProposalSent= xxx "
+                     //+ _diplomatCiv2.ProposalSent.Clauses[0].ClauseType.ToString() + " (ProposalSent)"
                     + "; from " + _diplomatCiv2.Owner.ToString()
                     + "; to; " + _diplomatCiv2.Counterparty.ToString()
 
@@ -4404,7 +4404,7 @@ namespace Supremacy.Game
             _text = "doesn't work well > Diplomacy_9_ConsoleWriteline";
 
 
-            #region Gamelogs
+            _text = "#region Gamelogs";
             if (_diplomatCiv2.ProposalReceived != null)
             {
                 _text += /*Environment.NewLine + */"ProposalReceived: "
