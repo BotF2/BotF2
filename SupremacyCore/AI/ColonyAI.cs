@@ -982,8 +982,8 @@ namespace Supremacy.AI
             //    _build_for_food = false;
             //}
 
-            // if food is minus and all are active
-            if (_colony.FoodReserves.CurrentValue < 500 && _colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food)
+            // if food is below 500 and allmost all are active
+            if (_colony.FoodReserves.CurrentValue < 500 && _colony.Food_Net < 0 && _colony.Facilities_Active1_Food + 2 > _colony.Facilities_Total1_Food)
             {
                 //_build_for_food = true;
                 _itemToBuild_Facility = _available_item;
@@ -996,7 +996,7 @@ namespace Supremacy.AI
 
 
             // if food is plus and active 3 and total 6 
-            if (_colony.Food_Net > 10 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food + 2)
+            if (_colony.Food_Net > 10 && _colony.Facilities_Active1_Food + 1 > _colony.Facilities_Total1_Food + 3)
             {
                 //_colony.RemoveFacility(ProductionCategory.Food); // no scratch for food facilities
                 _text = "Step_1434:; INACTIVATE > " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
