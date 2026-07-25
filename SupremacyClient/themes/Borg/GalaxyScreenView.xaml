@@ -219,12 +219,17 @@
                            BorderThickness="2"                                      
                            Background="{StaticResource Borg1Gradient_Top_Bottom}"
                       >
-             <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+             <!--<TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="#7CFC00"
                            Text="{s:StringResource AFFILIATION_TEXT}"
-                           HorizontalAlignment="Center" />
-              </Border>
+                           HorizontalAlignment="Center" />-->
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="18pt" HorizontalAlignment="Center" Foreground="Black" 
+                           Text="{Binding Path=PlayerCivilizationAccumulatePlace, Mode=OneWay}"
+                           />
+                                <!--Text="{s:StringResource AFFILIATION_TEXT}"-->
+                            </Border>
               <Border Grid.Column="4"
                       Grid.Row="1"
                       Padding="14,0,14,0"

@@ -9,6 +9,7 @@
 
   <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
          TargetType="{x:Type Button}"
-         BasedOn="{StaticResource 1-TERRAN-LCARS_StandardButtonStyle}" />
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+         <!--BasedOn="{StaticResource 1-TERRAN-LCARS_StandardButtonStyle}" />-->
 
 </ResourceDictionary>

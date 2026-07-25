@@ -486,7 +486,7 @@ namespace Supremacy.Client
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
-            ClientSettings.Current.Reload();
+            ClientSettings.Current.ReloadClientSettings();
             Close();
         }
 
@@ -497,7 +497,7 @@ namespace Supremacy.Client
 
         private void SaveChangesAndHide()
         {
-            ClientSettings.Current.Save();
+            ClientSettings.Current.SaveClientSettings();
             Close();
         }
 
@@ -505,16 +505,16 @@ namespace Supremacy.Client
         {
             ClientSettings.Current.TracesAudio = true;
 
-            ClientSettings.Current.Save();
-            ClientSettings.Current.Reload();
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
         }
 
         private void OnGenericCommandsTracesSetSomeCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
             ClientSettings.Current.TracesAudio = false;
 
-            ClientSettings.Current.Save();
-            ClientSettings.Current.Reload();
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
         }
 
         private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
@@ -522,8 +522,8 @@ namespace Supremacy.Client
             //ClientSettings.Traces_ClearAllProperty();
             ClientSettings.Current.TracesAudio = false;
 
-            ClientSettings.Current.Save();
-            ClientSettings.Current.Reload();
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
         }
     }
 }

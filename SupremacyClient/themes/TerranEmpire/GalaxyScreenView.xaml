@@ -170,12 +170,18 @@
                       Padding="14,0,14,0"
                       Margin="3,0,0,0"
                       Background="{StaticResource Ter2Gradient_Bottom_Top}">
-                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                  
+                <!--<TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="Black"
                            Text="{s:StringResource AFFILIATION_TEXT}"
-                           HorizontalAlignment="Center" />
-              </Border>
+                           HorizontalAlignment="Center" />-->
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="18pt" HorizontalAlignment="Center" Foreground="Black" 
+                           Text="{Binding Path=PlayerCivilizationAccumulatePlace, Mode=OneWay}"
+                           />
+                                <!--Text="{s:StringResource AFFILIATION_TEXT}"-->
+                            </Border>
               <Border Grid.Column="4"
                       Grid.Row="1"
                       Padding="14,0,14,0"

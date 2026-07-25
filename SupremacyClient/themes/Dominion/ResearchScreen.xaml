@@ -630,147 +630,115 @@
               </Expander>
 
 
-                            <!--Tab RESEARCH_MATRIX-->
+
                             <TabControl Margin="4,0,0,0">
-                <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
-                  <Grid>
-                    <Grid.RowDefinitions>
-                      <RowDefinition Height="Auto"/>
-                      <RowDefinition Height="2*"
-                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
-                      <RowDefinition Height="*"
-                                     MinHeight="128"/>
-                    </Grid.RowDefinitions>
-                    <Border x:Name="PART_ResearchFieldItemsHost"
-                            Grid.Row="0"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,7"
-                            Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
-                    <ScrollViewer x:Name="ResearchMatrixScrollViewer"
-                                  HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Auto"
-                                  CanContentScroll="False"
-                                  Grid.Row="1">
-                      <Border x:Name="PART_ResearchMatrixHost"
-                              BorderBrush="White"
-                              BorderThickness="0,0,1,1"
-                              SnapsToDevicePixels="True"
-                              Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
-                    </ScrollViewer>
-                    <ContentControl Grid.Row="2"
-                                    Margin="0,7,0,0"
-                                    Style="{StaticResource DomThinBorderStyle}">
-                      <Border x:Name="PART_ApplicationDetailsHost"/>
-                    </ContentControl>
-                  </Grid>
-                </TabItem>
-                <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">
-                  <!--
+                              <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">
+                                <!--
                     ***************************
                     * BEGIN ENCYCLOPEDIA GRID *
                     ***************************
                   -->
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="21"/>
-                      <ColumnDefinition Width="180"/>
-                      <ColumnDefinition Width="28"/>
-                      <ColumnDefinition Width="14"/>
-                      <ColumnDefinition Width="28"/>
-                      <ColumnDefinition Width="*"/>
-                      <ColumnDefinition Width="21"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                      <RowDefinition Height="28"/>
-                      <RowDefinition Height="28"/>
-                      <RowDefinition Height="*"/>
-                      <RowDefinition Height="28"/>
-                      <RowDefinition Height="28"/>
-                    </Grid.RowDefinitions>
-                    <!-- Top Left Rounded Corner -->
-                    <Border Grid.Column="0"
-                            Grid.Row="0"
-                            CornerRadius="14,0,0,14"
-                            Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
-                    <!-- Bottom Left Rounded Corner -->
-                    <Border Grid.Column="0"
-                            Grid.Row="4"
-                            CornerRadius="14,0,0,14"
-                            Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
-                    <!-- Top Right Rounded Corner -->
-                    <Border Grid.Column="6"
-                            Grid.Row="0"
-                            CornerRadius="0,14,14,0"
-                            Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
-                    <!-- Bottom Right Rounded Corner -->
-                    <Border Grid.Column="6"
-                            Grid.Row="4"
-                            CornerRadius="0,14,14,0"
-                            Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
-                    <!-- Top-Center Intersection -->
-                    <Path Grid.Column="2"
-                          Grid.ColumnSpan="3"
-                          Grid.Row="0"
-                          Grid.RowSpan="2"
-                          Width="70"
-                          Height="56"
-                          Fill="{StaticResource Dom2Gradient_TopLeft_BottomRight}"
-                          Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
-                    <!-- Bottom-Center Intersection -->
-                    <Path Grid.Column="2"
-                          Grid.ColumnSpan="3"
-                          Grid.Row="3"
-                          Grid.RowSpan="2"
-                          Width="70"
-                          Height="56"
-                          Fill="{StaticResource Dom2Gradient_TopLeft_BottomRight}"
-                          Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
-                    <!-- Upper-Right Edge -->
-                    <DockPanel Grid.Column="5"
-                               Grid.Row="0"
-                               Margin="3,0,3,0"
-                               LastChildFill="True">
-                      <TextBlock DockPanel.Dock="Right"
-                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                 FontSize="18pt"
-                                 Foreground="{DynamicResource DefaultTextBrush}"
-                                 Margin="6,0,3,0"
-                                 VerticalAlignment="Center"
-                                 Text="{s:StringResource Key=ENCYCLOPEDIA_TITLE_DOM, Case=Upper}"/>
-                                            <Border Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
-                    </DockPanel>
-                    <!-- Lower-Right Edge -->
-                    <Border Grid.Column="5"
-                            Grid.Row="4"
-                            Margin="3,0,3,0"
-                            Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
-                    <Border Grid.Column="3"
-                            Grid.Row="2"
-                            Margin="0,3,0,3"
-                            Background="{StaticResource Dom3Gradient_Left_Right}"/>
+                                <Grid>
+                                  <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="21"/>
+                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="28"/>
+                                    <ColumnDefinition Width="14"/>
+                                    <ColumnDefinition Width="28"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="21"/>
+                                  </Grid.ColumnDefinitions>
+                                  <Grid.RowDefinitions>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="28"/>
+                                  </Grid.RowDefinitions>
+                                  <!-- Top Left Rounded Corner -->
+                                  <Border Grid.Column="0"
+                                          Grid.Row="0"
+                                          CornerRadius="14,0,0,14"
+                                          Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
+                                  <!-- Bottom Left Rounded Corner -->
+                                  <Border Grid.Column="0"
+                                          Grid.Row="4"
+                                          CornerRadius="14,0,0,14"
+                                          Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
+                                  <!-- Top Right Rounded Corner -->
+                                  <Border Grid.Column="6"
+                                          Grid.Row="0"
+                                          CornerRadius="0,14,14,0"
+                                          Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
+                                  <!-- Bottom Right Rounded Corner -->
+                                  <Border Grid.Column="6"
+                                          Grid.Row="4"
+                                          CornerRadius="0,14,14,0"
+                                          Background="{StaticResource Dom1Gradient_TopLeft_BottomRight}"/>
+                                  <!-- Top-Center Intersection -->
+                                  <Path Grid.Column="2"
+                                        Grid.ColumnSpan="3"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Width="70"
+                                        Height="56"
+                                        Fill="{StaticResource Dom2Gradient_TopLeft_BottomRight}"
+                                        Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
+                                  <!-- Bottom-Center Intersection -->
+                                  <Path Grid.Column="2"
+                                        Grid.ColumnSpan="3"
+                                        Grid.Row="3"
+                                        Grid.RowSpan="2"
+                                        Width="70"
+                                        Height="56"
+                                        Fill="{StaticResource Dom2Gradient_TopLeft_BottomRight}"
+                                        Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
+                                  <!-- Upper-Right Edge -->
+                                  <DockPanel Grid.Column="5"
+                                             Grid.Row="0"
+                                             Margin="3,0,3,0"
+                                             LastChildFill="True">
+                                    <TextBlock DockPanel.Dock="Right"
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                               FontSize="18pt"
+                                               Foreground="{DynamicResource DefaultTextBrush}"
+                                               Margin="6,0,3,0"
+                                               VerticalAlignment="Center"
+                                               Text="{s:StringResource Key=ENCYCLOPEDIA_TITLE_DOM, Case=Upper}"/>
+                                    <Border Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
+                                  </DockPanel>
+                                  <!-- Lower-Right Edge -->
+                                  <Border Grid.Column="5"
+                                          Grid.Row="4"
+                                          Margin="3,0,3,0"
+                                          Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
+                                  <Border Grid.Column="3"
+                                          Grid.Row="2"
+                                          Margin="0,3,0,3"
+                                          Background="{StaticResource Dom3Gradient_Left_Right}"/>
 
-                    <!-- Search Bar -->
-                    <Grid Grid.Column="1"
-                          Grid.Row="0"
-                          Margin="3,0,3,0">
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                      </Grid.ColumnDefinitions>
-                      <TextBlock Grid.Column="0"
-                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                 FontSize="18pt"
-                                 Foreground="{DynamicResource DefaultTextBrush}"
-                                 Margin="3,0,6,0"
-                                 VerticalAlignment="Center"
-                                 Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
-                      <TextBox x:Name="PART_SearchText" Grid.Column="1"
-                               Text="Put in here" BorderThickness="2" BorderBrush="{DynamicResource HeaderTextBrush}"
+                                  <!-- Search Bar -->
+                                  <Grid Grid.Column="1"
+                                        Grid.Row="0"
+                                        Margin="3,0,3,0">
+                                    <Grid.ColumnDefinitions>
+                                      <ColumnDefinition Width="Auto"/>
+                                      <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                               FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                               FontSize="18pt"
+                                               Foreground="{DynamicResource DefaultTextBrush}"
+                                               Margin="3,0,6,0"
+                                               VerticalAlignment="Center"
+                                               Text="{s:StringResource Key=SEARCH_TEXT, Case=Upper}"/>
+                                    <TextBox x:Name="PART_SearchText" Grid.Column="1"
+                                             Text="Put in here" BorderThickness="2" BorderBrush="{DynamicResource HeaderTextBrush}"
                                />
-                    </Grid>
+                                  </Grid>
 
-                    <!-- Slider -->
-                    <!--<Slider x:Name="EncyclopediaSizeSlider"
+                                  <!-- Slider -->
+                                  <!--<Slider x:Name="EncyclopediaSizeSlider"
                             Grid.Column="1"
                             Grid.Row="4" 
                             Margin="3,0,3,0"
@@ -779,28 +747,28 @@
                             Value="48"
                             Interval="8"
                             VerticalAlignment="Center"/>-->
-                    <Border Grid.Column="1"
-                            Grid.Row="4"
-                            Margin="3,0,3,0"
-                            Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
+                                  <Border Grid.Column="1"
+                                          Grid.Row="4"
+                                          Margin="3,0,3,0"
+                                          Background="{StaticResource Dom3Gradient_Top_Bottom}"/>
 
-                    <!-- Encyclopedia Entry List -->
-                    <TreeView x:Name="PART_EncyclopediaEntries"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="3"
-                              Grid.Row="1"
-                              Grid.RowSpan="3"
-                              Margin="0,7,7,7"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              BorderThickness="0"
-                              Padding="0"
-                              FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                              Foreground="{DynamicResource DefaultTextBrush}"
-                              FontSize="12pt"
-                              ScrollViewer.CanContentScroll="False"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                      <!--<TreeView.Resources>
+                                  <!-- Encyclopedia Entry List -->
+                                  <TreeView x:Name="PART_EncyclopediaEntries"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Grid.Row="1"
+                                            Grid.RowSpan="3"
+                                            Margin="0,7,7,7"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="0"
+                                            Padding="0"
+                                            FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                            Foreground="{DynamicResource DefaultTextBrush}"
+                                            FontSize="12pt"
+                                            ScrollViewer.CanContentScroll="False"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <!--<TreeView.Resources>
                         <Style TargetType="{x:Type ScrollViewer}">
                           <Setter Property="CanContentScroll"
                                   Value="False"/>
@@ -877,24 +845,61 @@
                           </GroupStyle.ContainerStyle>
                         </GroupStyle>
                       </TreeView.GroupStyle>-->
-                    </TreeView>
+                                  </TreeView>
 
-                    <!-- Encyclopedia Document Viewer -->
-                    <FlowDocumentScrollViewer x:Name="PART_EncyclopediaViewer"
-                                              Grid.Column="4"
-                                              Grid.ColumnSpan="3"
-                                              Grid.Row="1"
-                                              Grid.RowSpan="3"
-                                              Margin="0,7,0,7"
-                                              ContextMenuService.IsEnabled="False"
-                                              IsSelectionEnabled="False"/>
-                  </Grid>
-                  <!--
+                                  <!-- Encyclopedia Document Viewer -->
+                                  <FlowDocumentScrollViewer x:Name="PART_EncyclopediaViewer"
+                                                            Grid.Column="4"
+                                                            Grid.ColumnSpan="3"
+                                                            Grid.Row="1"
+                                                            Grid.RowSpan="3"
+                                                            Margin="0,7,0,7"
+                                                            ContextMenuService.IsEnabled="False"
+                                                            IsSelectionEnabled="False"/>
+                                </Grid>
+
+                              </TabItem>
+                              <!--
                     *************************
                     * END ENCYCLOPEDIA GRID *
                     *************************
                   -->
+
+                              <!--Tab RESEARCH_MATRIX-->                              
+                              
+                <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto"/>
+                      <RowDefinition Height="2*"
+                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
+                      <RowDefinition Height="*"
+                                     MinHeight="128"/>
+                    </Grid.RowDefinitions>
+                    <Border x:Name="PART_ResearchFieldItemsHost"
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,7"
+                            Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+                    <ScrollViewer x:Name="ResearchMatrixScrollViewer"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto"
+                                  CanContentScroll="False"
+                                  Grid.Row="1">
+                      <Border x:Name="PART_ResearchMatrixHost"
+                              BorderBrush="White"
+                              BorderThickness="0,0,1,1"
+                              SnapsToDevicePixels="True"
+                              Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
+                    </ScrollViewer>
+                    <ContentControl Grid.Row="2"
+                                    Margin="0,7,0,0"
+                                    Style="{StaticResource DomThinBorderStyle}">
+                      <Border x:Name="PART_ApplicationDetailsHost"/>
+                    </ContentControl>
+                  </Grid>
                 </TabItem>
+
               </TabControl>
             </DockPanel>
           </Border>

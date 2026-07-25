@@ -539,7 +539,7 @@ namespace Supremacy.AI
                     if (_foreign_power_1.StatementReceived != null)
                     {
                         _text = "Step_3776:; Turn " + GameContext.Current.TurnNumber
-                            + "; otherforeignPower.Statement= " + _foreign_power_1.StatementReceived.StatementType.ToString()
+                            + "; otherforeignPower.Statement (RECEIVED)= " + _foreign_power_1.StatementReceived.StatementType.ToString()
                             + "; Counterparty=" + _foreign_power_1.Counterparty.ShortName
                             + ";to; " + _foreign_power_1.Owner.ShortName
                             + "; Regard= " + _foreign_power_1.DiplomacyData.Regard.CurrentValue
@@ -894,36 +894,36 @@ namespace Supremacy.AI
             {
                 //foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
                 //    75 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 55 + impact);
-                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 40 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 27 + impact); // before 55
+                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 20 + impact); // before 40
             }
             else if (similarTraits == 6)
             {
                 //foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
                 //    55 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 40 + impact);
-                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 30 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 20 + impact); // before 
+                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 15 + impact); // before 
             }
             else if (similarTraits == 5)
             {
                 //foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
                 //    30 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 20 + impact);
-                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 10 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 10 + impact); // before 
+                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 5 + impact); // before 
             }
             else if (similarTraits == 3)
             {
                 //foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
                 //      10 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -15 + impact);
-                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -20 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -7 + impact); // before 15
+                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -10 + impact); // before 
             }
             else if (similarTraits == 0)
             {
                 //    foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
                 //        -90 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -95 + impact);
-                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -90 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -20 + impact);// before  95
+                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -15 + impact);// before 90
             }
         }
         public static void TrustAndRegardForATrait(ForeignPower foreignPow, int degree, string[] traits, string[] otherTraits)

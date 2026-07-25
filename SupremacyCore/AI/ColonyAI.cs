@@ -38,10 +38,12 @@ namespace Supremacy.AI
 
         [NonSerialized]
 
+        private static bool _colonyAIControlled = true; // turns to false for human player
+
         private static string _owner_col;
         private static string _name_col;
         private static string _colony_full_Report;
-        private static bool _colonyAIControlled = false;
+
         private static BuildProject _itemToBuild;
         private static BuildProject _itemToBuild_Facility; // Food, Industry etc
         private static bool _writeDirectly_Colony = true;
@@ -161,16 +163,16 @@ namespace Supremacy.AI
 
                         //Debugger.Break();
 
-                        //_colonyAIControlled = false;
-                        //_colonyAIControlled = /*true;*/
+                        _colonyAIControlled = false;
+                        //_colonyAIControlled = true;
 
-                        //_text = /*_newline +*/ "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " * " + _name_col + " " + _owner_col
-                        //    + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
-                        //    + "; BuildQueue.Count= " + _colony.BuildQueue.Count // + " ) > Handling _colony"
-                        //                                                       //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
-                        //    ;
-                        //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                        //_colony_full_Report += _newline + _text;
+                        _text = /*_newline +*/ "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " * " + _name_col + " " + _owner_col
+                            + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
+                            + "; BuildQueue.Count= " + _colony.BuildQueue.Count // + " ) > Handling _colony"
+                                                                                //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
+                            ;
+                        if (_writeDirectly_Colony) Console.WriteLine(_text);
+                        _colony_full_Report += _newline + _text;
                     }
 
 
@@ -304,7 +306,6 @@ namespace Supremacy.AI
                         {
                             Handle_Buy_Build(_colony, _civ);
                             Handle_Industry_Production(_colony);
-                            //Handle_Research_Distribution(_colony);
                         }
 
 
@@ -313,18 +314,6 @@ namespace Supremacy.AI
                         Handle_Food_Labors_UNDONE(_colony); // in case too much food is produced
 
                         Print_Labors(_colony, _colony.AvailableLabor, _colony.AvailableLabor / 10);
-                        //_text = "Step_2351:; " + GameEngine.LocationString(_colony.Location.ToString())
-                        //        + " Pop= " + _colony.Population + " of max " + _colony.Population_Max
-                        //        + ", Active: Food= " + _colony.Facilities_Active1_Food + " of " + _colony.Facilities_Active1_Food
-                        //        + ", Ind= " + _colony.Facilities_Active2_Industry + " of " + _colony.Facilities_Active2_Industry
-                        //        + ", En= " + _colony.Facilities_Active3_Energy + " of " + _colony.Facilities_Active3_Energy
-                        //        + ", Res= " + _colony.Facilities_Active4_Research + " of " + _colony.Facilities_Active4_Research
-                        //        + ", Int= " + _colony.Facilities_Active5_Intelligence + " of " + _colony.Facilities_Active5_Intelligence
-                        //        + ", Pool= " + _colony.GetAvailableLabor() / 10
-                        //        + " for " + _name_col
-                        //        ;
-                        //if (_writeDirectly_Colony) Console.WriteLine(_text);
-                        //_colony_full_Report += _newline + _text;
 
                         if (_colony.BuildQueue.Count > 0) // not to often 
                         {
@@ -370,10 +359,6 @@ namespace Supremacy.AI
 
                         if (_colonyAIControlled)  // not for human player
                         {
-                            Handle_Buy_Build(_colony, _civ);
-                            Handle_Industry_Production(_colony);
-                            //Handle_Research_Distribution(_colony);
-
                             _colony.ProcessQueue();
 
                             //if (_colony.Owner.IsHuman)

@@ -31,7 +31,7 @@ namespace Supremacy.Client
 
         //private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
         //{
-        //    ClientSettings.Current.Reload();
+        //    ClientSettings.Current.ReloadClientSettings();
         //    Close();
         //}
 
@@ -42,7 +42,7 @@ namespace Supremacy.Client
 
         //private void SaveChangesAndHide()
         //{
-        //    ClientSettings.Current.Save();
+        //    ClientSettings.Current.SaveClientSettings();
         //    Close();
         //}
 

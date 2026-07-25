@@ -7,19 +7,21 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
+using Supremacy.Resources;
+using Supremacy.Scripting.Ast;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Xaml;
 using XamlReader = System.Windows.Markup.XamlReader;
 using XamlWriter = System.Windows.Markup.XamlWriter;
-
-using Supremacy.Collections;
-using Supremacy.Resources;
-using Supremacy.Utility;
 
 
 namespace Supremacy.Client
@@ -27,7 +29,7 @@ namespace Supremacy.Client
     public class ClientSettings : DependencyObject, IAttachedPropertyStore, INotifyPropertyChanged
     {
         private const string ClientSettingsFileName = "SupremacyClient..Settings.xaml";
-        readonly bool _tracingClientSettings = false;
+        //readonly bool _tracingClientSettings = false;
         public bool _XML2CSVOutput = false;
 
 
@@ -77,10 +79,16 @@ namespace Supremacy.Client
                 settingsDirectory,
                 ClientSettingsFileName);
 
-            if (_tracingClientSettings)
-            {
-                GameLog.Client.General.InfoFormat("SAVE     {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
-            }
+            //if (_tracingClientSettings)
+            //{
+            string _text = "SAVE"
+                + filePath //+ Environment.NewLine
+                //+ "Content: (press ALT + X for Overview)" + Environment.NewLine
+                //+ File.ReadAllText(filePath) + Environment.NewLine
+                ;
+            Console.WriteLine("Step_9446:; " + _text);
+            GameLog.Client.General.InfoFormat("SAVE     {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+            //}
         }
 
         public event EventHandler Loaded;
@@ -90,7 +98,7 @@ namespace Supremacy.Client
             Loaded?.Invoke(null, EventArgs.Empty);
         }
 
-        public void Reload()
+        public void ReloadClientSettings()
         {
             try
             {
@@ -133,8 +141,9 @@ namespace Supremacy.Client
             }
         }
 
-        public void Save()
+        public void SaveClientSettings()
         {
+            string _text = "";
             try
             {
                 string settingsDirectory = ResourceManager.GetResourcePath("");
@@ -148,16 +157,21 @@ namespace Supremacy.Client
                     Directory.CreateDirectory(settingsDirectory);
                 }
 
-                using (FileStream fileWriter = File.Create(filePath))
-                {
-                    XamlWriter.Save(this, fileWriter);
-                }
-
-                OnSaved();
+                //if (!File.Exists(filePath))
+                //{
+                    using (FileStream fileWriter = File.Create(filePath))
+                    {
+                        XamlWriter.Save(this, fileWriter);
+                    }
+                    OnSaved();
+                //}
             }
             catch (Exception e)
             {
-                GameLog.Client.General.Error(e);
+                _text = "Step_0188:; Error at saving SupremacyClient..Settings.xaml" + Environment.NewLine + e;
+                GameLog.Client.General.Error(_text);
+                //GameLog.Client.General.Error(e);
+                Debugger.Break();
             }
         }
 
@@ -170,6 +184,8 @@ namespace Supremacy.Client
                 string filePath = Path.Combine(
                     settingsDirectory,
                     ClientSettingsFileName);
+
+                /*needed? .. filePath already built */ settingsDirectory = ".\\";
 
                 ClientSettings settings;
 

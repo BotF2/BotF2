@@ -25,9 +25,15 @@ Ist das gewollt? Bei der Föderation kann ich es bedingt nachvollziehen (auch we
 - Membership > Minor-Ships are beamed back to Minor homesystem
 
 
-
-
 - bilder fehlermeldung
+- check amount of planets for minors, especially one planet systems
+
+- Minors should have minor's facilities, especially not borg one's where the image doesn't fit
+
+
+
+
+
 
 
 done

@@ -54,6 +54,7 @@ namespace Supremacy.Text
             {
                 throw new ArgumentNullException("other");
             }
+            string _text = "";
 
             foreach (LocalizedStringValue value in other._values)
             {
@@ -64,12 +65,22 @@ namespace Supremacy.Text
                         continue;
                     }
 
-                    _ = _values.Remove(value.Language);
+                    _values.Remove(value.Language);
                     _values.Add(value);
+
+                    _text = "Step_0822:; added to LocalizedString > " 
+                        + value.Language
+                        + " > "
+                        + value
+                        ;
+                    Console.WriteLine(_text);
                 }
                 else
                 {
                     _values.Add(value);
+
+                    _text = "Step_0823:; added to LocalizedString > " + value;
+                    Console.WriteLine(_text);
                 }
             }
         }

@@ -2022,45 +2022,71 @@ namespace Supremacy.Universe
             {
                 if (_foodPF_unused > 0)
                 {
-                    if (AvailableLabor < 1)
+
+                        if (AvailableLabor < 1)
                     {
                         _text = "Step_2398:; Turn " + GameContext.Current.TurnNumber
                             + "; " + Location
                             + " No free Labour (from Pool) - food reserves are low";
                         Console.WriteLine(_text);
-                        ReduceOneOtherPF();
+
+                        if (!Owner.IsHuman)
+                            ReduceOneOtherPF();
                     }
+
                     int _AvailableLabor = GetAvailableLabor();
                     if (_AvailableLabor < 10)
                     {
-                        ReduceOneOtherPF();
+                        if (!Owner.IsHuman)
+                            ReduceOneOtherPF();
                     }
 
-                    _ = Facility_Activate(ProductionCategory.Food);
+                    if (!Owner.IsHuman)
+                        _ = Facility_Activate(ProductionCategory.Food);
                     _text = LocationStringColony + " " + Name + " "
-                        + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
+                        + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION")); // en.txt = > Transferred one labour to Food Production due to less reserves
+
                     //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
                     GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
 
+                    if (Owner.IsHuman)
+                    {
+                        _text = LocationStringColony + " " + Name + " "
+                                + "> not much food reserves ( less than population * 2 )"; 
+                        GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Red));
+                    }
                 }
                 else if (_foodPF_unused == 0)
                 {
                     _text = "Step_2382:; " + Location + " > No free food facility";
                     Console.WriteLine(_text);
+
                     if (!Owner.IsHuman)
                         AddFacilities(ProductionCategory.Food, 1);
                     //; // ToDo - how to build up a build project
                 }
                 else
                 {
-                    ReduceOneOtherPF();
+                    if (!Owner.IsHuman)
+                    {
 
-                    _ = Facility_Activate(ProductionCategory.Food);
-                    _text = LocationStringColony + " " + Name + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION"));
-                    Console.WriteLine("Step_2384:; " + _text);
-                    //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
-                    GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
+                        ReduceOneOtherPF();
 
+                        _ = Facility_Activate(ProductionCategory.Food);
+                        _text = LocationStringColony + " " + Name
+                            + string.Format(ResourceManager.GetString("ONE_LABOUR_TO_FOOD_PRODUCTION")); // en.txt = > Transferred one labour to Food Production due to less reserves
+                        Console.WriteLine("Step_2384:; " + _text);
+                        //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                        GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Gray));
+                    }
+                    else
+                    {
+                        _text = LocationStringColony + " " + Name
+                            + " > not much food reserves ( less than population * 2 )"; // en.txt = > Transferred one labour to Food Production due to less reserves
+                        Console.WriteLine("Step_2385:; " + _text);
+                        //_text = Location + " " + Name + " > Transferred one labour to Food Production due to less reserves.";
+                        GameContext.Current.CivilizationManagers[OwnerID].SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.Red));
+                    }
                 }
 
                 //if (_foodReserves > 2000)
@@ -3206,11 +3232,11 @@ namespace Supremacy.Universe
                 int _active = colony.orbitalBatteries_active.Value;
 
 
-                
+
                 int _one_orb = colony.OrbitalBatteryDesign != null ? colony.OrbitalBatteries[0].Fire_power_calculated() : 0;
 
                 //string 
-                    _text = "avoid 0";
+                _text = "avoid 0";
                 if (_active != 0 && _one_orb != 0)
                 {
                     _defensevalue += _active * _one_orb;
@@ -3243,21 +3269,21 @@ namespace Supremacy.Universe
             return _return_value;
         }
     }
-        public interface IContactCenter { }
-        [Serializable]
-        public sealed class ColonyFacilitiesAccessor
+    public interface IContactCenter { }
+    [Serializable]
+    public sealed class ColonyFacilitiesAccessor
+    {
+        private readonly IValueProvider<int>[] _array;
+
+        public ColonyFacilitiesAccessor([NotNull] IValueProvider<int>[] array)
         {
-            private readonly IValueProvider<int>[] _array;
-
-            public ColonyFacilitiesAccessor([NotNull] IValueProvider<int>[] array)
-            {
-                _array = array ?? throw new ArgumentNullException("array");
-            }
-
-            public IValueProvider<int> this[ProductionCategory category]
-            {
-                get { return _array[(int)category]; }
-            }
+            _array = array ?? throw new ArgumentNullException("array");
         }
 
+        public IValueProvider<int> this[ProductionCategory category]
+        {
+            get { return _array[(int)category]; }
+        }
     }
+
+}

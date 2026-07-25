@@ -696,8 +696,8 @@ namespace Supremacy.Client.Views
                         //    element.SelectedParameter.ToString(),
                         //    element.ElementType.ToString());
                     }
-                    _text = "Step_8732:; "
-                            + "Proposal added > " + element.ElementType.ToString()
+                    _text = "Step_8732:; " // "Proposal added (Send-Button)
+                            + "Proposal added (Send-Button) > " + element.ElementType.ToString()
                             //+ ", " + element.SelectedParameter.ToString()
                             //+ " > " + element.ElementType.ToString()
                             + " > " + element.Description
@@ -724,6 +724,14 @@ namespace Supremacy.Client.Views
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     //Console.WriteLine("DECLARE_WAR_DIALOG_HINT is outcommented");
+                    _text = "Step_8734:; " // WarDeclaration: (Send-Button)
+                            + "WarDeclaration (Send-Button) > " + element.ElementType.ToString()
+                            //+ ", " + element.SelectedParameter.ToString()
+                            //+ " > " + element.ElementType.ToString()
+                            + " > " + element.Description
+                            ;
+                    Console.WriteLine(_text);
+
                     _statementElements.Add(element);
                     break;
             }
@@ -904,41 +912,45 @@ namespace Supremacy.Client.Views
                      */
                     if (commendWarParameters().Any())
                     {
-                        _availableElements.Add(
-                            new DiplomacyMessageAvailableElement
-                            {
-                                ActionCategory = DiplomacyMessageElementActionCategory.Commend,
-                                ParametersCallback = commendWarParameters,
-                                ElementType = DiplomacyMessageElementType.CommendWarStatement
-                            });
+                        // no ADD at the moment
+                        //_availableElements.Add(
+                        //    new DiplomacyMessageAvailableElement
+                        //    {
+                        //        ActionCategory = DiplomacyMessageElementActionCategory.Commend,
+                        //        ParametersCallback = commendWarParameters,
+                        //        ElementType = DiplomacyMessageElementType.CommendWarStatement
+                        //    });
                     }
 
-                    _availableElements.Add(
-                        new DiplomacyMessageAvailableElement
-                        {
-                            ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
-                            ParametersCallback = denouceWarParameters,
-                            ElementType = DiplomacyMessageElementType.DenounceWarStatement
-                        });
+                    // no ADD at the moment
+                    //_availableElements.Add(
+                    //    new DiplomacyMessageAvailableElement
+                    //    {
+                    //        ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
+                    //        ParametersCallback = denouceWarParameters,
+                    //        ElementType = DiplomacyMessageElementType.DenounceWarStatement
+                    //    });
                 }
 
                 if (diplomat.CanCommendOrDenounceTreaty(_recipient, currentStatement))
                 {
-                    _availableElements.Add(
-                        new DiplomacyMessageAvailableElement
-                        {
-                            ActionCategory = DiplomacyMessageElementActionCategory.Commend,
-                            ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
-                            ElementType = DiplomacyMessageElementType.CommendTreatyStatement
-                        });
+                    // no ADD at the moment
+                    //_availableElements.Add(
+                    //    new DiplomacyMessageAvailableElement
+                    //    {
+                    //        ActionCategory = DiplomacyMessageElementActionCategory.Commend,
+                    //        ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
+                    //        ElementType = DiplomacyMessageElementType.CommendTreatyStatement
+                    //    });
 
-                    _availableElements.Add(
-                        new DiplomacyMessageAvailableElement
-                        {
-                            ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
-                            ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
-                            ElementType = DiplomacyMessageElementType.CommendTreatyStatement
-                        });
+                    // no ADD at the moment
+                    //_availableElements.Add(
+                    //    new DiplomacyMessageAvailableElement
+                    //    {
+                    //        ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
+                    //        ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
+                    //        ElementType = DiplomacyMessageElementType.CommendTreatyStatement
+                    //    });
                 }
 
                 if (diplomat.CanProposeWarPact(_recipient, currentProposal))

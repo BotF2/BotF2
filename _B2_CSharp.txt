@@ -18,6 +18,8 @@ string result = sb.ToString();
     </Style>
 </ListView.ItemContainerStyle>
 
+PlayerCivilization = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
+
 
 - The ? in bool? makes the bool type nullable = possible values: true, false, or null. It's a shorthand for Nullable<bool>
 

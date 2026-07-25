@@ -197,12 +197,17 @@
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
                       Background="{StaticResource Rom2Gradient_Top_Bottom}">
-                <TextBlock x:Name="SectorOwnerText"
+                <!--<TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="Black"
                            Text="{Binding Path=SelectedSectorAllegiance, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
-                           HorizontalAlignment="Center" />
+                           HorizontalAlignment="Center" />-->
+                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                           FontSize="18pt" HorizontalAlignment="Center" Foreground="Black" 
+                           Text="{Binding Path=PlayerCivilizationAccumulatePlace, Mode=OneWay}"
+                           />
+                                <!--Text="{s:StringResource AFFILIATION_TEXT}"-->
                             </Border>
               <Border Grid.Column="5"
                       Grid.Row="0"

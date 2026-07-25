@@ -227,8 +227,10 @@ namespace Supremacy.Client.Views
                 return;
             }
 
+            string _text = "NOT anymore?";
             _text = "Step_3348:; next one leeds to > System.Windows.Data Error: 1";
-            Console.WriteLine(_text);
+            
+            //Console.WriteLine(_text);
 
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
             foreignPower.OutgoingMessage.Edit();
@@ -239,8 +241,8 @@ namespace Supremacy.Client.Views
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
             _text = "Step_3335:; maybe crash";
-            Console.WriteLine(_text);
-            Refresh(); //crashes
+            //Console.WriteLine(_text);
+            Refresh(); //crashes or not anymore ?
         }
 
         #region DeclareWarCommandButton
@@ -893,7 +895,7 @@ namespace Supremacy.Client.Views
 
         private void OnTurnStarted(GameContextEventArgs args)
         {
-            //Refresh();
+            Refresh();
         }
 
         private void Refresh()
@@ -1083,10 +1085,10 @@ namespace Supremacy.Client.Views
             return _selectedForeignPower;
         }
 
-        public DiplomacyMessageViewModel OutgoingMessage() // new 2023-09-30
-        {
-            return null;
-        }
+        //public DiplomacyMessageViewModel OutgoingMessage() // new 2023-09-30
+        //{
+        //    return null;
+        //}
         public void UpdateSelectedForeignPower()
         {
             OnSelectedForeignPowerChanged();
@@ -1252,7 +1254,7 @@ namespace Supremacy.Client.Views
         public event EventHandler DisplayModeChanged;
 
         private DiplomacyScreenDisplayMode _displayMode;
-        private string _text;
+        //private string _text;
 
         public DiplomacyScreenDisplayMode DisplayMode
         {
@@ -1317,8 +1319,7 @@ namespace Supremacy.Client.Views
             Civilization selectedForeignPower = SelectedForeignPower?.Counterparty;
 
             SelectedForeignPower = null;
-
-
+            string _text;
 
             //_foreignPowers = ForeignPowerViewModel(foreignPower);
 
@@ -1352,9 +1353,17 @@ namespace Supremacy.Client.Views
 
                 foreach (var item in _foreignPowers)
                 {
-                    if (item.Counterparty.ToString() == civ.ToString())
+                    string _a = item.Counterparty.ToString();
+                    string _b = civ.ToString();
+
+                    if (_a == _b)
                     {
+
                         goto Skip_Add_Existing_Ones;
+                    }
+                    else
+                    {
+                        _text = "x";
                     }
                 }
                 //Console.WriteLine("Step_9332:; RefreshForeignPowers... " + civ.Name);
@@ -1365,7 +1374,7 @@ namespace Supremacy.Client.Views
                 if (!_foreignPowers.Contains(foreignPowerViewModel))
                 {
                     _foreignPowers.Add(foreignPowerViewModel);
-                    //_foreignPowers.Distinct();
+                    _foreignPowers.Distinct();
             }
 
             // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
@@ -1373,12 +1382,14 @@ namespace Supremacy.Client.Views
             //, foreignPowerViewModel.CounterpartyRegard
             //, foreignPowerViewModel.CounterpartyTrust
             //);
+
+Skip_Add_Existing_Ones:;
         }
 
             //_foreignPowers = _foreignPowers.Distinct();
             //_foreignPowers = _foreignPowersNew;
 
-        Skip_Add_Existing_Ones:;
+        //
 
         //SelectedForeignPower:;
             if (selectedForeignPower != null)

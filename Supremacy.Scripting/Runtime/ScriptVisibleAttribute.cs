@@ -56,7 +56,7 @@ namespace Supremacy.Scripting.Runtime
 
             if (assemblyName.ToString() == "System.Core" || assemblyName.ToString() == "Supremacy.Core")
             {
-                _text = string.Concat("\"Step_9883:; next: Exception thrown: 'System.IO.FileNotFoundException' in mscorlib.dll"
+                _text = string.Concat("Step_9883:; next: Exception thrown: 'System.IO.FileNotFoundException' in mscorlib.dll"
                     , " for ", assemblyName.ToString()
                     );
     //            string _text = "Step_9883:; ( " + c + " ) "
@@ -73,6 +73,7 @@ namespace Supremacy.Scripting.Runtime
             }
             catch
             {
+                //Debugger.Break();
                 Assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(o => o.GetName().Name == assemblyName.Name);
                 /* TODO: Log when imported into Supremacy solution. */
             }

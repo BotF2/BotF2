@@ -1549,7 +1549,7 @@ namespace Supremacy.UI
         {
             System.Windows.Forms.SendKeys.SendWait("^o"); // OptionsDialog
             //ClientSettings.Current.EnableSummaryScreen = ClientSettings.Current.EnableSummaryScreen != true;
-            //ClientSettings.Current.Save();
+            //ClientSettings.Current.SaveClientSettings();
 
         }
 

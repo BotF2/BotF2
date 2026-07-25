@@ -413,7 +413,7 @@ namespace Supremacy.Client
 
             ClientSettings.Current.ClientWindowWidth = RestoreBounds.Width;
             ClientSettings.Current.ClientWindowHeight = RestoreBounds.Height;
-            ClientSettings.Current.Save();
+            ClientSettings.Current.SaveClientSettings();
         }
 
         private void CheckFullScreenSettings()
@@ -544,7 +544,7 @@ namespace Supremacy.Client
                         WindowStyle = WindowStyle.None;
                         WindowState = WindowState.Maximized;
                         ClientSettings.Current.EnableFullScreenMode = true;
-                        ClientSettings.Current.Save();
+                        ClientSettings.Current.SaveClientSettings();
                     }
                     else
                     {
@@ -558,7 +558,7 @@ namespace Supremacy.Client
                         WindowStyle = WindowStyle.SingleBorderWindow;
                         WindowState = WindowState.Normal;
                         ClientSettings.Current.EnableFullScreenMode = false;
-                        ClientSettings.Current.Save();
+                        ClientSettings.Current.SaveClientSettings();
                     }
                 }
             }
@@ -732,7 +732,7 @@ namespace Supremacy.Client
             base.OnClosed(e);
 
             SaveWindowDimensions();
-            ClientSettings.Current.Save();
+            ClientSettings.Current.SaveClientSettings();
             _audioEngine.Dispose();
         }
 

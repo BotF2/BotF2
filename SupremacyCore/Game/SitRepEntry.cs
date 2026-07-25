@@ -891,8 +891,20 @@ namespace Supremacy.Game
             _exchange = exchange ?? throw new ArgumentNullException("exchange");
 
             var _exchange_type = _exchange.GetType();
+            //string _clause0 = "";
 
-            string _text = "Step_6777:; " + DateTime.Now
+            //switch (_exchange_type.ToString())
+            //{
+            //    case "NewProposal":
+            //        exchange.
+
+            //        break;
+
+            //}
+                
+
+
+            string _text = "Step_6778:; " + DateTime.Now
                 + " > " + _exchange_type
                 + " > " + _exchange.Sender
                 + " to " + _exchange.Recipient
