@@ -9,7 +9,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 using Supremacy.Annotations;
 
 namespace Supremacy.Data
@@ -71,7 +71,20 @@ namespace Supremacy.Data
 
         public string this[int columnIndex]
         {
-            get => Convert.ToString(_values[columnIndex]);
+            get 
+            {
+                String _result = "";
+                try
+                {
+                    _result = Convert.ToString(_values[columnIndex]);
+                }
+                catch
+                {
+                    Debugger.Break();
+                    _result = Convert.ToString(_values[0]);
+                }
+                return _result;
+            } 
             set => _values[columnIndex] = Owner.Columns[columnIndex].ParseValue(value);
         }
 

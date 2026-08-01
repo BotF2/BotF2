@@ -196,7 +196,7 @@ namespace Supremacy.Game
                 SavedGameHeader header;
                 using (FileStream fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    _text = "Step_0285:; reading HEADER of " + fileName;
+                    _text = "Step_0286:; "+DateTime.Now+" > reading HEADER of " + fileName;
                     Console.WriteLine(_text);
                     GameLog.Client.SaveLoadDetails.DebugFormat(_text);
 

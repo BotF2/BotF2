@@ -358,7 +358,7 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(EventArgs args)
         {
-            _text = "Step_4007:; OnTurnStarted... (currentGame)";
+            _text = "Step_4007:; "+ DateTime.Now + " > OnTurnStarted... (currentGame)";
             Console.WriteLine(_text);
 
             IGameContext currentGame = _appContext.CurrentGame;
@@ -396,7 +396,7 @@ namespace Supremacy.Client
 
             ClearTurnWaitCursor();
 
-            _text = "Step_4009:; _endTurnCommand...";
+            _text = "Step_4009:; " + DateTime.Now+ " > _endTurnCommand...";
             Console.WriteLine(_text);
 
             _endTurnCommand.IsActive = true;
@@ -406,13 +406,13 @@ namespace Supremacy.Client
             _text = _newline + "Step_4011:; " + DateTime.Now+ " > ProcessSitRepEntries is DONE...";
             Console.WriteLine(_text);
 
-            _text = "Step_4012:; 5 binding errors (only at starting) ... resolve not figured out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
+            _text = "Step_4012:; " + DateTime.Now+ " > 5 binding errors (only at starting) ... resolve not figured out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
             Console.WriteLine(_text);
         }
 
         private void ProcessSitRepEntries()
         {
-            _text = "Step_4014:; ProcessSitRepEntries...";
+            _text = "Step_4013:; "+ DateTime.Now + " > ProcessSitRepEntries...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 

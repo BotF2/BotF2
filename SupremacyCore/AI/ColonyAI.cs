@@ -56,11 +56,13 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
 
             _writeDirectly_Colony = true;
-            string _text = _newline + "Step_1101:; ColonyAI.cs > Do_0_Turn_Unit begins... for > " + _civ.Key
+            string _text = _newline + "Step_1101:; " + DateTime.Now 
+                + " > ColonyAI.cs > Do_0_Turn_Unit begins... for > " + _civ.Key
                 + ": Deu=" + _civM.Resources.Deuterium.CurrentValue
                 + ", Dur=" + _civM.Resources.Duranium.CurrentValue
                 + ", Dil=" + _civM.Resources.Dilithium.CurrentValue
-                + " > " + DateTime.Now + ", Console-Output= " + _writeDirectly_Colony.ToString()
+                + ", Console-Output= " + _writeDirectly_Colony.ToString()
+                + Environment.NewLine
                 ;
             //if (_writeDirectly_Colony) 
             Console.WriteLine(_text);
@@ -885,7 +887,7 @@ namespace Supremacy.AI
 
         private static void Print_Colony_Owner_IsHuman(Colony _colony)
         {
-            _colonyAIControlled = GameEngine.IsPlayer_AIControllend();
+            _colonyAIControlled = GameEngine.AI_IsPlayer_AIControllend();
             string _text;
             _text = Environment.NewLine + "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " *** " + _name_col + " " + _owner_col
                 + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
@@ -3603,7 +3605,7 @@ namespace Supremacy.AI
 
         private static void Handle_Ship_Production(Colony _colony, Civilization _civ) //, Dictionary<ShipType, Tuple<int, string>> _listPrioShipBuild)
         {
-            //bool bool_is_human = GameEngine.IsPlayer_AIControllend;
+            //bool bool_is_human = GameEngine.AI_IsPlayer_AIControllend;
             if (_civ.IsHuman)
                 return;
 

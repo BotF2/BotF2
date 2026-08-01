@@ -23,8 +23,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Windows;
-using static Supremacy.Scripting.Ast.Parameter;
 
 namespace Supremacy.Universe
 {
@@ -452,7 +450,7 @@ namespace Supremacy.Universe
                 }
 
                 _ = _civM.Credits.AdjustCurrent(credits);
-                
+
                 _text += " > Credits return=  " + credits;
             }
 
@@ -503,7 +501,7 @@ namespace Supremacy.Universe
 
                 if (fleet != null)
                 {
-                fleet.RemoveShip(ship);
+                    fleet.RemoveShip(ship);
                 }
 
 
@@ -629,14 +627,14 @@ namespace Supremacy.Universe
             UpdateSectors();
 
             string _text;
-            _text = "Step_4005:; Deserializing ships and _fleets...";
+            _text = "Step_4005:; " + DateTime.Now + " > Deserializing ships and _fleets...";
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
             _text = "Step_4501:; Objects following from _checkLoading";
-            Console.WriteLine(_text); 
+            Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
- 
+
             foreach (UniverseObject item in _objects)
             {
                 item.OnDeserialized();
@@ -670,7 +668,7 @@ namespace Supremacy.Universe
                     //}
                     //else
                     //{
-                        //Console.WriteLine("Print of List of ships and _fleets from saved game is turned off");
+                    //Console.WriteLine("Print of List of ships and _fleets from saved game is turned off");
                     //}
                 }
 
@@ -741,31 +739,31 @@ namespace Supremacy.Universe
                 //Console.WriteLine(_text);
 
                 string _active = "";
-                    foreach (Building building in buildingLocationLookup[colony.Location])
-                    {
-                        colony.BuildingsInternal.Add(building);
-                        _active = building.IsActive.ToString() + "_for_Active"; if (_active == "True") _active = " " + _active;
-                        _text = "Step_4365:; "
-                            + _col
-                            + ";" + _active
-                            + " Building"
-                            + "; " + GameEngine.Do_x_Digit_String(4, building.ObjectID.ToString())
-                            + "; " + building.Design
-                            + "; since Turn;" + building.TurnCreated
-                            ;
-                        //_checkLoading = true; 
-                        //if(_checkLoading == true)
-                        //{
+                foreach (Building building in buildingLocationLookup[colony.Location])
+                {
+                    colony.BuildingsInternal.Add(building);
+                    _active = building.IsActive.ToString() + "_for_Active"; if (_active == "True") _active = " " + _active;
+                    _text = "Step_4365:; "
+                        + _col
+                        + ";" + _active
+                        + " Building"
+                        + "; " + GameEngine.Do_x_Digit_String(4, building.ObjectID.ToString())
+                        + "; " + building.Design
+                        + "; since Turn;" + building.TurnCreated
+                        ;
+                    //_checkLoading = true; 
+                    //if(_checkLoading == true)
+                    //{
 
-                        //Console.WriteLine(_text);  // turn on if you want
-                        
+                    //Console.WriteLine(_text);  // turn on if you want
+
                     //PrintBuilding(building);    
-                        //}
-                        //else
-                        //{
-                        //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
-                        //}
-                    }
+                    //}
+                    //else
+                    //{
+                    //Console.WriteLine("Print of List of colonies and structures from saved game is turned off");
+                    //}
+                }
                 //}
 
             }
@@ -821,7 +819,7 @@ namespace Supremacy.Universe
                 + "; " + item.Owner
                 + "; " + item.ObjectID
                 + "; " + item.Design
-                + "; " + item.Name 
+                + "; " + item.Name
 
                 + "; Crew=;" + item.Crew
                 + "; Exp=;" + item.ExperiencePercent
@@ -850,7 +848,7 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-            _text = "Step_0355:; Deserializing stations...";
+            _text = "Step_0355:; " + DateTime.Now + " > Deserializing stations...";
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
@@ -904,9 +902,9 @@ namespace Supremacy.Universe
 
             _homeColonyLookup.DeserializeOwnedData(reader, context);
 
-            _text = "Step_3644:; Deserializing _objects...";
+            _text = "Step_3644:; " + DateTime.Now + " > Deserializing _objects...";
             //if (_writeDirectly_Fleets) 
-                Console.WriteLine(_text);
+            Console.WriteLine(_text);
             //_colony_full_Report += _text + _newline;
             GameLog.Core.SaveLoad.DebugFormat(_text);
 

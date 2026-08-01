@@ -1055,8 +1055,8 @@ namespace Supremacy.Game
 
         public List<Civilization> SpiedCivList => _spiedCivList;
         public List<string> TraitsCivList => _traits_civ_list;
-        //public List<Civilization> TargetCivList => _targetCivList;
-        public List<Civilization> TargetCivList { get; /*private*/ set; } = new List<Civilization>();
+        //public List<Civilization> Target_CivList => _targetCivList;
+        public List<Civilization> Target_CivList { get; /*private*/ set; } = new List<Civilization>();
 
         public List<MapLocation> Locations_To_Explore { get; /*private*/ set; } = new List<MapLocation>();
 
@@ -1648,7 +1648,7 @@ namespace Supremacy.Game
         //    //
         //    //foreach (var item in _civList)
         //    //{
-        //    //    GameLog.Client.Intel.DebugFormat("Updated the TargetCivList = {0}", item);
+        //    //    GameLog.Client.Intel.DebugFormat("Updated the Target_CivList = {0}", item);
         //    //}
         //}
 

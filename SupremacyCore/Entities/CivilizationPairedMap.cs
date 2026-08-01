@@ -184,7 +184,7 @@ namespace Supremacy.Entities
             }
             //foreach (var item in _map)
             //{
-            //    _text = "CivilizationPairedMap:; " + item.Key 
+            //    _text = "CivilizationPairedMap:; " + item.Key
             //        + "; " + item.Value.ToString()
             //        ;
             //    Console.WriteLine(_text);

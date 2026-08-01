@@ -291,7 +291,12 @@ namespace Supremacy.Client.Views
                     , MessageDialogButtons.Ok);
 
             _sector_text = "Step_4552:; > " + _dialogHeadline + _newline + _sector_text;
+
+            GameContext.Output_File(".\\Resources\\Data\\Addon", "_sectorData.txt", _sector_text);
+
             Console.WriteLine(_sector_text);
+
+
 
             //if (result == MessageDialogResult.No)
             //{

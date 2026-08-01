@@ -105,7 +105,7 @@ namespace Supremacy.AI
         {
             string _newline = Environment.NewLine;
             string _comment_inside_code = "outcommented not shown by extension but these lines are shown";
-            bool _is_player_AI_controlled = GameEngine.IsPlayer_AIControllend();
+            bool _is_player_AI_controlled = GameEngine.AI_IsPlayer_AIControllend();
 
             //_soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];

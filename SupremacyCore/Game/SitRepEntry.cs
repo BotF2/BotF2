@@ -901,16 +901,16 @@ namespace Supremacy.Game
             //        break;
 
             //}
-                
 
 
-            string _text = "Step_6778:; " + DateTime.Now
-                + " > " + _exchange_type
-                + " > " + _exchange.Sender
-                + " to " + _exchange.Recipient
+            // works but generates 1x for Sender + 1x for Recipient
+            //string _text = "Step_6778:; " + DateTime.Now
+            //    + " > " + _exchange_type
+            //    + " > " + _exchange.Sender
+            //    + " to " + _exchange.Recipient
 
-                ;
-            Console.WriteLine(_text);
+            //    ;
+            //Console.WriteLine(_text);
         }
 
         private string EnsureText(ref string text, ref bool resolved, bool detailed)
@@ -990,7 +990,7 @@ namespace Supremacy.Game
             _return_text = scriptExpression.Evaluate<string>(parameters);
             if (_return_text.Contains("Federation")) 
                 {
-            Console.WriteLine("Step_5444:; " + _return_text);
+            Console.WriteLine("Step_5414:; " + _return_text);
             }
 
             return _return_text;

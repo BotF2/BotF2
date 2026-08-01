@@ -188,7 +188,7 @@ namespace Supremacy.Combat
                     //Console.WriteLine(_text);
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
                         new ReportEntry_CoS(civ, FriendlyAssets.First().Location
-                        , _sectorString + " cUpda > Combat Durability Friendly Assets = " + _friendlyEmpireStrength
+                        , _sectorString + " > Combat Durability Friendly Assets = " + _friendlyEmpireStrength
                             + " vs " + _hostStrength
                         , "", "", SitRepPriority.Red));
                 }
@@ -260,7 +260,7 @@ namespace Supremacy.Combat
                     }
                     //_text = _sectorString + " cUpda > Combat Durability Hostile Assets = " + _allHostileEmpireStrength;
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, HostileAssets.First().Location
-                        , _sectorString + " cUpda > Combat Durability Hostile Assets = " + _allHostileEmpireStrength
+                        , _sectorString + " > Combat Durability Hostile Assets = " + _allHostileEmpireStrength
                         , "", "", SitRepPriority.Red));
                 }
                 return _allHostileEmpireStrength;

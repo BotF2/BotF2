@@ -205,7 +205,8 @@ namespace Supremacy.Client
                             settings = XamlReader.Load(fileReader) as ClientSettings ?? new ClientSettings();
 
 
-                            GameLog.Client.General.InfoFormat("Step_0138:; LOADCORE {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+                            GameLog.Client.General.InfoFormat("Step_0138:; LOADCORE {0}: Content: (press ALT + X for Overview)" 
+                                /*+ Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine*/, filePath/*, File.ReadAllText(filePath)*/);
 
                             if (settings == null)
                             {

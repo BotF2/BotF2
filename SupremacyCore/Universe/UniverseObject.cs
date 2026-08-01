@@ -35,7 +35,7 @@ namespace Supremacy.Universe
     {
         private Lazy<EffectBindingCollection> _effectBindings = new Lazy<EffectBindingCollection>();
         private MapLocation _location;
-        private int _location_fire_power;
+        //private int _location_fire_power;
         private short _ownerId = (short)Civilization.InvalidID;
         private string _name;
         private int _turnCreated;
@@ -253,16 +253,6 @@ namespace Supremacy.Universe
             }
         }
 
-
-
-        public int LocationFirePower (MapLocation _loc)
-        { 
-            
-            {
-                _location_fire_power = 10;
-                return _location_fire_power;
-            }
-        }
 
         public int DistanceTo([NotNull] UniverseObject other)
         {

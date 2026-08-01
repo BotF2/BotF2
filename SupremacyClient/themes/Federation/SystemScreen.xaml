@@ -305,17 +305,11 @@
 
                                       <!--<Button x:Name="ScrapShipyardButton"-->
                                       <!--Width="50" Height="70"-->
-                                      <Button x:Name="ScrapShipyardButton"
-        
-                           Grid.Column="1"
-                           Grid.ColumnSpan="1"
-                           Grid.Row="1"
+                    <Button x:Name="ScrapShipyardButton"
+                           Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1"
                            Content="{s:StringResource Key=SCRAP_SHIPYARD_TEXT}"
-                           Width="Auto" Height="28"
-                           VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                          
-                           Margin="0,0,0,0"
-                           Visibility="Visible"
+                           Width="Auto" Height="28" Visibility="Visible"
+                           Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Center"
                            ToolTip="{s:StringResource Key=SCRAP_SHIPYARD_TEXT_TOOLTIP}"
                            Command="{x:Static scc:ColonyScreenCommands.ScrapShipyardCommand}"
                            CommandParameter="{Binding}" />

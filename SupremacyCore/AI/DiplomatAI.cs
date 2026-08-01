@@ -67,8 +67,8 @@ namespace Supremacy.AI
                     + _civ1.Key
                     + " vs " + _civ2Name
                     //+ " (DiplomatAI.cs)" 
-                    + " * > Traits= " + _civ1.Traits
-                    + " - vs - " + _civ2.Traits
+                    + " * > Traits= (not listed)"// + _civ1.Traits
+                    //+ " - vs - " + _civ2.Traits
                     ;
                 Console.WriteLine(_text);
                 _diploSummary += Environment.NewLine + _text;
@@ -769,10 +769,11 @@ namespace Supremacy.AI
                     _sb.Append(_civ1.Key);
                     _sb.Append(" vs ");
                     _sb.Append(_civ2Name);
-                    _sb.Append(" * > Traits= ");
-                    _sb.Append(_civ1.Traits);
-                    _sb.Append(" - vs - ");
-                    _sb.Append(_civ2.Traits);
+                    _sb.Append(" * > Traits= (not listed)");
+                    //_sb.Append(_civ1.Traits);
+                    //_sb.Append(" - vs - ");
+                    //_sb.Append(_civ2.Traits);
+
                     //_text = "Step_5406:"
                     //        + "; _regard= " + GameEngine.Do_x_Digit_String(4, _foreign_power_1.CounterpartyDiplomacyData.Regard.CurrentValue.ToString())
                     //        + "; _trust= " + GameEngine.Do_x_Digit_String(4, _foreign_power_1.CounterpartyDiplomacyData.Trust.CurrentValue.ToString())
@@ -818,7 +819,7 @@ namespace Supremacy.AI
                     + " > Turn " + GameContext.Current.TurnNumber
                     + " > _random_change= " + _random_change
                     ;
-            Console.WriteLine(_text);
+            Console.WriteLine(_text); // BEFORE + AFTER seems to not being working
 
 
 
@@ -849,9 +850,9 @@ namespace Supremacy.AI
                 DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(3, 12));
                 DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(2, 10));
             }
-            //foreignPower.DiplomacyData.Regard.UpdateAndReset();
-            //foreignPower.DiplomacyData.Trust.UpdateAndReset();
-            //foreignPower.UpdateRegardAndTrustMeters();
+            foreignPower.DiplomacyData.Regard.UpdateAndReset();
+            foreignPower.DiplomacyData.Trust.UpdateAndReset();
+            foreignPower.UpdateRegardAndTrustMeters();
 
             //Report_CounterpartyDiplomacyData(foreignPower.CounterpartyDiplomacyData);
 
@@ -870,7 +871,7 @@ namespace Supremacy.AI
                 + " > Turn " + GameContext.Current.TurnNumber
                 ;
             Console.WriteLine(_text);
-            _DoOngoingRegardTrust = Environment.NewLine + _text;
+            //_DoOngoingRegardTrust = Environment.NewLine + _text;
             //GameLog.Client.DiplomacyDetails.DebugFormat(_text);
 
             // GameLog.Client.Diplomacy.DebugFormat("## _foreign_power_1 .......Owner ={0} _regard ={1} _trust ={2} After Ongoing Impression change", _foreign_power_1.Owner.Key, _foreign_power_1.DiplomacyData.Regard.CurrentValue, _foreign_power_1.DiplomacyData.Trust.CurrentValue);

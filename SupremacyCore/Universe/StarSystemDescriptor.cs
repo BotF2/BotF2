@@ -539,7 +539,7 @@ namespace Supremacy.Universe
                     _homesystems_techlevel_content_text += stream_line + Environment.NewLine;
 
 
-                        Console.WriteLine("Step_4377:; " + Environment.NewLine + stream_line);
+                        //Console.WriteLine("Step_4377:; " + Environment.NewLine + stream_line);
 
 
                         stream_line = "";

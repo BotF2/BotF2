@@ -223,7 +223,7 @@ namespace Supremacy.Client.Views
             _ = int.TryParse(attackMeter.CurrentValue.ToString(), out int newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
             //works
-            _text = "Step_5444:; After update attackMeter =;" + attackMeter + "; for attacking civ =;" + attackingCiv;
+            _text = "Step_5474:; After update attackMeter =;" + attackMeter + "; for attacking civ =;" + attackingCiv;
             Console.WriteLine(_text);
             //GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
@@ -931,7 +931,7 @@ namespace Supremacy.Client.Views
             {
                 CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCiv_4;
                 Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                _text = "Step_5444:; trying to return SpiedCiv_4 SeatOfGovernment = ;" + SeatOfGovernment;
+                _text = "Step_5484:; trying to return SpiedCiv_4 SeatOfGovernment = ;" + SeatOfGovernment;
                 Console.WriteLine(_text);
                 //GameLog.Client.Intel.DebugFormat(_text);
                 return SeatOfGovernment;

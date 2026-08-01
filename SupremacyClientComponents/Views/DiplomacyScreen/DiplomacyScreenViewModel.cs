@@ -91,6 +91,8 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
 
+        private readonly DelegateCommand _makeProposalCommand;
+
         private readonly DelegateCommand _nonAgressionCommand;
         private readonly DelegateCommand _affiliationCommand;
         private readonly DelegateCommand _defenceAllianceCommand;
@@ -119,6 +121,8 @@ namespace Supremacy.Client.Views
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
             _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
+
+            _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
 
             _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
             _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
@@ -878,13 +882,14 @@ namespace Supremacy.Client.Views
             _declareWarCommand.RaiseCanExecuteChanged();
             _endWarCommand.RaiseCanExecuteChanged();
             _openBordersCommand.RaiseCanExecuteChanged();
-            _nonAgressionCommand.RaiseCanExecuteChanged();
+            _openBordersCommand.RaiseCanExecuteChanged();
+            _makeProposalCommand.RaiseCanExecuteChanged();
             _affiliationCommand.RaiseCanExecuteChanged();
             _defenceAllianceCommand.RaiseCanExecuteChanged();
             _fullAllianceCommand.RaiseCanExecuteChanged();
             _editMessageCommand.RaiseCanExecuteChanged();
             _sendMessageCommand.RaiseCanExecuteChanged();
-            //_canExecuteSendMessageCommand.RaiseCanExecuteChanged();
+            _canExecuteSendMessageCommand.RaiseCanExecuteChanged();
             _cancelMessageCommand.RaiseCanExecuteChanged();
 
             _selectedForeignPower?.InvalidateCommands();
@@ -941,6 +946,7 @@ namespace Supremacy.Client.Views
         public ICommand DeclareWarCommand => _declareWarCommand;
         public ICommand EndWarCommand => _endWarCommand;
         public ICommand OpenBordersCommand => _openBordersCommand;
+        public ICommand MakeProposalCommand => _makeProposalCommand;
         public ICommand NonAgressionCommand => _nonAgressionCommand;
         public ICommand AffiliationCommand => _affiliationCommand;
         public ICommand DefenceAllianceCommand => _defenceAllianceCommand;

@@ -7,11 +7,14 @@ namespace Supremacy.Universe
     {
         private readonly int _x;
         private readonly int _y;
+        //private string _location_string;
         public const int MinValue = 0;
         public const int MaxValue = 255;
 
         public int X => _x;
         public int Y => _y;
+
+      
 
         public MapLocation(int x, int y)
         {
@@ -36,6 +39,58 @@ namespace Supremacy.Universe
             _x = x;
             _y = y;
         }
+
+        public string LocationString(string _location_string)
+        {
+                string aT = "";
+                string bT = "";
+
+                string _out_text = this.ToString();
+
+                if (_out_text.Length != 8)
+                {
+                    int intComma = _out_text.IndexOf(',');
+                    aT = _out_text.Substring(1, intComma - 1);
+                    bT = _out_text.Substring(intComma + 2, 2);
+
+                    if (aT.Length == 1) aT = " " + aT;
+
+                    bT = bT.Replace(")", "");
+                    if (bT.Length == 1)
+                        bT = " " + bT;
+
+                    _out_text = "(" + aT + ", " + bT + ")";
+                }
+
+                return _out_text;
+            }
+        
+        
+
+        //public string LocationString_Set()
+        //{
+        //    string aT = "";
+        //    string bT = "";
+
+        //    string _out_text = this.ToString();
+
+        //    if (_out_text.Length != 8)
+        //    {
+        //        int intComma = _out_text.IndexOf(',');
+        //        aT = _out_text.Substring(1, intComma - 1);
+        //        bT = _out_text.Substring(intComma + 2, 2);
+
+        //        if (aT.Length == 1) aT = " " + aT;
+
+        //        bT = bT.Replace(")", "");
+        //        if (bT.Length == 1)
+        //            bT = " " + bT;
+
+        //        _out_text = "(" + aT + ", " + bT + ")";
+        //    }
+
+        //    return _out_text;
+        //}
 
         public static double Area2(MapLocation p0, MapLocation p1, MapLocation p2)
         {

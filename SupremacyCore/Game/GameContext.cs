@@ -382,7 +382,7 @@ namespace Supremacy.Game
                 _text = "Step_3780:; already read _races..... > " + _races.Count;
                 Console.WriteLine(_text);
 
-                Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off - use ALT+M at Map > \\lib\\_MapData.txt");
+                Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off - use ALT+M at Map > \\Addon\\_MapData.txt");
                 _universe = reader.Read<UniverseManager>();
                 _text = "Step_3810:; already read _universe.....";
                 Console.WriteLine(_text);
@@ -511,7 +511,7 @@ namespace Supremacy.Game
                 }
             }
 
-            string _text_diplomacyData = "Step_1777:; diplomacyData" + Environment.NewLine;
+            string _text_diplomacyData = "Step_1777:; " + DateTime.Now + " > diplomacyData" + Environment.NewLine;
 
             // going through civ managers better reflects which civ got spawned
             //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
@@ -595,20 +595,36 @@ namespace Supremacy.Game
             }
             Console.WriteLine(DateTime.Now + Environment.NewLine + _text_diplomacyData);
 
-            string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon"); // "_diplomacyData.txt"
-            string _file = Path.Combine(_path_Resources_Data_Addon, "_diplomacyData.txt"); // by ALT+M at GalaxyMap
-            if (!string.IsNullOrEmpty(_file))
-            {
-                StreamWriter streamWriter = new StreamWriter(_file);
-                streamWriter.WriteLine(_text_diplomacyData);
-                streamWriter.Close();
-                _text_diplomacyData = "Step_1778:; output of _diplomacyData.txt done to " + _file;
-                //if (writeDirectly)
-                Console.WriteLine(_text_diplomacyData);
-            }
+            Output_File(".\\Resources\\Data\\Addon", "_diplomacyData.txt", _text_diplomacyData);
+
+            //string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon"); // "_diplomacyData.txt"
+            //string _file = Path.Combine(_path_Resources_Data_Addon, "_diplomacyData.txt"); // by ALT+M at GalaxyMap
+            //if (!string.IsNullOrEmpty(_file))
+            //{
+            //    StreamWriter streamWriter = new StreamWriter(_file);
+            //    streamWriter.WriteLine(_text_diplomacyData);
+            //    streamWriter.Close();
+            //    _text_diplomacyData = "Step_1778:; output of _diplomacyData.txt done to " + _file;
+            //    //if (writeDirectly)
+            //    Console.WriteLine(_text_diplomacyData);
+            //}
 
         }
 
+        public static void Output_File(string _folder, string _file_name, string _output_text)
+        {
+
+            string _file = Path.Combine(ResourceManager.GetResourcePath(_folder), _file_name); 
+            if (!string.IsNullOrEmpty(_file))
+            {
+                StreamWriter streamWriter = new StreamWriter(_file);
+                streamWriter.WriteLine(_output_text);
+                streamWriter.Close();
+                _output_text = "Step_1778:; output of _diplomacyData.txt done to " + _file;
+                //if (writeDirectly)
+                Console.WriteLine(_output_text);
+            }
+        }
 
         public bool IsMultiplayerGame { get; internal set; }
 
