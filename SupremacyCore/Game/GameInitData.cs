@@ -82,7 +82,7 @@ namespace Supremacy.Game
 
             int empireCount = initData.EmpireIDs.Length;  // does not count Empires turned into ExpandingPower, but we need that amount too. 
 
-            //maybe works now......empireCount = 8; // hardcoded value, depending on defined empires in Civilizations.xaml
+            //maybe works now......empireCount = 8; // hardcoded value, depending on defined empires in Civilizations_xaml
 
             //if (empireCount < 1)
             //    empireCount = 2;

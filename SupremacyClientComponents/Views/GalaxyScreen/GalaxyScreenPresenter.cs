@@ -444,7 +444,7 @@ namespace Supremacy.Client.Views
 
                         StarSystem system = GameContext.Current.Universe.Map[fleet.Location].System;
 
-                        if (!DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner))
+                        if (!DiplomacyHelper.Status_AtWar(system.Colony.Owner, fleet.Owner))
                         {
 
                             _ = _navigationService.ActivateScreen(StandardGameScreens.DiplomacyScreen);

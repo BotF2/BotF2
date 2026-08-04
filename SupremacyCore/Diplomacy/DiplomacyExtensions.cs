@@ -370,7 +370,7 @@ namespace Supremacy.Diplomacy
 
                 if (DiplomacyHelper.IsContactMade(sender, otherCiv) &&
                     //                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
-                    !DiplomacyHelper.AreAtWar(recipient, otherCiv) &&
+                    !DiplomacyHelper.Status_AtWar(recipient, otherCiv) &&
                     DiplomacyHelper.IsIndependent(otherCiv) &&
                     (existingWarPacts == null || !existingWarPacts.Contains(otherCiv)))
                 {
@@ -429,7 +429,7 @@ namespace Supremacy.Diplomacy
 
             //    if (DiplomacyHelper.IsContactMade(sender, otherCiv) &&
             //        //                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
-            //        !DiplomacyHelper.AreAtWar(recipient, otherCiv) &&
+            //        !DiplomacyHelper.Status_AtWar(recipient, otherCiv) &&
             //        DiplomacyHelper.IsIndependent(otherCiv) &&
             //        (existingWarPacts == null || !existingWarPacts.Contains(otherCiv)))
             //    {
@@ -626,7 +626,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }
@@ -669,7 +669,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            return DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]);
+            return DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]);
         }
 
         public static bool CanProposeNonAggressionTreaty([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
@@ -701,7 +701,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }
@@ -758,7 +758,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }
@@ -821,7 +821,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }
@@ -883,7 +883,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }
@@ -944,7 +944,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }
@@ -1005,7 +1005,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (DiplomacyHelper.AreAtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
+            if (DiplomacyHelper.Status_AtWar(source.Owner, GameContext.Current.Civilizations[civ.CivID]))
             {
                 return false;
             }

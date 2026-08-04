@@ -1080,6 +1080,7 @@ namespace Supremacy.Client
 
             _navigationCommands.ActivateScreen.Execute(StandardGameScreens.MenuScreen);
 
+            Console.WriteLine("Step_0290:; MenuScreen activated... ");
             GameLog.Client.General.InfoFormat("Step_0290:; MenuScreen activated... ");
             _soundPlayer.PlayFile("Resources/SoundFX/MenuScreen.ogg");
             Console.WriteLine("Step_0295:; " + DateTime.Now + " > Initialize done...");

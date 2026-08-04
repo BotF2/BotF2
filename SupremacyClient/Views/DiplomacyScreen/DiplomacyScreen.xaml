@@ -408,6 +408,12 @@
                            MaxHeight="20"
                            Fill="Red"/>-->
                 <!-- Upper Left Buttons -->
+
+                <TextBlock Text="{Binding Path=TurnNumberText}" Margin="0,20,0,10" HorizontalAlignment="Center" VerticalAlignment="Top"
+                            Foreground="{StaticResource HeaderTextBrush}" FontSize="22" FontWeight="SemiBold"
+                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                <!--</TextBlock>-->
+
                 <StackPanel x:Name="UpperLeftButtons"
                     Grid.Column="0"
                     Grid.Row="1"
@@ -459,15 +465,19 @@
                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                             Foreground="Black"
                             Margin="0,0,0,0"
-                            Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></scc:GameButton>
+                            Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
+                        
+                    </scc:GameButton>
+                    <!--<TextBlock Text="{scc:StringResource Key=TURN}" Margin="0,0,0,0"
+                             Foreground="White" FontSize="12pt"
+                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                    --><!--</TextBlock>-->
                 </StackPanel>
                 
                 <!-- Upper Left Side -->
-                <Grid x:Name="UpperLeftSide"
-                      Grid.Column="0"
-                      Grid.Row="2"
+                <Grid x:Name="UpperLeftSide" Grid.Column="0" Grid.Row="2" Margin="0,0,0,0"
                       Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=5, Else=1}}"
-                      Margin="0,0,0,0">
+                     >
                     <Border Background="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                           BorderThickness="0"
                           Width="69"

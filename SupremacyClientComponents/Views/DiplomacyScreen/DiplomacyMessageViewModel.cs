@@ -697,7 +697,7 @@ namespace Supremacy.Client.Views
                         //    element.ElementType.ToString());
                     }
                     _text = "Step_8732:; " // "Proposal added (Send-Button)
-                            + "Proposal added (Send-Button) > " + element.ElementType.ToString()
+                            + "Proposal added > " + element.ElementType.ToString()
                             //+ ", " + element.SelectedParameter.ToString()
                             //+ " > " + element.ElementType.ToString()
                             + " > " + element.Description
@@ -964,7 +964,7 @@ namespace Supremacy.Client.Views
                         });
                 }
                 // add the war buttons: 1) for Declare War on lower left and 2) inside 'New Message' see declare war opption
-                if (!DiplomacyHelper.AreAtWar(Sender, _recipient))
+                if (!DiplomacyHelper.Status_AtWar(Sender, _recipient))
                 {
                     _availableElements.Add(
                         new DiplomacyMessageAvailableElement

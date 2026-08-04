@@ -988,9 +988,11 @@ namespace Supremacy.Game
 
             //return scriptExpression.Evaluate<string>(parameters);
             _return_text = scriptExpression.Evaluate<string>(parameters);
-            if (_return_text.Contains("Federation")) 
-                {
-            Console.WriteLine("Step_5414:; " + _return_text);
+
+            // too often
+            if (_return_text.Contains("Federation"))
+            {
+                Console.WriteLine("Step_5424:; " + _return_text);
             }
 
             return _return_text;
@@ -1119,7 +1121,7 @@ namespace Supremacy.Game
 
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
                         {
-                            return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText; 
+                            return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
                             //_return_text = scriptExpression.Evaluate<string>(parameters);
                             //return _return_text;
                         }

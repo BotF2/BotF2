@@ -103,7 +103,7 @@ namespace Supremacy.Client
                 () =>
                 {
                     Channel.Publish(new TurnProgressChangedMessage(phase));
-                    string _text = "Step_0303:; " + DateTime.Now +" >> new Phase >>>  " + phase;
+                    string _text = "Step_0303:; " + DateTime.Now +" > new Phase >  " + phase;
                     Console.WriteLine(_text);
                     ClientEvents.TurnPhaseChanged.Publish(new ClientDataEventArgs<TurnPhase>(phase));
                 },

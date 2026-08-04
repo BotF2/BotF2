@@ -225,8 +225,8 @@ namespace Supremacy.Orbitals
             }
             //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
 
-            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner));
-            return DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner);
+            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.Status_AtWar(system.Colony.Owner, fleet.Owner));
+            return DiplomacyHelper.Status_AtWar(system.Colony.Owner, fleet.Owner);
         }
 
         public override FleetOrder Create()

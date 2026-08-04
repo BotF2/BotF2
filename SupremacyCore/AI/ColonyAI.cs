@@ -38,7 +38,7 @@ namespace Supremacy.AI
 
         [NonSerialized]
 
-        private static bool _colonyAIControlled = true; // turns to false for human player
+        private static bool _bool_colony_is_AI_Controlled = GameEngine.AI_IsPlayer_AI_Controlled(); // turns to false for human player
 
         private static string _owner_col;
         private static string _name_col;
@@ -161,15 +161,15 @@ namespace Supremacy.AI
 
                     if (_colony.Owner.IsHuman)
                     {
-                        Print_Colony_Owner_IsHuman(_colony);  // prints Step_1102 notification only
+                        Print_Colony_Owner_IsHuman(_colony, _civM);  // prints Step_1102 notification only
 
                         //Debugger.Break();
 
-                        _colonyAIControlled = false;
-                        //_colonyAIControlled = true;
+                        //_bool_colony_is_AI_Controlled = false;
+                        //_bool_colony_is_AI_Controlled = true;
 
                         _text = /*_newline +*/ "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " * " + _name_col + " " + _owner_col
-                            + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
+                            + " * > AIcontrolled= " + _bool_colony_is_AI_Controlled // + " ) > Handling _colony"
                             + "; BuildQueue.Count= " + _colony.BuildQueue.Count // + " ) > Handling _colony"
                                                                                 //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
                             ;
@@ -266,7 +266,7 @@ namespace Supremacy.AI
                     if (_colony.BuildQueue.Count < 3)  // ColonyAI ..foreach _colony
                     {
                         // next_Check / set Breakpoint
-                        if (_colonyAIControlled)  // not for human player
+                        if (_bool_colony_is_AI_Controlled)  // not for human player
                         {
                             //if (_colony.Owner.IsHuman) { Debugger.Break(); }
 
@@ -304,7 +304,7 @@ namespace Supremacy.AI
 
                         _colony.ProcessQueue();
 
-                        if (_colonyAIControlled)  // not for human player
+                        if (_bool_colony_is_AI_Controlled)  // not for human player
                         {
                             Handle_Buy_Build(_colony, _civ);
                             Handle_Industry_Production(_colony);
@@ -359,7 +359,7 @@ namespace Supremacy.AI
                             if (_writeDirectly_Colony) Console.WriteLine(_text);
                         }
 
-                        if (_colonyAIControlled)  // not for human player
+                        if (_bool_colony_is_AI_Controlled)  // not for human player
                         {
                             _colony.ProcessQueue();
 
@@ -650,7 +650,7 @@ namespace Supremacy.AI
                 // if nothing yet build Battery or next: better...
 
 
-                if (_itemToBuild_Facility != null && _colonyAIControlled)
+                if (_itemToBuild_Facility != null && _bool_colony_is_AI_Controlled)
                 {
                     _itemToBuild = _itemToBuild_Facility;
                 }
@@ -885,16 +885,32 @@ namespace Supremacy.AI
             }
         }
 
-        private static void Print_Colony_Owner_IsHuman(Colony _colony)
+        private static void Print_Colony_Owner_IsHuman(Colony _colony, CivilizationManager _civM)
         {
-            _colonyAIControlled = GameEngine.AI_IsPlayer_AIControllend();
             string _text;
+
+            _bool_colony_is_AI_Controlled = GameEngine.AI_IsPlayer_AI_Controlled();
+            if (_bool_colony_is_AI_Controlled == true)
+            {
+                _text = " > _bool_colony_is_AI_Controlled="
+                        + _bool_colony_is_AI_Controlled + " for _colony " + _colony
+                        ;
+                //if (_writeDirectly_Fleets) 
+                Console.WriteLine(_text);
+                _text += "Step_1102:; " + DateTime.Now + _text;
+
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _civM.HomeSystem.Location, _text, _text, "", SitRepPriority.RedYellow));
+            }
+
+
+
             _text = Environment.NewLine + "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " *** " + _name_col + " " + _owner_col
-                + " * > AIcontrolled= " + _colonyAIControlled // + " ) > Handling _colony"
+                + " * > AIcontrolled= " + _bool_colony_is_AI_Controlled // + " ) > Handling _colony"
                 + "; BuildQueue.Count= " + _colony.BuildQueue.Count // + " ) > Handling _colony"
                                                                     //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
                 ;
-            if (_writeDirectly_Colony) Console.WriteLine(_text);
+            if (_writeDirectly_Colony) 
+                Console.WriteLine(_text);
             _colony_full_Report += Environment.NewLine + _text;
         }
 
@@ -1507,7 +1523,7 @@ namespace Supremacy.AI
             if ((_colony.Buildings.Any(b => !b.IsActive && b.BuildingDesign.EnergyCost > 0)
                 || (_colony.Shipyard?.BuildSlots.Any(s => !s.IsActive) == true)) && !_colony.IsBuilding(facilityType))
             {
-                if (_colonyAIControlled)
+                if (_bool_colony_is_AI_Controlled)
                 {
                 _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, facilityType)));
                 }
@@ -3605,7 +3621,7 @@ namespace Supremacy.AI
 
         private static void Handle_Ship_Production(Colony _colony, Civilization _civ) //, Dictionary<ShipType, Tuple<int, string>> _listPrioShipBuild)
         {
-            //bool bool_is_human = GameEngine.AI_IsPlayer_AIControllend;
+            //bool bool_is_human = GameEngine.AI_IsPlayer_AI_Controlled;
             if (_civ.IsHuman)
                 return;
 

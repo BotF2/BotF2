@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -23,7 +24,7 @@ namespace Supremacy.Combat
     public class CombatUpdate
     {
 
-        //private List<object> _civList;
+        private List<object> _civList;
         private List<string> _civShortNameList;
         //private List<string> _civFirePowerList;
         private List<Civilization> _civStatusList;
@@ -360,12 +361,15 @@ namespace Supremacy.Combat
             //this.
             //    string _civ_short_name = _civFirePowerList.FirstOrDefault();
             List<string> _civNameList = new List<string>();
+            List<Civilization> _civList = new List<Civilization>();
             foreach (var item in _hostileAssets)
             {
                 _civNameList.Add(item.Owner.Name);
+                _civList.Add(GameContext.Current.Civilizations[item.Owner.CivID]);
 
             }
             _civNameList = _civNameList.Distinct().ToList();
+            _civList = _civList.Distinct().ToList();
 
             _civName1 = "";
             _civName2 = "";
@@ -386,17 +390,23 @@ namespace Supremacy.Combat
                 if (_civNameList[i] != null)
                 {
                     if (i == 0) { _civName1 = _civNameList[i]; _civInsigniaOther1 = _civNameList[i]; _civInsigniaOther1 = _civInsigniaOther1.Replace(" ", ""); }
-                    if (i == 1) { _civName2 = _civNameList[i]; 
+                    if (i == 1)
+                    {
+                        _civName2 = _civNameList[i];
                         _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", "");
-                        _civStatus2 = "Hallo2";
+                        _civStatus2 = CivStatus2;
                     }
-                    if (i == 2) { _civName3 = _civNameList[i]; 
+                    if (i == 2)
+                    {
+                        _civName3 = _civNameList[i];
                         _civInsigniaOther3 = _civNameList[i]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
-                        _civStatus3 = "Hallo3";
+                        _civStatus3 = CivStatus3;
                     }
-                    if (i == 3) { _civName4 = _civNameList[i]; 
+                    if (i == 3)
+                    {
+                        _civName4 = _civNameList[i];
                         _civInsigniaOther4 = _civNameList[i]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
-                        _civStatus4 = "Hallo4";
+                        _civStatus4 = CivStatus4;
                     }
                 }
             }
@@ -436,7 +446,26 @@ namespace Supremacy.Combat
         }
 
         //public string CivStatus2 => CivStatus_GetOthers(out string _status);
-        public string CivStatus2 => _civStatus2;
+        public string CivStatus2
+        {
+            get
+            {
+                string _return = "";
+                try
+                {
+                    if (_civList != null && _civList[1] != null)
+                    {
+                    _return = GameContext.Current.DiplomacyData[Owner, (Civilization)_civList[1]].Status.ToString();
+                    }
+
+                }
+                catch
+                {
+
+                }
+                return _return;
+            }
+        }
         //{
         //    get
         //    {
@@ -446,10 +475,48 @@ namespace Supremacy.Combat
         //    }
         //}
 
-        public string CivStatus3 => _civStatus3;
+        public string CivStatus3
+        {
+
+            get
+            {
+                string _return = "";
+                try
+                {
+                    if (_civList != null && _civList[2] != null)
+                    {
+                        _return = GameContext.Current.DiplomacyData[Owner, (Civilization)_civList[2]].Status.ToString();
+                    }
+                }
+                catch
+                {
+
+                }
+                return _return;
+            }
+        }
         //public string CivStatus3 => CivStatus_GetOthers(out string _status);
 
-        public string CivStatus4 => _civStatus4;
+        public string CivStatus4
+        {
+            get
+            {
+                string _return = "";
+                try
+                {
+                    if (_civList != null && _civList[3] != null)
+                    {
+                        _return = GameContext.Current.DiplomacyData[Owner, (Civilization)_civList[3]].Status.ToString();
+                    }
+                }
+                catch
+                {
+
+                }
+                return _return;
+            }
+        }
+        //=> _civStatus4;
         //public string CivStatus4 => CivStatus_GetOthers(out string _status);
         #endregion
 

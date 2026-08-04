@@ -606,9 +606,9 @@ namespace Supremacy.Client.Views
 
                         MapLocation location = SelectedSector.Station.Location;
 
-                        if ((!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)
+                        if ((!DiplomacyHelper.Status_AtWar(playerCiv, SelectedSector.Owner)
                             && !CombatHelper.WillFightAlongside(playerCiv, SelectedSector.Owner))
-                            || (DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner) && fleetView.View.Source.Sector == SelectedSector.Station.Sector))
+                            || (DiplomacyHelper.Status_AtWar(playerCiv, SelectedSector.Owner) && fleetView.View.Source.Sector == SelectedSector.Station.Sector))
                         {
                             fleetView.IsUnScannable = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");

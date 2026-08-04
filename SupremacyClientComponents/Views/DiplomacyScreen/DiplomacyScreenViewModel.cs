@@ -129,10 +129,10 @@ namespace Supremacy.Client.Views
             _defenceAllianceCommand = new DelegateCommand(ExecuteDefenceAllianceCommand, CanExecuteDefenceAllianceCommand);
             _fullAllianceCommand = new DelegateCommand(ExecuteFullAllianceCommand, CanExecuteFullAllianceCommand);
             _membershipCommand = new DelegateCommand(ExecuteMembershipCommand, CanExecuteMembershipCommand);
-            _editMessageCommand = new DelegateCommand(ExecuteEditMessageCommand, CanExecuteEditMessageCommand);
-            _sendMessageCommand = new DelegateCommand(ExecuteSendMessageCommand, CanExecuteSendMessageCommand);
-            _canExecuteSendMessageCommand = new DelegateCommand(ExecuteSendMessageCommand, CanExecuteSendMessageCommand);
-            _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
+            _editMessageCommand = new DelegateCommand(Execute_Message_Edit_Command, Can_Execute_Message_Edit_Command);
+            _sendMessageCommand = new DelegateCommand(Execute_Message_Send_Command, Can_Execute_Message_Send_Command);
+            _canExecuteSendMessageCommand = new DelegateCommand(Execute_Message_Send_Command, Can_Execute_Message_Send_Command);
+            _cancelMessageCommand = new DelegateCommand(Execute_Message_Cancel_Command, Can_Execute_Message_Cancel_Command);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
             Refresh(); // just do this refresh .. other one's will lead to crash
@@ -340,7 +340,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion EndWarCommandButton
 
@@ -348,7 +348,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -395,7 +395,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion OpenBordersCommandButton
 
@@ -403,7 +403,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteAcceptRejectDictionaryCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel foreignPower);
         }
         private bool CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel selectedForeignPower)
@@ -426,7 +426,7 @@ namespace Supremacy.Client.Views
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -474,7 +474,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -528,7 +528,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion AffiliationCommandButton
 
@@ -536,7 +536,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -584,14 +584,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion DefenceAllianceCommandButton
 
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -632,14 +632,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion FullAllianceCommandButton
 
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -680,11 +680,11 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion MembershipCommandButton
 
-        private bool CanExecuteEditMessageCommand()
+        private bool Can_Execute_Message_Edit_Command()
         {
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox; //&&
                                                                      //SelectedForeignPower != null &&
@@ -692,24 +692,37 @@ namespace Supremacy.Client.Views
                                                                      //!SelectedForeignPower.OutgoingMessage.IsEditing;
         }
 
-        private void ExecuteEditMessageCommand()
+        private void Execute_Message_Edit_Command()
         {
-            if (!CanExecuteEditMessageCommand())
+            if (!Can_Execute_Message_Edit_Command())
             {
                 return;
             }
+            string _text = "";
 
             if (SelectedForeignPower != null &&
                 SelectedForeignPower.OutgoingMessage != null &&
                 !SelectedForeignPower.OutgoingMessage.IsEditing)
             {
+                string _description_text = "no description of the message";
+                if (SelectedForeignPower.OutgoingMessage != null
+                    && SelectedForeignPower.OutgoingMessage.Elements[0] != null
+                    && SelectedForeignPower.OutgoingMessage.Elements[0].Description != null
+                    )
+                {
+                    _description_text = SelectedForeignPower.OutgoingMessage.Elements[0].Description;
+                }
+
+                _text = "Step_8835:; Edit-Button pressed for OutgoingMessage > " + _description_text;
+                Console.WriteLine(_text);
+
                 SelectedForeignPower.OutgoingMessage.Edit();
                 OnCommandVisibilityChanged();
                 OnIsMessageEditInProgressChanged();
             }
         }
 
-        private bool CanExecuteSendMessageCommand()
+        private bool Can_Execute_Message_Send_Command()
         {
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox
                    && SelectedForeignPower != null
@@ -720,15 +733,15 @@ namespace Supremacy.Client.Views
                      //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
-        private void ExecuteSendMessageCommand()
+        private void Execute_Message_Send_Command()
         {
-            if (!CanExecuteSendMessageCommand())
+            if (!Can_Execute_Message_Send_Command())
             {
                 return;
             }
 
             SelectedForeignPower.OutgoingMessage.Send();
-            GameLog.Client.DiplomacyDetails.DebugFormat("Diplo Message: SEND button pressed...");
+            //GameLog.Client.DiplomacyDetails.DebugFormat("Diplo Message: SEND button pressed...");
             if (SelectedForeignPower != null && SelectedForeignPower.OutgoingMessage != null)
             {
                 int _selectedID = SelectedForeignPower.Counterparty.CivID;
@@ -760,13 +773,25 @@ namespace Supremacy.Client.Views
                 }
             }
 
+            string _description_text = "no description of the message";
+            if (SelectedForeignPower.OutgoingMessage != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0] != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0].Description != null
+                )
+            {
+                _description_text = SelectedForeignPower.OutgoingMessage.Elements[0].Description;
+            }
+
+            String _text = "Step_8835:; Send-Button pressed for OutgoingMessage > " + _description_text;
+            Console.WriteLine(_text);
+
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
         }
 
-        private bool CanExecuteCancelMessageCommand()
+        private bool Can_Execute_Message_Cancel_Command()
         {
 
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
@@ -774,14 +799,16 @@ namespace Supremacy.Client.Views
                    SelectedForeignPower.OutgoingMessage != null;
         }
 
-        private void ExecuteCancelMessageCommand()
+        private void Execute_Message_Cancel_Command()
         {
-            if (!CanExecuteCancelMessageCommand())
+            if (!Can_Execute_Message_Cancel_Command())
             {
                 return;
             }
 
             int _selectedID = SelectedForeignPower.Counterparty.CivID;
+
+            string _text = "";
 
             foreach (DiplomacyMessageElement element in SelectedForeignPower.OutgoingMessage.StatementElements)
             {
@@ -802,12 +829,24 @@ namespace Supremacy.Client.Views
                 }
             }
 
+            string _description_text = "no description of the message";
+            if (SelectedForeignPower.OutgoingMessage != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0] != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0].Description != null
+                )
+            {
+                _description_text = SelectedForeignPower.OutgoingMessage.Elements[0].Description;
+            }
+
+            _text = "Step_8833:; Cancel-Button pressed for OutgoingMessage > " + _description_text;
+            Console.WriteLine(_text);
+
             SelectedForeignPower.OutgoingMessage.Cancel();
             SelectedForeignPower.OutgoingMessage = null;
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
-            //Refresh();
+            Refresh();
         }
 
         private void ExecuteSetDisplayModeComand(ICheckableCommandParameter p)
@@ -1711,9 +1750,9 @@ Skip_Add_Existing_Ones:;
         //    }
         //}
 
-        private void PerformRefreshForeignPowers1()
-        {
-        }
+        //private void PerformRefreshForeignPowers1()
+        //{
+        //}
         //private System.Windows.Data.BindingBase counterpartyLocation => "Hello";
         ////{
         ////    return "Hello";
@@ -1730,7 +1769,7 @@ Skip_Add_Existing_Ones:;
         //{
         //    get
         //    {
-        //        return CanExecuteEditMessageCommand();
+        //        return Can_Execute_Message_Edit_Command();
         //    }
 
         //}
@@ -1745,11 +1784,11 @@ Skip_Add_Existing_Ones:;
 
         //private bool _isEnabledButtonEditMessageCommand = false;
 
-        //public bool IsEnabledButtonEditMessageCommand { get => CanExecuteEditMessageCommand(); set => SetProperty(ref _isEnabledButtonEditMessageCommand, value); }
+        //public bool IsEnabledButtonEditMessageCommand { get => Can_Execute_Message_Edit_Command(); set => SetProperty(ref _isEnabledButtonEditMessageCommand, value); }
 
         //private bool canExecuteEditMessageCommand;
 
-        //public bool CanExecuteEditMessageCommand { get => canExecuteEditMessageCommand; set => SetProperty(ref canExecuteEditMessageCommand, value); }
+        //public bool Can_Execute_Message_Edit_Command { get => canExecuteEditMessageCommand; set => SetProperty(ref canExecuteEditMessageCommand, value); }
 
         //protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
         //{

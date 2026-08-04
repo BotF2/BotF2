@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Microsoft.Practices.ServiceLocation;
+
 using Supremacy.Annotations;
 using Supremacy.Client;
 using Supremacy.Collections;
@@ -19,6 +20,7 @@ using Supremacy.Intelligence;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
 using Supremacy.Utility;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,6 +39,7 @@ namespace Supremacy.Diplomacy
         [NonSerialized]
         private static string _text;
         private static string _diploText = "";
+        private static bool _bool_diplo_is_AI_controlled = GameEngine.AI_IsPlayer_AI_Controlled();
 
         public static Civilization DiploScreenSelectedForeignPower
         {
@@ -69,7 +72,7 @@ namespace Supremacy.Diplomacy
         {
             if (civ == null)
             {
-                throw new ArgumentNullException("civ");
+                throw new ArgumentNullException("_civ1");
             }
 
             int civId = civ.CivID;
@@ -93,7 +96,7 @@ namespace Supremacy.Diplomacy
         {
             if (civ == null)
             {
-                throw new ArgumentNullException("civ");
+                throw new ArgumentNullException("_civ1");
             }
 
             if (otherPower == null)
@@ -103,12 +106,12 @@ namespace Supremacy.Diplomacy
 
             Diplomat diplomat = Diplomat.Get(otherPower);
             ForeignPower foreignPower = diplomat.GetForeignPower(civ);
-            //GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, _diplomat.Owner = {3}, foreignPower.OwnerID =n/v, CurrentTrust =n/v",
-            //civ, otherPower.CivID, trustDelta, _diplomat.Owner);
+            //GameLog.Core.Diplomacy.DebugFormat("BEFORE: _civ1 = {0}, otherPower.CivID = {1}, trustDelta = {2}, _diplomat.Owner = {3}, foreignPower.OwnerID =n/v, CurrentTrust =n/v",
+            //_civ1, otherPower.CivID, trustDelta, _diplomat.Owner);
 
             //GameLog.Core.Diplomacy.DebugFormat(
-            //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, _diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-            //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+            //    "BEFORE: _civ1 = {0}, otherPower = {1}, trustDelta = {2}, _diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+            //    GameContext.Current.CivilizationManagers[_civ1.CivID].Civilization.ShortName,
             //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
             //    trustDelta, _diplomat.Owner,
             //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
@@ -122,8 +125,8 @@ namespace Supremacy.Diplomacy
             }
 
             //GameLog.Core.Diplomacy.DebugFormat(
-            //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, _diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-            //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+            //    "AFTER : _civ1 = {0}, otherPower = {1}, trustDelta = {2}, _diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+            //    GameContext.Current.CivilizationManagers[_civ1.CivID].Civilization.ShortName,
             //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
             //    trustDelta, _diplomat.Owner,
             //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
@@ -133,7 +136,7 @@ namespace Supremacy.Diplomacy
         {
             if (civ == null)
             {
-                throw new ArgumentNullException("civ");
+                throw new ArgumentNullException("_civ1");
             }
 
             if (otherPower == null)
@@ -144,8 +147,8 @@ namespace Supremacy.Diplomacy
             Diplomat diplomat = Diplomat.Get(otherPower);
             ForeignPower foreignPower = diplomat.GetForeignPower(civ);
 
-            // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};BEFORE: otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};_diplomat.Owner=;{3};civ=;{0}" + Environment.NewLine,
-            // civ, otherPower.CivID, regardDelta, _diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
+            // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};BEFORE: otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};_diplomat.Owner=;{3};_civ1=;{0}" + Environment.NewLine,
+            // _civ1, otherPower.CivID, regardDelta, _diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
 
             if (foreignPower != null)
             {
@@ -154,8 +157,8 @@ namespace Supremacy.Diplomacy
                 foreignPower.UpdateRegardAndTrustMeters();
 
             }
-            // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};AFTER : otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};_diplomat.Owner=;{3};civ=;{0}" + Environment.NewLine,
-            //civ, otherPower.CivID, regardDelta, _diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
+            // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};AFTER : otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};_diplomat.Owner=;{3};_civ1=;{0}" + Environment.NewLine,
+            //_civ1, otherPower.CivID, regardDelta, _diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
         }
         public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
         {
@@ -232,7 +235,7 @@ namespace Supremacy.Diplomacy
                 return;
             }
 
-            if (AreAtWar(_civ1, _civ2))
+            if (Status_AtWar(_civ1, _civ2))
             {
                 GameLog.Core.Diplomacy.WarnFormat(
                     "Civilization {0} attempted to declare war on {1}, but they were already at war.",
@@ -315,19 +318,35 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public static void AcceptingRejecting([NotNull] ICivIdentity civ)
         // find entry in dictionary and send as foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal; or Reject
+        //public static void AcceptingRejecting([NotNull] ICivIdentity _civ)
+        public static void AcceptingRejecting([NotNull] Civilization _civ1)
+
         {
-            _text = "Step_1371:; AcceptingRejecting... for " + civ;
+
+            _text = "Step_1371:; AcceptingRejecting... for " + _civ1;
             Console.WriteLine(_text);
 
-            if (civ == null)
+            if (_civ1 == null)
             {
-                throw new ArgumentNullException("civ");
+                throw new ArgumentNullException("_civ1");
             }
 
-            Civilization _civ1 = (Civilization)civ;
-            Diplomat _diplomat = Diplomat.Get(civ);
+            //bool _bool_diplo_is_AI_controlled = false;
+
+            if (_civ1.IsHuman)
+            {
+                _bool_diplo_is_AI_controlled = GameEngine.AI_IsPlayer_AI_Controlled();
+
+                _text = /*_newline +*/ "Step_1113:; _diplo_is_AI_controlled= "
+                        + " * > AIcontrolled= " + _bool_diplo_is_AI_controlled
+                        + " for " + _civ1
+                        ;
+                Console.WriteLine(_text);
+            }
+
+            //Civilization _civ1 = (Civilization)_civ1;
+            Diplomat _diplomat = Diplomat.Get(_civ1);
 
             foreach (Civilization _civ_2 in GameContext.Current.Civilizations)
             {
@@ -344,6 +363,22 @@ namespace Supremacy.Diplomacy
                 ForeignPower foreignPower = _diplomat.GetForeignPower(_civ_2);
 
                 bool accepting = false;
+
+                if (foreignPower.StatementReceived != null)
+                {
+                    Diplomacy_4_Statement_Received(foreignPower.StatementReceived);
+                }
+
+
+
+                int _random = RandomHelper.Random(2);
+
+                if (_random == 1)
+                {
+                    accepting = true;
+
+
+                }
 
                 string powerID = foreignPower.OwnerID.ToString() + " vs " + foreignPower.CounterpartyID.ToString();
 
@@ -414,6 +449,330 @@ namespace Supremacy.Diplomacy
 
                 }
             }
+        }
+
+
+
+        public static void Diplomacy_0_DoDiplomacy()
+        {
+            //string _text = "";
+            string _sender_civ = "";
+            string _recipient_civ = "";
+
+
+            // FIRST: Pending Actions
+            foreach (Civilization _civ1 in GameContext.Current.Civilizations)
+            {
+                _text = "\r\nStep_1351:; DoDiplomacy for > " + _civ1
+                    + ",       _bool_diplo_is_AI_controlled= " + _bool_diplo_is_AI_controlled;
+                //string _newline = Environment.NewLine;
+                Console.WriteLine(_text);
+
+                string _diploStatusText = ""; _diploStatusText += " " + _diploStatusText; // dummy - please keep
+
+                CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ1];
+                Diplomat _diplomat_civ1 = Diplomat.Get(_civ1);
+                _civM_1.Assault_Value_Defense_and_Distance = 999993;
+
+                if (!_civ1.IsHuman)
+                {
+                    DiplomacyHelper.AcceptingRejecting(_civ1);
+                }
+
+                Report_Regard_and_Trust(_civ1, _civM_1);
+
+                DiplomacyHelper.Diplomacy_1_Basics(_civ1, _civM_1);  // e.g. Status = NoContact, War etc...
+
+
+                // Second: Schedule delivery of outbound messages  Including Statementreceived
+                _text = "Step_3091:; NEXT: *Second* Outgoing";
+                //if (_combatWriteDirectly)
+                //    //Console.WriteLine(_text);
+                //GameLog.Core.DiplomacyDetails.DebugFormat(_text);
+
+
+
+                foreach (Civilization _civ2 in GameContext.Current.Civilizations)
+                {
+                    if (_civ1 == _civ2) { continue; }
+
+                    ForeignPower _civ2_foreign_power = _diplomat_civ1.GetForeignPower(_civ2);
+                    CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civ2];
+
+                    if (_civ2_foreign_power.StatementReceived == null
+                        && _civ2_foreign_power.ProposalSent == null
+                        && _civ2_foreign_power.StatementSent == null
+                        && _civ2_foreign_power.ResponseSent == null
+                        )
+                    {
+                        continue;
+                    }
+
+                    //string _civ_pair = _civ1.Key + "-" + _civ2.Key;
+
+                    _text = "\r\nStep_3192:; " + DateTime.Now
+                        + " > Diplomacy now > " + _civ1 + " vs " + _civ2;
+                    Console.WriteLine(_text);
+
+
+                    if (_civ2_foreign_power.ProposalSent != null)
+                    {
+                        Diplomacy.DiplomacyHelper.Diplomacy_5_Proposal_Sent(_civ2_foreign_power.ProposalSent);//  Second.2 = proposalSent
+                                                                                                         //_sender_civ = _civ2_foreign_power.ProposalSent.Sender.ToString();
+                                                                                                         //_recipient_civ = _civ2_foreign_power.ProposalSent.Recipient.ToString();
+
+                        //_text = "Step_7555:; "
+                        //    + DateTime.Now
+                        //    + " > _sender_civ= " + _sender_civ
+                        //    + " > " 
+                        //    + ", _civ1.LongName= " + _civ1.LongName
+                        //    + " > must be identical !!" 
+
+                        //    ;
+                        //Console.WriteLine(_text);
+
+
+                        //if (_sender_civ == _civ1.LongName)
+                        //{
+                        //Diplomacy.DiplomacyHelper.Diplomacy_5_Proposal_Sent(_civ2_foreign_power.ProposalSent);//  Second.2 = proposalSent
+                        //}
+
+                    }
+
+                    if (_civ2_foreign_power.StatementSent != null)
+                    {
+                        _sender_civ = _civ2_foreign_power.StatementSent.Sender.ToString();
+                        _recipient_civ = _civ2_foreign_power.StatementSent.Recipient.ToString();
+
+                        //if (_sender_civ == _civ1.Key)
+                        //{
+                        Diplomacy.DiplomacyHelper.Diplomacy_6_Statement_Sent(_civ2_foreign_power.StatementSent);//  Second.3 = statementSent
+                                                                                                           //}
+                    }
+
+                    if (_civ2_foreign_power.ResponseSent != null)
+                    {
+                        _sender_civ = _civ2_foreign_power.ResponseSent.Sender.ToString();
+                        _recipient_civ = _civ2_foreign_power.ResponseSent.Recipient.ToString();
+
+                        //if (_sender_civ == _civ1.Key)
+                        //{
+                        Diplomacy.DiplomacyHelper.Diplomacy_7_Response_Sent(_civ2_foreign_power.ResponseSent);//  Second.4 = responseSent
+                                                                                                         //}
+                    }
+                    //_civM_1.Target_CivList.Add(_civ2);
+                }
+                //}
+
+
+                // Third: Fulfill agreement obligations
+                foreach (IAgreement agreement in GameContext.Current.AgreementMatrix)
+                {
+                    AgreementFulfillmentVisitor.Visit(agreement);
+                }
+
+
+                //_civM_1.Target_CivList.Add(_civ2);
+
+                //if (_civM_1.Assault_TargetCiv == null)
+                //{
+
+                //if (_civ1.IsHuman)
+                //{
+                //    //Debugger.Break();
+                //    goto For_Human_Players_no_AI_Assault_Locations;
+                //}
+
+                ////Assault_Accumulate_Location_1_Handle(_civ1, _civM_1);
+
+                //if (_civM_1.Assault_Location != null
+                //    && _civM_1.Assault_Accumulate_Location_1.ToString() != "(0, 0)")
+                //{
+                //    Civilization _civ2 = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID].Civilization;
+                //    //_text += "SystemAssault Location 1 = " + _civM_1.Assault_Accumulate_Location_1 + ", ";
+                //    _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1
+                //        , "Assault_Location= " + _civM_1.Assault_Location, "", "", SitRepPriority.Purple));
+                //    // no center on Target
+                //    //_civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID].HomeSystem.Location
+                //    //    , "SystemAssault TargetCiv = " + _civM_1.Assault_TargetCiv, "", "", SitRepPriority.Purple));
+
+                //    //Diplomat _foreignPowerCiv2 = Diplomat.Get(_civ2);
+                //    ForeignPower _foreignPowerCiv2 = _diplomat_civ1.GetForeignPower(_civ2);
+                //    ForeignPowerStatus _foreignPowerStatus = _diplomat_civ1.GetForeignPower(_civ2).DiplomacyData.Status;
+
+                //    if (_foreignPowerStatus != ForeignPowerStatus.AtWar)
+                //    {
+
+                //        // 
+                //        CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv.CivID];
+                //        UnitAI.GetBestSystemFor_AccumulateFor_SystemAttack(_civM_2.HomeSystem.Sector, _civM_1.HomeSystem.Sector, out Sector _sector);
+                //        _civM_1.Assault_Accumulate_Sector_1 = _sector;
+
+                //        string _systemAssaultSector_Text = "Assault_Accumulate_Sector_1 is set to Sector " + _sector.ToString();
+                //        _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _sector.Location, _systemAssaultSector_Text, "", "", SitRepPriority.Purple));
+
+                //        string _systemAssaultLocation_Text = "Assault_Accumulate_Location_1 is set to Location " + _sector.Location.ToString();
+                //        _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civ1, _sector.Location, _systemAssaultLocation_Text, "", "", SitRepPriority.Purple));
+
+                //        _text = "DefenseValueSector(_civM_2.HomeSystem.Sector.TradeRouteIndicator);";
+
+                //        //int _defense = 10; // 
+                //        _civM_1.Assault_DefenseValue = _civM_2.HomeSystem.Sector.GetDefenseValueSector();
+                //        //_civM_2.HomeSystem.Sector.GetDefenseValueSector();
+                //        // DefenseValue;//
+                //        //GetDefenseValueSector(_civM_2.HomeSystem.Sector);
+
+                //        //if (_civM_2.HomeSystem.Sector.Station != null)
+                //        //{
+                //        //    _defense += _civM_2.HomeSystem.Sector.Station.Fire_Power_Orbital / 200;  // station only half
+                //        //    _defense += _civM_2.HomeSystem.Colony.Population.CurrentValue;  // 
+                //        //    if (_civM_2.HomeSystem.Colony.OrbitalBatteries.Count > 0)
+                //        //    {
+                //        //        _defense += _civM_2.HomeSystem.Colony.OrbitalBatteries.Count
+                //        //                         * (_civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Count
+                //        //                         * _civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.PrimaryWeapon.Damage)
+                //        //                         + (_civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Count
+                //        //                         * _civM_2.HomeSystem.Colony.OrbitalBatteries[0].Design.SecondaryWeapon.Damage)
+
+                //        //                         ; 
+
+
+                //        //    }
+                //        //    _civM_1.Assault_DefenseValue = _defense;
+                //        //}
+
+                //    }
+
+
+                //}
+                //else
+                //{
+                //    if (_civM_1.Assault_TargetCiv != null)
+                //    {
+                //        string _targetCivtext = "Assault_TargetCiv is set to= " + _civM_1.Assault_TargetCiv.Name
+                //            + " at " + _civM_1.HomeSystem.Location
+                //            ;
+                //        _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _targetCivtext, "", "", SitRepPriority.Gray));
+
+                //        if (_civM_1.Assault_Accumulate_Sector_1 != null)
+                //        {
+                //            CivilizationManager _civM_temp = GameContext.Current.CivilizationManagers[_civM_1.Assault_TargetCiv];
+                //            UnitAI.GetBestSystemFor_AccumulateFor_SystemAttack(_civM_temp.HomeSystem.Sector, _civM_1.HomeSystem.Sector, out Sector _sector);
+                //            _civM_1.Assault_Accumulate_Sector_1 = _sector;
+                //            string _systemAssaultSector_Text = "Assault_Accumulate_Sector_1 is set to Sector " + _sector.ToString();
+                //            _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _systemAssaultSector_Text, "", "", SitRepPriority.Purple));
+
+                //            string _systemAssaultLocation_Text = "Assault_Accumulate_Location_1 is set to Location " + _sector.Location.ToString();
+                //            _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _systemAssaultLocation_Text, "", "", SitRepPriority.Purple));
+                //        }
+                //        else
+                //        {
+
+                //            string _noTargetCivtext = "Not set: Assault_Accumulate_Location_1";
+                //            _civM_1.SitRepEntries.Add(new ReportEntry_NoAction(_civ1, _noTargetCivtext, "", "", SitRepPriority.Gray));
+
+                //        }
+                //    }
+                //} // end of else
+
+
+                //if (_writeDirectly) Console.WriteLine("Step_7727:; _diplomacyBasicsSummary_Text="
+                //    + _diplomacyBasicsSummary_Text + _newline
+                //    + "End of _diplomacyBasicsSummary_Text" + _newline
+
+                //    );
+
+                //_diplomacyBasicsSummary_Text = "";
+
+                if (_civM_1.Assault_TargetCiv != null)
+                {
+                    _text = "Step_7729:; Assault_TargetCiv= " + _civM_1.Assault_TargetCiv.Name
+                            + " at " + _civM_1.HomeSystem.Location
+                            + " for " + _civM_1.Civilization.Key
+                            ;
+                    //if (_writeDirectly)
+                    Console.WriteLine(_text);
+                }
+                //For_Human_Players_no_AI_Assault_Locations:;
+
+
+            } // End of foreach _civ1
+            Report_Agreement_Matrix();
+        }
+
+        private static void Report_Regard_and_Trust(Civilization _civ1, CivilizationManager _civM_1)
+        {
+            foreach (Civilization _civ2 in GameContext.Current.Civilizations)
+            {
+
+                if (_civ1 == _civ2)
+                {
+                    continue;
+                }
+
+                Diplomat _diplomat1 = Diplomat.Get(_civ1);
+                //CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ1];
+
+                ForeignPower _diplomatForeignPower_Civ2 = _diplomat1.GetForeignPower(_civ2);
+                CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[_civ2];
+
+                var _diplomacyData = GameContext.Current.DiplomacyData[_civ1, _civ2];
+
+                ForeignPowerStatus _foreignPowerStatus = _diplomat1.GetForeignPower(_civ2).DiplomacyData.Status;
+
+                if (_foreignPowerStatus == ForeignPowerStatus.NoContact)
+                {
+                    continue;
+                }
+                // SitRep for all
+                if (_foreignPowerStatus != ForeignPowerStatus.OwnerIsSubjugated)
+                {
+                    string _diplomat1_Location_String = "( Empire )";
+                    if (!_diplomat1.Owner.IsEmpire && _diplomat1.SeatOfGovernment != null)
+                        _diplomat1_Location_String = _diplomat1.SeatOfGovernment.Location.ToString();
+
+                    _text = "Relation > "
+                        + "Regard: " + GameEngine.Do_x_Digit_String(4, _diplomacyData.Regard.CurrentValue.ToString())
+                        + ", Trust: " + GameEngine.Do_x_Digit_String(4, _diplomacyData.Trust.CurrentValue.ToString())
+
+                        + " > " + _foreignPowerStatus
+
+                        + " vs " + _diplomat1.Owner
+                        + " " + _diplomat1_Location_String
+                        ;
+                    // too much info
+                    //Console.WriteLine("Step_7429:; " + _text + "; Turn " + GameContext.Current.TurnNumber + ";SR for " + _civ2.Name);
+
+                    GameContext.Current.CivilizationManagers[_civ2].SitRepEntries.Add(
+                        new ReportEntry_ShowDiplo(_civ2, _text, "", "", SitRepPriority.GreenDark2));
+
+                }
+            }
+        }
+
+        public static void Report_Agreement_Matrix()
+        {
+            string _text = "";
+            string _agreement_total_text = Environment.NewLine
+                + "Step_2278:; Report_Agreement_Matrix" + Environment.NewLine;
+            foreach (IAgreement _agreement in GameContext.Current.AgreementMatrix)
+            {
+                //AgreementFulfillmentVisitor.Visit(_agreement);
+                _agreement_total_text +=
+                    /*+ " for " + */_agreement.Proposal.Clauses[0].ClauseType.ToString()
+                    + ", Start-Turn= " + _agreement.StartTurn
+                    + ", End= " + _agreement.EndTurn
+
+                    + ", Sender= " + _agreement.Sender
+                    + " to " + _agreement.Recipient
+                    //+ ", DATA= " + _agreement.Data
+
+                    ;
+                //Console.WriteLine(_agreement_total_text);
+                //Debugger.Break();
+            }
+            Console.WriteLine(_agreement_total_text);
+            //Debugger.Break();
         }
 
         public static void Diplomacy_1_Basics(Civilization _civ1, CivilizationManager _civM_1)
@@ -1365,7 +1724,7 @@ namespace Supremacy.Diplomacy
 
                 //    Debugger.Break();
                 //}
-//#endregion DiplomacyBasics
+                //#endregion DiplomacyBasics
 
 
 
@@ -1377,31 +1736,31 @@ namespace Supremacy.Diplomacy
                 Diplomacy_2_PendingActions(_civ1, _civ2);
 
 
-                var _diplomacyData = GameContext.Current.DiplomacyData[_civ1, _civ2];
+                //var _diplomacyData = GameContext.Current.DiplomacyData[_civ1, _civ2];
 
-                string _diplomat1_Location_String = "( Empire )";
-                if (!_diplomat1.Owner.IsEmpire && _diplomat1.SeatOfGovernment != null)
-                    _diplomat1_Location_String = _diplomat1.SeatOfGovernment.Location.ToString();
+                //string _diplomat1_Location_String = "( Empire )";
+                //if (!_diplomat1.Owner.IsEmpire && _diplomat1.SeatOfGovernment != null)
+                //    _diplomat1_Location_String = _diplomat1.SeatOfGovernment.Location.ToString();
 
-                // SitRep for all
-                if (_foreignPowerStatus != ForeignPowerStatus.OwnerIsSubjugated)
-                {
-                    _text = "Relation > "
-                        + "Regard: " + GameEngine.Do_x_Digit_String(4, _diplomacyData.Regard.CurrentValue.ToString())
-                        + ", Trust: " + GameEngine.Do_x_Digit_String(4, _diplomacyData.Trust.CurrentValue.ToString())
+                //// SitRep for all
+                //if (_foreignPowerStatus != ForeignPowerStatus.OwnerIsSubjugated)
+                //{
+                //    _text = "Relation > "
+                //        + "Regard: " + GameEngine.Do_x_Digit_String(4, _diplomacyData.Regard.CurrentValue.ToString())
+                //        + ", Trust: " + GameEngine.Do_x_Digit_String(4, _diplomacyData.Trust.CurrentValue.ToString())
 
-                        + " > " + _foreignPowerStatus
+                //        + " > " + _foreignPowerStatus
 
-                        + " vs " + _diplomat1.Owner
-                        + " " + _diplomat1_Location_String
-                        ;
-                    // too much info
-                    //Console.WriteLine("Step_7429:; " + _text + "; Turn " + GameContext.Current.TurnNumber + ";SR for " + _civ2.Name);
+                //        + " vs " + _diplomat1.Owner
+                //        + " " + _diplomat1_Location_String
+                //        ;
+                //    // too much info
+                //    //Console.WriteLine("Step_7429:; " + _text + "; Turn " + GameContext.Current.TurnNumber + ";SR for " + _civ2.Name);
 
-                    GameContext.Current.CivilizationManagers[_civ2].SitRepEntries.Add(
-                        new ReportEntry_ShowDiplo(_civ2, _text, "", "", SitRepPriority.GreenDark2));
+                //    GameContext.Current.CivilizationManagers[_civ2].SitRepEntries.Add(
+                //        new ReportEntry_ShowDiplo(_civ2, _text, "", "", SitRepPriority.GreenDark2));
 
-                }
+                //}
 
                 //string _testCiv = "FEDERATION";
                 string _testCiv = "BORG";
@@ -1446,7 +1805,7 @@ namespace Supremacy.Diplomacy
 
                 //_text = "Step_7720:; Do_13_Diplomacy > * " + _civ1.Key 
                 //        + " * vs * " + _civ2.Key
-                //        + ": PendingAction > Status= >>> " + _diplomat_civ2.PendingAction.ToString()
+                //        + ": PendingAction > Status= >>> " + _civ2_foreign_power.PendingAction.ToString()
                 //        ;
                 ////if (_writeDirectly)
                 //Console.WriteLine(_text);
@@ -1460,7 +1819,7 @@ namespace Supremacy.Diplomacy
                 {
                     case PendingDiplomacyAction.None:
                         //_text = "Step_7721:; Do_13_Diplomacy > * " + _civ1.Key + " * vs * " + _civ2.Key
-                        //        + ": PendingAction > Status= >>> " + _diplomat_civ2.PendingAction.ToString()
+                        //        + ": PendingAction > Status= >>> " + _civ2_foreign_power.PendingAction.ToString()
                         //        ;
                         //Console.WriteLine(_text);
                         break;
@@ -1642,7 +2001,7 @@ namespace Supremacy.Diplomacy
 
                     break;
 
-                // T01 = civ 0 vs civ 1 (up to 5 without 6=Borg)
+                // T01 = _civ1 0 vs _civ1 1 (up to 5 without 6=Borg)
                 case StatementType.T01: // read statement type off of _diplomatForeignPower_Civ2 and send it to accept - reject dictionary
                 case StatementType.T02:
                 case StatementType.T03:
@@ -1897,47 +2256,45 @@ namespace Supremacy.Diplomacy
 
         public static void Diplomacy_5_Proposal_Sent(IProposal _proposalSent)
         {
-            Civilization civ1 = _proposalSent.Sender;
-            Civilization civ2 = _proposalSent.Recipient;
+            Civilization _civ1 = _proposalSent.Sender;
+            Civilization _civ2 = _proposalSent.Recipient;
 
-            Diplomat _diplomatCiv1 = Diplomat.Get(civ1);
-            ForeignPower _diplomatCiv2 = _diplomatCiv1.GetForeignPower(civ2);
+            Diplomat _diplomat_civ1 = Diplomat.Get(_civ1);
+            ForeignPower _diplomat_civ2 = _diplomat_civ1.GetForeignPower(_civ2);
             string _text;
             bool _writeDirectly = true;
             //  Second.2 = proposalSent
             IProposal proposalSent = _proposalSent;
             if (proposalSent != null)
             {
-                _diplomatCiv2.CounterpartyForeignPower.ProposalSent = proposalSent;
-                _diplomatCiv2.LastProposalSent = proposalSent;
-                _diplomatCiv2.ProposalSent = null;
+                _diplomat_civ2.CounterpartyForeignPower.ProposalSent = proposalSent;
+                _diplomat_civ2.LastProposalSent = proposalSent;
+
                 _text = "Step_8234:; "
                     + DateTime.Now
-                    + " > ProposalSent= xxx "
-                    //+ _diplomat_civ2.ProposalSent.Clauses[0].ClauseType.ToString() + " (ProposalSent)"
-                    + "; from " + _diplomatCiv2.Owner.ToString()
-                    + "; to; " + _diplomatCiv2.Counterparty.ToString()
+                    + " > ProposalSent=   "
+                    + proposalSent.Clauses[0].ClauseType.ToString() + " (ProposalSent, "
+                    + proposalSent.Clauses.Count + " content) "
+                    + "; from " + _diplomat_civ2.Owner.ToString()
+                    + "; to; " + _diplomat_civ2.Counterparty.ToString()
 
                     ;
                 if (_writeDirectly)
                     Console.WriteLine(_text);
-
                 //GameLog.Client.DiplomacyDetails.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}"
-                //    , _diplomatForeignPower_Civ2.LastProposalSent.Clauses[0].ClauseType.ToString(), _diplomatForeignPower_Civ2.Counterparty.ToString(), _diplomatForeignPower_Civ2.Owner.ToString()); ;
+                //    , _diplomatForeignPower_Civ2.LastProposalSent.Clauses[0].ClauseType.ToString()
+                //    , _diplomatForeignPower_Civ2.Counterparty.ToString(), _diplomatForeignPower_Civ2.Owner.ToString()); ;
 
-                //if (_civ1.IsEmpire)
-                //{
-                GameContext.Current.CivilizationManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, proposalSent));
-                //}
+                GameContext.Current.CivilizationManagers[_civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(_civ1, proposalSent));
 
-                //if (_civ2.IsEmpire)
-                //{
-                GameContext.Current.CivilizationManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, proposalSent));
-                //}
+                GameContext.Current.CivilizationManagers[_civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(_civ2, proposalSent));
+
+                _diplomat_civ2.ProposalSent = null;
             }
             else
             {
-                _diplomatCiv2.CounterpartyForeignPower.ProposalReceived = null;
+                Debugger.Break();
+                _diplomat_civ2.CounterpartyForeignPower.ProposalReceived = null;
             }
         }
 
@@ -2411,7 +2768,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public static void ClearAcceptRejectDictionary()
+        public static void AcceptRejectDictionary_Clear()
         {
             //if (_acceptRejectDictionary != null)
             _acceptRejectDictionary.Clear();
@@ -2590,7 +2947,7 @@ namespace Supremacy.Diplomacy
             bool travel = true;
             if (traveller == null)
             {
-                GameLog.Client.AI.DebugFormat("Null civ for sector ={0} {1}", sector.Name, sector.Location);
+                GameLog.Client.AI.DebugFormat("Null _civ1 for sector ={0} {1}", sector.Name, sector.Location);
                 throw new ArgumentNullException("traveller");
             }
             if (sector == null)
@@ -2681,7 +3038,7 @@ namespace Supremacy.Diplomacy
         /// <summary>
         /// Determines whether two particular <see cref="Civilization"/>s are at war
         /// </summary>
-        public static bool AreAtWar(Civilization who, Civilization whoElse)
+        public static bool Status_AtWar(Civilization who, Civilization whoElse)
         {
             if (who == null)
             {
@@ -2729,12 +3086,12 @@ namespace Supremacy.Diplomacy
         {
             if (civ1 == null)
             {
-                throw new ArgumentNullException("civ1");
+                throw new ArgumentNullException("_civ1");
             }
 
             if (civ2 == null)
             {
-                throw new ArgumentNullException("civ2");
+                throw new ArgumentNullException("_civ2");
             }
 
             if (civ1 == civ2)
@@ -2753,7 +3110,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public static bool AreNeutral(Civilization _civ1, Civilization _civ2)
+        public static bool Status_Neutral(Civilization _civ1, Civilization _civ2)
         {
             if (_civ1 == null)
             {
@@ -3029,7 +3386,7 @@ namespace Supremacy.Diplomacy
             {
 
                 bool _are_not_friendly = AreNotFriendly(_civ1, _civ2);
-                bool _are_neutral = AreNeutral(_civ1, _civ2);
+                bool _are_neutral = Status_Neutral(_civ1, _civ2);
 
                 int _civ1_firepower = GameContext.Current.CivilizationManagers[_civ1].FirePowerSpace;
                 int _civ2_firepower = GameContext.Current.CivilizationManagers[_civ2].FirePowerSpace;
@@ -3047,7 +3404,7 @@ namespace Supremacy.Diplomacy
                         && _random == 1
                         )
                     //if (!_civ1.Traits.Contains("Peaceful") 
-                    //    && (AreNotFriendly(_civ1, _civ2) || (AreNeutral(_civ1, _civ2) 
+                    //    && (AreNotFriendly(_civ1, _civ2) || (Status_Neutral(_civ1, _civ2) 
                     //    && RandomHelper.Random(2) == 1)))
                     {
 
@@ -3083,7 +3440,7 @@ namespace Supremacy.Diplomacy
         //    //{
         //    //    _are_not_friendly = "AreFriendly";
         //    //}
-        //    string _are_neutral = AreNeutral(_civ1, _civ2) ? "Neutral" : "Not Neutral";            
+        //    string _are_neutral = Status_Neutral(_civ1, _civ2) ? "Neutral" : "Not Neutral";            
 
         //    _text = "Step_7466:; " 
         //            + " T= " + _diplomat1.GetForeignPower(_civ2).DiplomacyData.Trust.CurrentValue
@@ -3187,20 +3544,20 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.DiplomacyData[source, target].ContactDuration == 0;
         }
 
-        public static int ComputeEndWarValue(Civilization sender, Civilization recipient)
-        {
-            if (sender == null)
-            {
-                throw new ArgumentNullException("sender");
-            }
+        //public static int ComputeEndWarValue(Civilization sender, Civilization recipient)
+        //{
+        //    if (sender == null)
+        //    {
+        //        throw new ArgumentNullException("sender");
+        //    }
 
-            if (recipient == null)
-            {
-                throw new ArgumentNullException("recipient");
-            }
+        //    if (recipient == null)
+        //    {
+        //        throw new ArgumentNullException("recipient");
+        //    }
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
         public static int GetInitialMemoryWeight(Civilization civ, MemoryType memoryType)
         {
@@ -3254,10 +3611,11 @@ namespace Supremacy.Diplomacy
         {
             public ColonyTargetValues(int distance, int DefenseValue)
             {
-            }
 
-            //public int Distance { get; set; }
-            //public int DefenseValue { get; set; }
+                //    //public int Distance { get; set; }
+                //    //public int DefenseValue { get; set; }
+
+            }
         }
     }
 }

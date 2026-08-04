@@ -113,6 +113,11 @@ namespace Supremacy.Entities
         private List<Civilization> _spiedCivList;
         //private Civilization _assault_targetCiv; // now in CivManager
         private bool _inTransit;
+        private int _trait_Fighting;
+        private int _trait_Greedy;
+        private int _trait_Ruthless;
+        private int _trait_Xenophobia;
+
 
         #endregion
 
@@ -217,33 +222,43 @@ namespace Supremacy.Entities
             switch (_traits)
             {
                 case "Warlike":
+                    _trait_Fighting = 9;
                     _baseMoraleLevel -= 2;
                     break;
                 case "Peaceful":
+                    _trait_Fighting = 1;
                     _baseMoraleLevel += 2;
                     break;
                 case "Superiority":
+                    _trait_Ruthless = 7;
                     _baseMoraleLevel += 3;
                     break;
                 case "Submissive":
+                    _trait_Ruthless = 2;
                     _baseMoraleLevel -= 3;
                     break;
                 case "Materialistic":
+                    _trait_Greedy = 6;
                     _baseMoraleLevel -= 3;
                     break;
                 case "Spiritual":
+                    _trait_Greedy = 2;
                     _baseMoraleLevel += 5;
                     break;
                 case "Kindness":
+                    _trait_Fighting = 4;
                     _baseMoraleLevel += 2;
                     break;
                 case "Hostile":
+                    _trait_Xenophobia = 7;
                     _baseMoraleLevel -= 4;
                     break;
                 case "Honourable":
+                    _trait_Ruthless = 1;
                     _baseMoraleLevel += 4;
                     break;
-                case "Subversive":
+                case "Subversive":  // in German > Umsturzideen
+                    _trait_Xenophobia = 6;
                     _baseMoraleLevel -= 1;
                     break;
             }
@@ -595,6 +610,34 @@ namespace Supremacy.Entities
 
         //public string TargetCiv2Status = "";
 
+        public int Trait_Fighting  // very Peaceful = 1 up to 9 = very Warlike and between ...
+            // 0=Pacifist, 1=Peaceful, 5=Neutral, 7=Agressive, 8=Warlike
+        {
+            get => _trait_Fighting;
+            set => _trait_Fighting = value;
+        }
+
+        public int Trait_Ruthless  // very Honorable = 0 up to 9 = very Ruthless
+                                   // 1=Honorable, 0=Ethical, 5=Regulated, 7=Callous, 8=Ruthless
+        {
+            get => _trait_Ruthless;
+            set => _trait_Ruthless = value;
+        }
+
+        public int Trait_Greedy  // very Idealistic = 0 up to 9 = very Greedy
+                                 // 1=Idealistic, 3=Egaliterian, 5=Transactional, 7=Materialistic, 8=Greedy
+        {
+            get => _trait_Greedy;
+            set => _trait_Greedy = value;
+        }
+
+        public int Trait_Xenophobia  // very Compassion = 0 up to 9 = very Xenophobia
+                                     // 1=Compassion, 3=Sympathetic, 5=Indifferent, 7=Intolerant, 8=Xenophobia
+        {
+            get => _trait_Xenophobia;
+            set => _trait_Xenophobia = value;
+        }
+
         /// <summary>
         /// Gets the <see cref="bool"/> this civ AI attacking fleet on the move />        
         /// </summary>
@@ -892,7 +935,7 @@ namespace Supremacy.Entities
                         TechCurve),
                     new XElement(
                         ns + "Traits",
-                        TechCurve),
+                        Traits),
                     new XElement(
                         ns + "IndustryToCreditsConversionRatio",
                         (int)(IndustryToCreditsConversionRatio * 100))

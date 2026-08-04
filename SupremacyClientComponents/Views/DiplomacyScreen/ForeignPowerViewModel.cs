@@ -295,7 +295,9 @@ namespace Supremacy.Client.Views
                             + ". " + _gamelogPart2;
                         }
                     }
-                    Console.WriteLine(_text);
+                    //Console.WriteLine(_text);
+
+
                     //GameLog.Client.Diplomacy.DebugFormat(_text);
                     //}
                 }

@@ -253,18 +253,27 @@ namespace Supremacy.Diplomacy
             _ownerId = reader.ReadOptimizedInt32();
             _seatOfGovernmentId = reader.ReadOptimizedInt32();
             _foreignPowers = reader.Read<CivilizationKeyedMap<ForeignPower>>();
-            string _text;
+            string _text = "";
+            string _foreignPowers_text = "";
 
-            if (GameContext.Current != null && GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+            if (GameContext.Current != null && _foreignPowers != null)
             {
-                _text = "Step_0262: Deserialize "
+                foreach (var _p in _foreignPowers)
+                {
+                    _foreignPowers_text += "\r\n" + _p.Owner;
+                }
+            }
+
+                if (GameContext.Current != null) // && GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+            {
+                _text = "Step_0262:; "+DateTime.Now+"Deserialize "
                     + "OwnerId= " + _ownerId
                     + ";" + _foreignPowers.Count + "; _foreignPowers"
                     + "; SeatofG= " + _seatOfGovernmentId
-
+                    + "_foreignPowers_text=" + _foreignPowers_text
                     ;
             Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
             }
             //foreach (var item in _foreignPowers.)
             //{

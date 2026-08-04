@@ -10,10 +10,8 @@
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
-using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
-using Supremacy.Client.Dialogs;
 using Supremacy.Client.Events;
 using Supremacy.Combat;
 using Supremacy.Entities;
@@ -28,7 +26,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 //using System.Media;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -74,8 +71,8 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            _targeted_civ_1 = null;
-            _targeted_civ_2 = null;
+            //_targeted_civ_1 = null;
+            //_targeted_civ_2 = null;
 
             _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             _ = ClientEvents.CombatUpdateReceived.Subscribe(OnCombatUpdateReceived, ThreadOption.UIThread);
@@ -113,6 +110,9 @@ namespace Supremacy.Client
 
             //OtherCivs = _otherCivs; // just a dummy to avoid: Error: 40 : BindingExpression path error:
 
+            _targeted_civ_1 = null;
+            _targeted_civ_2 = null;
+
             _onlyFireIfFiredApp_1 = new Civilization
             {
                 //_onlyFireIfFiredApp_1.ShortName = "Only Return Fire";
@@ -133,7 +133,7 @@ namespace Supremacy.Client
             {
                 if (_otherCivs != null)
                 {
-                _targeted_civ_1 = GameContext.Current.CivilizationManagers[_otherCivs.FirstOrDefault().CivID].Civilization;
+                    _targeted_civ_1 = GameContext.Current.CivilizationManagers[_otherCivs.FirstOrDefault().CivID].Civilization;
                 }
 
                 //Debugger.Break();
@@ -161,6 +161,13 @@ namespace Supremacy.Client
             // The click of "Only Return Fire" radio button by human player
             // _targeted_civ_1 = new Civilization();
             _targeted_civ_1 = _onlyFireIfFiredApp_1;
+
+            if (OtherCivs != null)
+            {
+
+                _targeted_civ_1 = OtherCivs[0];  // 2026-08-02 test
+            }
+
             // _targeted_civ_2 = new Civilization();
             _targeted_civ_2 = _onlyFireIfFiredApp_2;
 
@@ -268,7 +275,7 @@ namespace Supremacy.Client
                 //{
                 //    _civ4 = update.CivName4;
                 //}
-                
+
                 //string _allFriendlyAssetsText = "";
 
 
@@ -276,10 +283,10 @@ namespace Supremacy.Client
 
 
                 string _resultHeaderText = _update.Owner.ToString().ToUpper() + ":  --- RESULT for  > Combat" // at = " + update.CombatID
-                                                                                                                      //+ " Round= " + update.RoundNumber
-                    + " at " + update.Location.ToString() 
+                                                                                                              //+ " Round= " + update.RoundNumber
+                    + " at " + update.Location.ToString()
                     + " ---"
-    
+
                     /*+ _newline*/
                     //+ " > Durability " + update.FriendlyEmpireStrength + " vs " + update.AllHostileEmpireStrength
                     ; // + _newline
@@ -300,15 +307,15 @@ namespace Supremacy.Client
 
                 // No Output, no MessageBox here !!
 
-            //    MessageDialogResult _result = MessageDialog.Show(_resultHeaderText
-            //        , _resultText, MessageDialogButtons.Ok);
+                //    MessageDialogResult _result = MessageDialog.Show(_resultHeaderText
+                //        , _resultText, MessageDialogButtons.Ok);
 
-            //Again:;
-            //    if (_result != MessageDialogResult.Ok)
-            //    {
-            //        Thread.Sleep(100);
-            //        goto Again;
-            //    }
+                //Again:;
+                //    if (_result != MessageDialogResult.Ok)
+                //    {
+                //        Thread.Sleep(100);
+                //        goto Again;
+                //    }
 
 
 
@@ -383,7 +390,7 @@ namespace Supremacy.Client
                 //SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
                     if (File.Exists("Resources/SoundFX/REDALERT.ogg") && ClientSettings.Current.EnableSoundRedAlert)
-                        //if (File.Exists("Resources/SoundFX/REDALERT.wav") && ClientSettings.Current.EnableSoundRedAlert)
+                    //if (File.Exists("Resources/SoundFX/REDALERT.wav") && ClientSettings.Current.EnableSoundRedAlert)
                     {
                         //ToDo
                         //_soundPlayer.PlayFile("Resources/SoundFX/REDALERT.ogg");
@@ -404,7 +411,7 @@ namespace Supremacy.Client
             //if (update.CivFirePowers4 != 0) _otherFirePower += update.CivFirePowers4;
 
             //update.GetCivFirePowers
-            _text_combatWindow =  GameEngine.LocationString(update.Location.ToString()) + " Red Alert > "
+            _text_combatWindow = GameEngine.LocationString(update.Location.ToString()) + " Red Alert > "
                 //+ " > our Fire_power_calculated: " + update.CivFirePowers1
                 //+ " vs " + update.CivFirePowers2
                 //+ " + " + update.CivFirePowers3
@@ -629,6 +636,12 @@ namespace Supremacy.Client
         {
             RadioButton radioButton1 = (RadioButton)sender;
             _targeted_civ_1 = (Civilization)radioButton1.DataContext;
+
+            //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted_civ_2.ShortName);
+            string _text_combatWindow = "Step_5486:; Primary Target is set to .. > " + _targeted_civ_1.ShortName;
+            Console.WriteLine(_text_combatWindow);
+            //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
+
             if (_targeted_civ_1.ShortName == "Only Return Fire" && _targeted_civ_2.ShortName == "Only Return Fire")
             {
                 EngageButton.IsEnabled = false;
@@ -647,7 +660,8 @@ namespace Supremacy.Client
                 || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
 
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted_civ_2.ShortName);
-            string _text_combatWindow = "Step_5486:; Primary Target is set to .. > " + _targeted_civ_1.ShortName;
+            //string 
+            _text_combatWindow = "Step_5486:; Primary Target is set to .. > " + _targeted_civ_1.ShortName;
             Console.WriteLine(_text_combatWindow);
             //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
 

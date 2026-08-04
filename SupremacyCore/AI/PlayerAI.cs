@@ -59,7 +59,7 @@ namespace Supremacy.AI
                 {
                     if (_civ.SpiedCivList.Contains(spyingCiv))
                     {
-                        if (DiplomacyHelper.AreAtWar(spyingCiv, _civ))
+                        if (DiplomacyHelper.Status_AtWar(spyingCiv, _civ))
                         {
                             DoSpySabotageMission(spyingCiv, _civ);
                         }
@@ -67,7 +67,7 @@ namespace Supremacy.AI
                         //{
                         //    // do things
                         //}
-                        else if (DiplomacyHelper.AreNeutral(spyingCiv, _civ))
+                        else if (DiplomacyHelper.Status_Neutral(spyingCiv, _civ))
                         {
                             if (spyingCiv.Traits.Contains(CivTraits.Hostile.ToString())
                                 || spyingCiv.Traits.Contains(CivTraits.Subversive.ToString())
@@ -250,7 +250,7 @@ namespace Supremacy.AI
 
                                 _civM_1.Assault_TargetCiv = _invasionCiv;
                                 lastRange = curretRange;
-                                if (!DiplomacyHelper.AreAtWar(_civ1, _civM_1.Assault_TargetCiv))
+                                if (!DiplomacyHelper.Status_AtWar(_civ1, _civM_1.Assault_TargetCiv))
                                 {
                                     _text = "Step_3321:; Declare War " + _civ1.Name + " on " + _civM_1.Assault_TargetCiv.Name
                                         ;
@@ -461,7 +461,7 @@ namespace Supremacy.AI
 
                     int distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
 
-                    if (DiplomacyHelper.AreAtWar(_civ, loopSector.Owner) && distance <= 2)
+                    if (DiplomacyHelper.Status_AtWar(_civ, loopSector.Owner) && distance <= 2)
                     {
                         borderDanger++;
                     }
@@ -475,7 +475,7 @@ namespace Supremacy.AI
                                 fleet.Owner = ship.Owner;
                             }
                         }
-                        if (!DiplomacyHelper.AreAtWar(_civ, fleet.Owner))
+                        if (!DiplomacyHelper.Status_AtWar(_civ, fleet.Owner))
                         {
                             continue;
                         }

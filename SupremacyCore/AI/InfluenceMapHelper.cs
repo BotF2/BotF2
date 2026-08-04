@@ -47,7 +47,7 @@ namespace Supremacy.AI
 
             //_ = game.Civilizations
             //    .AsParallel()
-            //    .Where(c => (owner != c) && DiplomacyHelper.AreAtWar(owner, c))
+            //    .Where(c => (owner != c) && DiplomacyHelper.Status_AtWar(owner, c))
             //    .SelectMany(c => game.Universe.FindOwned<Fleet>(c))
             //    .Where(f => f.IsCombatant)
             //    .SelectMany(f => GetFleetInfluence(game, f))

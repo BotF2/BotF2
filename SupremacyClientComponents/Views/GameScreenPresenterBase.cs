@@ -3,13 +3,19 @@ using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Resources;
 using Supremacy.Utility;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Media;
+
+//using System.Media;
 using System.Windows;
 using System.Windows.Input;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
@@ -23,6 +29,7 @@ namespace Supremacy.Client.Views
         private readonly IUnityContainer _container;
         private readonly IRegionManager _regionManager;
         private readonly EventHandler _commandManagerInvalidateRequeryHandler;
+        //private ISoundPlayer _soundPlayer = null;
         #endregion
 
         #region Constructors and Finalizers
@@ -162,6 +169,62 @@ namespace Supremacy.Client.Views
             }
             OnViewActivating();
             ClientEvents.ScreenActivated.Publish(new ScreenActivatedEventArgs(ViewName));
+            ISoundPlayer _soundPlayer = null;
+
+            switch (ViewName)
+            {
+                case "GalaxyScreen":
+                    PlayOGG("DefaultMusic");
+                    //PlayOGG("Resources\\SoundFX\\ScreenMusic\\F1_ScreenMusic.wav");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F1_ScreenMusic.wav");
+                    break;
+                case "ColonyScreen":
+                    PlayOGG("Resources/SoundFX/ScreenMusic/F2_ScreenMusic.wav");
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F2_ScreenMusic.ogg");
+                    break;
+                case "ScienceScreen":
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F3_ScreenMusic.ogg");
+                    break;
+                case "DiplomacyScreen":
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F4_ScreenMusic.ogg");
+                    break;
+                case "IntelScreen":
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F5_ScreenMusic.ogg");
+                    break;
+                case "F8-Screen":
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F8_ScreenMusic.ogg");
+                    break;
+                default:
+                    Debugger.Break();
+                    break;
+            }
+   
+        }
+
+        private void PlayOGG(string _play_file)
+        {
+            //IMusicPlayer _soundPlayer = new Supremacy.Client.Audio.MusicPlayer();
+            IMusicPlayer _musicPlayer = null;
+            //string _file = Path.Combine(Environment.CurrentDirectory, /*"@" + */_play_file);
+            //if (File.Exists(_file))
+            //{
+            //_soundPlayer.PlayFile(_file);
+            try
+            {
+            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+            }
+            catch
+            {
+                Debugger.Break();
+            }
+
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Step_0156:; non-existing file= " + _file);
+            //    Debugger.Break();
+            //}
+
         }
 
         protected virtual void OnViewActivating() { }

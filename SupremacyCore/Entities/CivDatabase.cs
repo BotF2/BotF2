@@ -300,7 +300,8 @@ namespace Supremacy.Entities
         /// <returns></returns>
         public static CivDatabase Load()
         {
-            String _text = "Step_0824:; CivDatabase: loading civilization database from " + ResourceManager.GetResourcePath(DefaultDatabasePath);   
+            String _text = "Step_0824:; " + DateTime.Now + " > CivDatabase: loading civilization database from "
+                + ResourceManager.GetResourcePath(DefaultDatabasePath);
             Console.WriteLine(_text);
             //GameLog.Core.GameData.Debug("Loading civilization database....");
             try
@@ -325,16 +326,21 @@ namespace Supremacy.Entities
                         // for problems with Civilizations.xml active ...
                         //_text = "CivDatabase: adding civilization " + civElement.ToString();
                         //Console.WriteLine(_text);
+
                         //GameLog.Core.GameData.DebugFormat(_text);
 
                         civDatabase.Add(new Civilization(civElement));
                     }
                     catch (Exception e)
                     {
+                        _text = "Step_0827:; " + DateTime.Now + " > Problem adding civilization "
+                            + civElement.ToString() +" to CivDatabase" + Environment.NewLine + e;
+                        Console.WriteLine(_text);
                         GameLog.Core.GameData.Error(string.Format("Problem adding civilization {0} to CivDatabase", civElement.ToString()), e);
+                        Debugger.Break();
                     }
                 }
-                _text = "Step_0829:; "+DateTime.Now +" > CivDatabase: loaded " + civDatabase.Count + " civilizations";
+                _text = "Step_0829:; " + DateTime.Now + " > CivDatabase: loaded " + civDatabase.Count + " civilizations";
                 Console.WriteLine(_text);
                 //GameLog.Core.GameData.Debug("Civilization database loaded");
                 return civDatabase;

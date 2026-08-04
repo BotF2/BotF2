@@ -87,7 +87,7 @@ namespace Supremacy.Client
                 //+ File.ReadAllText(filePath) + Environment.NewLine
                 ;
             Console.WriteLine("Step_9446:; " + _text);
-            GameLog.Client.General.InfoFormat("SAVE     {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+            GameLog.Client.General.InfoFormat(_text);
             //}
         }
 

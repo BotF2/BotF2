@@ -96,9 +96,9 @@ namespace Supremacy.Client
 
                 _text = _newline + _newline
                     + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/
-                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + _newline + _newline
-                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + _newline + _newline
-                    + "StackTrace complete:;" + stackTrace;
+                    + "/r/nGAME-VERSION:;" + ClientApp.ClientVersion.ToString() //+ _newline + _newline
+                    + "/r/nERROR TITLE:;" + stackTrace.Split('\n')[0] //+ _newline + _newline
+                    + "/r/nStackTrace complete:;" + stackTrace;
 
                 GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
                 Console.WriteLine(_text);
@@ -113,8 +113,8 @@ namespace Supremacy.Client
                 catch (Exception ex) 
                 {
                     _text = _newline + _newline
-                        + DateTime.Now + " #### ERROR 9998 - a missing file could be the reason as well" + _newline; 
-                    Console.WriteLine(_text);
+                        + DateTime.Now + " #### ERROR 9998 - a missing file could be the reason as well" /*+ _newline*/; 
+                    Console.WriteLine(_text + _newline + ex.ToString());
                     GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
 
 

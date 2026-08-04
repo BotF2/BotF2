@@ -620,7 +620,7 @@ namespace Supremacy.AI
                                             DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, -170);
                                         }
                                     }
-                                    else if (DiplomacyHelper.AreNeutral(counterparty, anotherCiv))
+                                    else if (DiplomacyHelper.Status_Neutral(counterparty, anotherCiv))
                                     {
                                         if (DiplomacyHelper.AreNotFriendly(owner, anotherCiv))
                                         {

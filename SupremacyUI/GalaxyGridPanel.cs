@@ -3601,6 +3601,8 @@ namespace Supremacy.UI
         public double ViewportWidth => _scrollData == null ? 0 : _scrollData.Viewport.Width;
 
         public ISoundPlayer SoundPlayer { get; } = null;
+
+        
         #endregion
 
         #region ScrollData Class

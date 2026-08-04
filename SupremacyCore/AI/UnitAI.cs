@@ -103,12 +103,26 @@ namespace Supremacy.AI
 
         public static void Do_0_Turn_Unit([NotNull] Civilization _civ)
         {
+            string _text = "";
             string _newline = Environment.NewLine;
             string _comment_inside_code = "outcommented not shown by extension but these lines are shown";
-            bool _is_player_AI_controlled = GameEngine.AI_IsPlayer_AIControllend();
-
             //_soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
+
+            bool _is_playerCiv_AI_controlled = GameEngine.AI_IsPlayer_AI_Controlled();
+            if (_is_playerCiv_AI_controlled == true)
+            {
+                _text = " > UnitAI.Do_0_Turn_Unit > _is_playerCiv_AI_controlled=" 
+                    + _is_playerCiv_AI_controlled + " for  "+ _civ.Key 
+                ;
+
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _civM.HomeSystem.Location, _text, _text, "", SitRepPriority.RedYellow));
+                
+                _text += "Step_1102:; " + DateTime.Now + _text;
+                Console.WriteLine(_text);
+            }
+
+
             if (_civ == null) { throw new ArgumentNullException(nameof(_civ)); }
 
 
@@ -265,9 +279,11 @@ namespace Supremacy.AI
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
 
-            string _text = "Step_1103:; ##################### UnitAI.Do_0_Turn_Unit begins...for "
-                            + _civ.Key + " #####################   " + DateTime.Now;
-            if (_writeDirectly_Fleets) Console.WriteLine(_text);
+            _text = "Step_1103:; "+ DateTime.Now 
+                + " > UnitAI.Do_0_Turn_Unit begins...for "
+                + _civ.Key + " #####################   " ;
+            if (_writeDirectly_Fleets) 
+                Console.WriteLine(_text);
 
             if (_civ.IsHuman)
             {
@@ -311,7 +327,7 @@ namespace Supremacy.AI
                 //        break;
                 //}
                 ////if (_writeDirectly_Colony)
-                ////if (_fleet.Owner.IsHuman)
+                ////if (_is_owner_human)
                 ////{
                 ////    Console.WriteLine("Step_7888:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary)
                 ////        //+ " > Order= " + _fleet.Order
@@ -384,7 +400,7 @@ namespace Supremacy.AI
 
 
                 // hm .. Tow is coded !!!! ???
-                if (!_is_owner_human && _is_player_AI_controlled && _fleet.LowestFuelLevel < 3        // running out of fuel
+                if (/*!_is_owner_human && */_is_playerCiv_AI_controlled && _fleet.LowestFuelLevel < 3        // running out of fuel
                     && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
                 {
                     _fleet.Route.Clear();
@@ -393,9 +409,9 @@ namespace Supremacy.AI
                     //Sector _nearestFriendly_sector = sector;
                     _fleet.SetRoute(AStar.FindPath(_fleet, PathOptions.SafeTerritory, DeathStars, new List<Sector> { _nearestFriendly_sector }));
 
-                    if (_fleet.Owner.IsHuman)
+                    if (_is_owner_human)
                     {
-                        //Debugger.Break();
+                        Debugger.Break();
                     }
                 }
 
@@ -430,7 +446,7 @@ namespace Supremacy.AI
 
                 //bool _checkFleetOrders = false;
                 //bool _checkOnlyPlayersUnits = false;
-                //if (_fleet.Owner.IsHuman)
+                //if (_is_owner_human)
                 //{
                 //    //continue;
                 //    _checkFleetOrders = true;
@@ -445,7 +461,7 @@ namespace Supremacy.AI
                 AccumulateAble_Get(_fleet, out _accumulateAble);
 
                 _text = "ToDo - bring back ACCUMULATE for human players";
-                if (_accumulateAble && !_fleet.Owner.IsHuman)
+                if (_accumulateAble && !_is_owner_human)
                 {
                     Do_2_Accumulate(_fleet);
                 }
@@ -527,7 +543,7 @@ namespace Supremacy.AI
                     //                       //    //goto End_Ships;
                     //                       //}
 
-                    if (_fleet.Owner.IsHuman)
+                    if (_is_owner_human)
                     {
                         //Debugger.Break();  // Combatant && no TargetCiv
                     }
@@ -590,7 +606,7 @@ namespace Supremacy.AI
                         // if not in home _location AND _fleet is busy in Reserve or Escort
                         // than > Go to OLD: HomeSystem, NEW: AccumulateLocation
 
-                        //if (_fleet.Owner.IsHuman) { Debugger.Break(); }
+                        //if (_is_owner_human) { Debugger.Break(); }
 
                         // so combatant ships
                         if (/*_fleet.Sector != _ourHomeSystem.Sector &&*/
@@ -1320,6 +1336,7 @@ namespace Supremacy.AI
             Sector _accumulateSector = _civM.AccumulateSector;
             string _text = "";
             string _accu_Text = "";
+            bool _is_owner_human = _fleet.Owner.IsHuman;
             //string _newline = Environment.NewLine;
 
             _text = "Step_6232:; " + CreateUpdateFleetText(_fleet, out _fleets_Summary)
@@ -1349,7 +1366,7 @@ namespace Supremacy.AI
             //    _fleet_Text += Environment.NewLine + _text;
             //}
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break(); //Do_2_Accumulate
             }
@@ -1371,7 +1388,7 @@ namespace Supremacy.AI
                     _fleet_Text += Environment.NewLine + _text;
 
                     //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                    if (_fleet.Owner.IsHuman) Debugger.Break();
+                    if (_is_owner_human) Debugger.Break();
                 }
 
 
@@ -1447,6 +1464,7 @@ namespace Supremacy.AI
             Sector _accumulateSector = _sector;
             string _text = _civM.AccumulateLocation.ToString();
             //string _newline = Environment.NewLine;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
 
 
@@ -1464,7 +1482,7 @@ namespace Supremacy.AI
                 goto No_Accumulate;
             }
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -1484,7 +1502,7 @@ namespace Supremacy.AI
                     _fleet_Text += Environment.NewLine + _text;
 
                     //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                    if (_fleet.Owner.IsHuman) Debugger.Break();
+                    if (_is_owner_human) Debugger.Break();
                 }
 
 
@@ -1529,8 +1547,9 @@ namespace Supremacy.AI
         {
             CreateUpdateFleetText(_fleet, out string _fleetText);
             Console.WriteLine("Step_3434:; " + _fleetText + " > DoBattleShips");
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();  
             }
@@ -1565,7 +1584,7 @@ namespace Supremacy.AI
 
             //checkBattleShips = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Battle)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();  // see next - DoBattleShips
             }
@@ -1598,7 +1617,7 @@ namespace Supremacy.AI
             //    _civM.Assault_Accumulate_Sector_1 = _targetSector;
             //}
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 Debugger.Break();  // see next - DoBattleShips
             }
@@ -1641,7 +1660,7 @@ namespace Supremacy.AI
                 if (_writeDirectly_Fleets) Console.WriteLine(_text);
                 //_fleet_Text += Environment.NewLine + _text;
 
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();
                 }
@@ -1696,7 +1715,7 @@ namespace Supremacy.AI
                 //_attacks
 
 
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();  // see next - DoBattleShips
                 }
@@ -1783,7 +1802,7 @@ namespace Supremacy.AI
                 //            ;
                 //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
                 //    _fleet_Text += Environment.NewLine + _text;
-                //    if (_fleet.Owner.IsHuman)
+                //    if (_is_owner_human)
                 //    {
                 //        //Debugger.Break();
                 //    }
@@ -1794,7 +1813,7 @@ namespace Supremacy.AI
                 //}
                 //}
 
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();  
                 }
@@ -1813,7 +1832,7 @@ namespace Supremacy.AI
                     //_fleet_Text += Environment.NewLine + _text;
 
 
-                    if (_fleet.Owner.IsHuman)
+                    if (_is_owner_human)
                     {
                         Debugger.Break();
                     }
@@ -1843,7 +1862,7 @@ namespace Supremacy.AI
                     if (_writeDirectly_Fleets) Console.WriteLine(_text);
                     _fleet_Text += Environment.NewLine + _text;
 
-                    if (_fleet.Owner.IsHuman)
+                    if (_is_owner_human)
                     {
                         //Debugger.Break();
                     }
@@ -1925,7 +1944,7 @@ namespace Supremacy.AI
                     ////|| !_fleet.Ships.Any(n => n.IsCombatant))
                     //) // No Combat and no transport
                     //{
-                    //    if (_fleet.Owner.IsHuman)
+                    //    if (_is_owner_human)
                     //    {
                     //        //Debugger.Break();  // see next
                     //    }
@@ -1972,7 +1991,7 @@ namespace Supremacy.AI
                     //    //    }
                     //    //}
 
-                    //    //if (_fleet.Owner.IsHuman)
+                    //    //if (_is_owner_human)
                     //    //{
                     //    //    //Debugger.Break();
                     //    //}
@@ -1980,7 +1999,7 @@ namespace Supremacy.AI
 
                     //    //if (_FirePower_Accumulated > 0 && _FirePower_Accumulated > _defenseSectorIntValue)
                     //    //{
-                    //    //    if (_fleet.Owner.IsHuman)
+                    //    //    if (_is_owner_human)
                     //    //    {
                     //    //        Debugger.Break();
                     //    //    }
@@ -2001,7 +2020,7 @@ namespace Supremacy.AI
                     //    //    _fleet_Text += Environment.NewLine + _text;
                     //    //}
 
-                    //    //if (_fleet.Owner.IsHuman)
+                    //    //if (_is_owner_human)
                     //    //{
                     //    //    //Debugger.Break();  // here_DoBattle
                     //    //}
@@ -2111,6 +2130,7 @@ namespace Supremacy.AI
         {
             _fleet.AITypeUnit = UnitAIType.Science;
             //string _newline = Environment.NewLine;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
             //CivilizationManager _civM = GameContext.Current.CivilizationManagers[_fleet.OwnerID];
             _fleet.GetCivM(_fleet, out CivilizationManager _civM);
@@ -2135,7 +2155,7 @@ namespace Supremacy.AI
             if (_writeDirectly_Fleets) Console.WriteLine(_text);
             _fleet_Text += Environment.NewLine + _text;
 
-            //if (_fleet.Owner.IsHuman)
+            //if (_is_owner_human)
             //{
             //    Debugger.Break();
             //}
@@ -2147,7 +2167,7 @@ namespace Supremacy.AI
 
             //checkScienceShips = true;
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -2230,6 +2250,7 @@ namespace Supremacy.AI
         private static void DoDiplomatic(Fleet _fleet)
         {
             string _fleetText;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
             //string _newline = Environment.NewLine;
             _fleet.GetCivM(_fleet, out CivilizationManager _civM);
             //_text = "Step_6270:; next > _fleet.IsDiplomatic   " + _fleets_Summary;
@@ -2247,7 +2268,7 @@ namespace Supremacy.AI
             //checkDiplomaticShips = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Diplomatic)
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();            
             }
@@ -2309,6 +2330,7 @@ namespace Supremacy.AI
         private static void DoSpy(Fleet _fleet)
         {
             _fleet.AITypeUnit = UnitAIType.Spy;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
             //_text = "Step_6280:; next > _fleet.IsSpy   " + _fleet_Text;
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             //if (_fleet.IsSpy) // install spy network
@@ -2332,7 +2354,7 @@ namespace Supremacy.AI
 
             //checkSpyShips = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Spy)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -2525,6 +2547,7 @@ namespace Supremacy.AI
             bool bool_bestSector = false;
             Sector _best_SectorForStation = null;
             string _newline = Environment.NewLine;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
 
             Civilization _civ = GameContext.Current.CivilizationManagers[_fleet.Owner.CivID].Civilization;
@@ -2556,7 +2579,7 @@ namespace Supremacy.AI
                         .Where(a => a.Sector == _fleet.Sector)
                         .Where(a => a.IsConstructor).ToList();// || (a.MultiFleetHasAConstructor && a.Ships.Count == 2)).ToList();
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();    //checkconstruction // for search + finding this place
             }
@@ -2634,7 +2657,7 @@ namespace Supremacy.AI
             } // end of BORG
 
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();    //checkconstruction // for search + finding this place
             }
@@ -2801,7 +2824,7 @@ namespace Supremacy.AI
                 //}
 
                 //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Construction)
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();    //checkconstruction // for search + finding this place
                 }
@@ -3030,7 +3053,7 @@ namespace Supremacy.AI
             _fleet.GetCivM(_fleet, out CivilizationManager _civM);
             GameEngine.IsCivM_Human_Player(_civM);
             bool bool_is_player_human = GameEngine.IsCivM_Human_Player(_civM);
-            //bool bool_is_player_human = _fleet.Owner.IsHuman;
+            //bool bool_is_player_human = _is_owner_human;
             bool bool_bestSector;
             string _text;
 
@@ -3084,6 +3107,7 @@ namespace Supremacy.AI
 
             _fleet.GetCivM(_fleet, out CivilizationManager _civM);
             //string _newline = Environment.NewLine;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
             //CreateUpdateFleetText(_fleet, out string _fleetText);
             // Scout
@@ -3097,7 +3121,7 @@ namespace Supremacy.AI
             //checkScoutShips;
             //_checkShips_Scout = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Scout)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 // ExploreOrder is done in FleetOrders.cs > Explore > OnTurnBegin
 
@@ -3219,6 +3243,7 @@ namespace Supremacy.AI
         {
             _fleet.AITypeUnit = UnitAIType.Transport;
             string _newline = Environment.NewLine;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
             //CreateUpdateFleetText(_fleet, out string _fleetText);
             // Scout
             //if (_fleet.IsScout) //(_fleet.Ships.Where(o => o.ShipType == ShipType.Scout).Any())
@@ -3238,7 +3263,7 @@ namespace Supremacy.AI
 
             //checkTransportShips = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Transport)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
                 //_text += ""; // dummy
@@ -3276,7 +3301,7 @@ namespace Supremacy.AI
                 Console.WriteLine(_text);
                 _fleet_Text += _newline + _text;
 
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();
                 }
@@ -3297,7 +3322,7 @@ namespace Supremacy.AI
 
             //_checkShips_Transport = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Transport)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -3309,6 +3334,7 @@ namespace Supremacy.AI
             _fleet.AITypeUnit = UnitAIType.Colonizer;
 
             string _newline = Environment.NewLine;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
             //CreateUpdateFleetText(_fleet, out string _fleetText);
             //if (_fleet.IsColonizer)// || _fleet.AITypeUnit == AITypeUnit.Colonizer)
             //{
@@ -3319,7 +3345,7 @@ namespace Supremacy.AI
             //_fleet_Text += _newline + _text;
 
             bool _colonizeable = SystemIsColonizeable(_fleet);
-            bool _bool_is_human = _fleet.Owner.IsHuman;
+            bool _bool_is_human = _is_owner_human;
 
             string _text = /*_newline + */"Step_6420:; " + CreateUpdateFleetText(_fleet, out string _fleetText) + " > _fleet.IsColonizer "
                 + " > SystemIsColonizeable= " + _colonizeable
@@ -3785,7 +3811,7 @@ namespace Supremacy.AI
                 ;
             //if (_writeDirectly_Fleets) Console.WriteLine(_text);
 
-            //if (_fleet.Owner.IsHuman) Debugger.Break();
+            //if (_is_owner_human) Debugger.Break();
 
 
             // systems is the original result
@@ -3863,7 +3889,7 @@ namespace Supremacy.AI
             //if (_writeDirectly_Fleets) Console.WriteLine(_text);
             //GameLog.Client.AI.DebugFormat("Best System for {0}, star ={1}, {2} {3}, value ={4}", _fleet.Owner, result.Name, result.StarType, result.Location, GetValue_Colonize(result, _fleet.Owner));
 
-            //if (_fleet.Owner.IsHuman) Debugger.Break();
+            //if (_is_owner_human) Debugger.Break();
 
             return true;  // returns a true for success and the found system
         }
@@ -4628,12 +4654,13 @@ namespace Supremacy.AI
             GetFleetOwnerOutOfShips(_fleet);
             string _fleetText = "";
             string _text = "";
+            bool _is_owner_human = _fleet.Owner.IsHuman;
             //string _newline = Environment.NewLine;
             // GameLog.Core.AI.DebugFormat("Constructor _fleet {0} build station at {1}, {2} UnitActivity = {3}", _fleet.Owner.Key, _fleet.Sector.Name, _fleet.Location, _fleet.Activity.ToString());
             BuildStationOrder _order = new BuildStationOrder();
             _order.BuildProject = _order.FindTargets(_fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -4664,7 +4691,7 @@ namespace Supremacy.AI
                 //if (_writeDirectly_Fleets) Console.WriteLine(_text);
                 _fleet_Text += Environment.NewLine + _text;
 
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break(); 
                 }
@@ -4729,6 +4756,7 @@ namespace Supremacy.AI
         public static bool DoConstruFindBestSector(Fleet _fleet, List<Fleet> constructionFleets, out Sector _bestSector)
         {
             _bestSector = null;
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
             if (_fleet == null || _fleet.ObjectID < 0)
             {
@@ -4982,7 +5010,7 @@ namespace Supremacy.AI
             //        {
             //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, _fleet.Owner);
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 Debugger.Break();
             }
@@ -5035,7 +5063,7 @@ namespace Supremacy.AI
             //}
 
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
 
                 Debugger.Break(); // in DoConstruFindBestSector
@@ -5084,7 +5112,7 @@ namespace Supremacy.AI
                     }
                     else
                     {
-                        if (_fleet.Owner.IsHuman)
+                        if (_is_owner_human)
                         {
                             //Debugger.Break();
                         }
@@ -5120,7 +5148,7 @@ namespace Supremacy.AI
                 }
             }
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -5153,7 +5181,7 @@ namespace Supremacy.AI
 
             //Console.WriteLine(_text_sectorValues + " from Step_5554");
 
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -5240,7 +5268,7 @@ namespace Supremacy.AI
                 //if (_writeDirectly_Colony) Console.WriteLine(_obj);
 
                 //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();
                 }
@@ -5264,7 +5292,7 @@ namespace Supremacy.AI
                 //_fleets_Summary += _newline + _text;
 
                 //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                if (_fleet.Owner.IsHuman)
+                if (_is_owner_human)
                 {
                     //Debugger.Break();
                 }
@@ -5285,7 +5313,7 @@ namespace Supremacy.AI
             //GameLog.Core.AI.DebugFormat(_text);
 
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 Debugger.Break();
             }
@@ -5333,7 +5361,7 @@ namespace Supremacy.AI
             {
                 value += FriendlyColonyPriority;
             }
-            else if (DiplomacyHelper.AreNeutral(colony.Owner, civ))
+            else if (DiplomacyHelper.Status_Neutral(colony.Owner, civ))
             {
                 value += NeutralColonyPriority;
             }
@@ -5407,7 +5435,7 @@ namespace Supremacy.AI
                 && c.Owner.Key == fleet.Owner.Key
                 && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector)
                 && GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner))
-                && !DiplomacyHelper.AreAtWar(c.Owner, fleet.Owner))
+                && !DiplomacyHelper.Status_AtWar(c.Owner, fleet.Owner))
                 //Where other med _ship is not already going
                 .Where(d => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == d.Location || d.Location == f.Location && f.Order is MedicalOrder))
                 .ToList();
@@ -5432,7 +5460,7 @@ namespace Supremacy.AI
                         //&& c.Owner.Key == _fleet.Owner.Key
                         && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector)
                         && GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner))
-                        && !DiplomacyHelper.AreAtWar(c.Owner, fleet.Owner))
+                        && !DiplomacyHelper.Status_AtWar(c.Owner, fleet.Owner))
                         //Where other med _ship is not already going
                         .Where(d => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == d.Location || d.Location == f.Location && f.Order is MedicalOrder))
                         .ToList();
@@ -5570,11 +5598,11 @@ namespace Supremacy.AI
             {
                 similarTraits += FriendlyColonyPriority;
             }
-            else if (DiplomacyHelper.AreNeutral(otherCiv, civ))
+            else if (DiplomacyHelper.Status_Neutral(otherCiv, civ))
             {
                 similarTraits += NeutralColonyPriority;
             }
-            else if (DiplomacyHelper.AreAtWar(otherCiv, civ))
+            else if (DiplomacyHelper.Status_AtWar(otherCiv, civ))
             {
                 similarTraits += EnemyColonyPriority;
             }
@@ -5602,6 +5630,7 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(_fleet));
             }
             string _text = "";
+            bool _is_owner_human = _fleet.Owner.IsHuman;
 
             List<Fleet> diplomacyFleets = GameContext.Current.Universe.FindOwned<Fleet>(_fleet.Owner)
                 .Where(o => o.IsDiplomatic).ToList();
@@ -5626,7 +5655,7 @@ namespace Supremacy.AI
                 //Where they aren't at war
                 && DiplomacyHelper.IsTravelAllowed(_fleet.Owner, c.Sector)
                 && GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(_fleet.Owner, o.Owner))
-                && !DiplomacyHelper.AreAtWar(c.Owner, _fleet.Owner))
+                && !DiplomacyHelper.Status_AtWar(c.Owner, _fleet.Owner))
                 //Where other diploatic is not already going
                 .Where(d => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == d.Location || d.Location == f.Location && f.Order is SpyOnOrder))
                 .ToList();
@@ -5653,7 +5682,7 @@ namespace Supremacy.AI
                 ;
             if (_writeDirectly_Fleets) Console.WriteLine(_text);
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-            if (_fleet.Owner.IsHuman)
+            if (_is_owner_human)
             {
                 //Debugger.Break();
             }
@@ -5708,11 +5737,11 @@ namespace Supremacy.AI
             {
                 value += FriendlyColonyPriority;
             }
-            else if (DiplomacyHelper.AreNeutral(_colony.Owner, _civ))
+            else if (DiplomacyHelper.Status_Neutral(_colony.Owner, _civ))
             {
                 value += NeutralColonyPriority;
             }
-            else if (DiplomacyHelper.AreAtWar(_colony.Owner, _civ))
+            else if (DiplomacyHelper.Status_AtWar(_colony.Owner, _civ))
             {
                 value += EnemyColonyPriority;
             }
@@ -5747,7 +5776,7 @@ namespace Supremacy.AI
             if (system.Owner != null && system.Owner != civ)
             {
                 //Civilization _otherCiv = system.Owner;
-                if (DiplomacyHelper.AreAtWar(system.Owner, civ))
+                if (DiplomacyHelper.Status_AtWar(system.Owner, civ))
                 {
                     return 0;
                 }
