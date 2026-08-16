@@ -745,23 +745,23 @@ namespace Supremacy.Client
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                _text = "Step_0711:; > DONE: IGalaxyScreenPresenter = F1-Screen";
+                _text = "Step_0711:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F1-Screen";
                 Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                _text = "Step_0712:; > DONE: IGalaxyScreenPresenter = F2-Screen";
+                _text = "Step_0712:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F2-Screen";
                 Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                _text = "Step_0714:; > DONE: IGalaxyScreenPresenter = F3-Screen";
+                _text = "Step_0714:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F3-Screen";
                 Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, IDiplomacyScreenViewSecond>>());
-                _text = "Step_0713:; > DONE: IGalaxyScreenPresenter = F4-Screen";
+                _text = "Step_0713:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F4-Screen";
                 Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                _text = "Step_0715:; > DONE: IGalaxyScreenPresenter = F5-Screen";
+                _text = "Step_0715:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F5-Screen";
                 Console.WriteLine(_text);
 
 

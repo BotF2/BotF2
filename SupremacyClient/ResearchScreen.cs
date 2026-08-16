@@ -7,24 +7,7 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Audio;
 using Supremacy.Client.Themes;
@@ -39,6 +22,22 @@ using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Supremacy.Client
 {
@@ -80,9 +79,19 @@ namespace Supremacy.Client
             }
 
             //doesn't work
-            if (_musicPlayer != null)
+            IMusicPlayer _musicPlayer = new Supremacy.Client.Audio.MusicPlayer(FMODAudioEngine.Instance, AppContext);
+            //string _file = Path.Combine(Environment.CurrentDirectory, /*"@" + */_play_file);
+            //if (File.Exists(_file))
+            //{
+            //_soundPlayer.PlayFile(_file);
+            try
             {
-            _musicPlayer.SwitchMusic("F3_ScreenMusic");
+                _musicPlayer.SwitchMusic("F3_ScreenMusic");
+                Console.WriteLine("Step_0611:; " + DateTime.Now + " > SwitchMusic to F3_ScreenMusic");
+            }
+            catch
+            {
+                Debugger.Break();
             }
 
         }

@@ -46,12 +46,13 @@ namespace Supremacy.Client
         {
             try
             {
-                // not here     _ = MessageBox.Show("New SupremacyClient..Settings.xaml generated", "INFO", MessageBoxButton.OK);
                 _attachedValues = new Dictionary<AttachableMemberIdentifier, object>();
             }
             catch
             {
-                GameLog.Client.General.ErrorFormat("Problem with SupremacyClient..Settings.xaml");
+                string _text = "Step_0281:; Problem with SupremacyClient..Settings.xaml";
+                Console.WriteLine(_text);
+                GameLog.Client.General.ErrorFormat(_text);
             }
         }
 
@@ -86,7 +87,7 @@ namespace Supremacy.Client
                 //+ "Content: (press ALT + X for Overview)" + Environment.NewLine
                 //+ File.ReadAllText(filePath) + Environment.NewLine
                 ;
-            Console.WriteLine("Step_9446:; " + _text);
+            Console.WriteLine("Step_9446:; " + DateTime.Now + " > " +_text);
             GameLog.Client.General.InfoFormat(_text);
             //}
         }
@@ -168,9 +169,10 @@ namespace Supremacy.Client
             }
             catch (Exception e)
             {
-                _text = "Step_0188:; Error at saving SupremacyClient..Settings.xaml" + Environment.NewLine + e;
+                _text = "Step_0188:; Error at saving SupremacyClient..Settings.xaml" 
+                    + Environment.NewLine + e;
+                Console.WriteLine(_text);
                 GameLog.Client.General.Error(_text);
-                //GameLog.Client.General.Error(e);
                 Debugger.Break();
             }
         }
@@ -198,7 +200,8 @@ namespace Supremacy.Client
                         try
                         {
                             // filePath = SupremacyClient..Settings.xaml
-                            string _text = "Step_0136:; for other problems: just try to deleted " + filePath + " manually from your hard disk !";
+                            string _text = "Step_0136:; for other problems: just try to deleted " 
+                                + filePath + " manually from your hard disk !";
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
 
@@ -2974,6 +2977,39 @@ namespace Supremacy.Client
             }
         }
         #endregion AddFrenchText Property
+
+        #region AI_Controls_Player Property
+        public static readonly DependencyProperty AI_Controls_Player_Property = DependencyProperty.Register(
+            "AI_Controls_Player",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> AddFrenchTextChanged;
+
+        //private void OnAddFrenchTextChanged(bool oldValue, bool newValue)
+        //=> AddFrenchTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool AI_Controls_Player
+        {
+            get => (bool)GetValue(AI_Controls_Player_Property);
+            set
+            {
+                SetValue(AI_Controls_Player_Property, value);
+                //GameLog.Client.General.InfoFormat("AI_Controls_Player = {0}", value);
+                if (value)
+                {
+                    GameLog.SetRepositoryToDebug("AI_Controls_Player");
+                }
+                else
+                {
+                    GameLog.SetRepositoryToErrorOnly("AI_Controls_Player");
+                }
+            }
+        }
+        #endregion AI_Controls_Player Property
 
 
         #region WidthSpecial1 Property

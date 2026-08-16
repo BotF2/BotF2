@@ -627,7 +627,8 @@ namespace Supremacy.Client.Views
             //}
             //string _path_Lib = ResourceManager.GetResourcePath(".\\lib");
 
-            System.Media.SoundPlayer _wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
+            System.Media.SoundPlayer _wav_player = 
+                new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav");
             _wav_player.Play();
 
             string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon");

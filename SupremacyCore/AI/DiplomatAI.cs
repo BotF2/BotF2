@@ -790,7 +790,7 @@ namespace Supremacy.AI
                     _diploSummary += Environment.NewLine + _sb.ToString();
                 }
             }
-            Console.WriteLine(string.Concat("\r\nStep_7733:; Begin of _diploSummary\r\n", _diploSummary, "\r\nEnd of _diploSummary from Step_7733\r\n"));
+            Console.WriteLine(string.Concat("\r\nStep_7733:; Begin of _diploSummary", _diploSummary, "\r\nEnd of _diploSummary from Step_7733\r\n"));
         }
 
         //private static void DoSabotage(ForeignPower foreignPower, Civilization otherCiv)

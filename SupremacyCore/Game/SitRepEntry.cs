@@ -990,10 +990,10 @@ namespace Supremacy.Game
             _return_text = scriptExpression.Evaluate<string>(parameters);
 
             // too often
-            if (_return_text.Contains("Federation"))
-            {
-                Console.WriteLine("Step_5424:; " + _return_text);
-            }
+            //if (_return_text.Contains("Federation"))
+            //{
+            //    Console.WriteLine("Step_5424:; " + _return_text);
+            //}
 
             return _return_text;
         }
@@ -1014,7 +1014,7 @@ namespace Supremacy.Game
             {
                 if (proposal.HasTreaty()) // has clause of treaty type including WarPact
                 {
-                    if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                    if (proposal.HasClause(ClauseType.TreatyCeaseFire)) // \Resources\Data\DiplomacyText.xaml
                     {
                         //return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
                         _return_text = (detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText).ToString();
@@ -2823,6 +2823,9 @@ namespace Supremacy.Game
         {
             get
             {
+                string _now_available_for_SitRep = "Research >" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE");
+                // The following technologies are now available:
+
                 StringBuilder sb = new StringBuilder();
                 _ = sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
@@ -2830,6 +2833,7 @@ namespace Supremacy.Game
                     _ = sb.Append(Environment.NewLine
                         + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE")
                         + Environment.NewLine);
+
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {
                         TechObjectDesign design = GameContext.Current.TechDatabase[_newDesignIds[i]];
@@ -2840,9 +2844,20 @@ namespace Supremacy.Game
 
                         _ = sb.Append(Environment.NewLine);
                         _ = sb.Append(ResourceManager.GetString(design.Name));
+                        _now_available_for_SitRep += ResourceManager.GetString(design.Name) + ", ";
 
                     }
                 }
+                if (_now_available_for_SitRep == "")
+                {
+                    _now_available_for_SitRep = "None";
+                }
+                else
+                {
+                    GameContext.Current.CivilizationManagers[Owner].SitRepEntries
+                        .Add(new ReportEntry_NoAction(Owner, _now_available_for_SitRep, "", "", SitRepPriority.Gray));
+                }
+
                 return sb.ToString();
             }
         }

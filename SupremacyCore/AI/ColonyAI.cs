@@ -61,6 +61,7 @@ namespace Supremacy.AI
                 + ": Deu=" + _civM.Resources.Deuterium.CurrentValue
                 + ", Dur=" + _civM.Resources.Duranium.CurrentValue
                 + ", Dil=" + _civM.Resources.Dilithium.CurrentValue
+                + ", Cr=" + _civM.Credits.CurrentValue
                 + ", Console-Output= " + _writeDirectly_Colony.ToString()
                 + Environment.NewLine
                 ;
@@ -371,44 +372,36 @@ namespace Supremacy.AI
                             Handle_Labors_for_Nothing_to_Build(_colony);
                         }
 
-                        if (_colony.Shipyard != null)
-                        {
-                            //if (_colony.Owner.IsHuman)
-                            //{
-                            //    //Debugger.Break();
-                            //}
+                        Handle_Ship_Production(_colony, _colony.Owner);
 
-                            //CheckFor_OFF_ShipProduction(_colony);
-                            if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
-                            {
-                                Handle_Ship_Production(_colony, _colony.Owner);//, _listPrioShipBuild_tmp);
-                                                                             //    old
-                                                                             //    if (_civ.IsEmpire) { HandleShipProductionEmpire(_colony, _civ); }
-                                                                             //    else { HandleShipProductionMinor(_colony, _civ); }
-                            }
-                            else
-                            {
-                                _text = GameEngine.LocationString(_colony.Location.ToString())
-                                    + " " + _colony.Name
-                                    + " > Empire is in financial problems and can not afford ShipBuilding ( Limit is -2000 )"
-                                    ;
-                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.RedYellow));
 
-                                if (_writeDirectly_Colony) Console.WriteLine("Step_1426:; " + _text);
-                                _colony_full_Report += _newline + "Step_1426:; " + _text;
-                            }
-                        }
-                        else
-                        {
-                            _text = "Step_1437:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
-                                    + " > has no Shipyard"
-                                            ;
-                            if (_writeDirectly_Colony) Console.WriteLine(_text);
-                            _colony_full_Report += _newline + _text;
-                        }
+                        //    if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
+                        //    {
+                        //        Handle_Ship_Production(_colony, _colony.Owner);
+                        //    }
+                        //    else
+                        //    {
+                        //        _text = GameEngine.LocationString(_colony.Location.ToString())
+                        //            + " " + _colony.Name
+                        //            + " > Empire is in financial problems and can not afford ShipBuilding ( Limit is -2000 )"
+                        //            ;
+                        //        _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.RedYellow));
 
-                    } // end of foreach _colony
-                    //}
+                        //        if (_writeDirectly_Colony) Console.WriteLine("Step_1426:; " + _text);
+                        //        _colony_full_Report += _newline + "Step_1426:; " + _text;
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    _text = "Step_1437:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
+                        //            + " > has no Shipyard"
+                        //                    ;
+                        //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+                        //    _colony_full_Report += _newline + _text;
+                        //}
+
+                        // end of foreach _colony
+                    }
                 }// end of try
                 catch (Exception e)
                 {
@@ -421,7 +414,8 @@ namespace Supremacy.AI
 
 
 
-                _text = "Step_1107:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony is done..................";
+                _text = "Step_1107:; " + GameEngine.LocationString(_colony.Location.ToString()) 
+                    + " Colony is done.................." + _newline;
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
 
@@ -447,7 +441,7 @@ namespace Supremacy.AI
             string _newline = Environment.NewLine;
             string _text = /*_newline + */"Step_1218:; " + GameEngine.LocationString(_colony.Location.ToString())
                     + " > " + _name_col + " ; " + _owner_col
-                    + " > Check for Colony_Step_80_Handle_Flex_Production (older code): "
+                    + " > Colony_Step_80_Handle_Flex_Prod.(older code): "
                     + ", BuildQueue.Count= " + _colony.BuildQueue.Count
                     + ", _colony.AvailableLabor= " + _colony.AvailableLabor
                     ;
@@ -874,7 +868,7 @@ namespace Supremacy.AI
                     _colony.RemoveFacility(ProductionCategory.Research);
                     _text = "Step_1434:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Research on; "*/
                         + " > " + _name_col + " ; " + _owner_col
-                        + " >  Check for Research > "
+                        + " > Check for Research > "
                         + "current " + _colony.Facilities_Total4_Research
                         + ", calc by maxPop= (max) " + _researchCalc
                         + " > removed ONE facility "
@@ -895,23 +889,13 @@ namespace Supremacy.AI
                 _text = " > _bool_colony_is_AI_Controlled="
                         + _bool_colony_is_AI_Controlled + " for _colony " + _colony
                         ;
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _civM.HomeSystem.Location
+                    , _text, _text, "", SitRepPriority.RedYellow));
+
+                _text = "Step_1102:; " + DateTime.Now + _text;
                 //if (_writeDirectly_Fleets) 
                 Console.WriteLine(_text);
-                _text += "Step_1102:; " + DateTime.Now + _text;
-
-                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _civM.HomeSystem.Location, _text, _text, "", SitRepPriority.RedYellow));
             }
-
-
-
-            _text = Environment.NewLine + "Step_1102:; " + GameEngine.LocationString(_colony.Location.ToString()) + " *** " + _name_col + " " + _owner_col
-                + " * > AIcontrolled= " + _bool_colony_is_AI_Controlled // + " ) > Handling _colony"
-                + "; BuildQueue.Count= " + _colony.BuildQueue.Count // + " ) > Handling _colony"
-                                                                    //+ " Energy > Food > B_Structures > Buildings > Add_Str > Upgrades > BuildQueues "
-                ;
-            if (_writeDirectly_Colony) 
-                Console.WriteLine(_text);
-            _colony_full_Report += Environment.NewLine + _text;
         }
 
         private static void CheckFor_2_Industry_Facility(Colony _colony, BuildProject _available_item, ProductionCategory _available_item_Category)
@@ -1114,7 +1098,7 @@ namespace Supremacy.AI
             {
                 _text = "Step_1411:; " + GameEngine.LocationString(_colony.Location.ToString()) /*+ " Check for Food on; "*/
                     + " > " + _name_col + " ; " + _owner_col
-                    + " > BuildQueue of " + _total + " > # " + i + " > " + _colony.BuildQueue[i].Description
+                    + " > DoTurn - BuildQueue of " + _total + " > # " + i + " > " + _colony.BuildQueue[i].Description
 
                     ;
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1637,8 +1621,10 @@ namespace Supremacy.AI
 
             double maxFoodProduction = _colony.GetProductionModifier(ProductionCategory.Food).Bonus + (_colony.GetTotalFacilities(ProductionCategory.Food) * foodOutput);
 
-            _text = "Step_1220:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Colony_Step_05_Handle_Food_Production on; "
+            _text = "Step_1220:; " + GameEngine.LocationString(_colony.Location.ToString())
+
                     + _name_col + " ; " + _owner_col
+                    + " > Colony_Step_05_Handle_Food_Production on; "
                     + "; neededFood= " + (int)neededFood
                     + "; maxFoodProduction= " + (int)maxFoodProduction
                     + "; for Pop= " + _colony.Population
@@ -1683,9 +1669,9 @@ namespace Supremacy.AI
             }
 
             _text = "Step_1222:; " + GameEngine.LocationString(_colony.Location.ToString())
-                + " > Colony_Step_05_Handle_Food_Production is DONE; "
-                    + _name_col + " ; " + _owner_col
 
+                    + _name_col + " ; " + _owner_col
+                    + " > Colony_Step_05_Handle_Food_Production is DONE; "
                     + "; neededFood= " + (int)neededFood
                     + "; maxFoodProduction= " + (int)maxFoodProduction
                     + "; for Pop= " + _colony.Population
@@ -1917,8 +1903,10 @@ namespace Supremacy.AI
                     //if (flexLabors > -21)  // 2 more facilites as available labors, 10 labors = 1 facility
                     if (flexLabors > 4)  // 2 more facilites as available labors, 10 labors = 1 facility
                     {
-                        _text = "Step_1204:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony_Step_65_Handle_Buildings on INDUSTRY at "
-                            + _name_col + " " + _owner_col
+                        _text = "Step_1204:; " 
+                            + GameEngine.LocationString(_colony.Location.ToString()) 
+                            + " > " + _name_col + " ; " + _owner_col
+                            + " > Colony_Step_65_Handle_Buildings on INDUSTRY at "
                             + " > " + _colony.GetAvailableLabor() + " labors available"
                             ;
                         if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -1940,8 +1928,11 @@ namespace Supremacy.AI
                         {
                             //than Research
                             _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, _colony.GetFacilityType(ProductionCategory.Industry))));
-                            _text = "Step_1256:; " + GameEngine.LocationString(_colony.Location.ToString()) + " Colony_Step_65_Handle_Buildings on "
-                                + _name_col + " " + _owner_col
+                            _text = "Step_1256:; " 
+                                + GameEngine.LocationString(_colony.Location.ToString()) 
+
+                                + " > " + _name_col + " " + _owner_col
+                                + " > Colony_Step_65_Handle_Buildings on "
                                 + " > added 1 Industry Facility Build Order"
                                 ;
                             if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -3585,31 +3576,32 @@ namespace Supremacy.AI
 
                     if (_buyQuick == true || _turnsNeeded > 1 && _turnsNeeded < 3 || _cost < 600)  // we buy when turnsNeede = 2 or _cost less than 600
                     {
-                        _text = "Step_1210:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle_Buy_Build: "
-                            + "Credits.Current= " + _civM.Credits.CurrentValue
-                            + ", Costs= " + _cost
-                            + ", _industryNeeded= " + _industryNeeded
-                            + ", prodOutput= " + (int)prodOutput
-                            + ", _turnsNeeded= " + _turnsNeeded
-                            + " > IsRushed for " + s.Project
-                            + " on " + _name_col + " " + s.Project.Location
-                        ;
-                        if (_writeDirectly_Colony) Console.WriteLine(_text);
-                        _colony_full_Report += _newline + _text;
+                        // Step_1522 below works
+                        //_text = "Step_1210:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > Handle_Buy_Build: "
+                        //    + "Credits.Current= " + _civM.Credits.CurrentValue
+                        //    + ", Costs= " + _cost
+                        //    + ", _industryNeeded= " + _industryNeeded
+                        //    + ", prodOutput= " + (int)prodOutput
+                        //    + ", _turnsNeeded= " + _turnsNeeded
+                        //    + " > IsRushed for " + s.Project
+                        //    + " on " + _name_col + " " + s.Project.Location
+                        //;
+                        //if (_writeDirectly_Colony) Console.WriteLine(_text);
+                        //_colony_full_Report += _newline + _text;
 
                         s.Project.IsRushed = true;
 
                         _text = GameEngine.LocationString(_colony.Location.ToString())
-                            + " " + _colony.Name
+                            + " > " + _colony.Name
                             + " > Order to buy of " + s.Project.BuildDesign
 
                             + " ( turns needed: " + _turnsNeeded 
-                            + ", costs: " + _cost + " ) "
+                            + ", costs: " + _cost 
                             + ", Credits: " + _civM.Credits.CurrentValue + " ) "
                             ;
                         _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.Gray));
 
-                        if (_writeDirectly_Colony) Console.WriteLine("Step_1422:; " + _text);
+                        if (_writeDirectly_Colony) Console.WriteLine("Step_1522:; " + _text);
                         _colony_full_Report += _newline + "Step_1426:; " + _text;
 
                         //while (_colony.Facility_Deactivate(ProductionCategory.Industry)) { }  ??
@@ -3621,11 +3613,41 @@ namespace Supremacy.AI
 
         private static void Handle_Ship_Production(Colony _colony, Civilization _civ) //, Dictionary<ShipType, Tuple<int, string>> _listPrioShipBuild)
         {
+            string _text = "";
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[_colony.Owner.CivID];
             //bool bool_is_human = GameEngine.AI_IsPlayer_AI_Controlled;
-            if (_civ.IsHuman)
+            if (_civ.IsHuman && _bool_colony_is_AI_Controlled == false)
                 return;
 
-            if (_colony.Shipyard == null) { return; }
+            if (_colony.Shipyard == null) 
+            {
+                _text = "Step_1437:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
+                        + " > has no Shipyard"
+                ;
+                if (_writeDirectly_Colony) 
+                    Console.WriteLine(_text);
+                _colony_full_Report += Environment.NewLine + _text;
+
+                return; 
+            }
+
+            if (PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
+            {
+                Handle_Ship_Production(_colony, _colony.Owner);
+            }
+            else
+            {
+                _text = GameEngine.LocationString(_colony.Location.ToString())
+                    + " " + _colony.Name
+                    + " > Empire is in financial problems and can not afford ShipBuilding ( Limit is -2000 )"
+                    ;
+                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.RedYellow));
+
+                if (_writeDirectly_Colony) Console.WriteLine("Step_1426:; " + _text);
+                _colony_full_Report += Environment.NewLine + "Step_1426:; " + _text;
+            }
+        
+
 
             if (_colony.Shipyard.BuildQueue.Count > 1)
             { goto ProcessQueue; }
@@ -3634,12 +3656,12 @@ namespace Supremacy.AI
             IList<BuildProject> projects = potentialProjects; // projects identical with _potentialProjects
 
             Sector homeSector = GameContext.Current.CivilizationManagers[_civ].SeatOfGovernment.Sector;
-            CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
+            /*CivilizationManager */_civM = GameContext.Current.CivilizationManagers[_civ.CivID];
 
             List<ShipDesign> shipDesigns = GameContext.Current.TechTrees[_colony.OwnerID].ShipDesigns.ToList();
 
             string _newline = Environment.NewLine;
-            string _text = /*_newline + */"Step_5780:; " + GameEngine.LocationString(_colony.Location.ToString()) + " ShipProduction > " + _name_col;
+            /*string */_text = /*_newline + */"Step_5780:; " + GameEngine.LocationString(_colony.Location.ToString()) + " ShipProduction > " + _name_col;
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             //_colony_full_Report += _newline + _text;
 

@@ -331,15 +331,27 @@ namespace Supremacy.Combat
             const bool _generateBlanketOrdersTracing = true;
             Civilization owner = assets.Owner;
             CombatOrders orders = new CombatOrders(owner, assets.CombatID);
+            string _text = "";
 
             foreach (CombatUnit ship in assets.CombatShips)  // CombatShips
             {
                 orders.SetOrder(ship.Source, order);
 
-                if (_generateBlanketOrdersTracing && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
+                if (_generateBlanketOrdersTracing)// && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("{0} {1} {2} is ordered to {3}",
-                        ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+                    _text = "Step_3561:; "
+                        + "" + GameEngine.LocationString(ship.Source.Location.ToString())
+                        + " > cHelper     CombUnits > "
+                        + order + " for "
+                        + ship.Source.ObjectID
+                        + " " + ship.Source.Name
+                        + " ( " + ship.Source.Design
+                        + " ) " 
+                        
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.CombatDetails.DebugFormat("{0} {1} {2} is ordered to {3}",
+                    //    ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
                 }
             }
 
@@ -349,10 +361,22 @@ namespace Supremacy.Combat
                 orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
                 orders.SetOrder(ship.Source, (order == CombatOrder.Transports) ? CombatOrder.Standby : order);
                 orders.SetOrder(ship.Source, (order == CombatOrder.Formation) ? CombatOrder.Standby : order);
-                //if (_generateBlanketOrdersTracing == true && order != CombatOrder.Hail)  // reduces lines especially on starting (all ships starting with Hail)
-                //{
-                //    //GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) is ordered to {3}", ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
-                //}
+                if (_generateBlanketOrdersTracing)// && order != CombatOrder.Hail) // reduces lines especially on starting (all ships starting with Hail)
+                {
+                    _text = "Step_3562:; "
+                        + "" + GameEngine.LocationString(ship.Source.Location.ToString())
+                        + " > cHelper Non-CombUnits > "
+                        + order + " for "
+                        + ship.Source.ObjectID
+                        + " " + ship.Source.Name
+                        + " ( " + ship.Source.Design
+                        + " ) "
+
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.CombatDetails.DebugFormat("{0} {1} {2} is ordered to {3}",
+                    //    ship.Source.ObjectID, ship.Source.Name, ship.Source.Design, order);
+                }
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -364,6 +388,14 @@ namespace Supremacy.Combat
                 //}
             }
 
+            //foreach (var _order in orders)
+            //{
+            //    _text = _order.ToString()
+            //        //_order.ToString()
+            //        ;
+            //    Console.WriteLine(_text);
+            //}
+
             return orders;
         }
 
@@ -371,13 +403,20 @@ namespace Supremacy.Combat
         {
             Civilization owner = assets.Owner;
             CombatTargetPrimaries targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
+            string _text = "";
 
             foreach (CombatUnit ship in assets.CombatShips)  // all CombatShips  of civ should get this target in the CombatTargetPrimaries dictionary
             {
                 if (target.CivID == -1 || target == null)
                 {
-                    targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.CombatDetails.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    targetOne.SetTargetOneCiv(ship.Source, GetDefault_OnlyReturnFireCiv_888());
+                    _text = "Step_5632:; CombatAsset ship = " + ship.Owner.Key
+                        + "" + ship.Description
+                        + ", DummyTarget= " + GetDefault_OnlyReturnFireCiv_888()
+
+                        ;
+
+                    GameLog.Core.CombatDetails.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefault_OnlyReturnFireCiv_888().Key);
                 }
                 else
                 {
@@ -391,8 +430,8 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    targetOne.SetTargetOneCiv(ship.Source, GetDefault_OnlyReturnFireCiv_888());
+                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefault_OnlyReturnFireCiv_888().Key);
                 }
                 else
                 {
@@ -405,8 +444,8 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetOne.SetTargetOneCiv(assets.Station.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.CombatDetails.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    targetOne.SetTargetOneCiv(assets.Station.Source, GetDefault_OnlyReturnFireCiv_888());
+                    GameLog.Core.CombatDetails.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefault_OnlyReturnFireCiv_888().Key);
                 }
                 else
                 {
@@ -426,7 +465,7 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1 || target == null) // UPDATE X 04 july 2019 manualy re-do update from ken, to fix targetTwo bug
                 {
-                    targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
+                    targetTwo.SetTargetTwoCiv(ship.Source, GetDefault_OnlyReturnFireCiv_888());
                 }
                 else
                 {
@@ -440,7 +479,7 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetTwo.SetTargetTwoCiv(ship.Source, GetDefaultHoldFireCiv());
+                    targetTwo.SetTargetTwoCiv(ship.Source, GetDefault_OnlyReturnFireCiv_888());
                 }
                 else
                 {
@@ -451,7 +490,7 @@ namespace Supremacy.Combat
             {
                 if (target.CivID == -1)
                 {
-                    targetTwo.SetTargetTwoCiv(assets.Station.Source, GetDefaultHoldFireCiv());
+                    targetTwo.SetTargetTwoCiv(assets.Station.Source, GetDefault_OnlyReturnFireCiv_888());
                 }
                 else
                 {
@@ -521,9 +560,9 @@ namespace Supremacy.Combat
             return (int)result;
         }
 
-        public static Civilization GetDefaultHoldFireCiv()
+        public static Civilization GetDefault_OnlyReturnFireCiv_888()
         {
-            // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
+            // The 'never clicked a target button' target civilization for a human player so was it a hail order or an engage order?
 
             return new Civilization
             {

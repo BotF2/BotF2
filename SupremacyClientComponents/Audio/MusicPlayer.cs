@@ -5,6 +5,7 @@ using Supremacy.Annotations;
 using Supremacy.Resources;
 using Supremacy.Client.Context;
 using Supremacy.Utility;
+using System.Diagnostics;
 
 namespace Supremacy.Client.Audio
 {
@@ -221,7 +222,11 @@ namespace Supremacy.Client.Audio
                         CurrentAudioTrack = _engine.CreateTrack(
                             ResourceManager.GetResourcePath(_musicEntry.Value.FileName));
 
-                        GameLog.Client.Audio.DebugFormat("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
+                        _text = "Step_9115:; " + DateTime.Now
+                                    + " > _musicEntry.Value.FileName= > " + _musicEntry.Value.FileName
+                                    ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.Audio.DebugFormat("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
 
                         if (CurrentAudioTrack != null)
                         {
@@ -239,6 +244,7 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
+                Debugger.Break();
                 GameLog.Client.Audio.Error(e);
             }
         }
@@ -272,7 +278,12 @@ namespace Supremacy.Client.Audio
                     }
 
                     {
-                        GameLog.Client.Audio.DebugFormat("Switch = true (1), _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Key);
+                        _text = "Step_9113:; " + DateTime.Now 
+                            + "_musicPack=" + _musicPack.Name
+                            + ", Entry=" + _musicEntry.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.Audio.DebugFormat("Switch = true (1), _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Key);
                         return true;
                     }
                 }

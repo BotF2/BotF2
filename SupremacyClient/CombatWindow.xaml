@@ -961,29 +961,16 @@
                     </Button.ToolTip>
                 </Button>
             </StackPanel>
-            <StackPanel x:Name="LowerButtonsPanel"
+
+          <!--LowerButtonsPanel-->
+          <StackPanel x:Name="LowerButtonsPanel"
                         Margin="6"
                         Grid.Column="1"
                         Grid.ColumnSpan="3"
                         Grid.Row="0"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <Button x:Name="FormationButton"
-                        Style="{DynamicResource StandardButtonStyle}"
-                        Margin="6,0,0,0"
-                        Content="{s:StringResource COMBAT_FORMATION}"
-                        Click="OnOrderButtonClicked">
-                    <Button.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    FontSize="16pt"
-                                    Text="{s:StringResource COMBAT_FORMATION_BUTTON_TOOLTIP}">
-                                </TextBlock>
-                            </StackPanel>
-                        </ToolTip>
-                    </Button.ToolTip>
-                </Button>
+                       
                 <Button x:Name="HailButton"
                         Style="{DynamicResource StandardButtonStyle}"
                         Margin="6,0,0,0"
@@ -1000,6 +987,7 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
+            
                 <Button x:Name="RetreatButton"
                         Style="{DynamicResource StandardButtonStyle}"
                         Margin="6,0,0,0"
@@ -1016,6 +1004,24 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
+
+            <Button x:Name="FormationButton"
+        Style="{DynamicResource StandardButtonStyle}"
+        Margin="6,0,0,0"
+        Content="{s:StringResource COMBAT_FORMATION}"
+        Click="OnOrderButtonClicked">
+              <Button.ToolTip>
+                <ToolTip>
+                  <StackPanel>
+                    <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                        FontSize="16pt"
+                        Text="{s:StringResource COMBAT_FORMATION_BUTTON_TOOLTIP}">
+                    </TextBlock>
+                  </StackPanel>
+                </ToolTip>
+              </Button.ToolTip>
+            </Button>
+            
             </StackPanel>
         </StackPanel>
 

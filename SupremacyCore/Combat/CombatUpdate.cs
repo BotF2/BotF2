@@ -113,7 +113,8 @@ namespace Supremacy.Combat
                 + " > update for civID= " + owner.CivID
                 + " = " + owner.Key + "  << ####################"
                 ;
-            if (Write_Combat_Directly) Console.WriteLine(_text);
+            //if (Write_Combat_Directly) 
+            //    Console.WriteLine(_text);
             _CombatUpdate_Text += _text;
             //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -361,15 +362,27 @@ namespace Supremacy.Combat
             //this.
             //    string _civ_short_name = _civFirePowerList.FirstOrDefault();
             List<string> _civNameList = new List<string>();
+            List<string> _civStatusList = new List<string>();
             List<Civilization> _civList = new List<Civilization>();
             foreach (var item in _hostileAssets)
             {
                 _civNameList.Add(item.Owner.Name);
                 _civList.Add(GameContext.Current.Civilizations[item.Owner.CivID]);
-
             }
-            _civNameList = _civNameList.Distinct().ToList();
+
             _civList = _civList.Distinct().ToList();
+            _civNameList = _civNameList.Distinct().ToList();
+
+            foreach (var item in _civList)
+            {
+                Diplomat _diplomat = Diplomat.Get(item);
+                string _status = _diplomat.GetForeignPower(GameContext.Current.Civilizations[item.CivID]).DiplomacyData.Status.ToString();
+                //ForeignPower _foreignPower = _diplomat.GetForeignPower(item.Owner);
+
+                _civStatusList.Add(_status);
+            }
+                //_civStatusList = _civStatusList.Distinct().ToList();
+
 
             _civName1 = "";
             _civName2 = "";
@@ -394,18 +407,19 @@ namespace Supremacy.Combat
                     {
                         _civName2 = _civNameList[i];
                         _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", "");
-                        _civStatus2 = CivStatus2;
+                        _civStatus2 = _civStatusList[i-1];
+                        //CivStatus2 = _civStatus2;
                     }
                     if (i == 2)
                     {
                         _civName3 = _civNameList[i];
-                        _civInsigniaOther3 = _civNameList[i]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
+                        _civInsigniaOther3 = _civNameList[i-1]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
                         _civStatus3 = CivStatus3;
                     }
                     if (i == 3)
                     {
                         _civName4 = _civNameList[i];
-                        _civInsigniaOther4 = _civNameList[i]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
+                        _civInsigniaOther4 = _civNameList[i-1]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
                         _civStatus4 = CivStatus4;
                     }
                 }
@@ -1060,19 +1074,21 @@ namespace Supremacy.Combat
         public bool IsStandoff { get; }
         public bool CombatUpdate_IsCombatOver // This bool opens and closes the 'close' button and the combat order buttons
         {
+
             get
             {
+            string _text = "";
                 //CivName_GetOthers();
                 //CivFirePowerText_GetOthers();
-
-
 
                 //GetCurrentCivStrength(FriendlyAssets);
                 //GetCurrentCivStrength(HostileAssets);
 
-                string _text = "Step_3381:; cUpda: > Result ? (this is CombatUpdate_IsCombatOver)";
-                if (Write_Combat_Directly) Console.WriteLine(_text);
-                _CombatUpdate_Text += _text;
+
+                // not here
+                //string _text = "Step_3381:; cUpda: > Result ? (this is CombatUpdate_IsCombatOver)";
+                //if (Write_Combat_Directly) Console.WriteLine(_text);
+                //_CombatUpdate_Text += _text;
 
                 if (IsStandoff)
                 {

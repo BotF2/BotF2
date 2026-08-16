@@ -260,17 +260,30 @@ namespace Supremacy.Diplomacy
             {
                 foreach (var _p in _foreignPowers)
                 {
-                    _foreignPowers_text += "\r\n" + _p.Owner;
+                    string _has_pending_action = "";
+                    if (_p.PendingAction != PendingDiplomacyAction.None)
+                    {
+                        _has_pending_action = " > has_pending_action";
+                    }
+                    
+
+                    _foreignPowers_text += Environment.NewLine 
+                        //+ _p.Counterparty
+                        + _p.All_Info
+                        + _has_pending_action
+
+                        ;
+
                 }
             }
 
                 if (GameContext.Current != null) // && GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
             {
-                _text = "Step_0262:; "+DateTime.Now+"Deserialize "
+                _text = Environment.NewLine + "Step_0262:; "+DateTime.Now+"Deserialize "
                     + "OwnerId= " + _ownerId
                     + ";" + _foreignPowers.Count + "; _foreignPowers"
                     + "; SeatofG= " + _seatOfGovernmentId
-                    + "_foreignPowers_text=" + _foreignPowers_text
+                    + "_foreignPowers_text=" + _foreignPowers_text // uses Step_6661
                     ;
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoadDetails.DebugFormat(_text);

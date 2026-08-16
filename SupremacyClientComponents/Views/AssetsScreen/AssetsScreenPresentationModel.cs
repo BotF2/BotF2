@@ -852,7 +852,7 @@ namespace Supremacy.Client.Views
                 catch (Exception e)
                 {
                     Meter zero = new Meter(0, 0, 0);
-                    _text = "Step_5424:; trying to return Spied_2_Civ.Civilization =;" + civManager.Civilization.Key;
+                    _text = "Step_5425:; trying to return Spied_2_Civ.Civilization =;" + civManager.Civilization.Key;
                     Console.WriteLine(_text);
                     GameLog.Core.Intel.WarnFormat(_text);
                     GameLog.Core.General.Error(e);

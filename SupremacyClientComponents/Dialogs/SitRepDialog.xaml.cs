@@ -347,6 +347,7 @@ namespace Supremacy.Client.Dialogs
         {
 
             NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
+            ClientSettings.Current.SaveClientSettings();
             Close();
             if (_musicPlayer != null)
             {

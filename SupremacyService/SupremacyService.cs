@@ -1499,7 +1499,7 @@ namespace Supremacy.WCF
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
 
-            Console.WriteLine("Step_3013:; SupService.cs > " + GameEngine.LocationString(assets[0].Sector.Location.ToString()) + " > OnCombatOccurring ... populating _combatEngine ");
+            //Console.WriteLine("Step_3013:; SupService.cs > " + GameEngine.LocationString(assets[0].Sector.Location.ToString()) + " > OnCombatOccurring ... populating _combatEngine ");
             _combatEngine = new CombatEngineAutomated(
                 assets,
                 SendCombatUpdateCallback,
@@ -1532,7 +1532,13 @@ namespace Supremacy.WCF
                             Console.WriteLine(_text);
                         }
                     }
-                    catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
+                    catch (Exception e)
+                    {
+                        _text = "Step_7878:; _combatEngine.SubmitOrders > " + ">> Problem with null in SubmitOrders(orders)" + e;
+                        Console.WriteLine(_text);
+                        Debugger.Break();
+                        //GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); 
+                    }
 
                     if (_combatEngine != null && _combatEngine.Ready)
                     {
@@ -1542,8 +1548,14 @@ namespace Supremacy.WCF
             }
             catch (Exception e)
             {
-                GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
+                _text = "Step_7879:; null reference old closed issue #164 {0} appears not to crash code > " 
+                    + orders.ToString()
+                    + e;
+                Console.WriteLine(_text);
+
+                //GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
                 GameLog.Server.Combat.Error(e);
+                Debugger.Break();
             }
         }
 
@@ -1566,6 +1578,7 @@ namespace Supremacy.WCF
             {
                 GameLog.Server.Combat.DebugFormat("SendCombatTargetOnes null reference issue #164 {0}", target1.ToString());
                 GameLog.Server.Combat.Error(e);
+                Debugger.Break();
             }
         }
 
@@ -1588,6 +1601,7 @@ namespace Supremacy.WCF
             {
                 GameLog.Server.Combat.DebugFormat("SendCombatTargetTwos null reference issue #164 {0}", target2.ToString());
                 GameLog.Server.Combat.Error(e);
+                Debugger.Break();
             }
         }
         //public void SendIntelOrders(IntelOrders intelOrders)
@@ -1613,8 +1627,8 @@ namespace Supremacy.WCF
         //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
-            string _text = "Step_3007:; SendCombatUpdateCallback ...";
-            Console.WriteLine(_text);
+            string _text = "Step_3027:; SendCombatUpdateCallback ...";
+            //Console.WriteLine(_text);
             //GameLog.Client.GameData.DebugFormat(_text);
 
             GameContext.PushThreadContext(_game);
@@ -1646,8 +1660,6 @@ namespace Supremacy.WCF
                     ShortName = "Only Return Fire",
                     CivID = 888,
                     Key = "Only Return Fire",
-                    //TargetCiv1Status = "",
-                    //TargetCiv2Status = ""
                 }; // The AI generates a dummy target for non-human player civ
 
                 CombatOrder blanketOrder = CombatOrder.Engage;
@@ -1694,6 +1706,7 @@ namespace Supremacy.WCF
                 catch (Exception e) //ToDo: Just log or additional handling necessary?
                 {
                     GameLog.Server.Combat.Error(e);
+                    Debugger.Break();
                 }
 
                 finally

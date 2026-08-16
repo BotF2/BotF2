@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 //using Supremacy.Client;
+using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
@@ -49,7 +50,7 @@ namespace Supremacy.Combat
         private readonly SendCombatUpdateCallback _updateCallback;
         private readonly NotifyCombatEndedCallback _combatEndedCallback;
         private readonly Dictionary<int, CombatOrders> _orders; // locked to evaluate one civ at a time for combat order, key is OwnerID int
-        private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like _orders
+        private readonly Dictionary<int, CombatTargetPrimaries> _targetOneByCiv; // like orders
         private readonly Dictionary<int, CombatTargetSecondaries> _targetTwoByCiv;
         protected Dictionary<int, int> _empireStrengths; // civID and int is total fire power of civ
         protected Dictionary<int, int> _civDurabilities; // cidID and int is total fire power of civ
@@ -246,8 +247,9 @@ namespace Supremacy.Combat
             bool _combatWriteDirectly = true;
             string _newline = Environment.NewLine;
 
-            string _text = /*_newline + */"Step_3012:; protected CombatEngine...";
-            if (_combatWriteDirectly) Console.WriteLine(_text);
+            string _text = /*_newline + */"Step_3012:; CombatEngine.cs > protected CombatEngine...";
+            //if (_combatWriteDirectly) 
+            //Console.WriteLine(_text);
             //_combatEngine_full_Report += _newline + _text;
 
             _running = false;
@@ -265,7 +267,7 @@ namespace Supremacy.Combat
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             _updateCallback = updateCallback ?? throw new ArgumentNullException(nameof(updateCallback));
             _combatEndedCallback = combatEndedCallback ?? throw new ArgumentNullException(nameof(combatEndedCallback));
-            _orders = new Dictionary<int, CombatOrders>(); // in CombatOrders class there is the _orders dictionary of int object orbital id and value enum combat order. Here int is OwnerID
+            _orders = new Dictionary<int, CombatOrders>(); // in CombatOrders class there is the orders dictionary of int object orbital id and value enum combat order. Here int is OwnerID
             _empireStrengths = new Dictionary<int, int>();
             //Dictionary<string, int> 
             _civDurabilities = new Dictionary<int, int>();
@@ -280,7 +282,8 @@ namespace Supremacy.Combat
             _sectorString = GameEngine.LocationString(_assets[0].Location.ToString())/* + " > "*/;
 
             _text = "Step_3017:; " + _sectorString + "_combatId = " + CombatID + ", _roundNumber = " + _roundNumber; //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
-            if (_combatWriteDirectly) Console.WriteLine(_text);
+            //if (_combatWriteDirectly) 
+            //    Console.WriteLine(_text);
             _combatEngine_full_Report += _newline + _text;
             //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -313,41 +316,43 @@ namespace Supremacy.Combat
         public void SubmitOrders(CombatOrders orders)
         {
             string _text = "";
-            lock (SyncLock) //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+                //Lock is the keyword in C# that will ensure one thread is executing a piece of code at one time.
+            lock (SyncLock) 
+
             {
-                _orders[888] = orders;
-                _orders[999] = orders;
-                _orders[777] = orders;
-                if (!_orders.ContainsKey(orders.OwnerID))
+                this._orders[888] = orders;
+                //orders[999] = orders;
+                this._orders[777] = orders;
+                if (!this._orders.ContainsKey(orders.OwnerID))
                 {
-                    _orders[orders.OwnerID] = orders;
-                    _text = "Step_3078:; adding orders in dictionary for civ.ID " + orders.OwnerID + " > " + _orders[orders.OwnerID].ToString();
+                    this._orders[orders.OwnerID] = orders;
+                    //var _list = orders[orders.OwnerID].
 
-                    // not available or: _orders_orders[orders.OwnerID].Values._orders.Value = Retreat
-
-
-                    Console.WriteLine(_text);
+                    // doesn't work
+                    //_text = "Step_3078:; adding orders in dictionary for civ.ID= " + orders.OwnerID + " > "; // + orders.targe ToString();
+                    //// not available or: _orders_orders[orders.OwnerID].Values.orders.Value = Retreat
+                    //Console.WriteLine(_text);
                     //_combatEngine_full_Report += _newline + _text;
                     //GameLog.Core.CombatDetails.DebugFormat(_text);
                 }
 
-                List<int> outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
-                List<int> dummyIDs = new List<int>
+                List<int> _outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
+                List<int> _dummyIDs = new List<int>
                 {
-                    777, // was set to 775
-                    888,
-                    999
+                    777 
+                    , 888
+                    //, 999
                 };
-                outstandingOrders.AddRange(dummyIDs);
+                _outstandingOrders.AddRange(_dummyIDs);
 
-                lock (_orders)
+                lock (this._orders)
                 {
-                    foreach (int civKey in _orders.Keys)
+                    foreach (int civKey in this._orders.Keys)
                     {
-                        _ = outstandingOrders.Remove(civKey);
+                        _ = _outstandingOrders.Remove(civKey);
                     }
 
-                    if (outstandingOrders.Count == 0)
+                    if (_outstandingOrders.Count == 0)
                     {
                         _ready = true;
                     }
@@ -417,6 +422,11 @@ namespace Supremacy.Combat
             {
                 Running = true;
 
+                //if (orders.ord == "999")
+                //{
+
+                //}
+
                 //RunningTargetOne = true; // 2025-02-08
 
                 _assets.ForEach(a => a.CombatID = CombatID); // assign combatID for each asset _assets
@@ -435,21 +445,23 @@ namespace Supremacy.Combat
                 RechargeWeapons();
                 ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
 
-                if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
-                {
+                //if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
+                //{
                     PerformAssimilation();
-                }
+                //}
 
 
                 _text = "Step_3194:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at PerformRetreat";
-                if (_combatWriteDirectly) Console.WriteLine(_text);
+                if (_combatWriteDirectly) 
+                    Console.WriteLine(_text);
                 _combatEngine_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
                 PerformRetreat();
 
                 _text = "Step_3196:; " + _sectorString + "_combatId = " + CombatID + " > ResolveCombatRound - at UpdateOrbitals";
-                if (_combatWriteDirectly) Console.WriteLine(_text);
+                if (_combatWriteDirectly) 
+                    Console.WriteLine(_text);
                 _combatEngine_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -759,9 +771,10 @@ namespace Supremacy.Combat
         public void SendInitialUpdate()
         {
             string _text = "Step_3007:; cEngine > Called SendInitalUpdate to now call SendUpdates()";
-            bool _combatWriteDirectly = true;
+            //bool _combatWriteDirectly = true;
 
-            if (_combatWriteDirectly) Console.WriteLine(_text);
+            //if (_combatWriteDirectly) 
+            //    Console.WriteLine(_text);
             //_combatEngine_full_Report += _newline + _text;
             //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -773,7 +786,8 @@ namespace Supremacy.Combat
             string _text = "Step_3010:; cEngine > SendUpdates"; // Step_3020 is enough
             bool _combatWriteDirectly = true;
 
-            if (_combatWriteDirectly) Console.WriteLine(_text);
+            //if (_combatWriteDirectly) 
+            //    Console.WriteLine(_text);
             //_combatEngine_full_Report += _newline + _text;
             //bool _allreadySitRepDONE = false;
 
@@ -799,7 +813,8 @@ namespace Supremacy.Combat
                                                       //    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
                                                       //}
                 _text = "Step_3020:; " + _sectorString + " cEngine > SendUpdates for current _leftSideAssets = " + _leftSideAssets.Owner.Key;
-                if (_combatWriteDirectly) Console.WriteLine(_text);
+                //if (_combatWriteDirectly) 
+                    Console.WriteLine(_text);
                 //_combatEngine_full_Report += _newline + _text; // > less output !!
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -1111,16 +1126,19 @@ namespace Supremacy.Combat
         /// <returns></returns>
         private void CalculateEmpireStrengths()
         {
-            _empireStrengths = new Dictionary<int, int>();
+            _empireStrengths = new Dictionary<int, int>{ { 888,888} };
             string _text = "";
-            foreach (Tuple<CombatUnit, CombatWeapon[]> combatShip in _combatShips)
+            string _strength_text = _sectorString;
+
+            foreach (Tuple<CombatUnit, CombatWeapon[]> _combatShip in _combatShips)
             {
-                if (!_empireStrengths.ContainsKey(combatShip.Item1.Owner.CivID))
+                if (!_empireStrengths.ContainsKey(_combatShip.Item1.Owner.CivID))
                 {
-                    _empireStrengths[combatShip.Item1.Owner.CivID] = 0;
+                    _empireStrengths[_combatShip.Item1.Owner.CivID] = 0;
                 }
-                _empireStrengths[combatShip.Item1.Owner.CivID] += combatShip.Item1.Source.Fire_Power_Orbital;
+                _empireStrengths[_combatShip.Item1.Owner.CivID] += _combatShip.Item1.Source.Fire_Power_Orbital;
             }
+
             if (_combatStation != null)
             {
                 if (!_empireStrengths.ContainsKey(_combatStation.Item1.Owner.CivID))
@@ -1130,17 +1148,29 @@ namespace Supremacy.Combat
                 _empireStrengths[_combatStation.Item1.Owner.CivID] += _combatStation.Item1.Source.Fire_Power_Orbital;
             }
 
-            foreach (KeyValuePair<int, int> empire in _empireStrengths)
+            _empireStrengths.RemoveWhere(o => o.Key.ToString() == "888");
+
+            foreach (KeyValuePair<int, int> _empire in _empireStrengths)
             {
-                _text = "Step_3053:; " + _sectorString
-                    + " > " + GameEngine.Do_x_Digit_String( 5, empire.Value.ToString())
-                    + " = Strength for civID " + empire.Key;
-                // Detailed_Log(_text);
-                Console.WriteLine(_text);
+                _strength_text += " > "
+                    + GameContext.Current.CivilizationManagers[_empire.Key].Civilization.Key
+                    + "= " + GameEngine.Do_x_Digit_String(5, _empire.Value.ToString())
+                    + ", " //+ _empire.Key + " = "+ GameContext.Current.CivilizationManagers[_empire.Key].Civilization.Key;
+                    ;
+                Console.WriteLine("Step_3053:; cEngine " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
                 //Civilization civ = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
-                //GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(new ReportEntry_CoS(civ, _assets.First().Location, _text, "", "", SitRepPriority.Red));
-                //makes crash !!   _empireStrengths.Add(empire.Key, empire.Value);
+                GameContext.Current.CivilizationManagers[_empire.Key]
+                    .SitRepEntries.Add(new ReportEntry_CoS(GameContext.Current.CivilizationManagers[_empire.Key].Civilization
+                    , _assets.First().Location, _text, "", "", SitRepPriority.Red));
+                //makes crash !!
+                //_empireStrengths.Add(_empire.Key, _empire.Value);
+            }
+            foreach (KeyValuePair<int, int> _empire in _empireStrengths)
+            {
+                GameContext.Current.CivilizationManagers[_empire.Key]
+                    .SitRepEntries.Add(new ReportEntry_CoS(GameContext.Current.CivilizationManagers[_empire.Key].Civilization
+                    , _assets.First().Location, _strength_text, "", "", SitRepPriority.Aqua));
             }
         }
 
@@ -1268,12 +1298,12 @@ namespace Supremacy.Combat
             //{
 
             //    Detailed_Log(_sectorString + "Try Get Order for " + source.ObjectID + " " + source.Name + " " + source.Design.Name);
-            //    //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
+            //    //if(orders[source.OwnerID].GetOrder(source) == CombatOrder.)
 
-            //    _localOrder = _orders[source.OwnerID].GetOrder(source);
-            //    //_localOrder = _orders[_orders.Count-1].GetOrder(source);
+            //    _localOrder = orders[source.OwnerID].GetOrder(source);
+            //    //_localOrder = orders[orders.Count-1].GetOrder(source);
             //    Detailed_Log(_sectorString + "Got Order for " + source.ObjectID + " " + source.Name + " " + source.Design.Name
-            //        + " -> order = " + _orders[source.OwnerID].GetOrder(source));
+            //        + " -> order = " + orders[source.OwnerID].GetOrder(source));
             //    return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
             //}
             //catch //(Exception e)
@@ -1303,7 +1333,7 @@ namespace Supremacy.Combat
         //{
         //    Dictionary<int, CombatOrder> dictionary = new Dictionary<int, CombatOrder>();
         //    dictionary.Add( source.ObjectID, order);
-        //    _orders[source.OwnerID].Add(source.OwnerID, dictionary);
+        //    orders[source.OwnerID].Add(source.OwnerID, dictionary);
         //}
 
         protected Civilization GetTargetOne(Orbital source)
@@ -1322,7 +1352,7 @@ namespace Supremacy.Combat
             }
             else
             {
-                return CombatHelper.GetDefaultHoldFireCiv();
+                return CombatHelper.GetDefault_OnlyReturnFireCiv_888();
             }
         }
         protected Civilization GetTargetTwo(Orbital source)
@@ -1336,7 +1366,7 @@ namespace Supremacy.Combat
             }
             else
             {
-                return CombatHelper.GetDefaultHoldFireCiv();
+                return CombatHelper.GetDefault_OnlyReturnFireCiv_888();
             }
         }
 

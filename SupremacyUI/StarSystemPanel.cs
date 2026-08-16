@@ -438,6 +438,7 @@ namespace Supremacy.UI
             TextBlock details = new TextBlock();
 
             string _text = "";
+            string _newline = Environment.NewLine;
 
             name.FontFamily = FontFamily;
             name.FontSize = (double)fontSize.ConvertFrom("14pt");
@@ -469,6 +470,10 @@ namespace Supremacy.UI
             {
                 name.Text = ResourceManager.GetString("STAR_TYPE_NEBULA");
                 details.Text = ResourceManager.GetString("STAR_TYPE_NEBULA_DESCRIPTION");
+                if (ClientSettings.Current.AddGermanText)
+                {
+                    details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_NEBULA_DESCRIPTION");
+                }
                 _ = statsPanel.Children.Add(details);
             }
             else if ((system != null) && !IsExplored(Sector) && StarHelper.SupportsPlanets(system))
@@ -482,39 +487,59 @@ namespace Supremacy.UI
                     case StarType.BlackHole:
                         name.Text = ResourceManager.GetString("STAR_TYPE_BLACK_HOLE");
                         details.Text = ResourceManager.GetString("STAR_TYPE_BLACK_HOLE_DESCRIPTION");
+                        if (ClientSettings.Current.AddGermanText)
+                        {
+                            details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_BLACK_HOLE_DESCRIPTION");
+                        }
                         _ = statsPanel.Children.Add(details);
                         break;
                     case StarType.Wormhole:
                         name.Text = string.Format(ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
                             system.Name);
                         details.Text = ResourceManager.GetString("STAR_TYPE_WORMHOLE_DESCRIPTION");
+                        if (ClientSettings.Current.AddGermanText)
+                        {
+                            details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_WORMHOLE_DESCRIPTION");
+                        }
                         _ = statsPanel.Children.Add(details);
                         break;
                     case StarType.Quasar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_QUASAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_QUASAR_DESCRIPTION");
+                        if (ClientSettings.Current.AddGermanText)
+                        {
+                            details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_QUASAR_DESCRIPTION");
+                        }
                         _ = statsPanel.Children.Add(details);
                         break;
 
                     case StarType.NeutronStar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_NEUTRONSTAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_NEUTRONSTAR_DESCRIPTION");
+                        if (ClientSettings.Current.AddGermanText)
+                        {
+                            details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_NEUTRONSTAR_DESCRIPTION");
+                        }
                         _ = statsPanel.Children.Add(details);
                         break;
 
                     case StarType.RadioPulsar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_RADIOPULSAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_RADIOPULSAR_DESCRIPTION");
+                        if (ClientSettings.Current.AddGermanText)
+                        {
+                            details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_RADIOPULSAR_DESCRIPTION");
+                        }
                         _ = statsPanel.Children.Add(details);
                         break;
 
                     case StarType.XRayPulsar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
-                        //if (ClientSettings.Current.AddGermanText)
-                        //{
-                        //    details.Text += GameEngine._newline + ResourceManager.Get_DE_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
-                        //}
+                        if (ClientSettings.Current.AddGermanText)
+                        {
+                            details.Text += _newline + ResourceManager.GetString("DE_STAR_TYPE_XRAYPULSAR_DESCRIPTION");
+                        }
                         //if (ClientSettings.Current.AddFrenchText)
                         //{
                         //    details.Text += GameEngine._newline + ResourceManager.Get_FR_String("STAR_TYPE_XRAYPULSAR_DESCRIPTION");

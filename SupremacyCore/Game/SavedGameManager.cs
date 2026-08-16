@@ -434,29 +434,45 @@ namespace Supremacy.Game
             string _game_mod_text = "null";
             if (_game.GameMod != null) _game_mod_text = _game.GameMod.ToString();
 
-            CSV_ADD("TurnNumber", _game.TurnNumber.ToString() );
-            CSV_ADD("IsMultiplayerGame", _game.IsMultiplayerGame.ToString() );
-            CSV_ADD("GameMod", _game_mod_text );
-            CSV_ADD("CivCount", _game.Civilizations.Count.ToString() );
+            CSV_ADD("", "");
+            CSV_ADD("TurnNumber ", _game.TurnNumber.ToString()); ///**/ + ", CivCount= " + _game.Civilizations.Count/*.ToString()*/);
+            //CSV_ADD("IsMultiplayerGame", _game.IsMultiplayerGame.ToString() );
+            //CSV_ADD("GameMod", _game_mod_text );
+            CSV_ADD("CivCount= ", _game.Civilizations.Count.ToString());
 
             foreach (var item in _game.Civilizations)
             {
-                CSV_ADD("CivID", item.CivID.ToString() 
-                                 +";"+ item.Key
-                );
-                
+                //CSV_ADD("CivID", item.CivID.ToString() 
+                //                 +";"+ item.Key
+                //);
+
                 CivilizationManager _civM = GameContext.Current.CivilizationManagers[item.CivID];
-                CSV_ADD("CivM"
-                    , _civM.Credits.CurrentValue.ToString()
-                    + ";" + _civM.Z_RankingCredits
+                // ";" for use as csv-file
+                CSV_ADD(GameEngine.Do_x_Digit_String(3, _civM.CivilizationID.ToString())
+                    +"_"+ _game.TurnNumber.ToString(), 
+                    " " + GameEngine.Do_x_String(13,_civM.Civilization.ToString())
+                    + "; Col=" + GameEngine.Do_x_Digit_String(2, _civM.Colonies.Count.ToString())
+                    + "; TPop= " + GameEngine.Do_x_Digit_String(4, _civM.TotalPopulation.ToString())
+                    + "; AvMor= " + GameEngine.Do_x_Digit_String(3, _civM.AverageMorale.ToString())
+                    + "; AvTLvl= " + _civM.AverageTechLevel//.ToString())
+                    + "; R3R= " + GameEngine.Do_x_Digit_String(3, _civM.Z_RankingResearch.ToString())
+                     + "; Cr= " + GameEngine.Do_x_Digit_String(6, _civM.Credits.CurrentValue.ToString())
+                    //+ "; R1C= " + _civM.Z_RankingCredits // not relevant, AI has a big advantage !
 
-                    + ";" + _civM.MaintenanceCostLastTurn
-                    + ";" + _civM.Z_RankingMaint
-                    + ";" + _civM.Z_RankingResearch
-                    + ";" + _civM.Z_RankingIntelAttack
+                    + "; Maint= " + GameEngine.Do_x_Digit_String(5, _civM.MaintenanceCostLastTurn.ToString())
 
-                    + ";" + _civM.AverageMorale
-                    + ";" + _civM.AverageTechLevel
+                    + "; R2M= " + GameEngine.Do_x_Digit_String(3, _civM.Z_RankingMaint.ToString())
+
+                    + "; R4A= " + GameEngine.Do_x_Digit_String(3, _civM.Z_RankingIntelAttack.ToString())
+
+
+                    //+ "; TRes= " + GameEngine.Do_x_Digit_String(6, _civM.TotalResearch.ToString())
+                    //+ "; Treas=" + _civM.Treasury
+                    + "; InTRou= " + GameEngine.Do_x_Digit_String(4, _civM.IncomeFromTrade.ToString())
+
+                    + "; BuyC= " + GameEngine.Do_x_Digit_String(4, _civM.BuyCostLastTurn.ToString())
+                    //+ "; Col=" + _civM.Colonies.Count
+                    //+ "; for " + _civM.CivilizationID + " = " + _civM.Civilization
                     );
             }
 

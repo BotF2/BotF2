@@ -132,7 +132,7 @@ namespace Supremacy.Diplomacy
         {
             get
             {
-                string _all_info ="Step_6661:; "+ Owner + ", Counterparty= " + Counterparty
+                string _all_info ="Step_6671:; "+ Owner + ", Counterparty= " + Counterparty
                     + " > " + this.Owner
 
                     ;

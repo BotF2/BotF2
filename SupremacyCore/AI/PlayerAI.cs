@@ -40,7 +40,7 @@ namespace Supremacy.AI
         #region DoTurn from GameEngine
         public static void DoTurn(Civilization _civ)
         {
-            _text = "Step_1131:; PlayerAI begins... for CivID " + _civ.CivID + " " + _civ.Key
+            _text = "\r\nStep_1131:; PlayerAI begins... for CivID " + _civ.CivID + " " + _civ.Key
                     ;
             Console.WriteLine(_text);
 
@@ -548,7 +548,7 @@ namespace Supremacy.AI
         private static int Calculate_fire_power_ships_and_station(MapLocation _location)
         {
             int firePower = 0;
-            _text = "Step_1131:; location= " + _location.ToString()
+            _text = "Step_1141:; Calculate_fire_power_ships_and_station > for location= " + _location.ToString()
                     ;
             //Console.WriteLine(_text);
             
@@ -578,7 +578,7 @@ namespace Supremacy.AI
                 {
                     firePower += ship.Fire_Power_Orbital;
 
-                    _text = "Step_1147:; " + UnitAI.CreateShipText(ship, out string shiptext) + " > has fire power= " + firePower;
+                    _text = "Step_1147:; " + UnitAI.CreateShipText(ship, out string shiptext) + " > FirePow= " + firePower;
                     Console.WriteLine(_text);
                     
                     // GameLog.Client.AI.DebugFormat("A ship all attack ships {0} location ={1}", ship.Name, ship.Location );

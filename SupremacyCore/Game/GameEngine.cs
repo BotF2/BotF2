@@ -569,7 +569,7 @@ namespace Supremacy.Game
             foreach (Orbital item in _all_orbitals)
             {
                 item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
-                _text = "Step_1051:; _fleet.Order?.OnTurnBeginning() for= "
+                _text = "Step_1051:; OnTurnBegin= "
                     + UnitAI.CreateShipText(item as Ship, out string _fleet_text)
                 //+ " ( station? )"
                 //+ " > _fleet.Order?.OnTurnBeginning()"
@@ -723,10 +723,10 @@ namespace Supremacy.Game
                 Find_Locations_To_Build_Stations(_civM);
 
                 //_text = "Step_1152:;"
-                _text = "Step_1154:;"
-                    + " Locations_To_Explore.Count= " + GameEngine.Do_x_Digit_String(2, _civM.Locations_To_Explore.Count.ToString())
-                    + ", Locations_To_Build_Stations.Count= " + GameEngine.Do_x_Digit_String(2, _civM.Locations_To_Build_Stations.Count.ToString())
-                    + ", Locations_To_NOT_Build_Stations.Count= " + GameEngine.Do_x_Digit_String(2, _civM.Locations_To_NOT_Build_Stations.Count.ToString())
+                _text = "Step_1155:;"
+                    + " Locations(Counted) for _To_Explore= " + GameEngine.Do_x_Digit_String(2, _civM.Locations_To_Explore.Count.ToString())
+                    + ", for _To_Build_Stations= " + GameEngine.Do_x_Digit_String(2, _civM.Locations_To_Build_Stations.Count.ToString())
+                    + ", for _To_NOT_Build_Stations.Count= " + GameEngine.Do_x_Digit_String(2, _civM.Locations_To_NOT_Build_Stations.Count.ToString())
                     + " for= " + _civM.Civilization + " > Fire_Power_Space=" + _civM.FirePowerSpace;
                 //Console.WriteLine(_text);
                 _pre_turn_text += Environment.NewLine + _text;
@@ -3558,7 +3558,7 @@ namespace Supremacy.Game
 
 
                 GameContext.PushThreadContext(_game);
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[_civ.CivID];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
 
                 //if (_civM_1 == null)
                 //    goto NoCivM;
@@ -3566,29 +3566,42 @@ namespace Supremacy.Game
                 try
                 {
                     //CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_civ.CivID];
-                    if (civManager == null)
+                    if (_civM == null)
                         goto NoCivM;
 
-                    int _rp = 2 + civManager.Colonies.Sum(c => c.GetProductionOutput(ProductionCategory.Research));
+                    int _rp = 2 + _civM.Colonies.Sum(c => c.GetProductionOutput(ProductionCategory.Research));
 
 
 
                     //if (GameContext.Current.TurnNumber / 2 == (float)GameContext.Current.TurnNumber / 2)
                     //{
                     //if (!_civM_1.Civilization.IsHuman) 
-                    if (!civManager.Civilization.IsHuman)
+                    if (_civM.Civilization.IsHuman
+                        && GameEngine.AI_IsPlayer_AI_Controlled() == false)  // Do_17_Research
                     {
-                        civManager.Research.Distributions[0].SetValueInternal(0.16f);
-                        civManager.Research.Distributions[1].SetValueInternal(0.19f); // these 3 are more important
-                        civManager.Research.Distributions[2].SetValueInternal(0.20f);
-                        civManager.Research.Distributions[3].SetValueInternal(0.18f);
-                        civManager.Research.Distributions[4].SetValueInternal(0.14f);
-                        civManager.Research.Distributions[5].SetValueInternal(0.13f);
+
+                    }
+                    else 
+                    { 
+                        _civM.Research.Distributions[0].SetValueInternal(0.16f);
+                        _civM.Research.Distributions[1].SetValueInternal(0.19f); // these 3 are more important
+                        _civM.Research.Distributions[2].SetValueInternal(0.20f);
+                        _civM.Research.Distributions[3].SetValueInternal(0.18f);
+                        _civM.Research.Distributions[4].SetValueInternal(0.14f);
+                        _civM.Research.Distributions[5].SetValueInternal(0.13f);
+
+                        var _average_research = _civM.Research.CumulativePoints.CurrentValue / 6;
+
+                        _text = "Step_3774:; Research "
+                            + " > Total=" + _civM.TotalResearch.CurrentValue
+                            //+ " > Total=" + _civM.Research.
+
+                            ;
                     }
 
 
                     IEnumerable<Ship> scienceShips = _game.Universe.Find<Ship>(UniverseObjectType.Ship)
-                        .Where(s => s.OwnerID == civManager.CivilizationID
+                        .Where(s => s.OwnerID == _civM.CivilizationID
                         && s.ShipType == ShipType.Science).ToList();
 
                     foreach (var item in scienceShips)
@@ -3608,18 +3621,18 @@ namespace Supremacy.Game
 
                     _text = Environment.NewLine + "Step_8766:; " + _civ.Name + " > Research.UpdateResearch"
                         + " with RP= " + _rp
-                        + ", before= " + civManager.Research.CumulativePoints
+                        + ", before= " + _civM.Research.CumulativePoints
 
                         ;
                     //if (_writeDirectly) Console.WriteLine(_text);
 
 
 
-                    civManager.Research.UpdateResearch(_rp);
+                    _civM.Research.UpdateResearch(_rp);
 
                     _text = /*_newline + */"Step_8767:; " + _civ.Name + " > Research.UpdateResearch"
                         + " with RP= " + _rp
-                        + ", after= " + civManager.Research.CumulativePoints
+                        + ", after= " + _civM.Research.CumulativePoints
 
                         ;
                     //if (_writeDirectly) Console.WriteLine(_text);
@@ -6503,12 +6516,12 @@ namespace Supremacy.Game
 
             bool _writeDirectly = true;
 
-            string _text = "Red Alert at " + _combat[0].Location /*+ " - involved:"*/;
+            string _text = LocationString(_combat[0].Location.ToString()) + " > Red Alert > ";
             for (int i = 0; i < _combat.Count(); i++)
             {
 
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[_combat[i].OwnerID];
-                _text += " > " + civManager.Civilization.ShortName + ": ";
+                _text += " > " + civManager.Civilization.ShortName + " > ";
 
                 if (_combat[i].CombatShips != null)
                 {
@@ -6530,7 +6543,7 @@ namespace Supremacy.Game
                 GameContext.Current.CivilizationManagers[_combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(_combat[i].Owner, _combat[i].Location, _text, "", "", SitRepPriority.RedYellow));
             }
 
-            _text = "Step_0877:; GameEngins.cs > " + _text;
+            _text = "Step_0876:; " + _text;
             if (_writeDirectly) Console.WriteLine(_text);
 
             CombatOccurring?.Invoke(_combat);
@@ -6624,10 +6637,10 @@ namespace Supremacy.Game
             return _v;
         }
 
-        public static string DummyText(string _v) // string = orientated left
-        {
-            return _v;
-        }
+        //public static string DummyText(string _v) // string = orientated left
+        //{
+        //    return _v;
+        //}
 
         public static string Do_x_String(int _how_many, string _v) // string = orientated left
         {

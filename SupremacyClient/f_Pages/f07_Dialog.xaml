@@ -921,7 +921,7 @@ RequestNavigate="DoLink"> Vorta </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Voth" 
-RequestNavigate="DoLink"> Voth </Hyperlink>
+RequestNavigate="DoLink"> ( Voth ) </Hyperlink>
 
 -
 <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Vulcan" 
