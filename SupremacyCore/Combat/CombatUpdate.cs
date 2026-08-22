@@ -76,6 +76,9 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException(nameof(owner));
             }
 
+            CivName_GetOthers(hostileAssets.ToList());
+            CivFirePowerText_GetOthers(hostileAssets.ToList());
+
             bool yesStandoff;
             if (hostileAssets.Count == 0)
             {
@@ -97,8 +100,8 @@ namespace Supremacy.Combat
             FriendlyAssets = friendlyAssets ?? throw new ArgumentNullException(nameof(friendlyAssets));
             HostileAssets = hostileAssets ?? throw new ArgumentNullException(nameof(hostileAssets));
 
-            CivName_GetOthers(hostileAssets.ToList());
-            CivFirePowerText_GetOthers(hostileAssets.ToList());
+            //CivName_GetOthers(hostileAssets.ToList());
+            //CivFirePowerText_GetOthers(hostileAssets.ToList());
 
             //GameLog.Core.CombatDetails.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
             //    "Civilization owner = {3}, location = {4}, friendlyAssetsCount = {5}, hostileAssetsCount = {6}",

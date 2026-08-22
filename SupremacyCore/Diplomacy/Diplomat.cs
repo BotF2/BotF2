@@ -279,11 +279,11 @@ namespace Supremacy.Diplomacy
 
                 if (GameContext.Current != null) // && GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
             {
-                _text = Environment.NewLine + "Step_0262:; "+DateTime.Now+"Deserialize "
+                _text = Environment.NewLine + "Step_0262:; "+DateTime.Now+" > Deserialize "
                     + "OwnerId= " + _ownerId
-                    + ";" + _foreignPowers.Count + "; _foreignPowers"
-                    + "; SeatofG= " + _seatOfGovernmentId
-                    + "_foreignPowers_text=" + _foreignPowers_text // uses Step_6661
+                    + ";" + _foreignPowers.Count + " _foreignPowers"
+                    //+ "; SeatofG= " + _seatOfGovernmentId
+                    + "; >> " /*+ "_foreignPowers_text= >> "*/ + _foreignPowers_text // uses Step_6661
                     ;
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoadDetails.DebugFormat(_text);

@@ -1992,10 +1992,10 @@ namespace Supremacy.Game
 
                 _text = "Step_6002:; "
                     + "Turn " + GameContext.Current.TurnNumber
-                    + " > " + _fleet.Owner.Name
-                    + " " + _singleShipDesign
-                    + " > " + _fleet.ObjectID
-                    + " " + _fleet.Name
+                    + " > " /*+ _fleet.Owner.Name*/
+                    /*+ " "*/ + _singleShipDesign
+                    + " > " /*+ _fleet.ObjectID*/
+                    /*+ " "*/ + _fleet.Name
 
                     + " at " + _fleet.Location
 
@@ -3571,7 +3571,13 @@ namespace Supremacy.Game
 
                     int _rp = 2 + _civM.Colonies.Sum(c => c.GetProductionOutput(ProductionCategory.Research));
 
-
+                    float[] _research_mod = { -0.01f, +0.02f, +0.03f, +0.01f, -0.02f, -0.03f };
+                    //float _research_mod_0 = -0.01f;
+                    //float _research_mod_1 = +0.02f;
+                    //float _research_mod_2 = +0.03f;
+                    //float _research_mod_3 = +0.01f;
+                    //float _research_mod_4 = -0.02f;
+                    //float _research_mod_5 = -0.03f;
 
                     //if (GameContext.Current.TurnNumber / 2 == (float)GameContext.Current.TurnNumber / 2)
                     //{
@@ -3583,21 +3589,85 @@ namespace Supremacy.Game
                     }
                     else 
                     { 
-                        _civM.Research.Distributions[0].SetValueInternal(0.16f);
-                        _civM.Research.Distributions[1].SetValueInternal(0.19f); // these 3 are more important
-                        _civM.Research.Distributions[2].SetValueInternal(0.20f);
-                        _civM.Research.Distributions[3].SetValueInternal(0.18f);
-                        _civM.Research.Distributions[4].SetValueInternal(0.14f);
-                        _civM.Research.Distributions[5].SetValueInternal(0.13f);
-
-                        var _average_research = _civM.Research.CumulativePoints.CurrentValue / 6;
+                        //_civM.Research.Distributions[0].SetValueInternal(0.16f);
+                        //_civM.Research.Distributions[1].SetValueInternal(0.19f); // these 3 are more important
+                        //_civM.Research.Distributions[2].SetValueInternal(0.20f);
+                        //_civM.Research.Distributions[3].SetValueInternal(0.18f);
+                        //_civM.Research.Distributions[4].SetValueInternal(0.14f);
+                        //_civM.Research.Distributions[5].SetValueInternal(0.13f);
 
                         _text = "Step_3774:; Research "
-                            + " > Total=" + _civM.TotalResearch.CurrentValue
-                            //+ " > Total=" + _civM.Research.
+                                //+ " > Total= " + _civM.TotalResearch.CurrentValue
+                                //+ "; Avr= " + _average_research
+                                //+ "; Cumu= " + _civM.Research.CumulativePoints
+                                //+ "; A= " + _civM.Research.Distributions[1].Value
+                                //+ "; A= " + _civM.Research.Distributions[2].Value
+                                //+ "; A= " + _civM.Research.Distributions[3].Value
+                                //+ "; A= " + _civM.Research.Distributions[4].Value
+                                //+ "; A= " + _civM.Research.Distributions[5].Value
+                                //+ "; A= " + _civM.Research.Distributions[6].Value
+                                + "; Fi0= " + _civM.Research.GetTechLevel(0).ToString()
+                                + "; Fi1= " + _civM.Research.GetTechLevel(1).ToString()
+                                + "; Fi2= " + _civM.Research.GetTechLevel(2).ToString()
+                                + "; Fi3= " + _civM.Research.GetTechLevel(3).ToString()
+                                + "; Fi4= " + _civM.Research.GetTechLevel(4).ToString()
+                                + "; Fi5= " + _civM.Research.GetTechLevel(5).ToString()
+                                //+ "; 6= " + _civM.Research.GetTechLevel(6).ToString()
+                                //+ "; 6= " + _civM.Research.GetCurrentProject(5).Progress
+                                + "  for " + _civM.A_Info_CivM
+                                //+ " > Total=" + _civM.Research.
 
-                            ;
-                    }
+                                ;
+                        Console.WriteLine(_text);
+
+                        float _average_research = 0;
+
+                        for (int i = 0; i < 5; i++)
+                        {
+                            _average_research += _civM.Research.GetTechLevel(i);
+                        }
+
+                        _average_research = _average_research /** 10*/ / 6;
+
+                        float _available_redistribute = 0.12f;
+
+                        // 160 / 6 = 26,66666666666667
+
+                        //string _proj1 = _civM.Research.GetCurrentProject(0).ToString();
+                        //int _proj1_lvl = _civM.Research.GetTechLevel(0);
+
+                        //while (_available_redistribute > 0.0f)
+                        //{
+
+
+                            for (int i = 0; i < 5; i++)
+                            {
+                                if ((float)_civM.Research.GetTechLevel(i) > _average_research)
+                                {
+                                    float _float_before = _civM.Research.Distributions[i].Value;
+                                    _available_redistribute -= 0.2f;
+                                    _civM.Research.Distributions[i].SetValueInternal(_float_before - 0.02f + _research_mod[i]);
+                                    Console.WriteLine("Step_3777:; i= " + i + ", _available_redistribute= " + _available_redistribute);
+                                }
+                            }
+
+                            for (int i = 0; i < 5; i++)
+                            {
+                                if ((float)_civM.Research.GetTechLevel(i) < _average_research)
+                                {
+                                    float _float_before = _civM.Research.Distributions[i].Value;
+                                    //_available_redistribute += 0.2f;
+                                    _civM.Research.Distributions[i].SetValueInternal(_float_before + 0.02f);
+                                    Console.WriteLine("Step_3779:; i= " + i + ", _available_redistribute= " + _available_redistribute);
+                                }
+
+                            }
+                            _available_redistribute = 0;
+
+                        }
+
+
+                    //}
 
 
                     IEnumerable<Ship> scienceShips = _game.Universe.Find<Ship>(UniverseObjectType.Ship)
@@ -3647,6 +3717,7 @@ namespace Supremacy.Game
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
                     GameLog.Core.General.Error(string.Format("Do_17_Research failed for {0}", _civ.Name), e);
+                    Debugger.Break();
                 }
                 finally
                 {
@@ -6521,7 +6592,7 @@ namespace Supremacy.Game
             {
 
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[_combat[i].OwnerID];
-                _text += " > " + civManager.Civilization.ShortName + " > ";
+                _text += " > " + civManager.Civilization.Key + " > ";
 
                 if (_combat[i].CombatShips != null)
                 {

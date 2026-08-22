@@ -523,7 +523,7 @@ namespace Supremacy.Combat
 
         private void DoSitRepsAboutCombat(List<CombatAssets> _assets)//, List<Civilization> _friendlyCivs)
         {
-            string _text = "Step_3097:; begin DoSitRepsAboutCombat..";
+            string _text = "Step_3077:; begin DoSitRepsAboutCombat..";
             bool _combatWriteDirectly = true;
 
             if (_combatWriteDirectly) Console.WriteLine(_text);
@@ -1128,7 +1128,7 @@ namespace Supremacy.Combat
         {
             _empireStrengths = new Dictionary<int, int>{ { 888,888} };
             string _text = "";
-            string _strength_text = _sectorString;
+            string _strength_text = _sectorString + " > Durability ";
 
             foreach (Tuple<CombatUnit, CombatWeapon[]> _combatShip in _combatShips)
             {
@@ -1155,14 +1155,14 @@ namespace Supremacy.Combat
                 _strength_text += " > "
                     + GameContext.Current.CivilizationManagers[_empire.Key].Civilization.Key
                     + "= " + GameEngine.Do_x_Digit_String(5, _empire.Value.ToString())
-                    + ", " //+ _empire.Key + " = "+ GameContext.Current.CivilizationManagers[_empire.Key].Civilization.Key;
+                    + "  " //+ _empire.Key + " = "+ GameContext.Current.CivilizationManagers[_empire.Key].Civilization.Key;
                     ;
-                Console.WriteLine("Step_3053:; cEngine " + _text);
+                //Console.WriteLine("Step_3053:; cEngine " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
                 //Civilization civ = GameContext.Current.Civilizations.First(c => c.Name == "Borg");
-                GameContext.Current.CivilizationManagers[_empire.Key]
-                    .SitRepEntries.Add(new ReportEntry_CoS(GameContext.Current.CivilizationManagers[_empire.Key].Civilization
-                    , _assets.First().Location, _text, "", "", SitRepPriority.Red));
+                //GameContext.Current.CivilizationManagers[_empire.Key]
+                //    .SitRepEntries.Add(new ReportEntry_CoS(GameContext.Current.CivilizationManagers[_empire.Key].Civilization
+                //    , _assets.First().Location, _text, "", "", SitRepPriority.Red));
                 //makes crash !!
                 //_empireStrengths.Add(_empire.Key, _empire.Value);
             }
@@ -1170,7 +1170,7 @@ namespace Supremacy.Combat
             {
                 GameContext.Current.CivilizationManagers[_empire.Key]
                     .SitRepEntries.Add(new ReportEntry_CoS(GameContext.Current.CivilizationManagers[_empire.Key].Civilization
-                    , _assets.First().Location, _strength_text, "", "", SitRepPriority.Aqua));
+                    , _assets.First().Location, _strength_text, "", "", SitRepPriority.Yellow));
             }
         }
 

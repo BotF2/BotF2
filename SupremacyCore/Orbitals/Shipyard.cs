@@ -315,7 +315,7 @@ namespace Supremacy.Orbitals
                             + " "
                             + " > " + _percent
                             + " done for " + _design
-                            + "    .. from Step_7607:; "
+                            //+ "    .. from Step_7607:; "
                         ;
                         //Console.WriteLine(_text);
                         _slots_summary += _text + _newline;
@@ -362,7 +362,7 @@ namespace Supremacy.Orbitals
                 //Console.WriteLine("Step_7609:; "+ "Begin of _slots_summary" + _newline + _slots_summary + _newline + "end of _slots_summary");
             }else
             {
-                Console.WriteLine( /*begin of _slots_summary= "*/  _newline + _slots_summary /*+ " from Step_7617:; "+ _newline + "end of _slots_summary"*/);
+                Console.WriteLine( /*begin of _slots_summary= "*/  _newline + _slots_summary + " from Step_7617"/*:; "+ _newline + "end of _slots_summary"*/);
             }
 
         }

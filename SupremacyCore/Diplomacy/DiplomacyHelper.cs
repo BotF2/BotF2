@@ -1352,12 +1352,12 @@ namespace Supremacy.Diplomacy
                                     + " "
                                     + _civM_2.Civilization /*+ " at " + LocationString(item.Key.ToString())*/
 
-                                    + "   ; Defense= " + GameEngine.Do_x_Digit_String(5, _target_colony_defense_value.ToString())
+                                    + "   ; Def= " + GameEngine.Do_x_Digit_String(5, _target_colony_defense_value.ToString())
 
                                     //+ "   ; _regard= " + _regard
-                                    + "   ; Attack= " + _civM_1.Assault_Attack_Value
-                                    + "   ; Distance= " + GameEngine.Do_x_Digit_String(2, _targetDistance.ToString())
-                                    + "   ; _next_target_fire_power= " + GameEngine.Do_x_Digit_String(5, _next_target_fire_power.ToString())
+                                    + "   ; Att= " + _civM_1.Assault_Attack_Value
+                                    + "   ; Dist= " + GameEngine.Do_x_Digit_String(2, _targetDistance.ToString())
+                                    + "   ; _next_target_fp= " + GameEngine.Do_x_Digit_String(5, _next_target_fire_power.ToString())
                                     + "   ; AssVal_Defense+Dist= " + GameEngine.Do_x_Digit_String(5, _civM_1.Assault_Value_Defense_and_Distance.ToString())
                                         //+ "XXXXX >"
                                         //+ " Distance= " + GameEngine.Do_x_Digit_String(_targetDistance.ToString())

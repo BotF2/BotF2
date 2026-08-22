@@ -2809,10 +2809,10 @@ namespace Supremacy.Combat
             _combat_Automated_full_Report += _newline + _text;
 
             // no output
-            _combat_Automated_full_Report = "Step_3098:; cAuto > _combat_Automated_full_Report >> no output";
+            //_combat_Automated_full_Report = "Step_3098:; cAuto > _combat_Automated_full_Report >> no output";
 
-            Console.WriteLine(_newline + _newline + "Step_3097:; cAuto > _combat_Automated_full_Report" + _newline 
-                + _combat_Automated_full_Report + _newline + "end of _combat_Automated_full_Report" + _newline);
+            //Console.WriteLine(_newline + _newline + "Step_3097:; cAuto > _combat_Automated_full_Report" + _newline 
+            //    + _combat_Automated_full_Report + _newline + "end of _combat_Automated_full_Report" + _newline);
             //GameLog.Core.CombatDetails.DebugFormat(_text);
         }
 

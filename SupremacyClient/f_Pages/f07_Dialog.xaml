@@ -704,8 +704,12 @@ RequestNavigate="DoLink"> Nyrians </Hyperlink>
     <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ocampa" 
 RequestNavigate="DoLink"> Ocampa </Hyperlink>
 
--
-<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Orion" 
+    -
+    <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Organian"
+RequestNavigate="DoLink"> ( Organians ) </Hyperlink>
+
+    -
+    <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Orion" 
 RequestNavigate="DoLink"> Orions </Hyperlink>
 
 -
