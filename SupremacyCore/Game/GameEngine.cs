@@ -46,7 +46,12 @@ namespace Supremacy.Game
     /// </summary>
     public partial class GameEngine
     {
-        public static bool AI_IsPlayer_AI_Controlled() // string = orientated left
+        public static bool Do_Debugger_breaks => true;
+        public static string Played_or_Tested_Civ()
+        {
+            return "FEDERATION";
+        }
+        public static bool AI_IsPlayer_AI_Controlled() 
         {
             return true;
             //return false;
@@ -336,7 +341,8 @@ namespace Supremacy.Game
 
 
             _text = "Step_0755:; " + DateTime.Now + " > next > Do_19_Maintenance ...";
-            if (_writeDirectly) Console.WriteLine(_text);
+            if (_writeDirectly)
+                Console.WriteLine(_text);
             //if (_gamelog_bool)
             //    GameLog.Core.GeneralDetails.DebugFormat(_text);
 
@@ -532,7 +538,7 @@ namespace Supremacy.Game
         //#region DoPreTurnOperations() Method
         private void Do_11_PreTurnOperations(GameContext _game)
         {
-            // these here > foreach....
+
             HashSet<CivilizationManager> _civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
             //HashSet<Fleet> _fleets = _objects.OfType<Fleet>().ToHashSet();
 
@@ -553,6 +559,8 @@ namespace Supremacy.Game
                 //Console.WriteLine("Step_9282:; " + DateTime.Now + " > SitRepEntries.Clear()");
 
                 Assault_Accumulate_Location_1_Handle(_civM);
+
+                _civM.DestroyOfShipOrdered = false;
             }
             //{
             //    //GameContext.PushThreadContext(_game);
@@ -1909,6 +1917,7 @@ namespace Supremacy.Game
                 sectorList = UnitAI.FindStrandedShipSectors(_civ);
 
                 bool _strandedShipsSectorStillRelevant = false;
+                _civM.DestroyOfShipOrdered = false;
 
                 Sector _tmpStrandedShipsSector = _civM.HomeSystem.Sector;
 
@@ -1960,6 +1969,7 @@ namespace Supremacy.Game
                 //GameEngine.LocationString(_colony.Location.ToString()) = GameEngine.LocationString(_fleet.Location.ToString());
 
                 CivilizationManager _civM = GameContext.Current.CivilizationManagers[_fleet.Owner];
+                
 
                 string _singleShipDesign;
                 if (shipNum == 1)
@@ -2166,23 +2176,26 @@ namespace Supremacy.Game
 
                         //    ;
                         //if (_writeDirectly) Console.WriteLine(_text);
+                    }
 
 
                         //Destroy ships due to financial problems
                         if (_civM.DestroyOfShipOrdered == false && GameContext.Current.TurnNumber > 9)
+                        {
                             if (_civM.MaintenanceCostLastTurn > _civM.TaxIncome * 5
                             || _civM.Credits.CurrentValue + 1000 < (100 * _civM.AverageTechLevel))
                             {
                                 if (_fleet.Owner.Key == "BORG") { continue; }
 
                                 Ship ship = _fleet.Ships[0];
-                                //ship.Destroy();
+                                
                                 _civM.DestroyOfShipOrdered = true;
 
                                 string _objectIDText = ship.ObjectID.ToString() + " "; if (_objectIDText == "-1") _objectIDText = "";
 
 
-                                _text2 = /*_objectIDText + blank*/ "* " + ship.Name + "* ( " + ship.ShipType + " ) ";
+                                _text2 = /*_objectIDText + blank*/ "* " 
+                                    + ship.ObjectID + " "+ ship.Name + "* ( " + ship.ShipType + " ) ";
                                 // {0} > Ship {1} was destroyed for keeping credit costs low.
                                 _text = string.Format(ResourceManager.GetString("SITREP_SHIP_DESTROYED_DUE_TO_LOW_CREDITS"), GameEngine.LocationString(_fleet.Location.ToString()), _text2);
                                 //_text = "Empty? " + _text;
@@ -2190,12 +2203,15 @@ namespace Supremacy.Game
                                 //GameLog.Client.ShipsDetails.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, _fleet.Owner.Key, _fleet.Location);
 
                                 _civM.SitRepEntries.Add(new ReportEntry_CoS(_fleet.Owner, _fleet.Location, _text, "", "", SitRepPriority.RedYellow));
-                            }
-                        //checked for maintenance cost especially for destroyed ships
-                        //        destroy just one ship per turnnumber
 
-                        //break;
-                    }
+                            ship.Destroy();  
+                            }
+                            //checked for maintenance cost especially for destroyed ships
+                            //        destroy just one ship per turnnumber
+
+                            //break;
+                        }
+                    
 
                     fuelRange = _civM.MapData.GetFuelRange(_fleet.Location);
 
@@ -2849,15 +2865,15 @@ namespace Supremacy.Game
         //    //if (_civ1.CivID == 6 || _civ1.Key == "BORG")
         //    //{
         //    //    //var aForeignPower = _diplomat1.GetForeignPower(_civ2);
-        //    //    DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
-        //    //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+        //    //    DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+        //    //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
 
         //    //    //continue;
         //    //}
         //    //if (_civ2.CivID == 6 || _civ2.Key == "BORG")
         //    //{
-        //    //    DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
-        //    //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+        //    //    DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+        //    //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
 
         //    //    //continue;
         //    //}
@@ -2893,8 +2909,8 @@ namespace Supremacy.Game
             //    {
 
 
-            //        DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
-            //        DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+            //        DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+            //        DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
             //        _text = "Step_7732:; Do_13_Diplomacy > " + _civ1 + "; vs ; " + _civ2 + "; > AtWar";
             //        //if (_writeDirectly) Console.WriteLine(_text);
 
@@ -3071,9 +3087,9 @@ namespace Supremacy.Game
             //        //_text = "Step_7750:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Affiliated";
             //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 850)
-            //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3); // 2 each turnnumber
+            //            DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3); // 2 each turnnumber
             //        if (_trust < 800)
-            //            DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 4);
+            //            DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 4);
             //        //_text = 
             //    }
 
@@ -3082,9 +3098,9 @@ namespace Supremacy.Game
             //        //_text = "Step_7760:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Allied";
             //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 850)
-            //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
+            //            DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 800)
-            //            DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3);
+            //            DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3);
 
             //    }
 
@@ -3093,9 +3109,9 @@ namespace Supremacy.Game
             //        //_text = "Step_7770:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Friendly";
             //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 650)
-            //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
+            //            DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 600)
-            //            DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2);
+            //            DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2);
 
             //    }
 
@@ -3105,9 +3121,9 @@ namespace Supremacy.Game
             //        //_text = "Step_7780:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Peace";
             //        //if (_writeDirectly) Console.WriteLine(_text);
             //        //if (_regard < 850)
-            //        //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
+            //        //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 600)
-            //            DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3);
+            //            DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3);
 
             //    }
 
@@ -3116,9 +3132,9 @@ namespace Supremacy.Game
             //        //_text = "Step_7710:; Do_13_Diplomacy > " + _civ1 + "; vs; " + _civ2 + "; > Neutral";
             //        //if (_writeDirectly) Console.WriteLine(_text);
             //        if (_regard < 650)
-            //            DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
+            //            DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
             //        if (_trust < 600)
-            //            DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2);
+            //            DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2);
 
             //    }
 
@@ -3128,15 +3144,15 @@ namespace Supremacy.Game
             //    //if (_civ1.CivID == 6 || _civ1.Key == "BORG")
             //    //{
             //    //    //var aForeignPower = _diplomat1.GetForeignPower(_civ2);
-            //    //    DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
-            //    //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+            //    //    DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+            //    //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
 
             //    //    continue;
             //    //}
             //    //if (_civ2.CivID == 6 || _civ2.Key == "BORG")
             //    //{
-            //    //    DiplomacyHelper.ApplyTrustChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
-            //    //    DiplomacyHelper.ApplyRegardChange(_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+            //    //    DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
+            //    //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, -1000);
 
             //    //    continue;
             //    //}
@@ -3547,7 +3563,8 @@ namespace Supremacy.Game
         private void Do_17_Research(GameContext _game)
         {
             string _newline = Environment.NewLine;
-            string _text;
+            string _text = "";
+            string _full_research_text = "";
             //_ = ParallelForEach(GameContext.Current.Civilizations, _civ =>
             //  {
             foreach (Civilization _civ in GameContext.Current.Civilizations)
@@ -3571,7 +3588,7 @@ namespace Supremacy.Game
 
                     int _rp = 2 + _civM.Colonies.Sum(c => c.GetProductionOutput(ProductionCategory.Research));
 
-                    float[] _research_mod = { -0.01f, +0.02f, +0.03f, +0.01f, -0.02f, -0.03f };
+                    float[] _research_mod = { -0.02f, +0.02f, +0.03f, +0.01f, -0.02f, -0.03f };
                     //float _research_mod_0 = -0.01f;
                     //float _research_mod_1 = +0.02f;
                     //float _research_mod_2 = +0.03f;
@@ -3587,8 +3604,8 @@ namespace Supremacy.Game
                     {
 
                     }
-                    else 
-                    { 
+                    else // AI handles the distribution
+                    {
                         //_civM.Research.Distributions[0].SetValueInternal(0.16f);
                         //_civM.Research.Distributions[1].SetValueInternal(0.19f); // these 3 are more important
                         //_civM.Research.Distributions[2].SetValueInternal(0.20f);
@@ -3618,18 +3635,39 @@ namespace Supremacy.Game
                                 //+ " > Total=" + _civM.Research.
 
                                 ;
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text);
+                        _full_research_text += _text + _newline;
+
 
                         float _average_research = 0;
+                        float _total_distribution = 100;
+                        float _distribution_correct = 0;
 
-                        for (int i = 0; i < 5; i++)
+                        //if (_civM.Civilization.Key == "FEDERATION")
+                        //{
+                        //    Debugger.Break();
+                        //}
+
+                        for (int i = 0; i < 6; i++)
                         {
                             _average_research += _civM.Research.GetTechLevel(i);
+                            _total_distribution -= _civM.Research.Distributions[i].Value * 100;
+
                         }
+                        _distribution_correct = _total_distribution / 6 * -1;
+                        //if (_total_distribution < 0)
+                        //{
+                        //    _distribution_correct = _total_distribution + 0.16f * -1; // = minus 83% 
+                        //}
+                        //if (_total_distribution > 100)
+                        //{
+                        //    _distribution_correct = 100 / _total_distribution * -1;
+                        //}
+
 
                         _average_research = _average_research /** 10*/ / 6;
 
-                        float _available_redistribute = 0.12f;
+                        //float _available_redistribute = 0.12f;
 
                         // 160 / 6 = 26,66666666666667
 
@@ -3638,36 +3676,166 @@ namespace Supremacy.Game
 
                         //while (_available_redistribute > 0.0f)
                         //{
+                        //float _new_value = 0f;
 
+                        //if (_civM.Civilization.Key == GameEngine.Played_or_Tested_Civ())
+                        //{
+                        //    Debugger.Break();
+                        //}
 
-                            for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 6; i++)
+                        {
+                            float _research_modifier = _research_mod[i];
+                            if ((float)_civM.Research.GetTechLevel(i) > _average_research)
                             {
-                                if ((float)_civM.Research.GetTechLevel(i) > _average_research)
+                                float _current_value = _civM.Research.Distributions[i].Value/* - _distribution_correct*/;
+                                if (_current_value > 1f)
                                 {
-                                    float _float_before = _civM.Research.Distributions[i].Value;
-                                    _available_redistribute -= 0.2f;
-                                    _civM.Research.Distributions[i].SetValueInternal(_float_before - 0.02f + _research_mod[i]);
-                                    Console.WriteLine("Step_3777:; i= " + i + ", _available_redistribute= " + _available_redistribute);
+                                    _current_value = 1f;
                                 }
+                                float _new_value = ((_current_value
+                                    + 0.01f)/* * 100*/) - 0.02f + _research_modifier;
+                                //Console.WriteLine("Step_3779:; i= " + i + ", _new_value= " + _new_value);
+                                //if (_new_value < 0f)
+                                //{
+                                //    _new_value = 0f; // below: minus 0.02 plus modifier max. minus 0.03
+                                //}
+                                //else
+                                //{
+                                if (_new_value > 1f)
+                                {
+                                    _new_value = 1f;
+                                }
+                                //}
+                                //_available_redistribute -= 0.2f;
+                                _civM.Research.Distributions[i].SetValueInternal(_new_value);
+                                //Console.WriteLine("Step_3779:; i= " + i + ", _new_value= " + _new_value);
+                            }
+                            else
+                            {
+                                //if ((float)_civM.Research.GetTechLevel(i) < _average_research)
+                                //{
+                                float _current_value = _civM.Research.Distributions[i].Value/* - _distribution_correct*/;
+                                if (_current_value > 1f)
+                                {
+                                    _current_value = 1f;
+                                }
+                                if (_current_value < 0f)
+                                {
+                                    _current_value = 0f;
+                                }
+                                float _new_value = ((_current_value + 0.01f)/* * 100*/) + 0.02f + _research_modifier;
+                                //Console.WriteLine("Step_3778:; i= " + i + ", _new_value= " + _new_value);
+                                if (_new_value < 0f)
+                                {
+                                    _new_value = 0f;
+                                }
+                                else
+                                {
+                                    if (_new_value > 1f)
+                                    {
+                                        _new_value = 1.02f;
+                                    }
+                                    //if (_new_value < 0f)
+                                    //{
+                                    //    _new_value = 0f;
+                                    //}
+                                }
+
+                                //_available_redistribute -= 0.2f;
+                                if (i == 0)
+                                {
+                                    _new_value -= 0.01f;
+                                }
+
+                                _civM.Research.Distributions[i].SetValueInternal(_new_value);
+                                //Console.WriteLine("Step_3778:; i= " + i + ", _new_value= " + _new_value);
+                            }
+                        }
+
+                        //_civM.Research.Report_Research_Distribution(_civM);
+
+                        float _new_total =
+                                _civM.Research.Distributions[0].Value
+                                + _civM.Research.Distributions[1].Value
+                                + _civM.Research.Distributions[2].Value
+                                + _civM.Research.Distributions[3].Value
+                                + _civM.Research.Distributions[4].Value
+                                + _civM.Research.Distributions[5].Value
+                                ;
+
+                        //    if (_civM.Civilization.Key == "FEDERATION")
+                        //    {
+                        //    Debugger.Break();
+                        //}
+
+                        if (_civM.Civilization.Key == GameEngine.Played_or_Tested_Civ())
+                        {
+                            //Debugger.Break();
+                        }
+
+                        while (_new_total > 1f)
+                        {
+                            Random rnd = new Random();
+                            int zahl = rnd.Next(6);
+                            for (int j = 0; j < 6; j++)
+                            {
+                                var _old_value = _civM.Research.Distributions[zahl].Value;
+                                //float _new_value = (100 / 7 + (5 - j)) / 100f;
+                                _civM.Research.Distributions[zahl].SetValueInternal(_old_value - 0.01f);
+
+                                _new_total -= 0.01f;
+
+                                //_civM.Research.Report_Research_Distribution(_civM);
+                            }
+                        }
+
+                        //_civM.Research.Report_Research_Distribution(_civM);
+
+                        if (_new_total > 1.01f)
+                            {
+                                for (int j = 0; j < 6; j++)
+                                {
+
+                                    float _new_value = (100 / 7 + (+5 - j)) / 100f;
+                                    _civM.Research.Distributions[j].SetValueInternal(_new_value);
+                                }
+
                             }
 
-                            for (int i = 0; i < 5; i++)
+                            if (_new_total < 0f)
                             {
-                                if ((float)_civM.Research.GetTechLevel(i) < _average_research)
+                                for (int j = 0; j < 6; j++)
                                 {
-                                    float _float_before = _civM.Research.Distributions[i].Value;
-                                    //_available_redistribute += 0.2f;
-                                    _civM.Research.Distributions[i].SetValueInternal(_float_before + 0.02f);
-                                    Console.WriteLine("Step_3779:; i= " + i + ", _available_redistribute= " + _available_redistribute);
+
+                                    float _new_value = (100 / 7 + (5 - j)) / 100f;
+                                    _civM.Research.Distributions[j].SetValueInternal(_new_value);
+
+                                    _civM.Research.Report_Research_Distribution(_civM); 
+        //                            _text = "Step_3776:; Research "
+
+        //+ "; R1= " + _civM.Research.Distributions[0].Value
+        //+ "; R2= " + _civM.Research.Distributions[1].Value
+        //+ "; R3= " + _civM.Research.Distributions[2].Value
+        //+ "; R4= " + _civM.Research.Distributions[3].Value
+        //+ "; R5= " + _civM.Research.Distributions[4].Value
+        //+ "; R6= " + _civM.Research.Distributions[5].Value
+        //+ "  for " + _civM.A_Info_CivM
+        
+        //;
+        //                            Console.WriteLine(_text);
                                 }
 
                             }
-                            _available_redistribute = 0;
+
+                            //}
+                            //_available_redistribute = 0;
 
                         }
 
 
-                    //}
+                    
+
 
 
                     IEnumerable<Ship> scienceShips = _game.Universe.Find<Ship>(UniverseObjectType.Ship)
@@ -3712,7 +3880,7 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    _text = "Step_8769: Error on Do_17_Research for " + _civ.Name;
+                    _text = "Step_8769:; > ERROR on Do_17_Research for " + _civ.Name;
                     //if (_writeDirectly) 
                     Console.WriteLine(_text);
                     GameLog.Core.General.ErrorFormat(_text);
@@ -3722,6 +3890,8 @@ namespace Supremacy.Game
                 finally
                 {
                     _ = GameContext.PopThreadContext();
+
+
                 }
 
                 //};
@@ -3738,7 +3908,7 @@ namespace Supremacy.Game
                 //_ = GameContext.PopThreadContext();
                 //}
             }
-            ;
+            Console.WriteLine(_full_research_text + " from Step_3777");
         }
 
         private int ScienceShipsGainResearch(Ship scienceShip)
@@ -4151,9 +4321,10 @@ namespace Supremacy.Game
                                         {
                                             if (_sectorClaims.GetOwner(fleet.Location) == _civ)
                                             {
+                                                //_text = 
                                                 GameLog.Core.DiplomacyDetails.DebugFormat("Got NonAggression Treaty for {0} vs {1}, trying for regard trust change and canel treaties", _civ.Key, whoElse.Key);
-                                                DiplomacyHelper.ApplyRegardChange(_civ, whoElse, -200);
-                                                DiplomacyHelper.ApplyTrustChange(_civ, whoElse, -200);
+                                                DiplomacyHelper.ApplyRegardChange("",-200,_civ, whoElse);
+                                                DiplomacyHelper.Apply_TrustChange("",-200,_civ, whoElse);
                                                 //var activeAgreements = GameContext.Current.AgreementMatrix[_civ.CivID, whoElse.CivID];
                                                 /* cancel all agreements */
                                                 //while (activeAgreements.Count > 0)
@@ -5235,8 +5406,8 @@ namespace Supremacy.Game
                         //GameLog.Core.Production.DebugFormat(_text);
                     }
 
-                    int _creditsLowerLimit = -5000 + (-3 * _civM.TaxIncome);
-                    int _incomeLowerLimit = -1000 - (-2 * _civM.TaxIncome);
+                    int _creditsLowerLimit = -5000 - (3 * _civM.TaxIncome);
+                    int _incomeLowerLimit = -1000 - (2 * _civM.TaxIncome);
                     bool _creditsSitRep = false;
 
                     _text = "Step_5410:; Turn " + GameContext.Current.TurnNumber
@@ -5244,9 +5415,7 @@ namespace Supremacy.Game
                         + Do_x_Digit_String(5, _civM.Credits.LastChange.ToString())
                         + "  for " + _civM.Civilization.Key
                         ;
-
                     //Console.WriteLine(_text);
-
 
                     if (_civM.Credits.CurrentValue < _creditsLowerLimit)
                     {
@@ -5267,9 +5436,9 @@ namespace Supremacy.Game
                             _global_morale_by_buildings -= 1;
                             _text = "Empire: Morale decreased due to deficit of credits"
                             + ": OneTurnLimit= " + _incomeLowerLimit
-                            + " (actual " + _civM.Credits.CurrentChange
+                            + " (actual " + _civM.Credits.CurrentChange 
                             + " )"
-                            + "or by TreasuryLimit= " + _creditsLowerLimit
+                            + " or by TreasuryLimit= " + _creditsLowerLimit
                             + " (actual " + _civM.Credits.CurrentValue + " )"
                             ;
                             Console.WriteLine("Step_5420:; " + _civM.Civilization.Key + ": " + _text);
@@ -6526,7 +6695,7 @@ namespace Supremacy.Game
             {
                 _ = GameContext.PopThreadContext();
 
-                PlaySound(".\\Resources\\SoundFX\\sound002.wav");
+                //PlaySound(".\\Resources\\SoundFX\\sound002.wav");
 
 
                 if (!_errors.IsEmpty)
@@ -6544,7 +6713,7 @@ namespace Supremacy.Game
         private void PlaySound(string _file)
         {
             //string 
-                _file = Path.Combine( Environment.CurrentDirectory, ResourceManager.GetResourcePath(_file));
+            _file = Path.Combine(Environment.CurrentDirectory, ResourceManager.GetResourcePath(_file));
             if (File.Exists(_file))
             {
                 SoundPlayer _soundPlayer_System = new SoundPlayer(_file);
@@ -6587,7 +6756,7 @@ namespace Supremacy.Game
 
             bool _writeDirectly = true;
 
-            string _text = LocationString(_combat[0].Location.ToString()) + " > Red Alert > ";
+            string _text = LocationString(_combat[0].Location.ToString()) + " > Red Alert";
             for (int i = 0; i < _combat.Count(); i++)
             {
 
@@ -6778,6 +6947,7 @@ namespace Supremacy.Game
             return _out_text;
         }
 
+        
 
         public static string BoolString_x5(string _in_text)//, out string _out_text) // changes 1 numeric to 2 numeric
         {
@@ -6785,6 +6955,16 @@ namespace Supremacy.Game
 
             return _in_text;
         }
+        private static readonly Random getrandom = new Random();
+        public static int GetRandomNumber(int min, int max)
+        {
+            lock (getrandom) // synchronize
+            {
+                return getrandom.Next(min, max);
+            }
+        }
+
+
 
         public static string GetTimeString()
         {

@@ -554,7 +554,7 @@ namespace Supremacy.Game
             if (everySingleLine) Console.WriteLine(_readingText);
 
             MinorRaceFrequency = (MinorRaceFrequency)reader.ReadByte();
-            _readingText += "; MinorRaceFrequency=" + MinorRaceFrequency; 
+            _readingText += "; MinorFreq=" + MinorRaceFrequency; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             GalaxyCanon = (GalaxyCanon)reader.ReadByte();
@@ -562,7 +562,7 @@ namespace Supremacy.Game
             if (everySingleLine) Console.WriteLine(_readingText);
 
             StartingTechLevel = (StartingTechLevel)reader.ReadByte();
-            _readingText += "; StartingTechLevel=" + StartingTechLevel; 
+            _readingText += "; StartTechLvl=" + StartingTechLevel; 
             if (everySingleLine) Console.WriteLine(_readingText);
 
             _readingText += _newline + "Step_4032:";

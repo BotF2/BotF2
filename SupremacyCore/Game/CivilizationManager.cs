@@ -80,7 +80,7 @@ namespace Supremacy.Game
         private readonly Meter _totalIntelligenceAttackingAccumulated;
         private readonly Meter _totalIntelligenceDefenseAccumulated;
 
-        private bool _destroyOfShipOrdered;
+        private bool _destroyOfShipOrdered = false;
         private int _fire_power_space;
 
         private int z_ship_Colony_Ordered;

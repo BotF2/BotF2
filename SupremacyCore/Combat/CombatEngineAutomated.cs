@@ -89,7 +89,8 @@ namespace Supremacy.Combat
                     + " > " + item.Item1.Source.Name
 
                     );
-                if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
+                if (_write_directly_AutomatedCombat) 
+                    Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
             }
 
@@ -113,7 +114,8 @@ namespace Supremacy.Combat
             if (_roundNumber < 7) // multiplayer starts at round 5 // always true
             {
                 _text = ("Step_3016:; " + _sectorString + " > _combatId = " + CombatID + " > now round number " + _roundNumber);
-                if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
+                if (_write_directly_AutomatedCombat) 
+                    Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -208,7 +210,8 @@ namespace Supremacy.Combat
                 List<Tuple<CombatUnit, CombatWeapon[]>> _cloakedShips = _combatShips.Where(s => s.Item1.IsCloaked).ToList();
 
                 _text = "Step_3022:; " + _sectorString + " > _cloakedShips = " + _cloakedShips.Count;
-                if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
+                if (_write_directly_AutomatedCombat) 
+                    Console.WriteLine(_text);
                 _combat_Automated_full_Report += _newline + _text;
                 //GameLog.Core.CombatDetails.DebugFormat(_text);
 
@@ -226,17 +229,17 @@ namespace Supremacy.Combat
                             combatShip.Item1.Source.ObjectID + " " + combatShip.Item1.Name + " " + combatShip.Item1.Source.Design);
                         if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                         _combat_Automated_full_Report += _newline + _text;
-                        GameLog.Core.CombatDetails.DebugFormat(_text);
+                        //GameLog.Core.CombatDetails.DebugFormat(_text);
                     }
                 }
 
                 //Resistance is futile, try assimilation before you attack then retreat if assimilated & no spy or diplomtic assimilated
-                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.Key == "BORG");
+                bool _Borg_involved = _combatShips.Any(borg => borg.Item1.Owner.Key == "BORG");
                 bool assimilationSuccessful = false;
-                List<Tuple<CombatUnit, CombatWeapon[]>> notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
-                if (foundDaBorg)
+                List<Tuple<CombatUnit, CombatWeapon[]>> _not_a_Borg_Unit = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
+                if (_Borg_involved)
                 {
-                    foreach (Tuple<CombatUnit, CombatWeapon[]> target in notDaBorg)
+                    foreach (Tuple<CombatUnit, CombatWeapon[]> target in _not_a_Borg_Unit)
                     {
                         int chanceToAssimilate = RandomHelper.Random(100);
                         assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
@@ -253,7 +256,7 @@ namespace Supremacy.Combat
 
                                 _text = (
                                     "Step_3028:; Assimilated= " + target.Item1.Name
-                                    + " found borg=" + foundDaBorg
+                                    + " found borg=" + _Borg_involved
                                     + " assimilationSuccessful=" + assimilationSuccessful
                                     + " , chance to Assimiate= " + chanceToAssimilate
                                     );
@@ -1982,12 +1985,18 @@ namespace Supremacy.Combat
                         //AttackingShip.Item1.RemainingFirepower = remainingFirepowerInWhile;
                     }
                     // Rush
-                    if (attackerOrder == CombatOrder.Rush && (defenderOrder == CombatOrder.Retreat || defenderOrder == CombatOrder.Transports))
+                    if (attackerOrder == CombatOrder.Rush 
+                        && (defenderOrder == CombatOrder.Retreat 
+                        || defenderOrder == CombatOrder.Transports
+                        ))
                     {
                         combatOrderBonusMalus += applyDamage * 0.12;
                     }
                     // Formation
-                    if (attackerOrder == CombatOrder.Formation && (defenderOrder == CombatOrder.Transports || defenderOrder == CombatOrder.Rush))
+                    if (attackerOrder == CombatOrder.Formation 
+                        && (defenderOrder == CombatOrder.Transports 
+                        || defenderOrder == CombatOrder.Rush
+                        ))
                     {
                         combatOrderBonusMalus += applyDamage * 0.17;
                     }
@@ -1995,14 +2004,26 @@ namespace Supremacy.Combat
                     _ = Convert.ToInt32(combatOrderBonusMalus);
                     // Determin ScissorBonus depending on both ship types
                     if (
-                        ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
-                        && (currentTarget.Item1.Source.Design.Key.Contains("DESTROYER") || currentTarget.Item1.Source.Design.Key.Contains("FRIGATE") || currentTarget.Item1.Source.Design.Key.Contains("PROBE")))
+                        ((AttackingShip.Item1.Source.Design.Key.Contains("CRUISER") 
+                        || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) 
+                        && !AttackingShip.Item1.Source.Design.Key.Contains("STRIKE")
+                        && (currentTarget.Item1.Source.Design.Key.Contains("DESTROYER") 
+                        || currentTarget.Item1.Source.Design.Key.Contains("FRIGATE") 
+                        || currentTarget.Item1.Source.Design.Key.Contains("PROBE")))
                         ||
-                        ((AttackingShip.Item1.Source.Design.Key.Contains("DESTROYER") || AttackingShip.Item1.Source.Design.Key.Contains("FRIGATE") || AttackingShip.Item1.Source.Design.Key.Contains("PROBE"))
-                        && (currentTarget.Item1.Source.Design.Key.Contains("COMMAND") || currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP") || currentTarget.Item1.Source.Design.Key.Contains("CUBE")))
+                        ((AttackingShip.Item1.Source.Design.Key.Contains("DESTROYER") 
+                        || AttackingShip.Item1.Source.Design.Key.Contains("FRIGATE") 
+                        || AttackingShip.Item1.Source.Design.Key.Contains("PROBE"))
+                        && (currentTarget.Item1.Source.Design.Key.Contains("COMMAND") 
+                        || currentTarget.Item1.Source.Design.Key.Contains("BATTLESHIP") 
+                        || currentTarget.Item1.Source.Design.Key.Contains("CUBE")
+                        ))
                         ||
-                        ((AttackingShip.Item1.Source.Design.Key.Contains("COMMAND") || AttackingShip.Item1.Source.Design.Key.Contains("BATTLESHIP") || AttackingShip.Item1.Source.Design.Key.Contains("CUBE"))
-                        && (currentTarget.Item1.Source.Design.Key.Contains("CRUISER") || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !currentTarget.Item1.Source.Design.Key.Contains("STRIKE"))
+                        ((AttackingShip.Item1.Source.Design.Key.Contains("COMMAND") 
+                        || AttackingShip.Item1.Source.Design.Key.Contains("BATTLESHIP") 
+                        || AttackingShip.Item1.Source.Design.Key.Contains("CUBE"))
+                        && (currentTarget.Item1.Source.Design.Key.Contains("CRUISER") 
+                        || AttackingShip.Item1.Source.Design.Key.Contains("SPHERE")) && !currentTarget.Item1.Source.Design.Key.Contains("STRIKE"))
                         ||
                         (!currentTarget.Item1.Source.Design.Key.Contains("CRUISER")
                         && !currentTarget.Item1.Source.Design.Key.Contains("COMMAND")

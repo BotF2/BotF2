@@ -2187,7 +2187,8 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    _text = "Cannot write ... " + file + e;
+                    _text = "Step_9193:; Cannot write ... " + file + e;
+                    Console.WriteLine(_text);
                     GameLog.Core.GameData.ErrorFormat(_text);
                 }
 

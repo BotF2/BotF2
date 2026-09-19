@@ -483,7 +483,7 @@ namespace Supremacy.Game
 
 
             //string _active_agreements_text = "";
-            string agreementText = "";
+            string _agreement_text = "";
 
             foreach (var item in GameContext.Current.AgreementMatrix)
             {
@@ -511,7 +511,7 @@ namespace Supremacy.Game
                 }
             }
 
-            string _text_diplomacyData = "Step_1777:; " + DateTime.Now + " > diplomacyData" + Environment.NewLine;
+            string _text_diplomacyData = "Step_1778:; " + DateTime.Now + " > diplomacyData" + Environment.NewLine;
 
             // going through civ managers better reflects which civ got spawned
             //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
@@ -523,13 +523,13 @@ namespace Supremacy.Game
             //{
             foreach (var item in diplomacyData)
             {
-                agreementText = "";
-                agreementText = string.Join("", _active_agreements
+                _agreement_text = "";
+                _agreement_text = string.Join("", _active_agreements
                     .Where(x => x.ID_1 == item.OwnerID)
                     .Select(x => x.Treaty)
                     .ToList());
 
-                agreementText += string.Join("", _active_agreements
+                _agreement_text += string.Join("", _active_agreements
                         .Where(x => x.ID_2 == item.OwnerID)
                         .Select(x => x.Treaty)
                         .ToList());
@@ -544,12 +544,16 @@ namespace Supremacy.Game
 
                     //_agreement_text = _active_agreements.Where(_active_agreements.TryFindFirstItem == item.OwnerID).tolist();
 
-                    agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBordersTreatyOpenBorders",
+                    _agreement_text = _agreement_text.Replace("TreatyOpenBordersTreatyOpenBordersTreatyOpenBorders",
                         "TreatyOpenBorders");
-                    agreementText = agreementText.Replace("TreatyOpenBordersTreatyOpenBorders",
+                    _agreement_text = _agreement_text.Replace("TreatyOpenBordersTreatyOpenBorders",
                         "TreatyOpenBorders");
+                    
+                    if (_agreement_text != "")
+                    {
+                    Console.WriteLine("Step_1774:; " + _agreement_text);
+                    }
 
-                    Console.WriteLine("Step_1774:; " + agreementText);
 
 
                     var _sb = new StringBuilder();
@@ -566,9 +570,9 @@ namespace Supremacy.Game
 
                     _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.CounterpartyID].Civilization.ToString()));
                     _sb.Append(" > ");
-                    _sb.Append(GameEngine.Do_x_String(20, item.Status.ToString()));
+                    _sb.Append(GameEngine.Do_x_String(15, item.Status.ToString()));
                     _sb.Append(" ");
-                    _sb.Append(GameEngine.Do_x_String(25, agreementText));
+                    _sb.Append(GameEngine.Do_x_String(15, _agreement_text));
                     _sb.Append(" > R= ");
                     _sb.Append(GameEngine.Do_x_Digit_String(4, item.Regard.ToString()));
                     _sb.Append(" > T= ");

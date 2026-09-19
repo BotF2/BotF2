@@ -2115,7 +2115,7 @@ namespace Supremacy.Universe
                     foreach (var orb in OrbitalBatteries)
                     {
                         orb.IsActive = false;
-                        _text = "Step_2599: OrbitalBattery shutted down";
+                        _text = "Step_2599:; > OrbitalBattery shutted down";
                         Console.WriteLine(_text);
                     }
                     OnPropertyChanged("OrbitalBatteries_Active");

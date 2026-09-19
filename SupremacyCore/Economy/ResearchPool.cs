@@ -422,12 +422,22 @@ namespace Supremacy.Economy
 
             }
 
+
+
             distributionSummary += " - Bio " + _distributions[0].Value.ToString()/* + ", "*/
                     + " - Comp. " + _distributions[1].Value.ToString()/* + ", "*/
                     + " - Constr. " + _distributions[2].Value.ToString()/* + ", "*/
                     + " - Energy " + _distributions[3].Value.ToString()/* + ", "*/
                     + " - Prop. " + _distributions[4].Value.ToString()/* + ", "*/
                     + " - Weapon " + _distributions[5].Value.ToString()/* + ", "*/
+                    + " - Total " + (100*(
+                    _distributions[0].Value 
+                    +_distributions[1].Value 
+                    +_distributions[2].Value 
+                    +_distributions[3].Value 
+                    +_distributions[4].Value 
+                    +_distributions[5].Value
+                    )).ToString()/* + ", "*/
                     ;
             //distributionSummary += "- Gained = " + researchPoints;
 
@@ -509,6 +519,8 @@ namespace Supremacy.Economy
             OnPropertyChanged("Bonuses");
         }
 
+        
+
         #region INotifyPropertyChanged Members
         /// <summary>
         /// Occurs when a property value changes.
@@ -523,6 +535,30 @@ namespace Supremacy.Economy
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal void Report_Research_Distribution(CivilizationManager _civM)
+        {
+            var _v1 = _civM.Research.Distributions[0].Value;
+            var _v2 = _civM.Research.Distributions[1].Value;
+            var _v3 = _civM.Research.Distributions[2].Value;
+            var _v4 = _civM.Research.Distributions[3].Value;
+            var _v5 = _civM.Research.Distributions[4].Value;
+            var _v6 = _civM.Research.Distributions[5].Value;
+            var _total = _v1 + _v2 + _v3 + _v4 + _v5 + _v6;
+            _text = "Step_3776:; Research "
+
+                    + "; R1= " + _v1
+                    + "; R2= " + _v2
+                    + "; R3= " + _v3
+                    + "; R4= " + _v4
+                    + "; R5= " + _v5
+                    + "; R6= " + _v6
+                    + "  for " + _civM.A_Info_CivM
+                    + ", total= " + _total
+
+                    ;
+            Console.WriteLine(_text);
         }
         #endregion
     }

@@ -2825,12 +2825,15 @@ namespace Supremacy.Game
             {
                 string _now_available_for_SitRep = "Research >" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE");
                 // The following technologies are now available:
+                StringBuilder _sb = new StringBuilder();
 
-                StringBuilder sb = new StringBuilder();
-                _ = sb.AppendLine(ResourceManager.GetString(Application.Description));
                 if ((_newDesignIds != null) && (_newDesignIds.Length > 0))
                 {
-                    _ = sb.Append(Environment.NewLine
+                    _sb = new StringBuilder();
+                    _ = _sb.AppendLine(ResourceManager.GetString(Application.Description));
+
+
+                    _ = _sb.Append(Environment.NewLine
                         + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE")
                         + Environment.NewLine);
 
@@ -2842,9 +2845,15 @@ namespace Supremacy.Game
                             continue;
                         }
 
-                        _ = sb.Append(Environment.NewLine);
-                        _ = sb.Append(ResourceManager.GetString(design.Name));
-                        _now_available_for_SitRep += ResourceManager.GetString(design.Name) + ", ";
+                        _ = _sb.Append(Environment.NewLine);
+                        _ = _sb.Append(ResourceManager.GetString(design.Name));
+                        _now_available_for_SitRep = "Research >" 
+                            + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE")
+                            + " " + ResourceManager.GetString(design.Name) //+ ", "
+                            ;
+
+                        GameContext.Current.CivilizationManagers[Owner].SitRepEntries
+                                .Add(new ReportEntry_NoAction(Owner, _now_available_for_SitRep, "", "", SitRepPriority.Gray));
 
                     }
                 }
@@ -2852,13 +2861,13 @@ namespace Supremacy.Game
                 {
                     _now_available_for_SitRep = "None";
                 }
-                else
-                {
-                    GameContext.Current.CivilizationManagers[Owner].SitRepEntries
-                        .Add(new ReportEntry_NoAction(Owner, _now_available_for_SitRep, "", "", SitRepPriority.Gray));
-                }
+                //else
+                //{
+                //    GameContext.Current.CivilizationManagers[Owner].SitRepEntries
+                //        .Add(new ReportEntry_NoAction(Owner, _now_available_for_SitRep, "", "", SitRepPriority.Gray));
+                //}
 
-                return sb.ToString();
+                return _sb.ToString();
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.7.11925.98 stable
+VisualStudioVersion = 18.7.11925.98
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{97FA3AB7-20A5-4EE0-A5EC-392E4892E904}"
 	ProjectSection(SolutionItems) = preProject
@@ -119,21 +119,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{97FA3A
 		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyClient", "SupremacyClient\SupremacyClient.csproj", "{9A5CE0D7-6374-433A-A262-9D4F2CA23E24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_z_Client", "Supremacy_z_Client\Supremacy_z_Client.csproj", "{9A5CE0D7-6374-433A-A262-9D4F2CA23E24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyWPF", "SupremacyWPF\SupremacyWPF.csproj", "{1D1ACB96-9C27-4A1F-AE76-B5083A36ED05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_5_WPF", "SupremacyWPF\Supremacy_5_WPF.csproj", "{1D1ACB96-9C27-4A1F-AE76-B5083A36ED05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_1_Core", "SupremacyCore\Supremacy_1_Core.csproj", "{04E34C27-6942-4EA8-93FF-DF3C4026B22A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyUI", "SupremacyUI\SupremacyUI.csproj", "{529A2A01-9D15-4BAF-AB7B-C3398F5F2B14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_6_UI", "SupremacyUI\Supremacy_6_UI.csproj", "{529A2A01-9D15-4BAF-AB7B-C3398F5F2B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyService", "SupremacyService\SupremacyService.csproj", "{FD1224E7-BB54-40F9-A46E-631FFEA6D577}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_4_Service", "SupremacyService\Supremacy_4_Service.csproj", "{FD1224E7-BB54-40F9-A46E-631FFEA6D577}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupremacyClientComponents", "SupremacyClientComponents\SupremacyClientComponents.csproj", "{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_3_ClientComponents", "SupremacyClientComponents\Supremacy_3_ClientComponents.csproj", "{4836D1C7-B3C6-4021-9B5F-CEEF027251EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy.Scripting", "Supremacy.Scripting\Supremacy.Scripting.csproj", "{25AEA57E-9376-4B73-93D4-A2DCDB15D2D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy.Xna", "Supremacy.Xna\Supremacy.Xna.csproj", "{D6643396-9911-4B24-95C0-B94717B280A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supremacy_2_Xna", "Supremacy.Xna\Supremacy_2_Xna.csproj", "{D6643396-9911-4B24-95C0-B94717B280A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BF514DDA-33E9-48F3-8862-2E2EFC3AF88E}"
 	ProjectSection(SolutionItems) = preProject

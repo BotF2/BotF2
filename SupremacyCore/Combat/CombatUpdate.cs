@@ -25,6 +25,7 @@ namespace Supremacy.Combat
     {
 
         private List<object> _civList;
+        private List<string> _civNameList;
         private List<string> _civShortNameList;
         //private List<string> _civFirePowerList;
         private List<Civilization> _civStatusList;
@@ -41,25 +42,25 @@ namespace Supremacy.Combat
 
         //private Dictionary<string, int> civStrengthValues;
         //private string _newline = Environment.NewLine;
-        private string _civName1;
-        private string _civName2;
-        private string _civName3;
-        private string _civName4;
-        private string _civInsigniaOther1;
-        private string _civInsigniaOther2;
-        private string _civInsigniaOther3;
-        private string _civInsigniaOther4;
+        private string _civName1 = "";
+        private string _civName2 = "";
+        private string _civName3 = "";
+        private string _civName4 = "";
+        private string _civInsigniaOther1 = "";
+        private string _civInsigniaOther2 = "";
+        private string _civInsigniaOther3 = "";
+        private string _civInsigniaOther4 = "";
         //private int _civFirePowers1;
         //private int _civFirePowers2;
         //private int _civFirePowers3;
         //private int _civFirePowers4;
-        private string _civFirePowers1Text;
-        private string _civFirePowers2Text;
-        private string _civFirePowers3Text;
-        private string _civFirePowers4Text;
-        private string _civStatus2;
-        private string _civStatus3;
-        private string _civStatus4;
+        private string _civFirePowers1Text = "";
+        private string _civFirePowers2Text = "";
+        private string _civFirePowers3Text = "";
+        private string _civFirePowers4Text = "";
+        //private string _civStatus2;// = "";
+        //private string _civStatus3;// = "";
+        //private string _civStatus4;// = "";
 
         //private bool _anyAsset;
         //#pragma warning disable IDE0052 // Remove unread private members
@@ -76,8 +77,8 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException(nameof(owner));
             }
 
-            CivName_GetOthers(hostileAssets.ToList());
-            CivFirePowerText_GetOthers(hostileAssets.ToList());
+            CombatHelper.CivName_GetOthers(hostileAssets.ToList());
+            CombatHelper.CivFirePowerText_GetOthers(hostileAssets.ToList());
 
             bool yesStandoff;
             if (hostileAssets.Count == 0)
@@ -358,82 +359,82 @@ namespace Supremacy.Combat
         public string CivName4 => _civName4; // CivName_GetOthers();
         #endregion
 
-        public string CivName_GetOthers(List<CombatAssets> _hostileAssets)
-        {
-            //if (_civFirePowerList.Count > 0)
-            //{
-            //this.
-            //    string _civ_short_name = _civFirePowerList.FirstOrDefault();
-            List<string> _civNameList = new List<string>();
-            List<string> _civStatusList = new List<string>();
-            List<Civilization> _civList = new List<Civilization>();
-            foreach (var item in _hostileAssets)
-            {
-                _civNameList.Add(item.Owner.Name);
-                _civList.Add(GameContext.Current.Civilizations[item.Owner.CivID]);
-            }
+        //public string CivName_GetOthers(List<CombatAssets> _hostileAssets)
+        //{
+        //    //if (_civFirePowerList.Count > 0)
+        //    //{
+        //    //this.
+        //    //    string _civ_short_name = _civFirePowerList.FirstOrDefault();
+        //    List<string> _civNameList = new List<string>();
+        //    List<string> _civStatusList = new List<string>();
+        //    List<Civilization> _civList = new List<Civilization>();
+        //    foreach (var item in _hostileAssets)
+        //    {
+        //        _civNameList.Add(item.Owner.Name);
+        //        _civList.Add(GameContext.Current.Civilizations[item.Owner.CivID]);
+        //    }
 
-            _civList = _civList.Distinct().ToList();
-            _civNameList = _civNameList.Distinct().ToList();
+        //    _civList = _civList.Distinct().ToList();
+        //    _civNameList = _civNameList.Distinct().ToList();
 
-            foreach (var item in _civList)
-            {
-                Diplomat _diplomat = Diplomat.Get(item);
-                string _status = _diplomat.GetForeignPower(GameContext.Current.Civilizations[item.CivID]).DiplomacyData.Status.ToString();
-                //ForeignPower _foreignPower = _diplomat.GetForeignPower(item.Owner);
+        //    foreach (var item in _civList)
+        //    {
+        //        Diplomat _diplomat = Diplomat.Get(item);
+        //        string _status = _diplomat.GetForeignPower(GameContext.Current.Civilizations[item.CivID]).DiplomacyData.Status.ToString();
+        //        //ForeignPower _foreignPower = _diplomat.GetForeignPower(item.Owner);
 
-                _civStatusList.Add(_status);
-            }
-                //_civStatusList = _civStatusList.Distinct().ToList();
+        //        _civStatusList.Add(_status);
+        //    }
+        //        //_civStatusList = _civStatusList.Distinct().ToList();
 
 
-            _civName1 = "";
-            _civName2 = "";
-            _civName3 = "";
-            _civName4 = "";
+        //    _civName1 = "";
+        //    _civName2 = "";
+        //    _civName3 = "";
+        //    _civName4 = "";
 
-            _civStatus2 = "";
-            _civStatus3 = "";
-            _civStatus4 = "";
+        //    _civStatus2 = "";
+        //    _civStatus3 = "";
+        //    _civStatus4 = "";
 
-            _civInsigniaOther1 = "BlackInsignia";
-            _civInsigniaOther2 = "BlackInsignia";
-            _civInsigniaOther3 = "BlackInsignia";
-            _civInsigniaOther4 = "BlackInsignia";
+        //    _civInsigniaOther1 = "BlackInsignia";
+        //    _civInsigniaOther2 = "BlackInsignia";
+        //    _civInsigniaOther3 = "BlackInsignia";
+        //    _civInsigniaOther4 = "BlackInsignia";
 
-            for (int i = 0; i < _civNameList.Count; i++)
-            {
-                if (_civNameList[i] != null)
-                {
-                    if (i == 0) { _civName1 = _civNameList[i]; _civInsigniaOther1 = _civNameList[i]; _civInsigniaOther1 = _civInsigniaOther1.Replace(" ", ""); }
-                    if (i == 1)
-                    {
-                        _civName2 = _civNameList[i];
-                        _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", "");
-                        _civStatus2 = _civStatusList[i-1];
-                        //CivStatus2 = _civStatus2;
-                    }
-                    if (i == 2)
-                    {
-                        _civName3 = _civNameList[i];
-                        _civInsigniaOther3 = _civNameList[i-1]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
-                        _civStatus3 = CivStatus3;
-                    }
-                    if (i == 3)
-                    {
-                        _civName4 = _civNameList[i];
-                        _civInsigniaOther4 = _civNameList[i-1]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
-                        _civStatus4 = CivStatus4;
-                    }
-                }
-            }
-            //_ = _civ_name_list.Remove(_civ_short_name);
-            //_civFirePowerList = _civNameList.ToList();
-            //return _civ_short_name;
-            //}
+        //    for (int i = 0; i < _civNameList.Count; i++)
+        //    {
+        //        if (_civNameList[i] != null)
+        //        {
+        //            if (i == 0) { _civName1 = _civNameList[i]; _civInsigniaOther1 = _civNameList[i]; _civInsigniaOther1 = _civInsigniaOther1.Replace(" ", ""); }
+        //            if (i == 1)
+        //            {
+        //                _civName2 = _civNameList[i];
+        //                _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", "");
+        //                _civStatus2 = _civStatusList[i-1];
+        //                //CivStatus2 = _civStatus2;
+        //            }
+        //            if (i == 2)
+        //            {
+        //                _civName3 = _civNameList[i];
+        //                _civInsigniaOther3 = _civNameList[i-1]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
+        //                _civStatus3 = CivStatus3;
+        //            }
+        //            if (i == 3)
+        //            {
+        //                _civName4 = _civNameList[i];
+        //                _civInsigniaOther4 = _civNameList[i-1]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
+        //                _civStatus4 = CivStatus4;
+        //            }
+        //        }
+        //    }
+        //    //_ = _civ_name_list.Remove(_civ_short_name);
+        //    //_civFirePowerList = _civNameList.ToList();
+        //    //return _civ_short_name;
+        //    //}
 
-            return null;
-        }
+        //    return null;
+        //}
 
         #region other Civ Status
 
@@ -630,7 +631,7 @@ namespace Supremacy.Combat
                         if (civShortName == _cs.Owner.ShortName)
                         {
                             _otherCivStrength += CalculateStrength_CombatShip_in_CombatUpdate(_cs);
-                            //civStrengthValues[_cs.Owner.ToString()] += CalculateStrength_CombatShip_in_CombatUpdate(_cs);
+                            //civStrengthValues[_cs.Owner.ToString()] += CalculateStrength_CombatShip_in_CombatHelper(_cs);
 
                             _ = _otherAssetsLocal.Remove(ha);
                         }
@@ -724,8 +725,8 @@ namespace Supremacy.Combat
         //            {
         //                if (_civ_short_name == _cs.Owner.ShortName)
         //                {
-        //                    _civ1Strength += CalculateStrength_CombatShip_in_CombatUpdate(_cs);
-        //                    //civStrengthValues[_cs.Owner.ToString()] += CalculateStrength_CombatShip_in_CombatUpdate(_cs);
+        //                    _civ1Strength += CalculateStrength_CombatShip_in_CombatHelper(_cs);
+        //                    //civStrengthValues[_cs.Owner.ToString()] += CalculateStrength_CombatShip_in_CombatHelper(_cs);
 
         //                    _ = _otherAssetsLocal.Remove(_ha);
         //                }
@@ -774,158 +775,7 @@ namespace Supremacy.Combat
 
         //public string CivFirePowers2Text => CivFirePowerText_GetOthers(CivName2);
 
-        public string CivFirePowerText_GetOthers(List<CombatAssets> _hostileAssets) //string civName)
-        {
-            //List<CombatAssets> _h_Assets = _hostileAssets.to;
-            //if (civName == null)
-            //{
-            //    Console.WriteLine("Step_8880:; "
-            //        + "" + GameEngine.LocationString(Location.ToString())
-            //        + " > CombatID=" + CombatID
-            //        + " > checking Durability > civName= null");
-            //    return "";
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Step_8886:; "
-            //        + "" + GameEngine.LocationString(Location.ToString())
-            //        + " > CombatID=" + CombatID
-            //        + " > checking Durability > civName=" + civName + this.CombatID);
-            //}
 
-
-            //CombatAssets _h_assets = HostileAssets.FirstOrDefault();
-            //string _civ_short_name = _h_assets.Owner.ShortName;
-            ////Dictionary<string, int> civStrengthValues;// = new Dictionary<string, int>();
-            ////protected Dictionary<string, int>
-            ////civStrengthValues = new Dictionary<string, int>();
-            List<string> civNameList = new List<string>();
-            foreach (CombatAssets ha in _hostileAssets)
-            {
-                //if (_ha.Owner.ShortName == CivFirePowers1Text)
-                //    continue;
-
-                civNameList.Add(ha.Owner.ShortName);
-            }
-            civNameList = civNameList.Distinct().ToList();
-            //return "";
-            //}
-
-            //    //if (!civStrengthValues.ContainsKey(_ha.Owner.ShortName))
-            //    //{
-            //    //    civStrengthValues.Add(_ha.Owner.ShortName, 0);
-            //    //}
-            //}
-            //_ = _civ_name_list.Remove(_civ_short_name);
-            //_civShortNameList = _civ_name_list.ToList();
-
-            //foreach (var item in _civ_name_list)
-            //{
-            //    if (!_civ_name_list.Contains(item))
-            //    {
-            //        civStrengthValues.Add(item, 0);
-            //    }
-
-            //}
-
-            int _otherCivStrength = 0; // this is needed
-
-            //List<CombatAssets> _otherAssetsLocal = _hostileAssets.ToList();
-
-            foreach (var civName in civNameList)
-            {
-                bool _anyAsset = false;
-
-                //for (int i = 0; i < HostileAssets.Count; i++)
-                //{
-                //}
-
-                int i = 0;
-
-                //foreach (CombatAssets _ha in HostileAssets)
-                //{
-                //if (_ha.Owner.ShortName == CivFirePowers1Text)
-                //    continue;
-
-                foreach (CombatUnit _cs in _hostileAssets[i].CombatShips)   // only combat ships 
-                {
-                    if (civName == _cs.Owner.ShortName)
-                    {
-                        _otherCivStrength += CalculateStrength_CombatShip_in_CombatUpdate(_cs);
-                        //civStrengthValues[_cs.Owner.ToString()] += CalculateStrength_CombatShip_in_CombatUpdate(_cs);
-                        _anyAsset = true;
-                        //_ = _otherAssetsLocal.Remove(_ha);
-                    }
-                }
-
-                foreach (CombatUnit ncs in _hostileAssets[i].NonCombatShips)   // only NonCombat ships 
-                {
-                    //civStrengthValues[_ncs.Owner.ToString()] += CalculateStrength_Ship_NonCombat_in_CombatUpdate(_ncs);
-                    if (civName == ncs.Owner.ShortName)
-                    {
-                        _otherCivStrength += CalculateStrength_Ship_NonCombat_in_CombatUpdate(ncs);
-                        //// UPDATE X 25 June 2019: Do total strength instead of just firepower
-                        //_otherCivStrength = Convert.ToInt32(Convert.ToDouble(_otherCivStrength + _ncs.Firepower)
-                        //    + (Convert.ToDouble(_ncs.ShieldStrength + _ncs.HullStrength)
-                        //    * (1 + (Convert.ToDouble(_ncs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100))));
-                        _anyAsset = true;
-                        //_ = _otherAssetsLocal.Remove(_ha);
-                    }
-                }
-
-                if (_hostileAssets[i].Station != null)  //  station
-                {
-                    if (civName == _hostileAssets[i].Station.Owner.ShortName)
-                    {
-                        //civStrengthValues[_ha.Station.Owner.ToString()] += CalculateStrength_Station_in_CombatUpdate(_ha.Station);
-                        _otherCivStrength += CalculateStrength_Station_in_CombatUpdate(_hostileAssets[i].Station);
-                        _anyAsset = true;
-                        //// UPDATE X 25 June 2019: Do total strenght instead of just firepower
-                        //_otherCivStrength += _ha.Station.Firepower + _ha.Station.HullStrength + _ha.Station.ShieldStrength;
-                    }
-                    //_ = _otherAssetsLocal.Remove(_ha);
-                }
-                //}
-
-                if (_anyAsset == true)
-                {
-                    string _text = string.Format(ResourceManager.GetString("COMBAT_POWER")) + ": " /*+ _otherCivStrength.ToString()*/;
-                    Console.WriteLine("Step_8881:; "
-                        + "" + GameEngine.LocationString(_hostileAssets[0].Location.ToString())
-                        + " cUpda > " + civName
-                        + " > " + _text + _otherCivStrength.ToString()
-                        );
-
-
-                    if (civName == CivName1 && CivInsigniaOther1 != "BlackInsignia")
-                        _civFirePowers1Text = _text + _otherCivStrength.ToString();
-                    if (civName == CivName2 && CivInsigniaOther2 != "BlackInsignia")
-                        _civFirePowers2Text = _text + (_otherCivStrength - CivFirePowers1).ToString();
-                    if (civName == CivName3 && CivInsigniaOther3 != "BlackInsignia")
-                        _civFirePowers3Text = _text + (_otherCivStrength - CivFirePowers1 - CivFirePowers2).ToString();
-                    if (civName == CivName4 && CivInsigniaOther4 != "BlackInsignia")
-                        _civFirePowers4Text = _text + (_otherCivStrength - CivFirePowers1 - CivFirePowers2 - CivFirePowers3).ToString();
-
-                    _anyAsset = false;
-
-                    _otherCivStrength = 0; // reset to 0
-                    return "xyz";
-                }
-                else
-                {
-                    //_text = string.Format(ResourceManager.GetString("COMBAT_POWER")) + ": " + _otherCivStrength.ToString();
-                    Console.WriteLine("Step_8882:; cUpda" + civName + " > no Durability necessary in this one");
-                    return "abc";
-                }
-
-                //return "ofg";
-
-            }
-            ////end of froeach civName
-            //Console.WriteLine("Step_8883:; " + civName + " > no Durability necessary");
-            return "def"; // return "" if there is no more civ
-                          //}
-        }
 
 
         //{

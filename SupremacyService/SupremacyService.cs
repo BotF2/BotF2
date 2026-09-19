@@ -9,6 +9,7 @@
 
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
+using Supremacy.Client.Context;
 using Supremacy.Client.Services;
 using Supremacy.Collections;
 using Supremacy.Combat;
@@ -1495,6 +1496,7 @@ namespace Supremacy.WCF
             }
         }
 
+        //private readonly IAppContext _appContext;
 
         private void OnCombatOccurring(List<CombatAssets> assets)
         {
@@ -1504,6 +1506,12 @@ namespace Supremacy.WCF
                 assets,
                 SendCombatUpdateCallback,
                 NotifyCombatEndedCallback);
+
+            //foreach (var item in assets)
+            //{
+
+            //}         
+
             _combatEngine.SendInitialUpdate();
         }
 

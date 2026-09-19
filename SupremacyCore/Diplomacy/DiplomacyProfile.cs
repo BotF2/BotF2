@@ -17,12 +17,12 @@ namespace Supremacy.Diplomacy
     public class DiplomacyProfile : SupportInitializeBase
     {
         private string _civilizationKey;
-        private readonly RelationshipMemoryWeightCollection _memoryWeights;
+        //private readonly RelationshipMemoryWeightCollection _memoryWeights;
 
-        public DiplomacyProfile()
-        {
-            _memoryWeights = new RelationshipMemoryWeightCollection();
-        }
+        //public DiplomacyProfile()
+        //{
+        //    _memoryWeights = new RelationshipMemoryWeightCollection();
+        //}
 
         [DefaultValue(null)]
         [TypeConverter(typeof(RaceConverter))]
@@ -45,16 +45,16 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public RelationshipMemoryWeightCollection MemoryWeights => _memoryWeights;
+        //public RelationshipMemoryWeightCollection MemoryWeights => _memoryWeights;
 
         protected override void BeginInitCore()
         {
-            _memoryWeights.BeginInit();
+            //_memoryWeights.BeginInit();
         }
 
         protected override void EndInitCore()
         {
-            _memoryWeights.EndInit();
+            //_memoryWeights.EndInit();
         }
     }
 

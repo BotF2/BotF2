@@ -159,36 +159,7 @@ namespace Supremacy.AI
         }
         #endregion
 
-        //public static void AssimilateSystem(Colony colony)
-        //{
-        //    // Resistance is futile, assimilate da system
-        //    int chanceToAssimilate = RandomHelper.Random(100);
-        //    if (true) //(chanceToAssimilate <= 5)
-        //    {
-        //        Civilization borgy = GameContext.Current.CivilizationManagers[6].Civilization; 
-        //        //var borg = GameContext.Current.Civilizations.Where(c => c.Key == "BORG").FirstOrDefault();
-        //    Civilization assimilatedCiv = colony.Owner;
-        //    CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[assimilatedCiv];
-        //    Universe.Colony assimiltedCivHome = targetEmpire.HomeColony;
-        //    int gainedResearchPoints = assimiltedCivHome.Research_Net;
-        //    //Universe.Sector destination = CombatHelper.CalculateRetreatDestination(assets);
-        //    //Ship ship = (Ship)assimilatedShip.Source;
-        //    colony.Owner = borgy;
-        //            //ship.Owner = borg;
-        //            //Fleet newfleet = ship.CreateFleet();
-        //            //newfleet.Location = destination.Location;
-        //            //newfleet.Owner = borg;
-        //            //newfleet.SetOrder(FleetOrders.EngageOrder.Create());
-        //            //if (newfleet.Order == null)
-        //            //{
-        //            //    newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
-        //            //}
-        //            //ship.IsAssimilated = true;
-        //            //ship.Scrap = false;
-        //            //newfleet.Name = "Assimilated Assets";
-        //    GameContext.Current.CivilizationManagers[colony.Owner].Research.UpdateResearch(gainedResearchPoints);
-        //    }
-        //}
+
         public static void TargetCiv_CheckFirePower(CivilizationManager _civM)
         {
             //CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];

@@ -766,8 +766,8 @@ namespace Supremacy.Client.Views
                         }
                         else { _cancelationTrustDictionary.Add(_selectedID, trust); }
 
-                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, regard * -1);
-                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, trust * -1);
+                        DiplomacyHelper.Apply_TrustChange("WarDeclaration", regard * -1,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
+                        DiplomacyHelper.ApplyRegardChange("WarDeclaration", trust * -1,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
                     }
 
                 }
@@ -819,12 +819,12 @@ namespace Supremacy.Client.Views
                     int? trust = _cancelationTrustDictionary[_selectedID];
                     if (regard != null)
                     {
-                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)regard);
+                        DiplomacyHelper.Apply_TrustChange("WarDeclaration_2", (int)regard,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
                     }
 
                     if (trust != null)
                     {
-                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)trust);
+                        DiplomacyHelper.ApplyRegardChange("WarDeclaration_2", (int)trust,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
                     }
                 }
             }

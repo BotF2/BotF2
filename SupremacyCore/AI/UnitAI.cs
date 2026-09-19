@@ -2427,7 +2427,6 @@ namespace Supremacy.AI
                     _fleet.Activity = UnitActivity.Explore;
                     _text = "Step_6813:; " + CreateUpdateFleetText(_fleet, out string _fleetText) + " > no _bestSystemFor_Spying for Spy Ship > now EXPLORE "
                             //+ "; Activity= " + _fleet.Activity.ToString()
-
                             //+ "; Route empty= " + _fleet.Route.IsEmpty
                             //+ "; to go > " + _best_SectorForStation.Location
                             //+ " " + _best_SectorForStation.Name

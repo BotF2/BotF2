@@ -332,19 +332,19 @@ namespace Supremacy.AI
                         }
 
 
-                        int count = 0;
-                        foreach (BuildQueueItem buildQueueItem in _colony.BuildQueue) // just > Console.WriteLine
+                        int _count = 0;
+                        foreach (BuildQueueItem _build_queue_Item in _colony.BuildQueue) // just > Console.WriteLine
                         {
                             _text = "Step_1206:; " + GameEngine.LocationString(_colony.Location.ToString()) + " > " + _name_col
-                                + "; needs " + GameEngine.Do_x_Digit_String(2, buildQueueItem.Project.TurnsRemaining.ToString()) + " turns "
-                                + "; buildQueueItem # " + count + " = " + buildQueueItem.Description
+                                + "; needs " + GameEngine.Do_x_Digit_String(2, _build_queue_Item.Project.TurnsRemaining.ToString()) + " turns "
+                                + "; _build_queue_Item # " + _count + " = " + _build_queue_Item.Description
 
-                                    //+ buildQueueItem.Description
+                                    //+ _build_queue_Item.Description
                                     ;
                             if (_writeDirectly_Colony) Console.WriteLine(_text);
                             _colony_full_Report += _newline + _text;
                             //GameLog.Client.ProductionDetails.DebugFormat(_text);
-                            count++;
+                            _count++;
                         }
 
                         if (_colony.BuildQueue.Count > 0) // not to often 
@@ -372,7 +372,21 @@ namespace Supremacy.AI
                             Handle_Labors_for_Nothing_to_Build(_colony);
                         }
 
-                        Handle_Ship_Production(_colony, _colony.Owner);
+                        if (!PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
+                        {
+                            Handle_Ship_Production(_colony, _colony.Owner);
+                        }
+                        else
+                        {
+                            _text = GameEngine.LocationString(_colony.Location.ToString())
+                                + " " + _colony.Name
+                                + " > Empire is in financial problems and can not afford ShipBuilding ( Limit is -2000 )"
+                                ;
+                            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.RedYellow));
+
+                            if (_writeDirectly_Colony) Console.WriteLine("Step_1426:; " + _text);
+                            _colony_full_Report += Environment.NewLine + "Step_1426:; " + _text;
+                        }
 
 
                         //    if (/*_colony.Shipyard.BuildSlots != null && */!PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
@@ -2273,7 +2287,7 @@ namespace Supremacy.AI
                 //                    if (_writeDirectly_Colony) Console.WriteLine(_text);
                 //                    _colony_full_Report += _newline + _text + _newline;
 
-                //                    //int count = 0;
+                //                    //int _count = 0;
                 //                    //foreach (var item in projects) // Colony_Step_60_Handle_Basic_Structures
                 //                    //{
                 //                        Print_all_Build_Projects(projects);
@@ -2284,11 +2298,11 @@ namespace Supremacy.AI
                 //                        //    + "; Morale=; " + _colony.Morale
                 //                        //    + "; Industry_Net=;" + _colony.Industry_Net
                 //                        //    + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
-                //                        //    + "; OPTIONS_to_Build_on #;" + count
+                //                        //    + "; OPTIONS_to_Build_on #;" + _count
                 //                        //    + "; " + item.BuildDesign.ToString()
 
                 //                        //    ;
-                //                        //count++;
+                //                        //_count++;
                 //                        //if (_writeDirectly_Colony) Console.WriteLine(_text);
                 //                        //_colony_full_Report += _newline + _text;
                 //                    //}
@@ -2520,7 +2534,7 @@ namespace Supremacy.AI
                 //                    if (_writeDirectly_Colony) Console.WriteLine(_text);
                 //                    _colony_full_Report += _newline + _text + _newline;
 
-                //                    //int count = 0;
+                //                    //int _count = 0;
                 foreach (var _available_item in projects) // Colony_Step_60_Handle_Basic_Structures
                 {
                     if (_available_item.BuildDesign.EncyclopediaCategory != Encyclopedia.EncyclopediaCategory.Facilites)
@@ -2599,11 +2613,11 @@ namespace Supremacy.AI
                     //                        //    + "; Morale=; " + _colony.Morale
                     //                        //    + "; Industry_Net=;" + _colony.Industry_Net
                     //                        //    + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
-                    //                        //    + "; OPTIONS_to_Build_on #;" + count
+                    //                        //    + "; OPTIONS_to_Build_on #;" + _count
                     //                        //    + "; " + item.BuildDesign.ToString()
 
                     //                        //    ;
-                    //                        //count++;
+                    //                        //_count++;
                     //                        //if (_writeDirectly_Colony) Console.WriteLine(_text);
                     //                        //_colony_full_Report += _newline + _text;
                     //                    //}
@@ -3512,7 +3526,7 @@ namespace Supremacy.AI
                 //    if (_writeDirectly_Colony) Console.WriteLine(_text);
                 //    _colony_full_Report += _newline + _text;
 
-                //    int count = 0;
+                //    int _count = 0;
                 //    foreach (var item in projects)
                 //    {
 
@@ -3522,11 +3536,11 @@ namespace Supremacy.AI
                 //            + "; Morale=; " + _colony.Morale
                 //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; BCost=;" + GameEngine.Do_x_Digit_String( 5, item.BuildDesign.BuildCost.ToString())
-                //            + "; OPTIONS_to_Build_on #;" + count
+                //            + "; OPTIONS_to_Build_on #;" + _count
                 //            + "; " + item.BuildDesign.ToString()
 
                 //            ;
-                //        count++;
+                //        _count++;
                 //        if (_writeDirectly_Colony) Console.WriteLine(_text);
                 //        _colony_full_Report += _newline + _text;
                 //    }
@@ -3617,8 +3631,10 @@ namespace Supremacy.AI
         private static void Handle_Ship_Production(Colony _colony, Civilization _civ) //, Dictionary<ShipType, Tuple<int, string>> _listPrioShipBuild)
         {
             string _text = "";
+            string _newline = Environment.NewLine;
+
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_colony.Owner.CivID];
-            //bool bool_is_human = GameEngine.AI_IsPlayer_AI_Controlled;
+            bool bool_is_human = GameEngine.AI_IsPlayer_AI_Controlled();
             if (_civ.IsHuman && _bool_colony_is_AI_Controlled == false)
                 return;
 
@@ -3634,21 +3650,7 @@ namespace Supremacy.AI
                 return; 
             }
 
-            if (PlayerAI.IsInFinancialTrouble_BelowMinus2000(_colony.Owner))
-            {
-                Handle_Ship_Production(_colony, _colony.Owner);
-            }
-            else
-            {
-                _text = GameEngine.LocationString(_colony.Location.ToString())
-                    + " " + _colony.Name
-                    + " > Empire is in financial problems and can not afford ShipBuilding ( Limit is -2000 )"
-                    ;
-                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, _colony, _text, _text, "", SitRepPriority.RedYellow));
 
-                if (_writeDirectly_Colony) Console.WriteLine("Step_1426:; " + _text);
-                _colony_full_Report += Environment.NewLine + "Step_1426:; " + _text;
-            }
         
 
 
@@ -3663,8 +3665,9 @@ namespace Supremacy.AI
 
             List<ShipDesign> shipDesigns = GameContext.Current.TechTrees[_colony.OwnerID].ShipDesigns.ToList();
 
-            string _newline = Environment.NewLine;
-            /*string */_text = /*_newline + */"Step_5780:; " + GameEngine.LocationString(_colony.Location.ToString()) + " ShipProduction > " + _name_col;
+            
+            /*string */
+            _text = /*_newline + */"Step_5780:; " + GameEngine.LocationString(_colony.Location.ToString()) + " ShipProduction > " + _name_col;
             //if (_writeDirectly_Colony) Console.WriteLine(_text);
             //_colony_full_Report += _newline + _text;
 
@@ -3972,7 +3975,7 @@ namespace Supremacy.AI
                     }
 
 
-                    // Already checked before but here to hover the count
+                    // Already checked before but here to hover the _count
                     if (_colony.Shipyard.BuildQueue.Count > 0) { goto ProcessQueue; }
 
                     _shipOrderIsDone = false;
