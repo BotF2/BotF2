@@ -154,30 +154,14 @@ namespace Supremacy.AI
                     if (!_foreign_power_1.DiplomacyData.FirstDiplomaticAction)
                     {
                         _foreign_power_1.DiplomacyData.FirstDiplomaticAction = true;
-                        int impact = 75;
+                        int impact = 25;
                         int coutnerParty = _foreign_power_1.Counterparty.CivID;
                         switch (coutnerParty)
                         {
-                            case 0: //fed
-                                {
-                                    impact = 95;
-                                    break;
-                                }
-                            case 1: // terran
-                                {
-                                    impact = 60;
-                                    break;
-                                }
-                            case 4: // card
-                                {
-                                    impact = 65;
-                                    break;
-                                }
-                            case 5: // dom
-                                {
-                                    impact = 60;
-                                    break;
-                                }
+                            case 0: { impact = 35; break;}// fed
+                            case 1: { impact = 10; break;}// terran
+                            case 4: { impact = 15; break;}// card
+                            case 5: { impact = 10; break;}// dom
                             default:
                                 break;
                         }

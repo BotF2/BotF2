@@ -40,7 +40,7 @@ namespace Supremacy.Diplomacy
         [NonSerialized]
         private static string _text;
         private static string _diploText = "";
-        private static bool _bool_diplo_is_AI_controlled = GameEngine.AI_IsPlayer_AI_Controlled();
+        private static bool _bool_diplo_is_AI_controlled = GameEngine.AI_IsPlayer_AI_Controlled;
 
         public static Civilization DiploScreenSelectedForeignPower
         {
@@ -97,9 +97,9 @@ namespace Supremacy.Diplomacy
         {
             if (_reason == "" && GameEngine.Do_Debugger_breaks)
             {
-                Debugger.Break();
+                _reason = "no specific reason";
+                //Debugger.Break();
             }
-
 
             if (_civ1 == null)
             {
@@ -129,6 +129,18 @@ namespace Supremacy.Diplomacy
                 _ = foreignPower.DiplomacyData.Trust.AdjustCurrent(_trust_delta);
                 foreignPower.DiplomacyData.Trust.UpdateAndReset();
                 foreignPower.UpdateRegardAndTrustMeters();
+
+                _text = "due to " + _reason
+                        + " > " + _trust_delta
+                        + " in relation of " + _civ1
+                        + " vs " + _civ2
+                        ;
+                // crash for empty exchange
+                //GameContext.Current.CivilizationManagers[_civ1].SitRepEntries
+                //    .Add(new DiplomaticSitRepEntry(GameContext.Current.Civilizations[_civ1.CivID], foreignPower.ResponseSent));
+                //GameContext.Current.CivilizationManagers[_civ2].SitRepEntries
+                //    .Add(new DiplomaticSitRepEntry(GameContext.Current.Civilizations[_civ2.CivID], foreignPower.ResponseSent));
+                Console.WriteLine("Step_1387:;  TRUST changed " + _text);
             }
 
             //GameLog.Core.Diplomacy.DebugFormat(
@@ -163,18 +175,19 @@ namespace Supremacy.Diplomacy
                 foreignPower.DiplomacyData.Regard.UpdateAndReset();
                 foreignPower.UpdateRegardAndTrustMeters();
 
-                _text = "Due to " + _reason
-                    + ": " + _regard_delta 
+                _text = "due to " + _reason
+                    + " > " + _regard_delta
                     + " in relation of " + _civ1
                     + " vs " + _civ2
                     ;
-                GameContext.Current.CivilizationManagers[_civ1].SitRepEntries
-                    .Add(new DiplomaticSitRepEntry(GameContext.Current.Civilizations[_civ1.CivID], foreignPower.ResponseSent));
-                GameContext.Current.CivilizationManagers[_civ2].SitRepEntries
-                    .Add(new DiplomaticSitRepEntry(GameContext.Current.Civilizations[_civ2.CivID], foreignPower.ResponseSent));
-                Console.WriteLine("Step_1386:; " + _text);
+                // crash for empty exchange
+                //GameContext.Current.CivilizationManagers[_civ1].SitRepEntries
+                //    .Add(new DiplomaticSitRepEntry(GameContext.Current.Civilizations[_civ1.CivID], foreignPower.ResponseSent));
+                //GameContext.Current.CivilizationManagers[_civ2].SitRepEntries
+                //    .Add(new DiplomaticSitRepEntry(GameContext.Current.Civilizations[_civ2.CivID], foreignPower.ResponseSent));
+                Console.WriteLine("Step_1386:; REGARD changed " + _text);
             }
-            
+
             // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};AFTER : _civ2.CivID=;{1};_foreignPower_civ2.OwnerID=;{4};_regard_delta=;{2};CurrentTrust=;{5};_diplomat.Owner=;{3};_civ_1=;{0}" + Environment.NewLine,
             //_civ_1, _civ2.CivID, _regard_delta, _diplomat.Owner, _foreignPower_civ2.OwnerID, _foreignPower_civ2.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
         }
@@ -509,9 +522,9 @@ namespace Supremacy.Diplomacy
 
                 bool _player_is_human = GameEngine.IsCivM_Human_Player(_civM_1);
 
-                if (_player_is_human)
+                if (_player_is_human && GameEngine.Do_Debugger_breaks)
                 {
-                    _text = "line 1496 - break_1301 > just for info > Diplomacy_0_DoDiplomacy";
+                    _text = "break_1301 > just for info > Diplomacy_0_DoDiplomacy";
                     Console.WriteLine(_text);
 
                     //Debugger.Break();
@@ -719,6 +732,7 @@ namespace Supremacy.Diplomacy
 
             bool _writeDirectly = true;
             bool _player_is_human = GameEngine.IsCivM_Human_Player(_civM_1);
+            bool _is_human_player_AI_controlled = GameEngine.AI_IsPlayer_AI_Controlled;
 
             AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
             //List<Clause> _clauses = new List<Clause>();
@@ -832,7 +846,7 @@ namespace Supremacy.Diplomacy
                     _text = "_break_1302 - just for info > Diplomacy_1_Basics";
                     Console.WriteLine(_text);
 
-                    //Debugger.Break(); // for switch (_foreignPowerStatus)
+                    Debugger.Break(); // for switch (_foreignPowerStatus)
                 }
 
                 switch (_foreignPowerStatus)
@@ -842,12 +856,12 @@ namespace Supremacy.Diplomacy
                         //if (_writeDirectly) Console.WriteLine(_text);
                         _text = "IMPACT";
                         if (_regard < 850)
-                            DiplomacyHelper.ApplyRegardChange("",3, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
+                            DiplomacyHelper.ApplyRegardChange("Affiliated status", 3, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
                         if (_trust < 800)
-                            DiplomacyHelper.Apply_TrustChange("",4, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                            DiplomacyHelper.Apply_TrustChange("Affiliated status", 4, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
                         _text = "OFFER_2";
-                        if (!_civ1.IsHuman && !_civ2.IsEmpire && _regard > 800 && _random == 1)
+                        if (_civ1.Is_AI_Controlled && !_civ2.IsEmpire && _regard > 800 && _random == 1)
                         {
                             //List<Clause> 
                             _clauses = new List<Clause>();
@@ -871,37 +885,6 @@ namespace Supremacy.Diplomacy
                         break;
                     case ForeignPowerStatus.Allied:
                         Do_AI_for_Allied(_civ1, _civ2, _diplomatForeignPower_Civ2, _regard, _trust, _random, _clauses);
-                        //if (_foreignPowerStatus == ForeignPowerStatus.Allied)
-                        //{
-                        //_text = "Step_7760:; Do_13_Diplomacy > " + _civ_1 + "; vs; " + _civ2 + "; > Allied";
-                        //if (_writeDirectly) Console.WriteLine(_text);
-                        //_text = "IMPACT";
-                        //if (_regard < 850)
-                        //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
-                        //if (_trust < 800)
-                        //    DiplomacyHelper.Apply_TrustChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 3);
-
-                        //_text = "OFFER_1";
-                        //if (!_civ1.IsHuman && _regard > 800 && _random == 1)
-                        //{
-                        //    //List<Clause> _clauses = new List<Clause>();
-
-                        //    if (!_civ1.IsEmpire && !agreementMatrix.IsAgreementActive(_civ1, _civ2, ClauseType.TreatyFullAlliance))
-                        //    {
-                        //        _clauses.Add(new Clause(ClauseType.TreatyFullAlliance));
-                        //        var _newProposal = new NewProposal(_civ1, _civ2, _clauses);
-                        //        if (_newProposal != null)
-                        //        {
-                        //            _text = "Step_9454:; AI sent Proposal >  TreatyFullAlliance from " + _civ1
-                        //                    + " to " + _civ2
-                        //                    ;
-                        //            Console.WriteLine(_text);
-                        //            var _sendOrder = new SendProposalOrder(_newProposal);
-                        //            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
-                        //        }
-                        //    }
-                        //}
-
                         Debugger.Break();
                         break;
                     case ForeignPowerStatus.Friendly:
@@ -910,13 +893,13 @@ namespace Supremacy.Diplomacy
                         //if (_writeDirectly) Console.WriteLine(_text);
                         _text = "IMPACT";
                         if (_regard < 650)
-                            DiplomacyHelper.ApplyRegardChange("",2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
+                            DiplomacyHelper.ApplyRegardChange("Friendly status", 2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
                         if (_trust < 600)
-                            DiplomacyHelper.Apply_TrustChange("",2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                            DiplomacyHelper.Apply_TrustChange("Friendly status", 2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
 
                         _text = "OFFER";
-                        if (!_civ1.IsHuman && _regard > 600 && _random == 1)
+                        if (_civ1.Is_AI_Controlled && _regard > 600 && _random == 1)
                         {
                             //List<Clause> _clauses = new List<Clause>();
 
@@ -971,10 +954,10 @@ namespace Supremacy.Diplomacy
                         //    DiplomacyHelper.ApplyRegardChange("",_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner, 2); // 2 each turnnumber
                         _text = "IMPACT";
                         if (_trust < 600)
-                            DiplomacyHelper.Apply_TrustChange("",3, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                            DiplomacyHelper.Apply_TrustChange("Peace status", 3, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
                         _text = "OFFER";
-                        if (!_civ1.IsHuman && _regard > 500 && _random == 1)
+                        if (_civ1.Is_AI_Controlled && _regard > 500 && _random == 1)
                         {
                             //List<Clause> _clauses = new List<Clause>();
 
@@ -1006,13 +989,13 @@ namespace Supremacy.Diplomacy
                         //if (_writeDirectly) Console.WriteLine(_text);
                         _text = "IMPACT";
                         if (_regard < 650)
-                            DiplomacyHelper.ApplyRegardChange("",2,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
+                            DiplomacyHelper.ApplyRegardChange("Neutral status", 2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
                         if (_trust < 600)
-                            DiplomacyHelper.Apply_TrustChange("",2,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
-                                
+                            DiplomacyHelper.Apply_TrustChange("Neutral status", 2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+
 
                         _text = "OFFER";
-                        if (!_civ1.IsHuman && _regard > 450 && _random == 1)
+                        if (_civ1.Is_AI_Controlled && _regard > 450 && _random == 1)
                         {
                             //List<Clause> _clauses = new List<Clause>();
                             _clauses.Add(new Clause(ClauseType.TreatyOpenBorders));
@@ -1028,14 +1011,14 @@ namespace Supremacy.Diplomacy
                                 var _sendOrder = new SendProposalOrder(_newProposal);
                                 ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
                             }
-                        Debugger.Break();
+                            //Debugger.Break();
                         }
 
 
                         break;
                     case ForeignPowerStatus.AtWar:
-                        DiplomacyHelper.Apply_TrustChange("",-1000,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
-                        DiplomacyHelper.ApplyRegardChange("",-1000,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                        DiplomacyHelper.Apply_TrustChange("AtWar status", -1000, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                        DiplomacyHelper.ApplyRegardChange("AtWar status", -1000, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
                         Do_AI_for_AtWar(_civ1, _civ2, _diplomatForeignPower_Civ2, _regard, _trust, _random, _clauses);
                         break;
@@ -1100,15 +1083,15 @@ namespace Supremacy.Diplomacy
                 if (_civ1.CivID == 6 || _civ1.Key == "BORG")
                 {
                     //var aForeignPower = _diplomat_civ1.GetForeignPower(_civ2);
-                    DiplomacyHelper.Apply_TrustChange("",-1000,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
-                    DiplomacyHelper.ApplyRegardChange("",-1000,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                    DiplomacyHelper.Apply_TrustChange("just Borg", -1000, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                    DiplomacyHelper.ApplyRegardChange("just Borg", -1000, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
                     continue;
                 }
                 if (_civ2.CivID == 6 || _civ2.Key == "BORG")
                 {
-                    DiplomacyHelper.Apply_TrustChange("",-1000,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner );
-                    DiplomacyHelper.ApplyRegardChange("",-1000,_diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner );
+                    DiplomacyHelper.Apply_TrustChange("just Borg", -1000, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                    DiplomacyHelper.ApplyRegardChange("just Borg", -1000, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
                     continue;
                 }
@@ -1213,9 +1196,9 @@ namespace Supremacy.Diplomacy
         {
             _text = "IMPACT";
             if (_regard < 850)
-                DiplomacyHelper.ApplyRegardChange("",2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
+                DiplomacyHelper.ApplyRegardChange("Allied status", 2, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner); // 2 each turnnumber
             if (_trust < 800)
-                DiplomacyHelper.Apply_TrustChange("",3, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
+                DiplomacyHelper.Apply_TrustChange("Allied status", 3, _diplomatForeignPower_Civ2.Counterparty, _diplomatForeignPower_Civ2.Owner);
 
             _text = "OFFER_1";
             if (!_civ1.IsHuman && _regard > 800 && _random == 1)
@@ -1299,34 +1282,34 @@ namespace Supremacy.Diplomacy
             Target_CivList_Update_and_TargetColonies(_civ1, _civ2);
 
 
-                    
-        //Skipped_Target_Colony:;
+
+            //Skipped_Target_Colony:;
 
 
 
 
-                //Console.WriteLine(_newline + "Step_7734:; Begin of _diplomacyBasicsSummary_Text" + /*_newline + */_diplomacyBasicsSummary_Text + _newline + "End of _diplomacyBasicsSummary_Text" + _newline);
+            //Console.WriteLine(_newline + "Step_7734:; Begin of _diplomacyBasicsSummary_Text" + /*_newline + */_diplomacyBasicsSummary_Text + _newline + "End of _diplomacyBasicsSummary_Text" + _newline);
 
-                //if (_civ_1.IsHuman) { Debugger.Break(); }
+            //if (_civ_1.IsHuman) { Debugger.Break(); }
 
-                //if (_player_is_human
-                //    //&& _foreignPowerStatus != ForeignPowerStatus.NoContact
-                //    && _foreignPowerStatus != ForeignPowerStatus.AtWar)
-                //{
-                //    if (_atWarText == "")
-                //    {
-                //        _atWarText = "Step_7738:; Do_13_Diplomacy > with nobody for " + _civ1;
-                //    }
-                //    if (_writeDirectly) Console.WriteLine(_atWarText);
-                //    //Debugger.Break();
-                //}
-
-
-
-                //break;
+            //if (_player_is_human
+            //    //&& _foreignPowerStatus != ForeignPowerStatus.NoContact
+            //    && _foreignPowerStatus != ForeignPowerStatus.AtWar)
+            //{
+            //    if (_atWarText == "")
+            //    {
+            //        _atWarText = "Step_7738:; Do_13_Diplomacy > with nobody for " + _civ1;
+            //    }
+            //    if (_writeDirectly) Console.WriteLine(_atWarText);
+            //    //Debugger.Break();
+            //}
 
 
-            
+
+            //break;
+
+
+
 
             //if (_foreignPowerStatus == ForeignPowerStatus.Affiliated)
             //{
@@ -3217,22 +3200,22 @@ namespace Supremacy.Diplomacy
 
 
             // if no other changes some variation over time
-            DiplomacyHelper.Apply_TrustChange("",_random_change,foreignPower.Counterparty, foreignPower.Owner );
-            DiplomacyHelper.ApplyRegardChange("",_random_change,foreignPower.Counterparty, foreignPower.Owner );
+            DiplomacyHelper.Apply_TrustChange("regular ongoing change", _random_change, foreignPower.Counterparty, foreignPower.Owner);
+            DiplomacyHelper.ApplyRegardChange("regular ongoing change", _random_change, foreignPower.Counterparty, foreignPower.Owner);
 
             if ((5 - foreignPower.DiplomacyData.LastColdWarAttack) < 0
                 || 4 - foreignPower.DiplomacyData.LastIncursion < 0
                 || 6 - foreignPower.DiplomacyData.LastTotalWarAttack < 0)
             {
-                DiplomacyHelper.Apply_TrustChange("",GameEngine.GetRandomNumber(-4, 10),foreignPower.Counterparty, foreignPower.Owner );
-                DiplomacyHelper.ApplyRegardChange("",GameEngine.GetRandomNumber(-1, 7),foreignPower.Counterparty, foreignPower.Owner );
+                DiplomacyHelper.Apply_TrustChange("regular ongoing change", GameEngine.GetRandomNumber(-4, 10), foreignPower.Counterparty, foreignPower.Owner);
+                DiplomacyHelper.ApplyRegardChange("regular ongoing change", GameEngine.GetRandomNumber(-1, 7), foreignPower.Counterparty, foreignPower.Owner);
             }
 
             // TreatyNonAggression
             if (GameContext.Current.AgreementMatrix.FindAgreement(otherCiv, foreignPower, ClauseType.TreatyNonAggression) != null)
             {
-                DiplomacyHelper.Apply_TrustChange("",GameEngine.GetRandomNumber(1, 12),foreignPower.Counterparty, foreignPower.Owner );
-                DiplomacyHelper.ApplyRegardChange("",GameEngine.GetRandomNumber(1, 7),foreignPower.Counterparty, foreignPower.Owner );
+                DiplomacyHelper.Apply_TrustChange("regular ongoing change", GameEngine.GetRandomNumber(1, 12), foreignPower.Counterparty, foreignPower.Owner);
+                DiplomacyHelper.ApplyRegardChange("regular ongoing change", GameEngine.GetRandomNumber(1, 7), foreignPower.Counterparty, foreignPower.Owner);
             }
 
             // OpenBorders or TreatyDefensiveAlliance or TreatyAffiliation
@@ -3240,8 +3223,8 @@ namespace Supremacy.Diplomacy
                 GameContext.Current.AgreementMatrix.FindAgreement(otherCiv, foreignPower, ClauseType.TreatyDefensiveAlliance) != null ||
                 GameContext.Current.AgreementMatrix.FindAgreement(otherCiv, foreignPower, ClauseType.TreatyAffiliation) != null)
             {
-                DiplomacyHelper.Apply_TrustChange("",GameEngine.GetRandomNumber(3, 12),foreignPower.Counterparty, foreignPower.Owner );
-                DiplomacyHelper.ApplyRegardChange("",GameEngine.GetRandomNumber(2, 10),foreignPower.Counterparty, foreignPower.Owner );
+                DiplomacyHelper.Apply_TrustChange("regular ongoing change", GameEngine.GetRandomNumber(3, 12), foreignPower.Counterparty, foreignPower.Owner);
+                DiplomacyHelper.ApplyRegardChange("regular ongoing change", GameEngine.GetRandomNumber(2, 10), foreignPower.Counterparty, foreignPower.Owner);
             }
             foreignPower.DiplomacyData.Regard.UpdateAndReset();
             foreignPower.DiplomacyData.Trust.UpdateAndReset();
@@ -3535,8 +3518,8 @@ namespace Supremacy.Diplomacy
                 //soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgResistanceFutile.flac");
                 //_soundPlayer.Play("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.mp3"); // at SitRep "Resistance is fut...."
 
-                Apply_TrustChange("",foreignPower.DiplomacyData.Trust.CurrentValue * -1,firstCiv, secondCiv);
-                ApplyRegardChange("", foreignPower.DiplomacyData.Regard.CurrentValue * -1, firstCiv, secondCiv);
+                Apply_TrustChange("DeclareWar", foreignPower.DiplomacyData.Trust.CurrentValue * -1, firstCiv, secondCiv);
+                ApplyRegardChange("DeclareWar", foreignPower.DiplomacyData.Regard.CurrentValue * -1, firstCiv, secondCiv);
 
                 //GameLog.Core.Diplomacy.DebugFormat("_foreignPower_civ2 = {3}, firstManager.Civilization.Key = {0}, second = {1}, TrustDelta {2}", 
                 //    firstManager.Civilization.Key, secondManager.Civilization.Key, _trust_delta, _foreignPower_civ2.DiplomacyData);
@@ -3549,8 +3532,8 @@ namespace Supremacy.Diplomacy
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                 //var soundPlayer = new SoundPlayer("Resources/SoundFX/TaskForceOrders/BorgWeAreTheBorg.ogg");  // ToDo - not working yet
 
-                Apply_TrustChange("", foreignPower.DiplomacyData.Trust.CurrentValue * -1,firstCiv, secondCiv);
-                ApplyRegardChange("", ownPower.DiplomacyData.Regard.CurrentValue * -1,secondCiv, firstCiv);
+                Apply_TrustChange("DeclareWar", foreignPower.DiplomacyData.Trust.CurrentValue * -1, firstCiv, secondCiv);
+                ApplyRegardChange("DeclareWar", ownPower.DiplomacyData.Regard.CurrentValue * -1, secondCiv, firstCiv);
 
                 //GameLog.Core.Diplomacy.DebugFormat("secondManager.Civilization.Key = {0}, first = {1}, TrustDelta {2}", secondManager.Civilization.Key, firstManager.Civilization.Key, _trust_delta);
             }
@@ -3561,19 +3544,16 @@ namespace Supremacy.Diplomacy
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
 
-
-
-
-                Apply_TrustChange("", foreignPower.DiplomacyData.Trust.CurrentValue * -1,firstCiv, secondCiv);
-                ApplyRegardChange("", ownPower.DiplomacyData.Regard.CurrentValue * -1,secondCiv, firstCiv);
+                Apply_TrustChange("DeclareWar", foreignPower.DiplomacyData.Trust.CurrentValue * -1, firstCiv, secondCiv);
+                ApplyRegardChange("DeclareWar", ownPower.DiplomacyData.Regard.CurrentValue * -1, secondCiv, firstCiv);
             }
             else if (!secondManager.Civilization.IsHuman && ShouldTheyGoToWar(secondCiv, firstCiv))
             {
                 foreignPower.CounterpartyForeignPower.DeclareWar();
                 firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                 secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                Apply_TrustChange("", foreignPower.DiplomacyData.Trust.CurrentValue * -1,firstCiv, secondCiv);
-                ApplyRegardChange("", ownPower.DiplomacyData.Regard.CurrentValue * -1,secondCiv, firstCiv);
+                Apply_TrustChange("DeclareWar", foreignPower.DiplomacyData.Trust.CurrentValue * -1, firstCiv, secondCiv);
+                ApplyRegardChange("DeclareWar", ownPower.DiplomacyData.Regard.CurrentValue * -1, secondCiv, firstCiv);
             }
         }
 
@@ -3794,26 +3774,26 @@ namespace Supremacy.Diplomacy
         //    return 0;
         //}
 
-        //public static int GetInitialMemoryWeight(Civilization _civ1, MemoryType memoryType)
-        //{
-        //    return GetInitialMemoryWeight(_civ1, memoryType, out int maxConcurrentMemories);
-        //}
+        public static int GetInitialMemoryWeight(Civilization _civ1, MemoryType memoryType)
+        {
+            return GetInitialMemoryWeight(_civ1, memoryType, out int maxConcurrentMemories);
+        }
 
-        //public static int GetInitialMemoryWeight(Civilization _civ1, MemoryType memoryType, out int maxConcurrentMemories)
-        //{
-        //    DiplomacyDatabase diplomacyDatabase = GameContext.Current.DiplomacyDatabase;
+        public static int GetInitialMemoryWeight(Civilization _civ1, MemoryType memoryType, out int maxConcurrentMemories)
+        {
+            DiplomacyDatabase diplomacyDatabase = GameContext.Current.DiplomacyDatabase;
 
-        //    if ((GameContext.Current.DiplomacyDatabase.CivilizationProfiles.TryGetValue(_civ1, out DiplomacyProfile diplomacyProfile) &&
-        //         diplomacyProfile.MemoryWeights.TryGetValue(memoryType, out RelationshipMemoryWeight memoryWeight)) ||
-        //        diplomacyDatabase.DefaultProfile.MemoryWeights.TryGetValue(memoryType, out memoryWeight))
-        //    {
-        //        maxConcurrentMemories = memoryWeight.MaxConcurrentMemories;
-        //        return memoryWeight.Weight;
-        //    }
+            if ((GameContext.Current.DiplomacyDatabase.CivilizationProfiles.TryGetValue(_civ1, out DiplomacyProfile diplomacyProfile) &&
+                 diplomacyProfile.MemoryWeights.TryGetValue(memoryType, out RelationshipMemoryWeight memoryWeight)) ||
+                diplomacyDatabase.DefaultProfile.MemoryWeights.TryGetValue(memoryType, out memoryWeight))
+            {
+                maxConcurrentMemories = memoryWeight.MaxConcurrentMemories;
+                return memoryWeight.Weight;
+            }
 
-        //    maxConcurrentMemories = 0;
-        //    return 0;
-        //}
+            maxConcurrentMemories = 0;
+            return 0;
+        }
         public static List<Civilization> FindOtherContactedCivsForDeltaRegardTrust(Civilization civDeclaring, Civilization civForDelta)
         {
             List<ForeignPower> foreignPowers = new List<ForeignPower>() { Diplomat.Get(civDeclaring).GetForeignPower(civForDelta) };

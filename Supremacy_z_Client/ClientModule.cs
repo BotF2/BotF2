@@ -260,9 +260,9 @@ namespace Supremacy.Client
         public string localEmpire = "";
         private int startTechLvl = -1;
 
-        public bool _checkLoading = true;
-        public bool _gamelog_bool = true;
-        public bool _ConsoleWriteline_bool = true;
+        //public bool _checkLoading = true;
+        //public bool _gamelog_bool = true;
+        //public bool _ConsoleWriteline_bool = true;
 
         //public string _text;
         //public readonly string _newline = Environment.NewLine;
@@ -1167,7 +1167,7 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MenuScreen, typeof(MenuScreen));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MultiplayerLobby, typeof(ILobbyScreenView));
 
-            // first is first shown in Options
+            // first is first shown in GameOptions
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(SecondOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(TracesOptionsPage));   // moved into own Dialog

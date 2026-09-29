@@ -103,13 +103,13 @@ namespace Supremacy.Scripting.Events
                     _ = target.Morale.AdjustCurrent(+5);
                     target.Morale.UpdateAndReset();
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
-                    //civManager?.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(_civM.Civilization, target));
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT")
                         , _text + ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT")
                         , "ScriptedEvents/ReligiousHoliday.png", SitRepPriority.RedYellow));

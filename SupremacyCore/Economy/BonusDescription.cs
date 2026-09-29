@@ -94,7 +94,7 @@ namespace Supremacy.Economy
         /// </summary>
         static BuildRestrictionDescriptions()
         {
-            _descriptions = GameContext.Current.Tables.EnumTables["BuildRestriction"];
+            _descriptions = GameContext.Current.GameTables.EnumTables["BuildRestriction"];
         }
 
         /// <summary>

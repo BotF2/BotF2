@@ -112,10 +112,10 @@ namespace Supremacy.Scripting.Events
                     OnUnitTargeted(target);
 
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("TRADE_GUILD_STRIKES_HEADER_TEXT")
                         , _text + ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT")
                         , "ScriptedEvents/TradeGuildStrikes.png", SitRepPriority.RedYellow));

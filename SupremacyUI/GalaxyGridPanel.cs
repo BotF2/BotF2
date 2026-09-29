@@ -381,7 +381,7 @@ namespace Supremacy.UI
                 FontStretches.Normal);
 
             OptionsProperty = DependencyProperty.Register(
-                "Options",
+                "GameOptions",
                 typeof(GalaxyViewOptions),
                 typeof(GalaxyGridPanel),
                 new PropertyMetadata(GalaxyViewOptions.Default, OptionsChangedCallback));

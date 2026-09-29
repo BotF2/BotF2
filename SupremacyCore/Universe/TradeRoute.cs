@@ -78,7 +78,7 @@ namespace Supremacy.Universe
                     float baseModSource = 0.025f;
                     float baseModTarget = 0.05f;
 
-                    Data.Table baseResProdTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
+                    Data.Table baseResProdTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopMultipliers"];
                     if (baseResProdTable != null)
                     {
                         try

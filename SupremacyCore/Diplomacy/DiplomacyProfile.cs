@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Markup;
-using System.Xaml;
+﻿// File:DiplomacyProfile.cs
 
 using Supremacy.Collections;
 using Supremacy.Entities;
@@ -9,6 +6,12 @@ using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.VFS;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Windows.Markup;
+using System.Xaml;
 
 namespace Supremacy.Diplomacy
 {
@@ -17,12 +20,12 @@ namespace Supremacy.Diplomacy
     public class DiplomacyProfile : SupportInitializeBase
     {
         private string _civilizationKey;
-        //private readonly RelationshipMemoryWeightCollection _memoryWeights;
+        private readonly RelationshipMemoryWeightCollection _memoryWeights;
 
-        //public DiplomacyProfile()
-        //{
-        //    _memoryWeights = new RelationshipMemoryWeightCollection();
-        //}
+        public DiplomacyProfile()
+        {
+            _memoryWeights = new RelationshipMemoryWeightCollection();
+        }
 
         [DefaultValue(null)]
         [TypeConverter(typeof(RaceConverter))]
@@ -45,16 +48,16 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        //public RelationshipMemoryWeightCollection MemoryWeights => _memoryWeights;
+        public RelationshipMemoryWeightCollection MemoryWeights => _memoryWeights;
 
         protected override void BeginInitCore()
         {
-            //_memoryWeights.BeginInit();
+            _memoryWeights.BeginInit();
         }
 
         protected override void EndInitCore()
         {
-            //_memoryWeights.EndInit();
+            _memoryWeights.EndInit();
         }
     }
 
@@ -148,6 +151,8 @@ namespace Supremacy.Diplomacy
 
         public static DiplomacyDatabase Load()
         {
+            string _text;
+
             GameContext gameContext = GameContext.Current;
             if (gameContext == null)
             {
@@ -171,8 +176,24 @@ namespace Supremacy.Diplomacy
 
                 using (System.IO.Stream stream = fileInfo.OpenRead())
                 {
+                    //Console.WriteLine("Step_2356:; Opening " + fileInfo.VirtualPath);
                     return (DiplomacyDatabase)XamlServices.Load(stream);
                 }
+            }
+            catch (Exception e)
+            {
+                _text = "Step_4352:; DiplomacyDatabase Load failed" + e;
+                Console.WriteLine(_text);
+                if (!ResourceManager.VfsService.TryGetFileInfo(new Uri("vfs:///Resources/Data/DiplomacyDatabase.xaml")
+                    , out IVirtualFileInfo fileInfo))
+                {
+                    return null;
+                }
+                using (System.IO.Stream stream = fileInfo.OpenRead())
+                {
+                    return (DiplomacyDatabase)XamlServices.Load(stream);
+                }
+                //return (DiplomacyDatabase)XamlServices.Load(stream);
             }
             finally
             {

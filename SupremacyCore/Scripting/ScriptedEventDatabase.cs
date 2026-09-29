@@ -49,6 +49,7 @@ namespace Supremacy.Scripting
 
                 using (System.IO.Stream stream = fileInfo.OpenRead())
                 {
+                    Console.WriteLine("Step_2362:; Opening " + fileInfo.VirtualPath);
                     return (ScriptedEventDatabase)XamlServices.Load(stream);
                 }
             }

@@ -83,14 +83,14 @@ namespace Supremacy.Scripting.Events
                     _ = target.Morale.AdjustCurrent(+3);
                     target.Morale.UpdateAndReset();
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT")
                         , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_DETAIL_TEXT")
                         , "ScriptedEvents/TerroristsCaptured.png", SitRepPriority.RedYellow));
 
-                    //civManager?.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
+                    //_civM?.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(_civM.Civilization, target));
                 }
             }
         }

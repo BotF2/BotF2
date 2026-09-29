@@ -130,8 +130,8 @@ namespace Supremacy.Game
             _saveSummaryText += _newline + _text;
             GameLog.Client.SaveLoad.DebugFormat(_text);
 
-            Options = game.Options;
-            _text = "Step_8111:; Options > " + Options.ToString();
+            Options = game.GameOptions;
+            _text = "Step_8111:; GameOptions > " + Options.ToString();
             //Console.WriteLine(_text);
             //_saveSummaryText += _newline + _text;
             //GameLog.Client.SaveLoad.DebugFormat(_text);

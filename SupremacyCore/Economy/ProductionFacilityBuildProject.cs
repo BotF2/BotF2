@@ -146,13 +146,13 @@ namespace Supremacy.Economy
         {
             Source.SetFacilityType(FacilityDesign.Category, FacilityDesign);
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Builder];
+            if (_civM == null)
             {
                 return;
             }
 
-            civManager.SitRepEntries.Add(new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
+            _civM.SitRepEntries.Add(new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
         }
 
         public ProductionFacilityUpgradeProject(Colony colony, ProductionFacilityDesign target)
@@ -195,11 +195,11 @@ namespace Supremacy.Economy
 
         public override void Finish()
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Builder];
 
             Source.OrbitalBatteryDesign = OrbitalBatteryDesign;
 
-            civManager?.SitRepEntries.Add(
+            _civM?.SitRepEntries.Add(
                     new ReportItemBuilt(Builder, BuildDesign, Location, SitRepPriority.Green));
         }
 

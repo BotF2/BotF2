@@ -9,7 +9,7 @@ using Supremacy.Utility;
 namespace Supremacy.Scripting
 {
     [UsedImplicitly]
-    [ContentProperty("Options")]
+    [ContentProperty("GameOptions")]
     [DictionaryKeyProperty("EventID")]
     public sealed class EventDefinition : SupportInitializeBase
     {

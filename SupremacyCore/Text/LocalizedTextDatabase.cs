@@ -132,6 +132,7 @@ namespace Supremacy.Text
 
                     using (System.IO.Stream stream = fileInfo.OpenRead())
                     {
+                        Console.WriteLine("Step_2363:; Opening " + fileInfo.VirtualPath);
                         content = XamlServices.Load(stream);
                     }
 

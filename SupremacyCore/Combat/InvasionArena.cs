@@ -511,8 +511,8 @@ namespace Supremacy.Combat
         {
             CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
             Civilization borg = borgManager.Civilization;
-            CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
-            Colony assimilatedCivHome = targetEmpireCivManager.HomeColony;
+            CivilizationManager _target_civM = GameContext.Current.CivilizationManagers[colony.Owner];
+            Colony assimilatedCivHome = _target_civM.HomeColony;
             int gainedResearchPoints = assimilatedCivHome.Research_Net;
             borgManager.Research.UpdateResearch(gainedResearchPoints);
 
@@ -722,7 +722,7 @@ namespace Supremacy.Combat
                 _invasionArena.Update();    // make sure all stats are up-to-date
 
                 //TODO: Didn't this get moved out of CombatEngine?
-                Data.Table accuracyTable = GameContext.Current.Tables.GameOptionTables["AccuracyModifiers"];
+                Data.Table accuracyTable = GameContext.Current.GameTables.GameOptionTables["AccuracyModifiers"];
                 _experienceAccuracy = new Dictionary<ExperienceRank, double>();
                 foreach (ExperienceRank rank in EnumHelper.GetValues<ExperienceRank>())
                 {
@@ -1575,8 +1575,8 @@ namespace Supremacy.Combat
             _invasionArena.Population.UpdateAndReset();
             _invasionArena.ColonyShieldStrength.UpdateAndReset();
 
-            CivilizationManager civManager = CivilizationManager.For(_invasionArena.Colony.OwnerID);
-            civManager.EnsureSeatOfGovernment();
+            CivilizationManager _civM = CivilizationManager.For(_invasionArena.Colony.OwnerID);
+            _civM.EnsureSeatOfGovernment();
 
             if (_invasionArena.Colony.Population.IsMinimized || _invasionArena.Colony.Population.CurrentValue < 5)
             {
@@ -1589,7 +1589,7 @@ namespace Supremacy.Combat
                 Console.WriteLine(_text);
                 //GameLog.Core.Combat.DebugFormat(_text);
 
-                civManager.EnsureSeatOfGovernment();
+                _civM.EnsureSeatOfGovernment();
                 if (_invasionArena.InvasionID == 6)
                 {
                     Colony colony = new Colony(_invasionArena.Colony.System, GameContext.Current.CivilizationManagers[6].Civilization.Race);

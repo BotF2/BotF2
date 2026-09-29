@@ -183,7 +183,7 @@ namespace Supremacy.Orbitals
                 _isOwned = fleet.OwnerID == owner.CivID
             };
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
 
             foreach (Ship ship in fleet.Ships)
             {
@@ -201,7 +201,7 @@ namespace Supremacy.Orbitals
                 }
 
                 //If we've got this far, it's not the players ship
-                int scanStrength = civManager.MapData.GetScanStrength(fleet.Location);
+                int scanStrength = _civM.MapData.GetScanStrength(fleet.Location);
                 bool isPresenceKnown = false;
                 bool isDesignKnown = false;
                 int netScanStrength = 0;

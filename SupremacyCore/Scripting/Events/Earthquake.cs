@@ -169,12 +169,12 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence);
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                    //civManager?.SitRepEntries.Add(new EarthquakeSitRepEntry(civManager.Civilization, target));
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new EarthquakeSitRepEntry(_civM.Civilization, target));
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("EARTHQUAKE_HEADER_TEXT")
                         , _text + ResourceManager.GetString("EARTHQUAKE_DETAIL_TEXT")
                         , "ScriptedEvents/Earthquake.png", SitRepPriority.RedYellow));

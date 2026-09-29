@@ -144,10 +144,10 @@ namespace Supremacy.Client
         {
             //int playerCivId = 0;
             //var playerCiv = GameContext.Current.CivilizationManagers[playerCivId].Civilization;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[0];
             TechTree techTree = new TechTree();
 
-            techTree.Merge(civManager.TechTree);
+            techTree.Merge(_civM.TechTree);
 
             foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
@@ -166,7 +166,7 @@ namespace Supremacy.Client
                 .Concat(
 
                     from design in techTree
-                    where TechTreeHelper.MeetsTechLevels(civManager, design)
+                    where TechTreeHelper.MeetsTechLevels(_civM, design)
                     let designEntry = design as IEncyclopediaEntry
                     where designEntry != null
                     select designEntry

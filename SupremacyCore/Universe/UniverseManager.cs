@@ -650,7 +650,7 @@ namespace Supremacy.Universe
                 {
                     fleet.AddShipInternal(ship);
 
-                    if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+                    if (GameContext.Current.GameOptions.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
                     {
                         Print(ship);
                     }
@@ -718,7 +718,7 @@ namespace Supremacy.Universe
                     + ";Colony;"
                     ;
                 //Console.WriteLine(_col);
-                if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+                if (GameContext.Current.GameOptions.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
                 {
                     PrintColony(colony);
                 }
@@ -732,7 +732,7 @@ namespace Supremacy.Universe
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
 
-                //if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+                //if (GameContext.Current.GameOptions.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
                 //{
 
                 //_text = "Step_4364:; buildingLocationLookup might be turned out";

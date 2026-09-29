@@ -645,9 +645,9 @@ namespace Supremacy.Client
                 if (File.Exists(file))
                 {
                     _contentHistoryFile = "NEW started..." 
-                        + "-" + GameContext.Current.Options.StartingTechLevel
-                        + "-" + GameContext.Current.Options.GalaxySize
-                        //+ "-" + GameContext.Current.Options.
+                        + "-" + GameContext.Current.GameOptions.StartingTechLevel
+                        + "-" + GameContext.Current.GameOptions.GalaxySize
+                        //+ "-" + GameContext.Current.GameOptions.
                         ;
                 }
             }

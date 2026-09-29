@@ -77,7 +77,7 @@ namespace Supremacy.Text
 
             ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = database.TechObjectTextTable;
             string techObjectEntryType = typeof(ITechObjectTextDatabaseEntry).FullName;
-            XElement techObjectTableElement = doc.Root.Elements("Tables")
+            XElement techObjectTableElement = doc.Root.Elements("GameTables")
                 .Elements("Table")
                 .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType));
 
@@ -175,7 +175,7 @@ namespace Supremacy.Text
 
                 ClientTextDatabaseTable<IRaceTextDatabaseEntry> raceTable = database.RaceTextTable;
                 string raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
-                XElement raceTableElement = doc.Root.Elements("Tables")
+                XElement raceTableElement = doc.Root.Elements("GameTables")
                     .Elements("Table")
                     .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType));
 

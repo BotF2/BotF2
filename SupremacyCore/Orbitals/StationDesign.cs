@@ -90,7 +90,7 @@ namespace Supremacy.Orbitals
             {
                 _text = "Step_0498:; Stations - now reading " + Name; // dummy to avoid Report2GameData is not used.
                 Console.WriteLine(_text);
-                GameLog.Core.GameData.DebugFormat(_text);
+                //GameLog.Core.GameData.DebugFormat(_text);
                 //GameLog.Core.GameData.DebugFormat("StationNames available (see TechObjectDatabase.xml or activate FullOutput in code) for {0}", Name);
 
                 //bool _possibleStationNames_Done = false;
@@ -244,7 +244,7 @@ namespace Supremacy.Orbitals
             }
 
             //var station = new Station(this);
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
 
             station.Reset();
             station.Owner = owner;
@@ -254,9 +254,9 @@ namespace Supremacy.Orbitals
 
             station.Sector.Station = station;
 
-            civManager.MapData.SetExplored(location, true);
-            civManager.MapData.SetScanned(location, true, SensorRange);
-            civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
+            _civM.MapData.SetExplored(location, true);
+            _civM.MapData.SetScanned(location, true, SensorRange);
+            _civM.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
 
             spawnedInstance = station;
             GameLog.Core.Stations.DebugFormat("placed Station = {0} {1}, Owner = {2}, Location = {3}", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location);

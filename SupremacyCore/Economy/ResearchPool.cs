@@ -276,8 +276,8 @@ namespace Supremacy.Economy
             _queue = new List<ResearchProject>[matrix.Fields.Count];
             _cumulativePoints = new Meter(0, int.MaxValue);
 
-            Data.Table startingTechLevelsTable = GameContext.Current.Tables.GameOptionTables["StartingTechLevels"];
-            StartingTechLevel startingTechLevel = GameContext.Current.Options.StartingTechLevel;
+            Data.Table startingTechLevelsTable = GameContext.Current.GameTables.GameOptionTables["StartingTechLevels"];
+            StartingTechLevel startingTechLevel = GameContext.Current.GameOptions.StartingTechLevel;
 
             Dictionary<TechCategory, int> initialFieldLevelValues = null;
 
@@ -365,7 +365,7 @@ namespace Supremacy.Economy
 
             string researchSummary = "";
             string distributionSummary = "";
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[_ownerId];
 
             researchSummary += "LT-Progress: ";// + "Gained P. = " + researchPoints + " Progress: "; 
             distributionSummary += "Research Distrib. ";
@@ -395,7 +395,7 @@ namespace Supremacy.Economy
                     }
                     researchSummary += " - " + field.TechCategory + "-" + lvl + ": " + progress;
 
-                    //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
+                    //_civM.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
 
                     if (_queue[field.FieldID][i] == null)
                     {
@@ -446,13 +446,13 @@ namespace Supremacy.Economy
 
             if (_alreadyDone != null) 
             { 
-                if (!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
+                if (!_alreadyDone.Contains(_civM.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
             {
-                civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
-                civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
+                _civM.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
+                _civM.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
             }
 
-            _alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
+            _alreadyDone.Add(_civM.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
             }
 
             _text = "Step_0398:; Research for "
@@ -476,7 +476,7 @@ namespace Supremacy.Economy
         private void FinishProject(int fieldId, int queueIndex)
         {
             ResearchApplication finishedApp = _queue[fieldId][queueIndex].Application;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner];
             ICollection<TechObjectDesign> designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
 
 
@@ -490,7 +490,7 @@ namespace Supremacy.Economy
             ICollection<TechObjectDesign> designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
             List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
 
-            civManager?.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
+            _civM?.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
         }
 
         /// <summary>
@@ -628,31 +628,31 @@ namespace Supremacy.Economy
         {
             get
             {
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_ownerId];
                 switch (field)
                 {
                     case TechCategory.BioTech:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentBioTechResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Computers:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentComputerResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Construction:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentConstructionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Energy:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentEnergyResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Propulsion:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentPropulsionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Weapons:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentWeaponsResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                 }

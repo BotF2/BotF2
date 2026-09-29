@@ -111,16 +111,16 @@ namespace Supremacy.Scripting.Events
 
                     OnUnitTargeted(target);
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                    //civManager?.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target));
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new TribblesSitRepEntry(_civM.Civilization, target));
 
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("TRIBBLES_HEADER_TEXT")
                         , _text + ResourceManager.GetString("TRIBBLES_DETAIL_TEXT")
                         , "ScriptedEvents/Tribbles.png", SitRepPriority.RedYellow));
-                    //civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target));
+                    //_civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target));
                     //                    public override string DetailText => string.Format(ResourceManager.GetString("TRIBBLES_DETAIL_TEXT"), Colony.Name, Colony.Location);
                     //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Tribbles.png";
 

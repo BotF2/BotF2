@@ -318,29 +318,29 @@ namespace Supremacy.Client.Views
                 _ownerText = item.Owner.Key;
 
                 _shipsInfo += "" //"Step_4381:"
-                                 //+ "; " + GameEngine.LocationString(item.Location.ToString())
+                                 //+ "; " + GameEngine.LocationString(_item.Location.ToString())
                                  //+ "; Ship"
 
                         /*+ "; "*/ + item.Owner.Key
                         + " > Hull=" + item.HullStrength
                         + ", Sh=" + item.ShieldStrength
-                        //+ "; Cloak=;" + item.CloakStrength
-                        //+ "; Camo=;" + item.CamouflagedStrength
-                        //+ "; Camo=;" + item.
+                        //+ "; Cloak=;" + _item.CloakStrength
+                        //+ "; Camo=;" + _item.CamouflagedStrength
+                        //+ "; Camo=;" + _item.
                         + ", Fuel=" + item.FuelReserve
                         + " > " + item.Design.Key
 
 
                         + " > " + item.ObjectID
-                        //+ " " + item.Design
+                        //+ " " + _item.Design
 
                         + " " + item.Name
 
-                        //+ "; Crew=;" + item.Crew
-                        //+ "; Exp=;" + item.ExperiencePercent
+                        //+ "; Crew=;" + _item.Crew
+                        //+ "; Exp=;" + _item.ExperiencePercent
 
 
-                        //+ "; since Turn;" + item.TurnCreated
+                        //+ "; since Turn;" + _item.TurnCreated
                         + _newline
                                                     //+ _newline
                                                     ;
@@ -365,10 +365,10 @@ namespace Supremacy.Client.Views
             }
 
             _info = "" //"Step_4381:"
-                       //+ "; " + GameEngine.LocationString(item.Location.ToString())
+                       //+ "; " + GameEngine.LocationString(_item.Location.ToString())
                        //+ "; Ship"
                     + item.Design
-                    ///*+ "; "*/ + item.Owner.Key
+                    ///*+ "; "*/ + _item.Owner.Key
                     + " > " + item.ObjectID
                     + " " + item.Name
                     //+ " ( " 
@@ -376,8 +376,8 @@ namespace Supremacy.Client.Views
                     //+ " ) "
 
 
-                    //+ "; Crew=;" + item.Crew
-                    //+ "; Exp=;" + item.ExperiencePercent
+                    //+ "; Crew=;" + _item.Crew
+                    //+ "; Exp=;" + _item.ExperiencePercent
                     + ", Hull=" + item.HullStrength
                     + ", Sh=" + item.ShieldStrength
                     ;
@@ -388,9 +388,9 @@ namespace Supremacy.Client.Views
         {
             string _info = "( no colony )";
             //string _ownerText = "";
-            //if (item.Owner.Key != _ownerText)
+            //if (_item.Owner.Key != _ownerText)
             //    _info += _newline + _newline;
-            //_ownerText = item.Owner.Key;
+            //_ownerText = _item.Owner.Key;
             string _text = "";
             string _newline = Environment.NewLine;
 
@@ -423,7 +423,7 @@ namespace Supremacy.Client.Views
                 _orbBat_text = item.OrbitalBatteryDesign
                     + ": " + item.OrbitalBatteries_Active
                     + " of " + item.OrbitalBatteries_Total + " active"
-                    //+ " ( " + item.OrbitalBatteryDesign + " ) "
+                    //+ " ( " + _item.OrbitalBatteryDesign + " ) "
                     ;
             }
 
@@ -453,8 +453,8 @@ namespace Supremacy.Client.Views
             foreach (var item2 in Project_Available)
             {
                 _proj_Text += //"Step_4235:; " + colony + ";  Available to build"
-                              //+ " on; " + item.Name
-                              //+ "; " + item.Owner
+                              //+ " on; " + _item.Name
+                              //+ "; " + _item.Owner
                         ""
 
                         + "costs " + GameEngine.Do_x_Digit_String(5, item2.GetCurrentIndustryCost().ToString())
@@ -492,7 +492,7 @@ namespace Supremacy.Client.Views
             // not necessary
             //_text_all_out += "Step_7609:; "
             //        + _col
-            //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
+            //        + ";  " + _item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
             foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
             {
                 _buildQueue_Text += "" //"Step_7608:; "
@@ -563,7 +563,7 @@ namespace Supremacy.Client.Views
             //
 
             _info = "" //"Step_4381:"
-                       //+ "; " + GameEngine.LocationString(item.Location.ToString())
+                       //+ "; " + GameEngine.LocationString(_item.Location.ToString())
                        //+ "; Ship"
 
 
@@ -571,12 +571,12 @@ namespace Supremacy.Client.Views
         + " " + item.Name
 
         + " - " + item.Owner.Key/* + " ) "*/
-            //+ ", Defense= " + item.System.Colony.de
-            //+ "; " + GameEngine.LocationString(item.Location.ToString())
-            //+ "; " + item.ObjectID
+            //+ ", Defense= " + _item.System.Colony.de
+            //+ "; " + GameEngine.LocationString(_item.Location.ToString())
+            //+ "; " + _item.ObjectID
             //+ ";Colony"
-            //+ "; " + item.Name
-            //+ "; " + item.Owner
+            //+ "; " + _item.Name
+            //+ "; " + _item.Owner
             + _newline
             /*+ ", "*/ + "Facilities total= " + pf
             + ", Population > " + item.Population
@@ -627,7 +627,7 @@ namespace Supremacy.Client.Views
             //}
             //string _path_Lib = ResourceManager.GetResourcePath(".\\lib");
 
-            System.Media.SoundPlayer _wav_player = 
+            System.Media.SoundPlayer _wav_player =
                 new System.Media.SoundPlayer("Resources/SoundFX/sound002.wav"); // on Output Map Data
             _wav_player.Play();
 
@@ -819,7 +819,7 @@ namespace Supremacy.Client.Views
                         + "; facI;" + item.Facilities_Active5_Intelligence + ";of; " + item.Facilities_Total5_Intelligence
 
 
-                                                    //+ ";since Turn;" + item.TurnCreated
+                                                    //+ ";since Turn;" + _item.TurnCreated
 
                                                     + _newline;
                     //if (writeDirectly) Console.WriteLine(_text_all_out);
@@ -829,11 +829,11 @@ namespace Supremacy.Client.Views
 
                     //_text_all_out += _newline;
                     //ILookup<MapLocation, GameObject> gameObjectLocationLookup = GameContext.Current.Universe.Objects.OfType<GameObject>().ToLookup(o => o.GetType() != Type.EmptyTypes);
-                    //int pf = item.Facilities_Total1_Food
-                    //        + item.Facilities_Total2_Industry
-                    //        + item.Facilities_Total3_Energy
-                    //        + item.Facilities_Total4_Research
-                    //        + item.Facilities_Total5_Intelligence
+                    //int pf = _item.Facilities_Total1_Food
+                    //        + _item.Facilities_Total2_Industry
+                    //        + _item.Facilities_Total3_Energy
+                    //        + _item.Facilities_Total4_Research
+                    //        + _item.Facilities_Total5_Intelligence
 
                     //    ;
                     //foreach (var item2 in pf)
@@ -853,7 +853,7 @@ namespace Supremacy.Client.Views
 
                     //}
 
-                    //for (int i = 0;i < item.TotalFacilities.Count(); i++)
+                    //for (int i = 0;i < _item.TotalFacilities.Count(); i++)
                     //{
 
                     //}
@@ -893,8 +893,8 @@ namespace Supremacy.Client.Views
                     foreach (var item2 in Project_Available)
                     {
                         _text_all_out += "Step_4235:; " + _col + ";  Available to build"
-                                //+ " on; " + item.Name
-                                //+ "; " + item.Owner
+                                //+ " on; " + _item.Name
+                                //+ "; " + _item.Owner
 
                                 + "; needs " + GameEngine.Do_x_Digit_String(2, item2.TurnsRemaining.ToString()) + " turns"
                                 + "; costs= " + GameEngine.Do_x_Digit_String(5, item2.GetCurrentIndustryCost().ToString())
@@ -934,7 +934,7 @@ namespace Supremacy.Client.Views
                             + "; facR;" + item.Facilities_Active4_Research + ";of; " + item.Facilities_Total4_Research
                             + "; facI;" + item.Facilities_Active5_Intelligence + ";of; " + item.Facilities_Total5_Intelligence
 
-                            //+ ";since Turn;" + item.TurnCreated
+                            //+ ";since Turn;" + _item.TurnCreated
                             + _newline;
 
                     if (item.BuildSlots[0].HasProject)
@@ -956,7 +956,7 @@ namespace Supremacy.Client.Views
                     // not necessary
                     //_text_all_out += "Step_7609:; "
                     //        + _col
-                    //        + ";  " + item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
+                    //        + ";  " + _item.BuildQueue.Count + " for System-BuildQueue.Count " + _newline;
                     foreach (BuildQueueItem buildQueueItem in item.BuildQueue)
                     {
                         _text_all_out += "Step_7608:; "
@@ -1054,31 +1054,31 @@ namespace Supremacy.Client.Views
 
                 string _shipsInfo_text = GetInfoText_Ships(ships);  // Alt+M = all MapData
 
-                //foreach (Ship item in ships)
+                //foreach (Ship _item in ships)
                 //{
-                //    if (item.Owner.Key != _ownerText)
+                //    if (_item.Owner.Key != _ownerText)
                 //        _text_all_out += _newline + _newline;
-                //    _ownerText = item.Owner.Key;
+                //    _ownerText = _item.Owner.Key;
 
                 //    _text_all_out += "Step_4381:"
-                //            + "; " + GameEngine.LocationString(item.Location.ToString())
+                //            + "; " + GameEngine.LocationString(_item.Location.ToString())
                 //            + "; Ship"
 
-                //            + "; " + item.Owner.Key
-                //            + "; " + item.ObjectID
-                //            + "; " + item.Design
-                //            + "; " + item.Name
+                //            + "; " + _item.Owner.Key
+                //            + "; " + _item.ObjectID
+                //            + "; " + _item.Design
+                //            + "; " + _item.Name
 
-                //            + "; Crew=;" + item.Crew
-                //            + "; Exp=;" + item.ExperiencePercent
-                //            + "; Hull=;" + item.HullStrength
-                //            + "; Sh=;" + item.ShieldStrength
-                //            + "; Cloak=;" + item.CloakStrength
-                //            + "; Camo=;" + item.CamouflagedStrength
-                //            //+ "; Camo=;" + item.
-                //            + "; Fuel=;" + item.FuelReserve
+                //            + "; Crew=;" + _item.Crew
+                //            + "; Exp=;" + _item.ExperiencePercent
+                //            + "; Hull=;" + _item.HullStrength
+                //            + "; Sh=;" + _item.ShieldStrength
+                //            + "; Cloak=;" + _item.CloakStrength
+                //            + "; Camo=;" + _item.CamouflagedStrength
+                //            //+ "; Camo=;" + _item.
+                //            + "; Fuel=;" + _item.FuelReserve
 
-                //            + "; since Turn;" + item.TurnCreated
+                //            + "; since Turn;" + _item.TurnCreated
 
                 //                                        + _newline;
                 //    //Console.WriteLine("Step_4381: Ship_Output is ongoing to nowhere :-) ... ");
@@ -1106,10 +1106,10 @@ namespace Supremacy.Client.Views
                             + "; Exp=;" + item.ExperiencePercent
                             + "; Hull=;" + item.HullStrength
                             + "; Sh=;" + item.ShieldStrength
-                            //+ "; Cloak=;" + item.CloakStrength
-                            //+ "; Camo=;" + item.CamouflagedStrength
-                            //+ "; Camo=;" + item.
-                            //+ "; Fuel=;" + item.FuelReserve
+                            //+ "; Cloak=;" + _item.CloakStrength
+                            //+ "; Camo=;" + _item.CamouflagedStrength
+                            //+ "; Camo=;" + _item.
+                            //+ "; Fuel=;" + _item.FuelReserve
 
                             + "; since Turn;" + item.TurnCreated
 
@@ -1130,14 +1130,14 @@ namespace Supremacy.Client.Views
                             + "; " + item.Design
                             + "; " + item.Name
 
-                            //+ "; Crew=;" + item.
-                            //+ "; Exp=;" + item.ExperiencePercent
-                            //+ "; Hull=;" + item.HullStrength
-                            //+ "; Sh=;" + item.ShieldStrength
-                            //+ "; Cloak=;" + item.CloakStrength
-                            //+ "; Camo=;" + item.CamouflagedStrength
-                            //+ "; Camo=;" + item.
-                            //+ "; Fuel=;" + item.FuelReserve
+                            //+ "; Crew=;" + _item.
+                            //+ "; Exp=;" + _item.ExperiencePercent
+                            //+ "; Hull=;" + _item.HullStrength
+                            //+ "; Sh=;" + _item.ShieldStrength
+                            //+ "; Cloak=;" + _item.CloakStrength
+                            //+ "; Camo=;" + _item.CamouflagedStrength
+                            //+ "; Camo=;" + _item.
+                            //+ "; Fuel=;" + _item.FuelReserve
 
                             + "; since Turn;" + item.TurnCreated
 
@@ -1150,24 +1150,24 @@ namespace Supremacy.Client.Views
                 foreach (var item in races)
                 {
                     _text_all_out += "Step_4396:"
-                            //+ "; " + item.
+                            //+ "; " + _item.
                             + "; Race"
 
-                            //+ "; " + item.Owner
-                            //+ "; " + item.ObjectID
-                            //+ "; " + item.Design
+                            //+ "; " + _item.Owner
+                            //+ "; " + _item.ObjectID
+                            //+ "; " + _item.Design
                             + "; " + item.Key
 
                                                         + "; HomePlanet=;" + item.HomePlanetType
                                                         + "; Eff=;" + item.GroundCombatEffectiveness
-                                                        //+ "; Hull=;" + item.HullStrength
-                                                        //+ "; Sh=;" + item.ShieldStrength
-                                                        //+ "; Cloak=;" + item.CloakStrength
-                                                        //+ "; Camo=;" + item.CamouflagedStrength
-                                                        //+ "; Camo=;" + item.
-                                                        //+ "; Fuel=;" + item.FuelReserve
+                                                        //+ "; Hull=;" + _item.HullStrength
+                                                        //+ "; Sh=;" + _item.ShieldStrength
+                                                        //+ "; Cloak=;" + _item.CloakStrength
+                                                        //+ "; Camo=;" + _item.CamouflagedStrength
+                                                        //+ "; Camo=;" + _item.
+                                                        //+ "; Fuel=;" + _item.FuelReserve
 
-                                                        //+ "; since Turn;" + item.TurnCreated
+                                                        //+ "; since Turn;" + _item.TurnCreated
 
                                                         + _newline;
                 }
@@ -1180,24 +1180,24 @@ namespace Supremacy.Client.Views
                     foreach (var item in events)
                     {
                         _text_all_out += "Step_4356:"
-                                //+ "; " + item.
+                                //+ "; " + _item.
                                 + "; Events"
 
-                                //+ "; " + item.Owner
-                                //+ "; " + item.ObjectID
-                                //+ "; " + item.Design
+                                //+ "; " + _item.Owner
+                                //+ "; " + _item.ObjectID
+                                //+ "; " + _item.Design
                                 + "; " + item.EventID
 
                                                             + "; Last=;" + item.LastExecution
-                                                            //+ "; Eff=;" + item.GroundCombatEffectiveness
-                                                            //+ "; Hull=;" + item.HullStrength
-                                                            //+ "; Sh=;" + item.ShieldStrength
-                                                            //+ "; Cloak=;" + item.CloakStrength
-                                                            //+ "; Camo=;" + item.CamouflagedStrength
-                                                            //+ "; Camo=;" + item.
-                                                            //+ "; Fuel=;" + item.FuelReserve
+                                                            //+ "; Eff=;" + _item.GroundCombatEffectiveness
+                                                            //+ "; Hull=;" + _item.HullStrength
+                                                            //+ "; Sh=;" + _item.ShieldStrength
+                                                            //+ "; Cloak=;" + _item.CloakStrength
+                                                            //+ "; Camo=;" + _item.CamouflagedStrength
+                                                            //+ "; Camo=;" + _item.
+                                                            //+ "; Fuel=;" + _item.FuelReserve
 
-                                                            //+ "; since Turn;" + item.TurnCreated
+                                                            //+ "; since Turn;" + _item.TurnCreated
 
                                                             + _newline;
                     }
@@ -1209,12 +1209,12 @@ namespace Supremacy.Client.Views
                 foreach (Civilization item in civs)
                 {
                     _text_all_out += "Step_4346:"
-                            //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
+                            //+ "; " + ClientApp.Current.LocationString(_item.Location.ToString())
                             + "; Civ"
                             + "; " + item.Name
                             + "; " + item.CivilizationType
                             + "; " + item.CivID
-                            //+ "; " + item.Design
+                            //+ "; " + _item.Design
 
 
                             + "; Race=;" + item.Race.Name
@@ -1223,10 +1223,10 @@ namespace Supremacy.Client.Views
                             + "; " + item.Color
                             + "; " + item.Traits
                                                         + "; Mor=;" + item.MoraleDriftRate
-                                                        //+ "; Camo=;" + item.
-                                                        //+ "; Fuel=;" + item.FuelReserve
+                                                        //+ "; Camo=;" + _item.
+                                                        //+ "; Fuel=;" + _item.FuelReserve
 
-                                                        //+ "; since Turn;" + item.TurnCreated
+                                                        //+ "; since Turn;" + _item.TurnCreated
 
                                                         + _newline;
                 }
@@ -1237,7 +1237,7 @@ namespace Supremacy.Client.Views
                 foreach (CivilizationManager item in civMans)
                 {
                     _text_all_out += "Step_4348:"
-                            //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
+                            //+ "; " + ClientApp.Current.LocationString(_item.Location.ToString())
                             + "; CivMan"
                             + "; " + item.Civilization
                             + "; ID=" + item.CivilizationID
@@ -1254,10 +1254,10 @@ namespace Supremacy.Client.Views
                     foreach (var item in GameContext.Current.ScriptedEvents)
                     {
                         _text_all_out += "Step_4349:"
-                                //+ "; " + ClientApp.Current.LocationString(item.Location.ToString())
+                                //+ "; " + ClientApp.Current.LocationString(_item.Location.ToString())
                                 + "; CivMan"
                                 + "; " + item.EventID
-                                                            //+ "; " + item.Civilization
+                                                            //+ "; " + _item.Civilization
 
                                                             + _newline;
                     }
@@ -1268,7 +1268,7 @@ namespace Supremacy.Client.Views
                 //IEnumerable<ShipDesign> bd = GameContext.Current.TechDatabase.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign);
                 //if (GameContext.Current.TechDatabase)
                 //{
-                //    foreach (var item in GameContext.Current.TechDatabase)
+                //    foreach (var _item in GameContext.Current.TechDatabase)
                 //{
                 bool _first_line_ship_names = true;
                 bool first_stationname = true;
@@ -1345,7 +1345,7 @@ namespace Supremacy.Client.Views
                             //tdb_text += ";" + spec.PrimaryWeapon.Refire;
                         }
 
-                        //tdb_text += ";" + item.s;
+                        //tdb_text += ";" + _item.s;
                     }
 
                     //ProductionFacilityDesign
@@ -1499,7 +1499,7 @@ namespace Supremacy.Client.Views
 
                         //StationNames
                         _station_names_text += "Step_4359: no output for  _station_names_text";
-                        //if (item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
+                        //if (_item.EncyclopediaCategory == Encyclopedia.EncyclopediaCategory.Stations)
                         //{
 
                         //    if (first_stationname)
@@ -1509,7 +1509,7 @@ namespace Supremacy.Client.Views
                         //        first_stationname = false;
                         //    }
 
-                        //    StationDesign spec2 = item as StationDesign;
+                        //    StationDesign spec2 = _item as StationDesign;
 
                         //    tdb_text += ";" + spec.Dilithium;
                         //    tdb_text += ";" + spec.Speed;
@@ -1537,7 +1537,7 @@ namespace Supremacy.Client.Views
                         //    {
                         //        _station_names_text += "Step_4359:"
                         //            + ";" + count
-                        //            + ";" + item.Key
+                        //            + ";" + _item.Key
 
                         //            + " ;" + name.Key
                         //            + _newline;
@@ -1618,7 +1618,7 @@ namespace Supremacy.Client.Views
                         //tdb_text += ";" + spec.ShipType;
                         //tdb_text += ";" + spec.ClassName;
 
-                        //tdb_text += ";" + item.s;
+                        //tdb_text += ";" + _item.s;
                     }
                     tdb_text += _text_ships;
                     bool_output = true; // true again
@@ -1691,7 +1691,7 @@ namespace Supremacy.Client.Views
                         //tdb_text += ";" + spec.ShipType;
                         //tdb_text += ";" + spec.ClassName;
 
-                        //tdb_text += ";" + item.s;
+                        //tdb_text += ";" + _item.s;
                     }
 
                     _text_all_out += tdb_text + _newline;
@@ -1705,7 +1705,9 @@ namespace Supremacy.Client.Views
 
             }
 
-            if (writeDirectly) 
+            _text_all_out += Report_SectorClaims();
+
+            if (writeDirectly)
                 Console.WriteLine(_text_all_out);   // Output here as well
 
 
@@ -1721,7 +1723,7 @@ namespace Supremacy.Client.Views
                 streamWriter.Write(_text_all_out);
                 streamWriter.Close();
                 _text_all_out = "output of _MapData done to " + _file;
-                if (writeDirectly) 
+                if (writeDirectly)
                     Console.WriteLine(_text_all_out);
             }
 
@@ -1732,9 +1734,69 @@ namespace Supremacy.Client.Views
 
             GameContext.Report_DiplomacyData();
 
-            /*System.Media.SoundPlayer */_wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
+            /*System.Media.SoundPlayer */
+            _wav_player = new System.Media.SoundPlayer("Resources/SoundFX/sound001.wav");
             _wav_player.Play();
 
+        }
+
+        private string Report_SectorClaims()
+        {
+            string _text = "";// + Environment.NewLine;
+            string _multiple = "";
+
+
+            SectorMap map = GameContext.Current.Universe.Map;
+            SectorClaimGrid sectorClaims = GameContext.Current.SectorClaims;
+            //var xclaims = GameContext.Current.SectorClaims;
+            List<IEnumerable<MapLocation>> disjointSets = new List<IEnumerable<MapLocation>>();
+            List<ConvexHull> convexHulls = new List<ConvexHull>();
+
+
+                for (int x = 0; x < map.Width; x++)
+                {
+                    for (int y = 0; y < map.Height; y++)
+                    {
+                    MapLocation location = new MapLocation(x, y);
+                    var _claims = sectorClaims.GetClaims(location);
+                    int _claims_count = _claims.Count;
+                    if (_claims_count > 1)
+                    {
+                        _multiple = "    ";
+                    }
+                    else
+                    {
+                        _multiple = "";
+                    }
+
+                    foreach (var item in _claims)
+                    {
+                        _text += "claim for " + GameEngine.LocationString(location.ToString())
+                            + " > count= " + _multiple + _claims_count
+                            + " > weight= "+ GameEngine.Do_x_Digit_String(5, item.Weight.ToString())
+                            + " for "+ item.Owner
+                            + Environment.NewLine
+                            ;
+                        //Console.WriteLine(_text);
+                    }
+                    
+                    }
+                }
+            //}
+
+            //foreach (var _item in disjointSets)
+            //{
+            //    _text += "Step_4397: Sector " 
+            //        + string.Join(", ", _item.Select(loc => $"({loc.X}, {loc.Y})"))
+            //        + " claimed by ? " //+ _item.
+            //        ;
+            //    ConvexHull convexHull = new ConvexHull(_item);
+            //    convexHulls.Add(convexHull);
+            //}
+            //ClientApp.Write_Console(_text);
+            Console.WriteLine("Step_4397: SectorClaims Report > " + _text);
+            //GameEngine.Write_Console(_text);
+            return _text;
         }
 
         private void ExecuteCheatMenuCommand(object t)

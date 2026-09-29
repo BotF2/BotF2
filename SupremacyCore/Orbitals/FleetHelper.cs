@@ -45,13 +45,13 @@ namespace Supremacy.Orbitals
                 throw new ArgumentNullException("fleet");
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            if (_civM == null)
             {
                 return false;
             }
 
-            return civManager.MapData.GetFuelRange(fleet.Location) <= fleet.Range;
+            return _civM.MapData.GetFuelRange(fleet.Location) <= fleet.Range;
         }
 
         /// <summary>

@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Xml.Serialization;
+using static Supremacy.Scripting.Utility.AttributeTester;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using MessageBox = System.Windows.MessageBox;
 
@@ -269,7 +270,7 @@ namespace Supremacy.Game
                 _text = "Step_0333:; loading GameTables from HDD...";
                 Console.WriteLine(_text);
                 //GameLog.Core.SaveLoad.DebugFormat(_text);
-                game.Tables = GameTables.Load();
+                game.GameTables = GameTables.Load();
 
                 _text = "Step_0344:; loading ResearchMatrix from HDD...";
                 Console.WriteLine(_text);
@@ -496,6 +497,10 @@ namespace Supremacy.Game
                 {
                     writer.WriteLine(Escape(item.Key) + "," + Escape(item.Value));
                 }
+                    string Report_GameContext = GameContext.Current.AA_Report_GameContext;
+                writer.WriteLine(Report_GameContext);
+                writer.Close();
+                //Debugger.Break();
             }
         }
 

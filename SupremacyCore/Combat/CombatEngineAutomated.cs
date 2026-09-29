@@ -2412,8 +2412,8 @@ namespace Supremacy.Combat
                                 {
                                     if (!_thisShipIsReported && id != combatent.Item1.Owner.CivID)
                                     {
-                                        CivilizationManager civManager2 = GameContext.Current.CivilizationManagers[id];
-                                        //civManager2.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+                                        CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[id];
+                                        //_civM_2.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                                         _thisShipIsReported = true;
                                     }
                                 }
@@ -2492,8 +2492,8 @@ namespace Supremacy.Combat
                             {
                                 //if (!_thisShipIsReported && id != combatent.Item1.Owner.CivID)
                                 //{
-                                CivilizationManager civManager2 = GameContext.Current.CivilizationManagers[id];
-                                civManager2.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
+                                CivilizationManager _civM_2 = GameContext.Current.CivilizationManagers[id];
+                                _civM_2.SitRepEntries.Add(new ReportEntry_CoS(combatent.Item1.Owner, combatent.Item1.Source.Location, _text, "", "", SitRepPriority.RedYellow));
                                 //_thisShipIsReported = true;
                                 //}
                             }
@@ -2795,7 +2795,7 @@ namespace Supremacy.Combat
                             _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
                             _ = _combatShips.Remove(ship);
 
-                            CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
+                            CivilizationManager _civM = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];
                             _text = "Red Alert at " + ship.Item1.Source.Location
                                 + " > Ship " + ship.Item1.Source.ObjectID
 
@@ -2808,7 +2808,7 @@ namespace Supremacy.Combat
                             _combat_Automated_full_Report += _newline + _text;
                             //GameLog.Core.CombatDetails.DebugFormat("Step_6382: " + _text);
 
-                            civManager.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
+                            _civM.SitRepEntries.Add(new ReportEntry_CoS(firstShipOwner, ship.Item1.Source.Location, _text, "", "", SitRepPriority.Yellow));
                         }
 
                     }

@@ -28,7 +28,7 @@ namespace Supremacy.Client.Views
     {
         private readonly IUnityContainer _container;
         private readonly IAppContext _appContext;
-        private readonly CivilizationManager _localCivManager;
+        private readonly CivilizationManager _local_civM;
         //private IntelUpdate _update;
 
         // order dictionary is located in IntelOrders.cs constructor, store orders in core of host?
@@ -95,10 +95,10 @@ namespace Supremacy.Client.Views
             GameLog.Client.UIDetails.DebugFormat("AssetsScreen - InitializeComponent();");
             _container = container ?? throw new ArgumentNullException("container");
             _appContext = _container.Resolve<IAppContext>();
-            _localCivManager = _appContext.LocalPlayerEmpire;
+            _local_civM = _appContext.LocalPlayerEmpire;
             InitializeComponent();
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
-            _ = IntelHelper.GetLocalCiv(_localCivManager);
+            _ = IntelHelper.GetLocalCiv(_local_civM);
             // ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
             // DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 

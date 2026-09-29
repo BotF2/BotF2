@@ -501,9 +501,9 @@ namespace Supremacy.AI
 
             //try
             //{
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[_civ];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ];
 
-            if (civManager?.Credits.CurrentValue < -2000)
+            if (_civM?.Credits.CurrentValue < -2000)
             {
                 return true;
             }

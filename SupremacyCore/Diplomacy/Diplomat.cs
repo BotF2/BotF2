@@ -277,7 +277,7 @@ namespace Supremacy.Diplomacy
                 }
             }
 
-            if (GameContext.Current != null) // && GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+            if (GameContext.Current != null) // && GameContext.Current.GameOptions.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
             {
                 if (!_foreignPowers_text.Contains("NoContact")) // just all the other ones !
                 {

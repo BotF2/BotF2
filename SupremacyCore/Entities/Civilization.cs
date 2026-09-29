@@ -279,44 +279,44 @@ namespace Supremacy.Entities
 
             // When starting a game, options is null
             //TODO: This should be in with the code to start the game
-            if (GameContext.Current.Options != null)
+            if (GameContext.Current.GameOptions != null)
             {
                 bool forceExpandingPower = false;
 
                 switch (_key)
                 {
                     case "FEDERATION":
-                        forceExpandingPower = GameContext.Current.Options.FederationPlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.FederationPlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
 
                     case "ROMULANS":
-                        forceExpandingPower = GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.RomulanPlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
 
                     case "KLINGONS":
-                        forceExpandingPower = GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.KlingonPlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
 
                     case "CARDASSIANS":
-                        forceExpandingPower = GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.CardassianPlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
 
                     case "DOMINION":
-                        forceExpandingPower = GameContext.Current.Options.DominionPlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.DominionPlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
 
                     case "BORG":
-                        forceExpandingPower = GameContext.Current.Options.BorgPlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.BorgPlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
 
                     case "TERRANEMPIRE":
-                        forceExpandingPower = GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No;
+                        forceExpandingPower = GameContext.Current.GameOptions.TerranEmpirePlayable == EmpirePlayable.No;
                         _text = "Civilization {0} is set to ExpandingPower" + Name;
                         break;
                 }
@@ -327,43 +327,43 @@ namespace Supremacy.Entities
                     Console.WriteLine(_text);
                     //GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 }
-                //if ((_key == "FEDERATION") && (GameContext.Current.Options.FederationPlayable == EmpirePlayable.No))
+                //if ((_key == "FEDERATION") && (GameContext.Current.GameOptions.FederationPlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 //}
 
-                //if ((_key == "ROMULANS") && (GameContext.Current.Options.RomulanPlayable == EmpirePlayable.No))
+                //if ((_key == "ROMULANS") && (GameContext.Current.GameOptions.RomulanPlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 //}
 
-                //if ((_key == "KLINGONS") && (GameContext.Current.Options.KlingonPlayable == EmpirePlayable.No))
+                //if ((_key == "KLINGONS") && (GameContext.Current.GameOptions.KlingonPlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 //}
 
-                //if ((_key == "CARDASSIANS") && (GameContext.Current.Options.CardassianPlayable == EmpirePlayable.No))
+                //if ((_key == "CARDASSIANS") && (GameContext.Current.GameOptions.CardassianPlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 //}
 
-                //if ((_key == "DOMINION") && (GameContext.Current.Options.DominionPlayable == EmpirePlayable.No))
+                //if ((_key == "DOMINION") && (GameContext.Current.GameOptions.DominionPlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 //}
 
-                //if ((_key == "BORG") && (GameContext.Current.Options.BorgPlayable == EmpirePlayable.No))
+                //if ((_key == "BORG") && (GameContext.Current.GameOptions.BorgPlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
                 //}
 
-                //if ((_key == "TERRANEMPIRE") && (GameContext.Current.Options.TerranEmpirePlayable == EmpirePlayable.No))
+                //if ((_key == "TERRANEMPIRE") && (GameContext.Current.GameOptions.TerranEmpirePlayable == EmpirePlayable.No))
                 //{
                 //    _civType = CivilizationType.ExpandingPower;
                 //    GameLog.Client.GameData.DebugFormat("Civilization {0} is set to ExpandingPower", Name);
@@ -714,6 +714,24 @@ namespace Supremacy.Entities
         {
             get => _homeSystemName;
             set => _homeSystemName = value;
+        }
+
+        public bool Is_AI_Controlled
+        {
+            get
+            {
+                if (!IsHuman)
+                {
+                    return true;
+                }
+                else
+                {
+                    if (GameEngine.AI_IsPlayer_AI_Controlled)
+                        return true;
+                }
+                return false;
+                //return PlayerContext.Current == null || PlayerContext.Current.IsHumanPlayer(this);
+            }
         }
 
         /// <summary>

@@ -31,6 +31,8 @@ namespace Supremacy.Client.Context
         MusicLibrary DefaultMusicLibrary { get; }
         MusicLibrary ThemeMusicLibrary { get; }
 
+        //ConsoleWrite
+
         //int  ASpecialWidth1 { get; }
         //int ASpecialHeight1 { get; }
     }

@@ -808,8 +808,8 @@ namespace Supremacy.Client.Views
                     ;
                 Console.WriteLine("Step_4765:; " + _text);
 
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
-                civManager.SitRepEntries.Add(new ReportEntry_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
+                _civM.SitRepEntries.Add(new ReportEntry_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
             
             }
 

@@ -246,7 +246,7 @@ namespace Supremacy.Universe
             // new 2019-09-28: try to avoid crashes at TINY galaxies
             int minDistance = size / empireCount;
 
-            if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
+            if (GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Cluster)
             {
                 minDistance--;
                 if (minDistance < 1)
@@ -272,10 +272,10 @@ namespace Supremacy.Universe
             {
                 while (true)
                 {
-                    /* We reload the Universe Tables so that any changes made to the tables
+                    /* We reload the Universe GameTables so that any changes made to the tables
                      * during runtime will be applied without restarting the game.  This
                      * will be useful for tweaking the tables during development.  We can
-                     * fall back to using UniverseManager.Tables later on.
+                     * fall back to using UniverseManager.GameTables later on.
                      */
                     UniverseTables = TableMap.ReadFromFile(
                         ResourceManager.GetResourcePath("Resources/Data/UniverseTables.txt"));
@@ -285,8 +285,8 @@ namespace Supremacy.Universe
                     Table galaxySizes = UniverseTables["GalaxySizes"];
 
                     Dimension mapSize = new Dimension(
-                        Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Width"]),
-                        Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Height"]));
+                        Number.ParseInt32(galaxySizes[game.GameOptions.GalaxySize.ToString()]["Width"]),
+                        Number.ParseInt32(galaxySizes[game.GameOptions.GalaxySize.ToString()]["Height"]));
 
                     _text = "Step_0872:; mapSize= " + mapSize.Width + " x " + mapSize.Height;
                     Console.WriteLine(_text);
@@ -477,7 +477,7 @@ namespace Supremacy.Universe
             int height = GameContext.Current.Universe.Map.Height;
             int number = width * height;
 
-            switch (GameContext.Current.Options.StarDensity)
+            switch (GameContext.Current.GameOptions.StarDensity)
             {
                 case StarDensity.Sparse:
                     number /= 12;
@@ -491,7 +491,7 @@ namespace Supremacy.Universe
                     break;
             }
 
-            switch (GameContext.Current.Options.GalaxyShape)
+            switch (GameContext.Current.GameOptions.GalaxyShape)
             {
                 case GalaxyShape.Ring:
                     layout = new RingGalaxyLayout();
@@ -603,9 +603,9 @@ namespace Supremacy.Universe
             //Console.WriteLine(_text);
             //GameLog.Client.GameData.DebugFormat(_text);
 
-            CivilizationManager civManager = new CivilizationManager(GameContext.Current, civ);
+            CivilizationManager _civM = new CivilizationManager(GameContext.Current, civ);
 
-            GameContext.Current.CivilizationManagers.Add(civManager);
+            GameContext.Current.CivilizationManagers.Add(_civM);
 
             StarSystemDescriptor homeSystemDescriptor = homeSystemDatabase.ContainsKey(civ.Key)
                                         ? homeSystemDatabase[civ.Key]
@@ -744,12 +744,12 @@ namespace Supremacy.Universe
             PlaceBonuses(homeSystem);
             CreateHomeColony(civ, homeSystem, race);
 
-            if (civManager.HomeColony == null)
+            if (_civM.HomeColony == null)
             {
-                civManager.HomeColony = homeSystem.Colony;
+                _civM.HomeColony = homeSystem.Colony;
             }
 
-            civManager.Colonies.Add(homeSystem.Colony);
+            _civM.Colonies.Add(homeSystem.Colony);
 
             GameContext.Current.Universe.Objects.Add(homeSystem);
             GameContext.Current.Universe.Objects.Add(homeSystem.Colony);
@@ -899,7 +899,7 @@ namespace Supremacy.Universe
                     if (empireCivs[index].Key == "DOMINION")
                     {
                         //GameLog.Core.GalaxyGenerator.DebugFormat("dom_Location-LIMITS are up to {0} and to {1}",
-                        iPosition = GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster
+                        iPosition = GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Cluster
                             ? positions.FirstIndexWhere((d) => { return d.X <= 3 && d.Y <= 3; })
                             : positions.FirstIndexWhere((l) =>
                             {
@@ -911,7 +911,7 @@ namespace Supremacy.Universe
                     //Ensure that The Borg is in the top right of the Delta quadrant
                     else if (empireCivs[index].Key == "BORG")
                     {
-                        if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
+                        if (GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Cluster)
 
                         {
                             int borgX = GameContext.Current.Universe.Map.Width - (GameContext.Current.Universe.Map.Width / 8);
@@ -983,13 +983,13 @@ namespace Supremacy.Universe
         {
 
             //Firstly, we need to find out how many minor races that we need
-            string minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency.ToString();
+            string minorRaceFrequency = GameContext.Current.GameOptions.MinorRaceFrequency.ToString();
             float minorRacePercentage = 0.25f;
             //int minorRaceLimit = 9999; // this was original
             int minorRaceLimit = 148;  // 2023-04-16 - this works  // plus 7 majors
             //int minorRaceLimit = 171;  // too much  >> no minors will be added at all
 
-            Table minorRaceTable = GameContext.Current.Tables.UniverseTables["MinorRaceFrequency"];
+            Table minorRaceTable = GameContext.Current.GameTables.UniverseTables["MinorRaceFrequency"];
             if (minorRaceTable != null)
             {
                 try
@@ -1137,7 +1137,7 @@ namespace Supremacy.Universe
             IList<string> starNames,
             out CollectionBase<MapLocation> homeLocations)
         {
-            if (GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon)
+            if (GameContext.Current.GameOptions.GalaxyCanon == GalaxyCanon.Canon)
             {
                 //string _fileNameCanonMAP;
                 try
@@ -1171,7 +1171,7 @@ namespace Supremacy.Universe
             //
             HomeSystemsDatabase homeSystemDatabase_2 = HomeSystemsDatabase.Load();
             //HomeSystemsDatabase.Load();
-            MinorRaceFrequency minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency;
+            MinorRaceFrequency minorRaceFrequency = GameContext.Current.GameOptions.MinorRaceFrequency;
             List<Civilization> empires = new List<Civilization>();
             List<Civilization> minorRaces = new List<Civilization>();
 
@@ -1205,12 +1205,12 @@ namespace Supremacy.Universe
             List<Civilization> chosenCivs = new List<Civilization>();
 
             bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase_2, empires, homeLocations, chosenCivs
-                , GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+                , GameContext.Current.GameOptions.GalaxyCanon == GalaxyCanon.Canon);
 
             if (minorRaceFrequency != MinorRaceFrequency.None)
             {
                 _ = PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase_2, minorRaces, homeLocations, chosenCivs
-                    , GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
+                    , GameContext.Current.GameOptions.GalaxyCanon == GalaxyCanon.Canon);
             }
 
             HashSet<int> unusedCivs = GameContext.Current.Civilizations.Except(chosenCivs).Select(o => o.CivID).ToHashSet();
@@ -1451,7 +1451,7 @@ namespace Supremacy.Universe
 
         private static void CreateHomeColony(Civilization civ, StarSystem system, Race inhabitants)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ];
             Colony colony = new Colony(system, inhabitants);
 
             colony.Population.BaseValue = (int)(0.5f * system.GetMaxPopulation(inhabitants));
@@ -1459,12 +1459,12 @@ namespace Supremacy.Universe
             colony.Name = system.Name;
 
             system.Colony = colony;
-            colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
+            colony.Morale.BaseValue = _civM.Civilization.BaseMoraleLevel;
 
             colony.Morale.Reset();
 
-            civManager.MapData.SetExplored(colony.Location, true);
-            civManager.MapData.SetScanned(colony.Location, true, 1);
+            _civM.MapData.SetExplored(colony.Location, true);
+            _civM.MapData.SetScanned(colony.Location, true, 1);
 
             GameContext.Current.Universe.HomeColonyLookup[civ] = colony;
         }
@@ -1477,7 +1477,7 @@ namespace Supremacy.Universe
             int maxPlanets;
             IList<string> nebulaNames = GetNebulaNames();
 
-            switch (GameContext.Current.Options.PlanetDensity)
+            switch (GameContext.Current.GameOptions.PlanetDensity)
             {
                 case PlanetDensity.Sparse:
                     maxPlanets = StarSystem.MaxPlanetsPerSystem - 4;

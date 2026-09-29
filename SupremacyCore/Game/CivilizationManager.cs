@@ -1022,8 +1022,8 @@ namespace Supremacy.Game
                     foreach (SitRepEntry _rep in _sitRepEntries)  // foreachsitrep
                     {
 
-                        CivilizationManager _playerCivManager = GameContext.Current.CivilizationManagers[LocalPlayer.CivID];
-                        if (_playerCivManager != null && _rep.Owner.ToString() == _playerCivManager.ToString())
+                        CivilizationManager _player_civM = GameContext.Current.CivilizationManagers[LocalPlayer.CivID];
+                        if (_player_civM != null && _rep.Owner.ToString() == _player_civM.ToString())
                         {
                             string _text = "Step_3337:; SitRep Turn "
                                 + GameContext.Current.TurnNumber
@@ -1857,7 +1857,7 @@ namespace Supremacy.Game
         /// <param name="location">The location at which the event occurred.</param>
         public void ApplyMoraleEvent(MoraleEvent eventType, MapLocation location)
         {
-            Data.Table moraleTable = GameContext.Current.Tables.MoraleTables["MoraleEventResults"];
+            Data.Table moraleTable = GameContext.Current.GameTables.MoraleTables["MoraleEventResults"];
             if (moraleTable == null)
             {
                 return;

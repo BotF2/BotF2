@@ -51,9 +51,13 @@ namespace Supremacy.Game
         {
             return "FEDERATION";
         }
-        public static bool AI_IsPlayer_AI_Controlled() 
+        public static bool AI_IsPlayer_AI_Controlled 
         {
+            get
+            {
             return true;
+            }
+
             //return false;
         }
 
@@ -546,7 +550,6 @@ namespace Supremacy.Game
             string _pre_turn_text = "";
             string _newline = Environment.NewLine;
 
-
             Reset_Items(_game);
 
             //_text += "Step_9282:; " + DateTime.Now + _text;
@@ -579,7 +582,7 @@ namespace Supremacy.Game
                 item.Fire_Power_Orbital = OrbitalHelper.Fire_power_calculated(item);
                 _text = "Step_1051:; OnTurnBegin= "
                     + UnitAI.CreateShipText(item as Ship, out string _fleet_text)
-                //+ " ( station? )"
+                //+ " ( _station? )"
                 //+ " > _fleet.Order?.OnTurnBeginning()"
                 //+ " - Name= " + _civM.Civilization
                 //+ _newline
@@ -797,7 +800,7 @@ namespace Supremacy.Game
                 {
                     _locations_to_NOT_build_stations.Add(_sector.Location);
                     if (_bool_is_human)
-                        Report_Sector_Message(_sector, " > no building > has already a station  ");
+                        Report_Sector_Message(_sector, " > no building > has already a _station  ");
                     continue;
                 }
 
@@ -856,7 +859,7 @@ namespace Supremacy.Game
                 foreach (var _sector in _check_sectors)
                 {
                     _locations_to_NOT_build_stations.Add(_sector.Location);
-                    Report_Sector_Message(_sector, " no building > next to an own station");
+                    Report_Sector_Message(_sector, " no building > next to an own _station");
                 }
             }
 
@@ -1025,7 +1028,7 @@ namespace Supremacy.Game
         //            ;
         //        Console.WriteLine(_text);
 
-        //        //int _step = 5; // each fifth sector one station
+        //        //int _step = 5; // each fifth sector one _station
 
 
         //        List<UniverseObject> _objects_around_home = GameContext.Current.Universe.Objects
@@ -1560,7 +1563,7 @@ namespace Supremacy.Game
             //    //}
 
             //    CivilizationManager _civM = GameContext.Current.CivilizationManagers[ship.OwnerID];
-            //    CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+            //    CivilizationManager _player_civM = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
             //    // only own civilization
             //    Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
@@ -1569,7 +1572,7 @@ namespace Supremacy.Game
             //    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
             //    // all ships shown
-            //    //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+            //    //_player_civM.SitRepEntries.Add(new ShipStatusSitRepEntry(_player_civM.Civilization, ship.Location, _rep));
             //} // end of each ship
             //}
 
@@ -1685,7 +1688,7 @@ namespace Supremacy.Game
                 return;
             }
 
-            //fleet.Order?.OnTurnBeginning();
+            //_fleet.Order?.OnTurnBeginning();
 
             foreach (Ship ship in fleet.Ships)
             {
@@ -1724,17 +1727,17 @@ namespace Supremacy.Game
                 //    }
                 //}
 
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
-                CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[ship.OwnerID];
+                //CivilizationManager _player_civM = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
                 // only own civilization
                 Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
 
-                civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
                 // all ships shown
-                //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+                //_player_civM.SitRepEntries.Add(new ShipStatusSitRepEntry(_player_civM.Civilization, ship.Location, _rep));
             } // end of each ship
         }
 
@@ -1782,45 +1785,45 @@ namespace Supremacy.Game
             Do_24_MapUpdates(_game);
 
             //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
-            GameLog.Core.General.InfoFormat("Step_0900: Options: ---------------------------");
-            GameLog.Core.General.InfoFormat("Step_0903: Options:GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0906: Options:GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0913: Options:StarDensity = {0}", GameContext.Current.Options.StarDensity);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0916: Options:PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
-            GameLog.Core.General.InfoFormat("Step_0920: Options:StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0923: Options:MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0926: Options:GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0930: Options:---------------------------");
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0933: Options:FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0936: Options:RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0940: Options:KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0943: Options:CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0946: Options:DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0950: Options:BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0953: Options:TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0956: Options:---------------------------");
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0960: Options:FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0963: Options:RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0966: Options:KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0970: Options:CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0973: Options:DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0976: Options:BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0980: Options:TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
+            GameLog.Core.General.InfoFormat("Step_0900: GameOptions: ---------------------------");
+            GameLog.Core.General.InfoFormat("Step_0903: GameOptions:GalaxySize = {0} ({1} x {2})", GameContext.Current.GameOptions.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0906: GameOptions:GalaxyShape = {0}", GameContext.Current.GameOptions.GalaxyShape);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0913: GameOptions:StarDensity = {0}", GameContext.Current.GameOptions.StarDensity);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0916: GameOptions:PlanetDensity = {0}", GameContext.Current.GameOptions.PlanetDensity);
+            GameLog.Core.General.InfoFormat("Step_0920: GameOptions:StartingTechLevel = {0}", GameContext.Current.GameOptions.StartingTechLevel);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0923: GameOptions:MinorRaceFrequency = {0}", GameContext.Current.GameOptions.MinorRaceFrequency);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0926: GameOptions:GalaxyCanon = {0}", GameContext.Current.GameOptions.GalaxyCanon);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0930: GameOptions:---------------------------");
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0933: GameOptions:FederationPlayable = {0}", GameContext.Current.GameOptions.FederationPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0936: GameOptions:RomulanPlayable = {0}", GameContext.Current.GameOptions.RomulanPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0940: GameOptions:KlingonPlayable = {0}", GameContext.Current.GameOptions.KlingonPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0943: GameOptions:CardassianPlayable = {0}", GameContext.Current.GameOptions.CardassianPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0946: GameOptions:DominionPlayable = {0}", GameContext.Current.GameOptions.DominionPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0950: GameOptions:BorgPlayable = {0}", GameContext.Current.GameOptions.BorgPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0953: GameOptions:TerranEmpirePlayable = {0}", GameContext.Current.GameOptions.TerranEmpirePlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0956: GameOptions:---------------------------");
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0960: GameOptions:FederationModifier = {0}", GameContext.Current.GameOptions.FederationModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0963: GameOptions:RomulanModifier = {0}", GameContext.Current.GameOptions.RomulanModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0966: GameOptions:KlingonModifier = {0}", GameContext.Current.GameOptions.KlingonModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0970: GameOptions:CardassianModifier = {0}", GameContext.Current.GameOptions.CardassianModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0973: GameOptions:DominionModifier = {0}", GameContext.Current.GameOptions.DominionModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0976: GameOptions:BorgModifier = {0}", GameContext.Current.GameOptions.BorgModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0980: GameOptions:TerranEmpireModifier = {0}", GameContext.Current.GameOptions.TerranEmpireModifier);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0983: Options:EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0986: Options:GamePace = {0}", GameContext.Current.Options.GamePace);
-            GameLog.Core.GeneralDetails.DebugFormat("Step_0990: Options:TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0983: GameOptions:EmpireModifierRecurringBalancing = {0}", GameContext.Current.GameOptions.EmpireModifierRecurringBalancing);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0986: GameOptions:GamePace = {0}", GameContext.Current.GameOptions.GamePace);
+            GameLog.Core.GeneralDetails.DebugFormat("Step_0990: GameOptions:TurnTimer = {0}", GameContext.Current.GameOptions.TurnTimerEnum);
 
-            Table ToolTipImageSizeTable = GameContext.Current.Tables.UniverseTables["Sizes"];
+            Table ToolTipImageSizeTable = GameContext.Current.GameTables.UniverseTables["Sizes"];
             //AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
             //AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
             //string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
             //if (_writeDirectly) Console.WriteLine(_text);
             //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-            Table BuyModTable = GameContext.Current.Tables.GameOptionTables["BuyModifier"];
+            Table BuyModTable = GameContext.Current.GameTables.GameOptionTables["BuyModifier"];
             int _buyMod = (int)Number.ParseSingle(BuyModTable["BuyMod"][0]);
-            Table TaxModTable = GameContext.Current.Tables.GameOptionTables["TaxModifier"];
+            Table TaxModTable = GameContext.Current.GameTables.GameOptionTables["TaxModifier"];
             int _taxMod = (int)Number.ParseSingle(TaxModTable["TaxMod"][0]);
             // 3rd one is Maintenance, but no change for this at the moment
 
@@ -1830,7 +1833,7 @@ namespace Supremacy.Game
             /* With StrengthModifier it is possible to increase some stuff or to decrease */
             /* default value is 1.0 - range shall be 0.1 to 1.9 */
             /* all modifier are working in generell, not race-speficic */
-            Table strengthTable = GameContext.Current.Tables.GameOptionTables["StrengthModifier"];
+            Table strengthTable = GameContext.Current.GameTables.GameOptionTables["StrengthModifier"];
             float EspionageMod = Number.ParseSingle(strengthTable["EspionageMod"][0]);
             float SabotageMod = Number.ParseSingle(strengthTable["SabotageMod"][0]);
             float InternalSecurityMod = Number.ParseSingle(strengthTable["InternalSecurityMod"][0]);
@@ -2355,22 +2358,22 @@ namespace Supremacy.Game
 
             }
 
-            HashSet<Station> allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
-            foreach (Station station in allStations)
+            HashSet<Station> _allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
+            foreach (Station _station in _allStations)
             {
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_station.OwnerID];
 
-                _text = GameEngine.LocationString(station.Location.ToString()) + " > Station " + station.ObjectID
-                    + ": " + station.Design
-                    + " ___ - Maint. " + station.Design.MaintenanceCost
-                    + " > * " /*+ station.ObjectID + " " */+ station.Name
-                    + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/
-                    + " > since Turn " + station.TurnCreated /*+ " )"*/
+                _text = GameEngine.LocationString(_station.Location.ToString()) + " > Station " + _station.ObjectID
+                    + ": " + _station.Design
+                    + " ___ - Maint. " + _station.Design.MaintenanceCost
+                    + " > * " /*+ _station.ObjectID + " " */+ _station.Name
+                    + " *"  /*( Maint." + _station.Design.MaintenanceCost + " )"*/
+                    + " > since Turn " + _station.TurnCreated /*+ " )"*/
                     ;
                 Console.WriteLine("Step_3482:; " + _text);
                 //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
 
-                civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, station.Location, _text, "", ""
+                _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _station.Location, _text, "", ""
                     , SitRepPriority.Gray));
             }
             _text = "End of Do_12_FleetHandling";
@@ -2574,7 +2577,7 @@ namespace Supremacy.Game
 
             //    //        //if (_civM_2.HomeSystem.Sector.Station != null)
             //    //        //{
-            //    //        //    _defense += _civM_2.HomeSystem.Sector.Station.Fire_Power_Orbital / 200;  // station only half
+            //    //        //    _defense += _civM_2.HomeSystem.Sector.Station.Fire_Power_Orbital / 200;  // _station only half
             //    //        //    _defense += _civM_2.HomeSystem.Colony.Population.CurrentValue;  // 
             //    //        //    if (_civM_2.HomeSystem.Colony.OrbitalBatteries.Count > 0)
             //    //        //    {
@@ -2695,7 +2698,7 @@ namespace Supremacy.Game
 
                     //if (_civM_2.HomeSystem.Sector.Station != null)
                     //{
-                    //    _defense += _civM_2.HomeSystem.Sector.Station.Fire_Power_Orbital / 200;  // station only half
+                    //    _defense += _civM_2.HomeSystem.Sector.Station.Fire_Power_Orbital / 200;  // _station only half
                     //    _defense += _civM_2.HomeSystem.Colony.Population.CurrentValue;  // 
                     //    if (_civM_2.HomeSystem.Colony.OrbitalBatteries.Count > 0)
                     //    {
@@ -3600,7 +3603,7 @@ namespace Supremacy.Game
                     //{
                     //if (!_civM_1.Civilization.IsHuman) 
                     if (_civM.Civilization.IsHuman
-                        && GameEngine.AI_IsPlayer_AI_Controlled() == false)  // Do_17_Research
+                        && GameEngine.AI_IsPlayer_AI_Controlled == false)  // Do_17_Research
                     {
 
                     }
@@ -4140,36 +4143,36 @@ namespace Supremacy.Game
                 GameContext.PushThreadContext(_game);
                 try
                 {
-                    HashSet<MapLocation> fuelLocations = new HashSet<MapLocation>();
-                    CivilizationManager civManager = _game.CivilizationManagers[civ];
-                    CivilizationMapData mapData = civManager.MapData;
+                    HashSet<MapLocation> _fuel_locations = new HashSet<MapLocation>();
+                    CivilizationManager _civM = _game.CivilizationManagers[civ];
+                    CivilizationMapData _map_data = _civM.MapData;
 
-                    mapData.ResetScanStrengthAndFuelRange();
+                    _map_data.ResetScanStrengthAndFuelRange();
                     //_fleets
-                    foreach (Fleet fleet in _game.Universe.FindOwned<Fleet>(civ))
+                    foreach (Fleet _fleet in _game.Universe.FindOwned<Fleet>(civ))
                     {
                         //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from FLEET {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", _fleet.ObjectID, _fleet.Name, 
                         //    _fleet.Owner, _fleet.Location, _fleet.ScanStrength, _fleet.SensorRange);
-                        mapData.UpgradeScanStrength(
-                              fleet.Location,
-                              fleet.ScanStrength,
-                              fleet.SensorRange,
+                        _map_data.UpgradeScanStrength(
+                              _fleet.Location,
+                              _fleet.ScanStrength,
+                              _fleet.SensorRange,
                               0,
                               1);
                     }
                     /*stations */
-                    foreach (Station station in _game.Universe.FindOwned<Station>(civ))
+                    foreach (Station _station in _game.Universe.FindOwned<Station>(civ))
                     {
-                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from STATION {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", station.ObjectID, station.Name, 
-                        //    station.Owner, station.Location, station.StationDesign.ScanStrength, station.StationDesign.SensorRange);
-                        mapData.UpgradeScanStrength(
-                              station.Location,
-                              station.StationDesign.ScanStrength,
-                              station.StationDesign.SensorRange,
+                        //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from STATION {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", _station.ObjectID, _station.Name, 
+                        //    _station.Owner, _station.Location, _station.StationDesign.ScanStrength, _station.StationDesign.SensorRange);
+                        _map_data.UpgradeScanStrength(
+                              _station.Location,
+                              _station.StationDesign.ScanStrength,
+                              _station.StationDesign.SensorRange,
                               0,
                               1);
 
-                        _ = fuelLocations.Add(station.Location);
+                        _ = _fuel_locations.Add(_station.Location);
                         /* stations of other civs we can use to travel */
                         foreach (Civilization whoElse in _game.Civilizations)
                         {
@@ -4186,7 +4189,7 @@ namespace Supremacy.Game
                                     {
                                         if (anotherStation != null)
                                         {
-                                            _ = fuelLocations.Add(anotherStation.Location);
+                                            _ = _fuel_locations.Add(anotherStation.Location);
                                         }
                                     }
                                 }
@@ -4194,7 +4197,7 @@ namespace Supremacy.Game
                         }
                     }
 
-                    foreach (Colony colony in civManager.Colonies)
+                    foreach (Colony colony in _civM.Colonies)
                     {
                         int scanModifier = 0;
 
@@ -4211,7 +4214,7 @@ namespace Supremacy.Game
 
                         //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from COLONY {0} {1} ({2}) at  {3}, ScanStrength = {4}, Range = {5}", _colony.ObjectID, _colony.Name, 
                         //    _colony.Owner, GameEngine.LocationString(_colony.Location.ToString()), 1 + scanModifier, 1 + scanModifier);  
-                        mapData.UpgradeScanStrength(
+                        _map_data.UpgradeScanStrength(
                               colony.Location,
                               1 + scanModifier,
                               1 + scanModifier,
@@ -4220,7 +4223,7 @@ namespace Supremacy.Game
 
                         if (colony.Shipyard != null)
                         {
-                            _ = fuelLocations.Add(colony.Location);
+                            _ = _fuel_locations.Add(colony.Location);
                         }
                     }
 
@@ -4230,16 +4233,16 @@ namespace Supremacy.Game
                         {
                             Sector sector = _map[x, y];
 
-                            foreach (MapLocation fuelLocation in fuelLocations)
+                            foreach (MapLocation fuelLocation in _fuel_locations)
                             {
-                                mapData.UpgradeFuelRange(
+                                _map_data.UpgradeFuelRange(
                                     sector.Location,
                                     MapLocation.GetDistance(fuelLocation, sector.Location));
                             }
                         }
                     }
 
-                    mapData.ApplyScanInterference(interference.Result);
+                    _map_data.ApplyScanInterference(interference.Result);
                 }
                 catch (Exception e)
                 {
@@ -4264,13 +4267,11 @@ namespace Supremacy.Game
             SectorClaimGrid _sectorClaims = _game.SectorClaims;
 
             _sectorClaims.ClearClaims();
+            string _text;
 
             //_ = ParallelForEach(GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList(), _civ =>
             foreach (var _civ in GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList())
             {
-
-                //}
-                //  {
                 GameContext.PushThreadContext(_game);
                 try
                 {
@@ -4305,27 +4306,37 @@ namespace Supremacy.Game
                                 lock (_sectorClaims)
                                 {
                                     _sectorClaims.AddClaim(location, _civ, claimWeight);
+                                    _text = "Step_7612:; claimWeight= " + GameEngine.Do_x_Digit_String(4, claimWeight.ToString())
+                                        + " for Colony= " + GameEngine.LocationString(location.ToString())
+                                        + " " + _colony.Name 
+                                        + ", Pop= " + _colony.Population.CurrentValue
+                                        + " / by " + MapLocation.GetDistance(location, _colony.Location) + 1
+                                        + ", Owner= " + _civ.Key 
+
+                                        ;
+                                    Write_Console(_text);
                                 }
 
                                 _civM.MapData.SetScanned(location, true);
                                 /* look for ships in violation of Non_Agression (no go into others space) treaty */
-                                foreach (Civilization whoElse in GameContext.Current.Civilizations)
+                                foreach (Civilization _civ2 in GameContext.Current.Civilizations)
                                 {
-                                    //if (whoElse == _civ)
-                                    //    continue;
-                                    if (GameContext.Current.AgreementMatrix.IsAgreementActive(_civ, whoElse, ClauseType.TreatyNonAggression))
+                                    if (_civ2 == _civ)
+                                        continue;
+                                    if (GameContext.Current.AgreementMatrix.IsAgreementActive(_civ, _civ2, ClauseType.TreatyNonAggression))
                                     {
                                         GameLog.Core.DiplomacyDetails.DebugFormat("*******Looking for NonAggression Treaties*******");
-                                        List<Fleet> whosFleets = GameContext.Current.Universe.Find<Fleet>().Where(o => o.Owner == whoElse).ToList();
-                                        foreach (Fleet fleet in whosFleets)
+                                        List<Fleet> _civ2_fleets = GameContext.Current.Universe.Find<Fleet>().Where(o => o.Owner == _civ2).ToList();
+                                        foreach (Fleet fleet in _civ2_fleets)
                                         {
                                             if (_sectorClaims.GetOwner(fleet.Location) == _civ)
                                             {
-                                                //_text = 
-                                                GameLog.Core.DiplomacyDetails.DebugFormat("Got NonAggression Treaty for {0} vs {1}, trying for regard trust change and canel treaties", _civ.Key, whoElse.Key);
-                                                DiplomacyHelper.ApplyRegardChange("",-200,_civ, whoElse);
-                                                DiplomacyHelper.Apply_TrustChange("",-200,_civ, whoElse);
-                                                //var activeAgreements = GameContext.Current.AgreementMatrix[_civ.CivID, whoElse.CivID];
+                                                _text = "NonAggression Treaty violated for " + _civ + " vs " +_civ2;
+                                                Console.WriteLine(_text);
+                                                //GameLog.Core.DiplomacyDetails.DebugFormat("Got NonAggression Treaty for {0} vs {1}, trying for regard trust change and cancel treaties", _civ.Key, _civ2.Key);
+                                                DiplomacyHelper.ApplyRegardChange("NonAggression Treaty violated", -40,_civ, _civ2);
+                                                DiplomacyHelper.Apply_TrustChange("NonAggression Treaty violated", -40,_civ, _civ2);
+                                                //var activeAgreements = GameContext.Current.AgreementMatrix[_civ.CivID, _civ2.CivID];
                                                 /* cancel all agreements */
                                                 //while (activeAgreements.Count > 0)
                                                 //{
@@ -4334,13 +4345,13 @@ namespace Supremacy.Game
                                                 /* sitrep for canceling all agreements */
                                                 //if (_civ.IsEmpire)
                                                 //{
-                                                //    _civM_1.SitRepEntries.Add(new ViolateTreatySitRepEntry(_civ, whoElse));
-                                                //    //_civM_1.SitRepEntries.Add(new ViolateTreatySitRepEntry(whoElse, _civ));
+                                                //    _civM_1.SitRepEntries.Add(new ViolateTreatySitRepEntry(_civ, _civ2));
+                                                //    //_civM_1.SitRepEntries.Add(new ViolateTreatySitRepEntry(_civ2, _civ));
                                                 //}
-                                                ForeignPower foreignPower = new ForeignPower(_civ, whoElse);
-                                                foreignPower.ViolateNonAggression(whoElse);
-                                                ForeignPower otherForeignPower = new ForeignPower(whoElse, _civ);
-                                                otherForeignPower.ViolateNonAggression(whoElse);
+                                                ForeignPower foreignPower = new ForeignPower(_civ, _civ2);
+                                                foreignPower.ViolateNonAggression(_civ2);
+                                                ForeignPower otherForeignPower = new ForeignPower(_civ2, _civ);
+                                                otherForeignPower.ViolateNonAggression(_civ2);
                                             }
                                         }
                                     }
@@ -4359,9 +4370,11 @@ namespace Supremacy.Game
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.ErrorFormat(string.Format("Do_24a_SectorClaims failed for {0}",
-                        _civ.Name),
-                        e);
+                    _text = "Step_3458:; > ERROR on Do_24a_SectorClaims for " + _civ.Name
+                        + Environment.NewLine + e.ToString()
+                        ;
+                    Console.WriteLine(_text);
+                    GameLog.Core.General.ErrorFormat(_text);
                 }
                 finally
                 {
@@ -4369,7 +4382,8 @@ namespace Supremacy.Game
                 }
             }
         }
-        #endregion
+        #endregion Do_24a_SectorClaims
+
 
         #region DoScrapping() Method
         void Do_18_Scrapping(GameContext _game)
@@ -4517,7 +4531,7 @@ namespace Supremacy.Game
                 //    , _civMaintance
                 //    );
 
-                //foreach station > deuterium ?
+                //foreach _station > deuterium ?
 
 
             }
@@ -5597,8 +5611,8 @@ namespace Supremacy.Game
         #region DoTrade() Method
         void Do_22_Trade(GameContext _game)
         {
-            Table popReqTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopReq"];
-            Table popModTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
+            Table popReqTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopReq"];
+            Table popModTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopMultipliers"];
 
             float sourceMod = Number.ParseSingle(popModTable["Source"][0]);
             float targetMod = Number.ParseSingle(popModTable["Target"][0]);
@@ -6010,14 +6024,14 @@ namespace Supremacy.Game
 
             }
 
-            //HashSet<Station> allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
-            //foreach (Station station in allStations)
+            //HashSet<Station> _allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
+            //foreach (Station _station in _allStations)
             //{
-            //    CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[station.OwnerID];
+            //    CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[_station.OwnerID];
 
-            //    string _text = station.Location + " > Station " + station.ObjectID + ": Maint. " + station.Design.MaintenanceCost; ;
-            //    _text += " > * " /*+ station.ObjectID + " " */+ station.Name + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/;
-            //    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civM_1.Civilization, station.Location, _text, "", "", SitRepPriority.Pink));
+            //    string _text = _station.Location + " > Station " + _station.ObjectID + ": Maint. " + _station.Design.MaintenanceCost; ;
+            //    _text += " > * " /*+ _station.ObjectID + " " */+ _station.Name + " *"  /*( Maint." + _station.Design.MaintenanceCost + " )"*/;
+            //    _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civM_1.Civilization, _station.Location, _text, "", "", SitRepPriority.Pink));
             //}
 
             //foreach (Fleet _fleet in _allFleets)
@@ -6044,13 +6058,13 @@ namespace Supremacy.Game
             //        }
 
             //        CivilizationManager _civM_1 = GameContext.Current.CivilizationManagers[ship.OwnerID];
-            //        CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+            //        CivilizationManager _player_civM = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
             //        // only own civilization
             //        _civM_1.SitRepEntries.Add(new ReportEntry_CoS(_civM_1.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
             //        // all ships shown
-            //        //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _text));
+            //        //_player_civM.SitRepEntries.Add(new ShipStatusSitRepEntry(_player_civM.Civilization, ship.Location, _text));
             //    } // end of each ship
             //}
 
@@ -6442,22 +6456,22 @@ namespace Supremacy.Game
             //        }
             CivRankList.Clear();
 
-            //HashSet<Station> allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
-            //foreach (Station station in allStations)
+            //HashSet<Station> _allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
+            //foreach (Station _station in _allStations)
             //{
-            //    CivilizationManager _civM = GameContext.Current.CivilizationManagers[station.OwnerID];
+            //    CivilizationManager _civM = GameContext.Current.CivilizationManagers[_station.OwnerID];
 
-            //    _text = GameEngine.LocationString(station.Location.ToString()) + " > Station " + station.ObjectID
-            //        + ": " + station.Design
-            //        + " ___ - Maint. " + station.Design.MaintenanceCost
-            //        + " > * " /*+ station.ObjectID + " " */+ station.Name
-            //        + " *"  /*( Maint." + station.Design.MaintenanceCost + " )"*/
-            //        + " > since Turn " + station.TurnCreated /*+ " )"*/
+            //    _text = GameEngine.LocationString(_station.Location.ToString()) + " > Station " + _station.ObjectID
+            //        + ": " + _station.Design
+            //        + " ___ - Maint. " + _station.Design.MaintenanceCost
+            //        + " > * " /*+ _station.ObjectID + " " */+ _station.Name
+            //        + " *"  /*( Maint." + _station.Design.MaintenanceCost + " )"*/
+            //        + " > since Turn " + _station.TurnCreated /*+ " )"*/
             //        ;
             //    Console.WriteLine("Step_3482:; " + _text);
             //    //GameLog.Core.CombatDetails.DebugFormat("Step_3282: " + _text);
 
-            //    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, station.Location, _text, "", "", SitRepPriority.Pink));
+            //    _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _station.Location, _text, "", "", SitRepPriority.Pink));
             //}
 
             //foreach (Fleet _fleet in allFleets)
@@ -6495,7 +6509,7 @@ namespace Supremacy.Game
             //        //}
 
             //        CivilizationManager _civM = GameContext.Current.CivilizationManagers[ship.OwnerID];
-            //        CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+            //        CivilizationManager _player_civM = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
             //        // only own civilization
             //        Console.WriteLine("Step_3583:; Turn " + GameContext.Current.TurnNumber + " > " + _text);
@@ -6504,7 +6518,7 @@ namespace Supremacy.Game
             //        _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, ship.Location, _text, "", "", SitRepPriority.Pink));
 
             //        // all ships shown
-            //        //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+            //        //_player_civM.SitRepEntries.Add(new ShipStatusSitRepEntry(_player_civM.Civilization, ship.Location, _rep));
             //    } // end of each ship
             //}
 
@@ -6593,7 +6607,7 @@ namespace Supremacy.Game
 
                     try
                     {
-                        _text = "Step_9781:; next > DiplomatAI.Do_0_Turn_Unit(_civ);";
+                        _text = "Step_9781:; "+DateTime.Now+" > next > DiplomatAI.Do_0_Turn_Unit(_civ);";
                         if (_writeDirectly) Console.WriteLine(_text);
                         DiplomatAI.DoTurn(_civ);
                     }
@@ -6613,14 +6627,14 @@ namespace Supremacy.Game
                     {
                         if (DiplomacyHelper.IsIndependent(_civ))
                         {
-                            _text = "Step_9781:; next > ColonyAI.Do_0_Turn_Unit(_civ);";
+                            _text = "Step_9785:; "+DateTime.Now+" > next > ColonyAI.Do_0_Turn_Unit(_civ);";
                             if (_writeDirectly) Console.WriteLine(_text);
                             ColonyAI.DoTurn(_civ);
                         }
                     }
                     catch (Exception e)
                     {
-                        _text = "Step_9782:; #### problem at DoAIPlayers" + _newline + e.ToString();
+                        _text = "Step_9786:; #### problem at DoAIPlayers" + _newline + e.ToString();
                         if (_writeDirectly) Console.WriteLine(_text);
                         GameLog.Core.General.Error(e);
 
@@ -6631,7 +6645,7 @@ namespace Supremacy.Game
                     {
                         if (DiplomacyHelper.IsIndependent(_civ))
                         {
-                            _text = "Step_9783:; next > ColonyAI.Do_0_Turn_Unit(_civ);";
+                            _text = "Step_9783:; "+DateTime.Now+" > next > ColonyAI.Do_0_Turn_Unit(_civ);";
                             if (_writeDirectly) Console.WriteLine(_text);
 
 
@@ -6651,7 +6665,7 @@ namespace Supremacy.Game
                     {
                         if (DiplomacyHelper.IsIndependent(_civ))
                         {
-                            _text = "Step_9785:; next > ColonyAI.Do_0_Turn_Unit(_civ);";
+                            _text = "Step_9785:; "+DateTime.Now+" > nextext > ColonyAI.Do_0_Turn_Unit(_civ);";
                             if (_writeDirectly) Console.WriteLine(_text);
 
                             UnitAI.Do_0_Turn_Unit(_civ);
@@ -6760,8 +6774,8 @@ namespace Supremacy.Game
             for (int i = 0; i < _combat.Count(); i++)
             {
 
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[_combat[i].OwnerID];
-                _text += " > " + civManager.Civilization.Key + " > ";
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_combat[i].OwnerID];
+                _text += " > " + _civM.Civilization.Key + " > ";
 
                 if (_combat[i].CombatShips != null)
                 {
@@ -6904,6 +6918,10 @@ namespace Supremacy.Game
             }
         }
 
+        public static void Write_Console(string text)
+        {
+            Console.WriteLine(text);
+        }
 
         public static string Do_x_Digit_String(int _how_many, string _v) // digit = orientated right
         {

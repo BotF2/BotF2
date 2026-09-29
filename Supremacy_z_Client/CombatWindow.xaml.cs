@@ -731,8 +731,8 @@ namespace Supremacy.Client
                 + " > Player's choice: " + order /*+ " button was clicked by player "*/
                 ;
 
-            CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
-            playerCivManager.SitRepEntries.Add(new ReportEntry_NoAction(playerCivManager.Civilization
+            CivilizationManager _player_civM = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+            _player_civM.SitRepEntries.Add(new ReportEntry_NoAction(_player_civM.Civilization
                 , _text_combatWindow, "", "", SitRepPriority.Yellow));
 
 

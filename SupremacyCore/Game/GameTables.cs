@@ -91,9 +91,9 @@ namespace Supremacy.Game
         {
             const string tablesPath = @"Resources\Data\";
 
-            string _text = "Step_0223:; > no Output for often used Tables: MessageDialogButtons, TechCategory, SitRepCategory";
+            string _text = "Step_0223:; > no Output for often used GameTables: MessageDialogButtons, TechCategory, SitRepCategory";
             Console.WriteLine(_text);
-            //GameLog.Client.GameInitData.DebugFormat("... no Output for often used Tables: MessageDialogButtons, TechCategory, SitRepCategory");
+            //GameLog.Client.GameInitData.DebugFormat("... no Output for often used GameTables: MessageDialogButtons, TechCategory, SitRepCategory");
 
             GameTables tables = new GameTables
             {

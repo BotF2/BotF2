@@ -206,10 +206,10 @@ namespace Supremacy.Scripting.Events
 
                     target.RemoveOrbitalBatteries(removeOrbitalBatteries);
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                    //civManager?.SitRepEntries.Add(new AsteroidImpactSitRepEntry(civManager.Civilization, target));
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new AsteroidImpactSitRepEntry(_civM.Civilization, target));
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("ASTEROID_IMPACT_HEADER_TEXT")
                         , _text + ResourceManager.GetString("ASTEROID_IMPACT_DETAIL_TEXT")
                         , "ScriptedEvents/AsteroidImpact.png", SitRepPriority.RedYellow));

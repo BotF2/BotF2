@@ -167,39 +167,39 @@ namespace Supremacy.Game
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", empireName);
             }
 
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - GalaxySize;{0}", savedGameHeader.Options.GalaxySize);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - GalaxyShape;{0}", savedGameHeader.Options.GalaxyShape);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - StarDensity;{0}", savedGameHeader.Options.StarDensity);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - PlanetDensity;{0}", savedGameHeader.Options.PlanetDensity);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - StartingTechLevel (once);{0}", savedGameHeader.Options.StartingTechLevel);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - MinorRaceFrequency;{0}", savedGameHeader.Options.MinorRaceFrequency);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;GameOptions - GalaxySize;{0}", savedGameHeader.Options.GalaxySize);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - GalaxyShape;{0}", savedGameHeader.Options.GalaxyShape);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - StarDensity;{0}", savedGameHeader.Options.StarDensity);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - PlanetDensity;{0}", savedGameHeader.Options.PlanetDensity);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;GameOptions - StartingTechLevel (once);{0}", savedGameHeader.Options.StartingTechLevel);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - MinorRaceFrequency;{0}", savedGameHeader.Options.MinorRaceFrequency);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};FederationPlayable;", savedGameHeader.Options.FederationPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};RomulanPlayable", savedGameHeader.Options.RomulanPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};KlingonPlayable", savedGameHeader.Options.KlingonPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};CardassianPlayable", savedGameHeader.Options.CardassianPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};DominionPlayable", savedGameHeader.Options.DominionPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};BorgPlayable", savedGameHeader.Options.BorgPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};TerranEmpirePlayable", savedGameHeader.Options.TerranEmpirePlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};FederationPlayable;", savedGameHeader.Options.FederationPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};RomulanPlayable", savedGameHeader.Options.RomulanPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};KlingonPlayable", savedGameHeader.Options.KlingonPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};CardassianPlayable", savedGameHeader.Options.CardassianPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};DominionPlayable", savedGameHeader.Options.DominionPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};BorgPlayable", savedGameHeader.Options.BorgPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};TerranEmpirePlayable", savedGameHeader.Options.TerranEmpirePlayable);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Options: FederationModifier = {0}", savedGameHeader.Options.FederationModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: RomulanModifier = {0}", savedGameHeader.Options.RomulanModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: KlingonModifier = {0}", savedGameHeader.Options.KlingonModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: CardassianModifier = {0}", savedGameHeader.Options.CardassianModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: DominionModifier = {0}", savedGameHeader.Options.DominionModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: BorgModifier = {0}", savedGameHeader.Options.BorgModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: TerranEmpireModifier = {0}", savedGameHeader.Options.TerranEmpireModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: FederationModifier = {0}", savedGameHeader.Options.FederationModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: RomulanModifier = {0}", savedGameHeader.Options.RomulanModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: KlingonModifier = {0}", savedGameHeader.Options.KlingonModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: CardassianModifier = {0}", savedGameHeader.Options.CardassianModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: DominionModifier = {0}", savedGameHeader.Options.DominionModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: BorgModifier = {0}", savedGameHeader.Options.BorgModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: TerranEmpireModifier = {0}", savedGameHeader.Options.TerranEmpireModifier);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Options: EmpireModifierRecurringBalancing = {0}", savedGameHeader.Options.EmpireModifierRecurringBalancing);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: GamePace = {0}", savedGameHeader.Options.GamePace);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: TurnTimer = {0}", savedGameHeader.Options.TurnTimerEnum);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: EmpireModifierRecurringBalancing = {0}", savedGameHeader.Options.EmpireModifierRecurringBalancing);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: GamePace = {0}", savedGameHeader.Options.GamePace);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: TurnTimer = {0}", savedGameHeader.Options.TurnTimerEnum);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - UseHomeQuadrants;{0}", savedGameHeader.Options.UseHomeQuadrants);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - TurnTimer;{0}", savedGameHeader.Options.TurnTimer);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - AIMode    ;{0}", savedGameHeader.Options.AIMode);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - AITakeover;{0}", savedGameHeader.Options.AITakeover);
-            // not useful GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - ModID     ;{0}", savedGameHeader.Options.ModID);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - UseHomeQuadrants;{0}", savedGameHeader.Options.UseHomeQuadrants);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - TurnTimer;{0}", savedGameHeader.Options.TurnTimer);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - AIMode    ;{0}", savedGameHeader.Options.AIMode);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - AITakeover;{0}", savedGameHeader.Options.AITakeover);
+            // not useful GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;GameOptions - ModID     ;{0}", savedGameHeader.GameOptions.ModID);
 
             foreach (SlotClaim slotClaim in savedGameHeader.SlotClaims)
             {
@@ -325,10 +325,10 @@ namespace Supremacy.Game
             set
             {
                 _options = value;
-                OnPropertyChanged("Options");
+                OnPropertyChanged("GameOptions");
                 //foreach (var item in value)
                 //{
-                //    //_loadGameText += item.value + ";;Options:" + item + _newline;
+                //    //_loadGameText += item.value + ";;GameOptions:" + item + _newline;
                 _text = _options.ToString();
                 _text += "GameOptions are set...";
                 //}

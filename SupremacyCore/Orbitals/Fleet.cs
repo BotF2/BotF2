@@ -705,11 +705,11 @@ namespace Supremacy.Orbitals
 
             base.OnLocationChanged();
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
-            if (civManager != null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[OwnerID];
+            if (_civM != null)
             {
-                civManager.MapData.SetExplored(Location, true);
-                civManager.MapData.SetScanned(Location, true, SensorRange);
+                _civM.MapData.SetExplored(Location, true);
+                _civM.MapData.SetScanned(Location, true, SensorRange);
             }
 
             _order?.OnFleetMoved();

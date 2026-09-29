@@ -482,13 +482,13 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
             Ship ship = new Ship(this);
 
             //string shipDesign = ship.ShipDesign.Name;
 
 
-            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true && civManager.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
+            if (TechTreeHelper.MeetsTechLevels(_civM, ship.ShipDesign) != true && _civM.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
             {
                 GameLog.Core.GameData.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
 
@@ -558,7 +558,7 @@ namespace Supremacy.Orbitals
             int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
             if (fuelNeeded > 0)
             {
-                _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+                _ = ship.FuelReserve.AdjustCurrent(_civM.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
 
                 _text = ship.ObjectID + " " + ship.Name + " ( " + ship.ShipDesign + " ) got " + fuelNeeded + "fuel (=Dilithium)";
                 Console.WriteLine(_text);
@@ -573,9 +573,9 @@ namespace Supremacy.Orbitals
 
             GameContext.Current.Universe.Objects.Add(ship);
 
-            civManager.MapData.SetExplored(location, true);
-            civManager.MapData.SetScanned(location, true, SensorRange);
-            civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
+            _civM.MapData.SetExplored(location, true);
+            _civM.MapData.SetScanned(location, true, SensorRange);
+            _civM.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
 
             spawnedInstance = ship;
             return true;

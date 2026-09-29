@@ -87,7 +87,7 @@ namespace Supremacy.Orbitals
                 throw new ArgumentNullException("orbital");
             }
 
-            Data.Table dcmTable = GameContext.Current.Tables.GameOptionTables["DamageControlModifiers"];
+            Data.Table dcmTable = GameContext.Current.GameTables.GameOptionTables["DamageControlModifiers"];
             if (dcmTable != null)
             {
                 if (dcmTable[orbital.ExperienceRank.ToString()] != null)
@@ -118,7 +118,7 @@ namespace Supremacy.Orbitals
             }
 
             double returnModifier = 0.4;
-            Data.Table accuracyTable = GameContext.Current.Tables.GameOptionTables["AccuracyModifiers"];
+            Data.Table accuracyTable = GameContext.Current.GameTables.GameOptionTables["AccuracyModifiers"];
             if (accuracyTable != null)
             {
                 if (accuracyTable[orbital.ExperienceRank.ToString()] != null)

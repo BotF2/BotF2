@@ -510,8 +510,8 @@ namespace Supremacy.Tech
 
                         try
                         {
-                            //var civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
-                            //if (civManager == null)
+                            //var _civM = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
+                            //if (_civM == null)
                             //    continue;
                             TechTree techTree = new TechTree(xmlTree);
                             bool _streamWriterWorks = false;
@@ -611,15 +611,15 @@ namespace Supremacy.Tech
                         // If the civilization is not part of the current game, then we don't need it's data
                         try
                         {
-                            CivilizationManager civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
-                            if (civManager == null)
+                            CivilizationManager _civM = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
+                            if (_civM == null)
                             {
                                 continue;
                             }
 
                             TechTree techTree = new TechTree(xmlTree);
                             techTree.Merge(defaultTechTree);
-                            civManager.TechTree = techTree;
+                            _civM.TechTree = techTree;
                         }
                         catch (Exception e)
                         {

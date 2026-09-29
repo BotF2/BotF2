@@ -276,7 +276,7 @@ namespace Supremacy.Universe
         /// <returns>The growth rate.</returns>
         public Percentage GetGrowthRate(PlanetType homePlanetType)
         {
-            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
+            Data.Table table = GameContext.Current.GameTables.UniverseTables["PlanetGrowthRate"];
             return Percentage.Parse(table[GetEnvironment(homePlanetType).ToString()][0]);
         }
 
@@ -288,7 +288,7 @@ namespace Supremacy.Universe
         /// <returns>The growth rate.</returns>
         public Percentage GetGrowthRate(Race race)
         {
-            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
+            Data.Table table = GameContext.Current.GameTables.UniverseTables["PlanetGrowthRate"];
             return Percentage.Parse(table[GetEnvironment(race).ToString()][0]);
         }
 
@@ -300,7 +300,7 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
-            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+            Data.Table table = GameContext.Current.GameTables.UniverseTables["PlanetMaxPop"];
 
             // OK to return null here! Do not need to fix
             // 2021-02-21 reg: well, making trouble time by time - we should keep this coding
@@ -339,7 +339,7 @@ namespace Supremacy.Universe
             //Console.WriteLine(_text);
             //GameLog.Client.GalaxyGeneratorDetails.DebugFormat(_text);
 
-            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+            Data.Table table = GameContext.Current.GameTables.UniverseTables["PlanetMaxPop"];
 
             int _pop = 0;
 

@@ -171,7 +171,7 @@ namespace Supremacy.Universe
             _shipyardId = -1;
             _systemId = system.ObjectID;
 
-            Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+            Data.Table baseResProdTable = GameContext.Current.GameTables.UniverseTables["BaseResourceProduction"];
 
             if (system.HasDuraniumBonus)
             {
@@ -221,7 +221,7 @@ namespace Supremacy.Universe
             //{
             byte baseValuePerGasGiant = 10;
 
-            //Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+            //Data.Table baseResProdTable = GameContext.Current.GameTables.UniverseTables["BaseResourceProduction"];
             if (baseResProdTable != null)
             {
                 string random = "NO";
@@ -580,14 +580,14 @@ namespace Supremacy.Universe
             //return base.Name ?? ((System != null) ? System.Name : null); 
 
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[OwnerID];
             _text = buildSlot.Shipyard.Location
                 + " " + buildSlot.SlotID
                 + buildSlot.Project.BuildDesign.ToString()
                 ;
             Console.WriteLine("SR:; " + _text);
-            civManager.SitRepEntries.Add(new ReportEntry_CoS(civManager.Civilization, civManager.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
-            //civManager.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(civManager.Civilization, civManager.HomeSystem.Location, _text));
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, _civM.HomeSystem.Location, _text, "", "", SitRepPriority.Purple));
+            //_civM.SitRepEntries.Add(new ReportOutput_Purple_CoS_SitRepEntry(_civM.Civilization, _civM.HomeSystem.Location, _text));
 
             return status;
         }
@@ -987,7 +987,7 @@ namespace Supremacy.Universe
             //int count = 0;
             //foreach (BuildQueueItem buildQueueItem in BuildQueue)
             //{
-            //    _text = "Step_1206:; " + buildQueueItem.Project.Location.ToString()
+            //    _text = "Step_12-06:; " + buildQueueItem.Project.Location.ToString()
             //        + " buildQueueItem # " + count + " = " + buildQueueItem.Description
             //        + "; needs " + buildQueueItem.Project.TurnsRemaining + " turns " 
             //        //+ buildQueueItem.Description
@@ -2678,10 +2678,10 @@ namespace Supremacy.Universe
         /// <param name="building">The building to deactivate.</param>
         public bool Building_Deactivate(Building building)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[building.OwnerID];
-            //civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[building.OwnerID];
+            //_civM.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(_civM.Civilization, building.Sector.System.Colony));
             string _text = string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Name, GameEngine.LocationString(Location.ToString()));
-            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.RedYellow));
+            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(Owner, this, _text, _text, "", SitRepPriority.RedYellow));
 
             _text = "Turn " + GameContext.Current.TurnNumber
                 + "; " + GameEngine.LocationString(building.Sector.Location.ToString())
@@ -2801,17 +2801,17 @@ namespace Supremacy.Universe
                 {
                     if (BonusHelper.IsGlobalBonus(bonus.BonusType))
                     {
-                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
+                        CivilizationManager _civM = GameContext.Current.CivilizationManagers[OwnerID];
                         if (value)
                         {
-                            civManager.GlobalBonuses.Add(bonus);
+                            _civM.GlobalBonuses.Add(bonus);
                         }
                         else
                         {
-                            _ = civManager.GlobalBonuses.Remove(bonus);
+                            _ = _civM.GlobalBonuses.Remove(bonus);
                         }
 
-                        civManager.Research.RefreshBonuses();
+                        _civM.Research.RefreshBonuses();
                     }
                     else
                     {
@@ -2885,8 +2885,8 @@ namespace Supremacy.Universe
 
         public void RefreshShielding(bool regenerate)
         {
-            CivilizationManager civManager = CivilizationManager.For(OwnerID);
-            int energyTechLevel = civManager.Research.GetTechLevel(TechCategory.Energy);
+            CivilizationManager _civM = CivilizationManager.For(OwnerID);
+            int energyTechLevel = _civM.Research.GetTechLevel(TechCategory.Energy);
 
             int maxShielding = 0;
             int replenishRate = 0;

@@ -69,7 +69,7 @@ namespace Supremacy.Client
         [NonSerialized]
         //public static string _newline = Environment.NewLine;
         public static DateTime starttime = DateTime.Now;
-        public string _text;
+        //public string _text;
         //public string separator = " ;";
         //public bool _gamelog_bool = true;
         //public static bool _ConsoleWriteline_bool = true;
@@ -118,6 +118,12 @@ namespace Supremacy.Client
 
         public bool IsShuttingDown { get; private set; }
 
+        public void Write_Console(string message)
+        {
+            Console.WriteLine(message);
+            //GameLog.Client.GameData.DebugFormat("AppContext.cs: {0}", message);
+        }
+
         public IClientCommandLineArguments CommandLineArguments => CmdLineArgs;
 
         //public static string _text { get; private set; }
@@ -158,6 +164,8 @@ namespace Supremacy.Client
                 return;
             }
 
+            string _text;
+
             try
             {
                 Current.Resources = LoadComponent(
@@ -168,7 +176,7 @@ namespace Supremacy.Client
 
 
                 //int _dicCount = MergedDictionaries.Count;
-                string _text = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;888888" + Environment.NewLine;
+                _text = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;888888" + Environment.NewLine;
                 int _allValue = 0;
                 string _text0 = Current.Resources.MergedDictionaries[0].Source.ToString();
 
@@ -187,7 +195,7 @@ namespace Supremacy.Client
 
                     }
                 }
-                Console.WriteLine(this._text);
+                Console.WriteLine(_text);
                 //GameLog.Client.UIDetails.DebugFormat(_text);
             }
             catch
@@ -952,11 +960,6 @@ namespace Supremacy.Client
             // What is Unity Bootstrapper? --> https://msdn.microsoft.com/en-us/library/ff921139.aspx
 
             private ClientWindow _shell;
-            public string _text = "";
-
-            //_text = "Step_0200: UnityBootstrapper";
-            //        Console.WriteLine(_text);
-            //        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
             protected override IModuleCatalog GetModuleCatalog()
             {
@@ -975,6 +978,7 @@ namespace Supremacy.Client
             protected override void ConfigureContainer()
             {
                 base.ConfigureContainer();
+                //Console.WriteLine("Step_0122:; All Containers outcommmented");
                 _ = Container.RegisterInstance(ResourceManager.VfsService, new ContainerControlledLifetimeManager());
                 _ = Container.RegisterInstance<IApplicationSettingsService>(new ApplicationSettingsService(), new ContainerControlledLifetimeManager());
                 _ = Container.RegisterInstance<IClientApplication>(Current, new ContainerControlledLifetimeManager());
@@ -1001,6 +1005,11 @@ namespace Supremacy.Client
                 Application.Current.MainWindow = _shell;
                 _shell.Show();
                 _ = Container.RegisterInstance<IGameWindow>(_shell, new ContainerControlledLifetimeManager());
+
+                string _text = "Step_0200:; " + DateTime.Now + " > UnityBootstrapper";
+                Console.WriteLine(_text);
+                //        GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+
                 return _shell;
             }
         }

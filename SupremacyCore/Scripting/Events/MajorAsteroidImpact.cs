@@ -150,13 +150,13 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                    //civManager?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(_civM.Civilization, target));
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_HEADER_TEXT")
                         , _text + ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT")
                         , "ScriptedEvents/MajorAsteroidImpact.png", SitRepPriority.RedYellow));

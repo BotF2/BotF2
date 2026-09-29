@@ -162,9 +162,9 @@ namespace Supremacy.Client
                 _ = sb.Append(appContext.LocalPlayer.Empire.ShortName).Append(' ');
             }
 
-            return sb.Append(game.Options.GalaxySize)
+            return sb.Append(game.GameOptions.GalaxySize)
                      .Append(' ')
-                     .Append(game.Options.GalaxyShape)
+                     .Append(game.GameOptions.GalaxyShape)
                      .Append(' ')
                      .Append(game.TurnNumber)
                      .ToString();

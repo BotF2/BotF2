@@ -1120,7 +1120,7 @@ namespace Supremacy.Orbitals
 
             // DoColonize = new colony
             Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
             colony.ObjectID = GameContext.Current.GenerateID();
             colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity; // population on new colony
@@ -1132,19 +1132,19 @@ namespace Supremacy.Orbitals
             Fleet.Sector.System.Colony = colony;
 
             GameContext.Current.Universe.Objects.Add(colony);
-            civManager.Colonies.Add(colony);
-            colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
+            _civM.Colonies.Add(colony);
+            colony.Morale.BaseValue = _civM.Civilization.BaseMoraleLevel;
 
             colony.Morale.Reset();
 
             ColonyBuilder.Build(colony);
 
-            civManager.MapData.SetScanned(colony.Location, true, 1);
-            civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
+            _civM.MapData.SetScanned(colony.Location, true, 1);
+            _civM.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
 
             _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_HEADER"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
             _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_DETAIL"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
-            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
+            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
             //_civM.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
             _ = GameContext.Current.Universe.Destroy(colonyShip);
@@ -1303,8 +1303,8 @@ namespace Supremacy.Orbitals
                     if (Fleet.Sector.System.Colony.Owner != Fleet.Owner
                         && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
                     {
-                        DiplomacyHelper.Apply_TrustChange("",_delta_trust,Fleet.Sector.System.Owner, Fleet.Owner );
-                        DiplomacyHelper.ApplyRegardChange("",_delta_regard,Fleet.Sector.System.Owner, Fleet.Owner );
+                        DiplomacyHelper.Apply_TrustChange("Medical help by fleet",_delta_trust,Fleet.Sector.System.Owner, Fleet.Owner );
+                        DiplomacyHelper.ApplyRegardChange("Medical help by fleet", _delta_regard,Fleet.Sector.System.Owner, Fleet.Owner );
                         Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
 
                         _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name
@@ -1328,8 +1328,8 @@ namespace Supremacy.Orbitals
                     else if (GameContext.Current.AgreementMatrix
                         .IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
                     {
-                        DiplomacyHelper.Apply_TrustChange("",_delta_trust * -1, Fleet.Sector.System.Owner, Fleet.Owner);
-                        DiplomacyHelper.ApplyRegardChange("",_delta_regard * -1, Fleet.Sector.System.Owner, Fleet.Owner);
+                        DiplomacyHelper.Apply_TrustChange("Fleet provided NO medical help", _delta_trust * -1, Fleet.Sector.System.Owner, Fleet.Owner);
+                        DiplomacyHelper.ApplyRegardChange("Fleet provided NO medical help", _delta_regard * -1, Fleet.Sector.System.Owner, Fleet.Owner);
                         Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
                         // foreignPower.CancelTreaty();  // no cancel, just decrease regard+trust
 
@@ -1797,7 +1797,7 @@ namespace Supremacy.Orbitals
         private static void CreateSabotage(Civilization civ, StarSystem system)
         {
             //var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ.Key];
             int ratioLevel = 1;
 
             int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
@@ -1857,11 +1857,11 @@ namespace Supremacy.Orbitals
 
             if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 0)
             {
-                CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[system.Owner];
-                attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+                CivilizationManager attacked_civM = GameContext.Current.CivilizationManagers[system.Owner];
+                attacked_civM.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                        system.Owner, civ, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
 
-                civManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
+                _civM.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                         civ, system.Owner, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
             }
             //GameLog.Core.Intel.DebugFormat("{0}: Facilities_Total3_Energy after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
@@ -1961,7 +1961,7 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnBeginning()
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.Owner];
             base.OnTurnBeginning();
             if (_isComplete)
             {
@@ -1974,7 +1974,7 @@ namespace Supremacy.Orbitals
                 + " ) > " + ResourceManager.GetString("SCRAPPED")
                 ;
 
-            civManager.SitRepEntries.Add(new ReportEntry_CoS(
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(
                     Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
 
             Fleet.Destroy(); // Order was SCRAPPED
@@ -2130,9 +2130,9 @@ namespace Supremacy.Orbitals
             {
                 Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
                 ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
-                DiplomacyHelper.ApplyRegardChange("",+25, influencerCiv.Civilization, influencedCiv.Civilization);
+                DiplomacyHelper.ApplyRegardChange("system influenced",+25, influencerCiv.Civilization, influencedCiv.Civilization);
                 //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
-                DiplomacyHelper.Apply_TrustChange("",+20, influencerCiv.Civilization, influencedCiv.Civilization);
+                DiplomacyHelper.Apply_TrustChange("system influenced", +20, influencerCiv.Civilization, influencedCiv.Civilization);
 
                 _text = _fleetText + " > "
                          + influencerCiv.Civilization + " is attempting to influence the "
@@ -2369,7 +2369,7 @@ namespace Supremacy.Orbitals
             base.OnTurnEnding();
 
             Fleet targetFleet = TargetFleet;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
 
             if (targetFleet != null)
             {
@@ -2377,7 +2377,7 @@ namespace Supremacy.Orbitals
                 if ((ship != null) && (!FleetHelper.IsFleetInFuelRange(targetFleet)))
                 {
                     int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
-                    _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+                    _ = ship.FuelReserve.AdjustCurrent(_civM.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
                 }
             }
 
@@ -2467,7 +2467,7 @@ namespace Supremacy.Orbitals
 
             if (Fleet != null)
             {
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
 
                 //Wormhole leads nowhere so destroy the fleet
                 if (Fleet.Sector.System.WormholeDestination == null)
@@ -2480,7 +2480,7 @@ namespace Supremacy.Orbitals
 
                         ;
                     Console.WriteLine(_text);
-                    civManager.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                    _civM.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
                     //GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
                     //_civM.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
 
@@ -2500,7 +2500,7 @@ namespace Supremacy.Orbitals
 
                         ;
                     Console.WriteLine(_text);
-                    civManager.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                    _civM.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
                     //GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
 
                     if (IsComplete) { Fleet.SetOrder(Fleet.GetDefaultOrder()); }
@@ -2695,9 +2695,9 @@ namespace Supremacy.Orbitals
 
             List<StationDesign> designs = new List<StationDesign>();
             List<object> targets = new List<object>();
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[source.Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[source.Owner];
 
-            if (civManager == null)
+            if (_civM == null)
             {
                 GameLog.Core.General.WarnFormat(
                     "Failed to load CivilizationManager for fleet owner (fleet ID = {0}, owner ID = {1})",
@@ -2706,9 +2706,9 @@ namespace Supremacy.Orbitals
                 return targets;
             }
 
-            foreach (StationDesign stationDesign in civManager.TechTree.StationDesigns)
+            foreach (StationDesign stationDesign in _civM.TechTree.StationDesigns)
             {
-                if (TechTreeHelper.MeetsTechLevels(civManager, stationDesign))
+                if (TechTreeHelper.MeetsTechLevels(_civM, stationDesign))
                 {
                     designs.Add(stationDesign);
                 }

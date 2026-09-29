@@ -13,7 +13,7 @@ namespace Supremacy.Economy
         public static int ComputeResourceValue(ResourceType resourceType, int amount)
         {
 
-            Data.Table table = GameContext.Current.Tables.GameOptionTables["BaseCreditValues"];
+            Data.Table table = GameContext.Current.GameTables.GameOptionTables["BaseCreditValues"];
             return table == null || !int.TryParse(table[resourceType.ToString()][0], out int baseValue) ? amount : baseValue * amount;
         }
 

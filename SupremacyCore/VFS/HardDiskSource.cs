@@ -17,6 +17,8 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+using Supremacy.Annotations;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,12 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Security.AccessControl;
-
-using Supremacy.Annotations;
-
-using IOPath = System.IO.Path;
-using Supremacy.Utility;
 using System.Windows;
+using IOPath = System.IO.Path;
 
 namespace Supremacy.VFS
 {
@@ -369,6 +367,12 @@ namespace Supremacy.VFS
             {
                 if (File.Exists(path))
                 {
+                    string _file = new FileInfo(path).FullName;
+                    if (!_file.Contains("\\Images"))
+                    {
+                        Console.WriteLine("Step_2354:; Opening " + _file);
+                    }
+
                     return new FileInfo(path).FullName;
                 }
             }

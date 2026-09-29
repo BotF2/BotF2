@@ -113,12 +113,12 @@ namespace Supremacy.Scripting.Events
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
 
-                        //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                        //civManager?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
-                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                        //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                        //_civM?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(_civM.Civilization, target));
+                        CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                         _text = target.Location + " " + target.Name + " > ";
-                        civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                        _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                             , _text + ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT")
                             , _text + ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT")
                             , "ScriptedEvents/TerroristBombingOfShipProduction.png", SitRepPriority.RedYellow));

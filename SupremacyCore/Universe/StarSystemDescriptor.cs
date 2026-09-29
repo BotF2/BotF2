@@ -122,7 +122,7 @@ namespace Supremacy.Universe
 
                 string _homesystems_techlevel_content_text = "";
 
-                //if (GameContext.Current.Options.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug)
+                //if (GameContext.Current.GameOptions.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug)
                 //{
                 //    HomeSystemsXMLOutput = true;
                 //}
@@ -131,7 +131,7 @@ namespace Supremacy.Universe
                 string pathOutputFile = ".\\Resources\\Data\\Addon\\";
 
                 file = pathOutputFile + "HomeSystems-xml_"
-                        + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
+                        + GameContext.Current.GameOptions.StartingTechLevel.ToString() + "_List(autoCreated).csv";
 
                     stream_writer = new StreamWriter(file);
                 
@@ -508,7 +508,7 @@ namespace Supremacy.Universe
 
                         stream_line =
                             civId + separator +
-                            GameContext.Current.Options.StartingTechLevel.ToString() + separator +
+                            GameContext.Current.GameOptions.StartingTechLevel.ToString() + separator +
 
                             _startingFoodPF + separator +
                             _startingIndustryPF + separator +
@@ -898,7 +898,7 @@ namespace Supremacy.Universe
             XmlNodeList startingLevelTech = xmlNode.GetElementsByTagName("TechLevel");
             if (startingLevelTech.Count > 0)
             {
-                string curStartingLevel = GameContext.Current.Options.StartingTechLevel.ToString().ToUpperInvariant();
+                string curStartingLevel = GameContext.Current.GameOptions.StartingTechLevel.ToString().ToUpperInvariant();
                 foreach (XmlElement techLevel in startingLevelTech)
                 {
                     if (techLevel.HasAttribute("Name"))

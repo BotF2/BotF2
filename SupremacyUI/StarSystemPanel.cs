@@ -731,7 +731,7 @@ namespace Supremacy.UI
                                     PlanetBonusIconSize),
                                 HorizontalAlignment = HorizontalAlignment.Right,
                                 VerticalAlignment = VerticalAlignment.Bottom,
-                                ToolTip = GameContext.Current.Tables.EnumTables
+                                ToolTip = GameContext.Current.GameTables.EnumTables
                                     [typeof(PlanetBonus).Name]
                                     [PlanetBonus.Food.ToString()][0]
                             };
@@ -751,7 +751,7 @@ namespace Supremacy.UI
                                     PlanetBonusIconSize),
                                 HorizontalAlignment = HorizontalAlignment.Right,
                                 VerticalAlignment = VerticalAlignment.Bottom,
-                                ToolTip = GameContext.Current.Tables.EnumTables
+                                ToolTip = GameContext.Current.GameTables.EnumTables
                                     [typeof(PlanetBonus).Name]
                                     [PlanetBonus.Energy.ToString()][0]
                             };
@@ -864,7 +864,7 @@ namespace Supremacy.UI
                         Height = SystemBonusIconSize,
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
-                        ToolTip = GameContext.Current.Tables.EnumTables
+                        ToolTip = GameContext.Current.GameTables.EnumTables
                             [typeof(SystemBonus).Name]
                             [SystemBonus.Duranium.ToString()][0]
                     };
@@ -884,7 +884,7 @@ namespace Supremacy.UI
                             0),
                         HorizontalAlignment = HorizontalAlignment.Left,
                         VerticalAlignment = VerticalAlignment.Top,
-                        ToolTip = GameContext.Current.Tables.EnumTables
+                        ToolTip = GameContext.Current.GameTables.EnumTables
                             [typeof(SystemBonus).Name]
                             [SystemBonus.Dilithium.ToString()][0]
                     };

@@ -57,7 +57,7 @@ namespace Supremacy.Client.Context
             _lobbyData = new LobbyData
             {
                 Empires = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Select(o => o.Key).ToArray(),
-                GameOptions = GameContext.Current.Options,
+                GameOptions = GameContext.Current.GameOptions,
                 Players = PlayerContext.Current.Players.ToArray(),
                 Slots = new[]
                                      {
@@ -326,7 +326,7 @@ namespace Supremacy.Client.Context
             {
                 SectorClaimGrid claims = GameContext.Current.SectorClaims;
                 Civilization owner = CivilizationManager.Civilization;
-                _text = "Search for ControlledSystems";
+                _text = "Search for ControlledSystems - zero references";
                 Console.WriteLine(_text);
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }

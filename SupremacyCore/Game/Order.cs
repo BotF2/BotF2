@@ -1227,8 +1227,8 @@ namespace Supremacy.Game
         public UpdateResearchOrder(Civilization owner)
             : base(owner)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
+            if (_civM == null)
             {
                 throw new InvalidOperationException(
                     "Cannot access CivilizationManager for owner");
@@ -1237,8 +1237,8 @@ namespace Supremacy.Game
             _locked = new bool[GameContext.Current.ResearchMatrix.Fields.Count];
             for (int i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
             {
-                _locked[i] = civManager.Research.Distributions[i].IsLocked;
-                _values[i] = civManager.Research.Distributions[i].Value;
+                _locked[i] = _civM.Research.Distributions[i].IsLocked;
+                _values[i] = _civM.Research.Distributions[i].Value;
             }
         }
 
@@ -1249,13 +1249,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
-            if (civManager != null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner];
+            if (_civM != null)
             {
                 for (int i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
                 {
-                    civManager.Research.Distributions[i].IsLocked = _locked[i];
-                    civManager.Research.Distributions[i].SetValueInternal(_values[i]);
+                    _civM.Research.Distributions[i].IsLocked = _locked[i];
+                    _civM.Research.Distributions[i].SetValueInternal(_values[i]);
                 }
                 return true;
             }
@@ -1343,13 +1343,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            CivilizationManager civManager = ExecutionContext.CivilizationManagers[OwnerID];
-            if (civManager == null)
+            CivilizationManager _civM = ExecutionContext.CivilizationManagers[OwnerID];
+            if (_civM == null)
             {
                 return false;
             }
 
-            _ = civManager.Credits.AdjustCurrent(_amount);
+            _ = _civM.Credits.AdjustCurrent(_amount);
 
             return true;
         }
@@ -1368,13 +1368,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            CivilizationManager civManager = ExecutionContext.CivilizationManagers[OwnerID];
-            if (civManager == null)
+            CivilizationManager _civM = ExecutionContext.CivilizationManagers[OwnerID];
+            if (_civM == null)
             {
                 return false;
             }
 
-            _ = civManager.Resources[_resourceType].AdjustCurrent(_amount);  // give resource
+            _ = _civM.Resources[_resourceType].AdjustCurrent(_amount);  // give resource
             return true;
         }
     }

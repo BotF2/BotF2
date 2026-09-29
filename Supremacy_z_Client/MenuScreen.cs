@@ -45,7 +45,7 @@ namespace Supremacy.Client
             SinglePlayerCommand = new RoutedCommand("SinglePlayer", typeof(MenuScreen));
             MultiplayerCommand = new RoutedCommand("Multiplayer", typeof(MenuScreen));
             ContinueCommand = new RoutedCommand("Continue", typeof(MenuScreen));
-            OptionsCommand = new RoutedCommand("Options", typeof(MenuScreen));
+            OptionsCommand = new RoutedCommand("GameOptions", typeof(MenuScreen));
             TracesCommand = new RoutedCommand("Traces", typeof(MenuScreen));
             CreditsCommand = new RoutedCommand("Credits", typeof(MenuScreen));
             LoadGameCommand = new RoutedCommand("LoadGame", typeof(MenuScreen));

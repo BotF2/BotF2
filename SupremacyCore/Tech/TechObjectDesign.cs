@@ -882,7 +882,7 @@ namespace Supremacy.Tech
         /// <param name="resources">The resources.</param>
         protected internal virtual void GetScrapReturn(out int credits, out ResourceValueCollection resources)
         {
-            Data.Table returnsTable = GameContext.Current.Tables.GameOptionTables["ScrapReturns"];
+            Data.Table returnsTable = GameContext.Current.GameTables.GameOptionTables["ScrapReturns"];
             double multiplier = Number.ParseDouble(returnsTable[0][0]);
             credits = (int)Math.Floor(multiplier * BuildCost);
             resources = new ResourceValueCollection();
@@ -909,8 +909,8 @@ namespace Supremacy.Tech
             bool requireStarSystem = false,
             bool requireColony = false)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
+            if (_civM == null)
             {
                 GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because owner {2} is not active in this game.",
                     Key, location, owner.Key);

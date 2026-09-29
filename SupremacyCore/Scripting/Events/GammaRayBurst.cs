@@ -86,13 +86,13 @@ namespace Supremacy.Scripting.Events
                         GameLog.Core.Events.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                    //civManager?.SitRepEntries.Add(new GammaRayBurstSitRepEntry(civManager.Civilization, target));
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new GammaRayBurstSitRepEntry(_civM.Civilization, target));
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("GAMMA_RAY_BURST_HEADER_TEXT")
                         , _text + ResourceManager.GetString("GAMMA_RAY_BURST_DETAIL_TEXT")
                         , "ScriptedEvents/GammaRayBurst.png", SitRepPriority.RedYellow));

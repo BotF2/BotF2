@@ -138,19 +138,19 @@ namespace Supremacy.Universe
                     return 99;
                 }
 
-                Table popReqTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopReq"];
-                //Table popModTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
+                Table popReqTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopReq"];
+                //Table popModTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopMultipliers"];
 
                 int popForTradeRoute;
 
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner.CivID];
 
                 /*
                  * See what the minimum population level is for a new trade route for the
                  * current civilization.  If one is not specified, use the default.
                  */
-                popForTradeRoute = popReqTable[civManager.Civilization.Key] != null
-                    ? Number.ParseInt32(popReqTable[civManager.Civilization.Key][0])
+                popForTradeRoute = popReqTable[_civM.Civilization.Key] != null
+                    ? Number.ParseInt32(popReqTable[_civM.Civilization.Key][0])
                     : Number.ParseInt32(popReqTable[0][0]);
 
                 string _text = "int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;";

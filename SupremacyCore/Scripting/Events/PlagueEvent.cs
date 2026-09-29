@@ -86,13 +86,13 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
-                    //CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
-                    //civManager?.SitRepEntries.Add(new PlagueSitRepEntry(civManager.Civilization, target));
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new PlagueSitRepEntry(_civM.Civilization, target));
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
                     _text = target.Location + " " + target.Name + " > ";
-                    civManager?.SitRepEntries.Add(new ReportEntry_ShowColony(civManager.Civilization, target
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
                         , _text + ResourceManager.GetString("PLAGUE_HEADER_TEXT")
                         , _text + ResourceManager.GetString("PLAGUE_DETAIL_TEXT")
                         , "ScriptedEvents/Plague.png", SitRepPriority.RedYellow));

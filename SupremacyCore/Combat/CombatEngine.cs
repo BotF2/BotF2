@@ -457,7 +457,7 @@ namespace Supremacy.Combat
                 RechargeWeapons();
                 ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
 
-                //if (GameContext.Current.Options.BorgPlayable == EmpirePlayable.Yes)
+                //if (GameContext.Current.GameOptions.BorgPlayable == EmpirePlayable.Yes)
                 //{
                     PerformAssimilation();
                 //}
