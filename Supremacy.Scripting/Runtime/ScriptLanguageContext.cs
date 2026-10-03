@@ -22,6 +22,7 @@ using SourceSpan = Microsoft.Scripting.SourceSpan;
 using ReflectionUtils = Microsoft.Scripting.Utils.ReflectionUtils;
 
 using MGraphXamlReader;
+using System.Diagnostics;
 
 [assembly: ScriptVisibleNamespace("System", "mscorlib")]
 [assembly: ScriptVisibleNamespace("System.Collections", "mscorlib")]
@@ -222,9 +223,21 @@ namespace Supremacy.Scripting.Runtime
 
         private void LoadAssemblyScriptImports(Assembly assembly)
         {
+            int c = 0;
+            
+            string _text = "Step_9881:; ( " + c + " ) " 
+                + " for " + assembly.CodeBase.ToString()
+                + " > assembly= " + assembly.Location.ToString()
+                ;
+            Console.WriteLine(_text);
             ScriptVisibleNamespace[] scriptVisibleNamespaces = assembly.GetScriptVisibleNamespaces();
+
+            //string _text = "";
+            //Console.WriteLine("Step_9880:; ( " + c + " )                LoadAssemblyScriptImports are done " );
+            // is this the case ?? > https://www.devgem.io/posts/understanding-why-pattern-matching-causes-compiler-errors-in-c-expression-trees
             foreach (ScriptVisibleNamespace s in scriptVisibleNamespaces)
             {
+                c += 1;
                 NamespaceTracker ns = _topNamespace;
                 Assembly loadedAssembly = s.Assembly ?? assembly;
 
@@ -232,6 +245,23 @@ namespace Supremacy.Scripting.Runtime
                 {
                     _ = DomainManager.LoadAssembly(loadedAssembly);
                     _ = _topNamespace.LoadAssembly(loadedAssembly);
+
+                    // works
+                    _text = "Step_9887:; ( " + c + " ) "//               loadedAssembly= " + loadedAssembly.Location.ToString()
+                            + " for " + assembly.CodeBase.ToString()
+                            + " > assembly= " + assembly.Location.ToString()
+                        ;
+                    //Console.WriteLine(_text);
+
+                    //Debugger.Break();
+                    //foreach (var item in loadedAssembly.CustomAttributes)
+                    //{
+                    //    if (item.ToString().Contains("KeyFileAttribute"))
+                    //    {
+                    //    Console.WriteLine("Step_9882:; CustomAttributes= " + item.ToString());
+                    //    }
+
+                    //}
                 }
 
                 List<string> parts = s.ClrNamespace.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -244,6 +274,10 @@ namespace Supremacy.Scripting.Runtime
                         break;
                     }
                     ns = (NamespaceTracker)mt;
+
+                    // works
+                    //Console.WriteLine("Step_9887:; part= " + ns.ToString());
+
                     parts.RemoveAt(0);
                 }
 

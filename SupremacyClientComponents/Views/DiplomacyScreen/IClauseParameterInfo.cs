@@ -1,3 +1,4 @@
+//File:IClauseParameterInfo.cs
 namespace Supremacy.Client.Views
 {
     public interface IClauseParameterInfo

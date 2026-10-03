@@ -21,7 +21,11 @@ namespace Supremacy.Scripting.Utility
 
         public static class CoreTypes
         {
-            private static readonly dynamic _dynamic; // It used by GetField("_dynamic", ...), if you removed this line be leave GetField() call, the game will crash mid-game
+            private static readonly dynamic _dynamic = 0; // It used by GetField("_dynamic", ...),
+            // if you removed this line be leave GetField() call, the game will crash mid-game
+
+            //_dynamic = null;
+            //_text = _dynamic.ToString();
 
             public static readonly Type Dynamic = typeof(CoreTypes).GetField("_dynamic", BindingFlags.NonPublic | BindingFlags.Static).FieldType;
             public static readonly Type Null = typeof(DynamicNull);
@@ -71,6 +75,8 @@ namespace Supremacy.Scripting.Utility
 
             public static readonly Type Expression = typeof(System.Linq.Expressions.Expression);
             public static readonly Type GenericExpression = typeof(System.Linq.Expressions.Expression<>);
+
+            public static dynamic Dynamic1 => _dynamic;
         }
     }
 }

@@ -12,10 +12,10 @@
              xmlns:Commands="clr-namespace:Supremacy.Client.Commands"
              mc:Ignorable="d"
              d:DesignHeight="690"
-             d:DesignWidth="1099"
+             d:DesignWidth="1199"
              Height="690"
-             Width="1130"
-             Margin="300,0,0,0"
+             Width="1180"
+             Margin="350,80,0,0"
              Foreground="White"
              FontSize="16"
              UseLayoutRounding="True">
@@ -33,11 +33,11 @@
     </Dialogs:Dialog.CommandBindings>
 
     <!--       MAIN CONTENT     -->
-    <Grid Background="Black">
+    <Grid Background="Black" Margin="0,0,0,0">
 
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="380" />
             <ColumnDefinition Width="390" />
             <ColumnDefinition Width="380" />
         </Grid.ColumnDefinitions>
@@ -45,24 +45,38 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />            
+            <!--<RowDefinition Height="*" />-->
 
-        <TextBlock Grid.ColumnSpan="2"
+        </Grid.RowDefinitions>
+        
+            <Button Grid.Row="0" Grid.Column="1" Margin="106,0,99,0"
+              IsCancel="True"
+              Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
+                <AccessText Text="{local:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}" />
+                <!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />-->
+            </Button>        
+
+        <!--<TextBlock Grid.Row="1" Grid.ColumnSpan="2"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Black"
-               Margin="1,1,0,0"
+               Margin="1,18,0,0"
                FontSize="18pt"
-               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
-        <TextBlock Grid.ColumnSpan="2"
+               Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />-->
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="1,5,0,5"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="{StaticResource {x:Static local:ClientResources.HeaderTextForegroundBrushKey}}"
                FontSize="18pt"
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
 
+        <!--<StackPanel Orientation="Vertical" Grid.Row="0" Grid.ColumnSpan="2" >-->
+
+
+        <!--</StackPanel>-->
+
         <ListBox x:Name="BuildProjectList"
                  Grid.Row="1"
-                 Margin="0,6,0,0"
+                 Margin="0,33,0,0"
                  PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
                  SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
                  Background="Black">
@@ -87,7 +101,7 @@
             Grid.RowSpan="2"
             LastChildFill="True"
             Width="360"
-            Margin="10,0,0,0"
+            Margin="10,46,0,0"
             Background="Black">
             <Image DockPanel.Dock="Top"
                 MaxWidth="360"
@@ -96,30 +110,30 @@
                 StretchDirection="DownOnly"
                 Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}">
 
-                <Image.ToolTip>
+                <!--<Image.ToolTip>
                     <Border x:Name="ImageToolTipBorder"
                             Grid.Column="0"
                             VerticalAlignment="Center"
-                            BorderBrush="{StaticResource HeaderTextBrush}"
-                            Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"
+                            BorderBrush="Aqua"
+
                             BorderThickness="2"
                             CornerRadius="4"
                             Width="576"
                             Height="480"
                             >
+                        --><!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"-->
+                        
                             <!--Width="{Binding ElementName=_self, Path=SpecialWidth1}"
-                            Height="{Binding ElementName=_self, Path=SpecialHeight1}"-->                        
-                        <!--<Border.Background>-->
-                            <!--<ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}" Stretch="Uniform" />-->
-                            <!--<ImageBrush>
-                                <ImageBrush.ImageSource>-->
-                            <!--<ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}, Mode=OneWay}"/>-->
-                            <!--<ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Mode=OneWay}"/>-->
-                                <!--</ImageBrush.ImageSource>
-                            </ImageBrush>-->
-                        <!--</Border.Background>-->
+                            Height="{Binding ElementName=_self, Path=SpecialHeight1}"--><!--                        
+                        <Border.Background>
+                            <ImageBrush>
+                                <ImageBrush.ImageSource>
+                                    <BitmapImage UriSource="vfs:///Resources/Images/no_preview_shipbuilding_sorry.png"/>                 
+                                </ImageBrush.ImageSource>
+                            </ImageBrush> 
+                        </Border.Background>
                     </Border>
-                </Image.ToolTip>
+                </Image.ToolTip>-->
             </Image>
             <!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}"-->
 
@@ -137,9 +151,7 @@
                Width="380"
                Margin="0,0,0,0">
 
-            <Image DockPanel.Dock="Top"
-             StretchDirection="DownOnly"
-             
+            <Image DockPanel.Dock="Top" StretchDirection="DownOnly"
              Source="{Binding ElementName=_self, Path=ShipFunctionPath}"/>
 
             <!-- model files:  we just have a few model files - to less model files
@@ -150,51 +162,24 @@
             -->
         </DockPanel>
 
-        <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,15,0,0">
-         <TextBlock Text="(not working yet) - How many ?  >  "/>   
-            --><!--<RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"--><!--
-
-            
-            <RadioButton Name="OneTime"          
-        GroupName="Project_Amount" Content="1" Margin="15,0,0,0"
-        />
-      
-
-            --><!--IsChecked="{Binding Source=HowMany, Mode=TwoWay}"--><!--
-            <RadioButton Name="TwoTimes"           
-        GroupName="Project_Amount" Content="2" Margin="15,0,0,0"
- />
-
-            <RadioButton Name="FiveTimes"              
-        GroupName="Project_Amount" Content="5" Margin="15,0,0,0"
-                 
-        />
-
-
-            <RadioButton Name="TenTimes"     
-        GroupName="Project_Amount" Content="10" Margin="15,0,0,0"
-                 
-        />
-        
-        </StackPanel>-->
-
-        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom"
+        <!--Grid.ColumnSpan="2"--> 
+        <TextBlock Grid.Row="0" VerticalAlignment="Bottom"
                FontFamily="{StaticResource {x:Static local:ClientResources.HeaderFontFamilyKey}}"
                Foreground="Aqua"
-               FontSize="20pt"
+               FontSize="16pt"
                Text="{local:StringResource Key=NEW_AT_SELECT_A_SHIP_TO_CONSTRUCT}" />
 
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
+        <!--<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,15,0,0">
 
 
             <Button Margin="6,0,3,0"
               IsCancel="True"
               Style="{DynamicResource {x:Static local:ClientResources.MessageDialogButtonStyleKey}}">
                 <AccessText Text="{local:StringResource Key=COMMON_DIALOG_CLOSE, Case=Upper}" />
-                <!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />-->
+                --><!--<AccessText Text="{local:StringResource Key=MESSAGE_DIALOG_CANCEL, Case=Upper}" />--><!--
             </Button>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 
 </Dialogs:Dialog>

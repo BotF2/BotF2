@@ -6,8 +6,8 @@
                 xmlns:scc="clr-namespace:Supremacy.Client"
                 xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs"
                 IsModal="True"
-                Width="840"
-                MaxHeight="480">
+                Width="940"
+                MaxHeight="780">
   <dialogs:Dialog.Resources>
     <!--<av:FormattedTextConverter x:Key="" />-->
     <scc:EnumStringConverter x:Key="EnumStringAccessTextConverter"

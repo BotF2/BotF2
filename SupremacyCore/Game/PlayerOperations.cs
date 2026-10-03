@@ -84,7 +84,7 @@ namespace Supremacy.Game
                 return;
             }
 
-            if (!buildSlot.Shipyard.Sector.System.Colony.ActivateShipyardBuildSlot(buildSlot))
+            if (!buildSlot.Shipyard.Sector.System.Colony.ShipyardBuildSlot_Activate(buildSlot))
             {
                 return;
             }
@@ -104,7 +104,7 @@ namespace Supremacy.Game
                 return;
             }
 
-            if (!buildSlot.Shipyard.Sector.System.Colony.DeactivateShipyardBuildSlot(buildSlot))
+            if (!buildSlot.Shipyard.Sector.System.Colony.ShipyardBuildSlot_Deactivate(buildSlot))
             {
                 return;
             }

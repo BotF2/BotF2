@@ -1,4 +1,5 @@
-﻿using Supremacy.Client.Audio;
+﻿using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Economy;
 using Supremacy.Game;
 using Supremacy.Tech;
@@ -6,7 +7,7 @@ using Supremacy.Utility;
 using System;
 using System.IO;
 using System.Linq;
-
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -19,13 +20,26 @@ namespace Supremacy.Client.Views
 
     public partial class NewShipSelectionView
     {
+        private readonly IMusicPlayer _musicPlayer = null;
+        private readonly ISoundPlayer _soundPlayer = null;
+        //[NotNull] new MusicPlayer musicPlayer;
+        private string _text;
 
-        public NewShipSelectionView(ShipyardBuildSlot buildSlot)
+        public NewShipSelectionView(ShipyardBuildSlot buildSlot, [NotNull] IMusicPlayer musicPlayer)
         {
             InitializeComponent();
-            //[NotNull] ISoundPlayer soundPlayer,
 
-        //var _soundPlayer = new soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+            //doesn't work
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("ShipBuildingScreenMusic");
+            }
+
+            if (_soundPlayer != null)
+            {
+                _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Summary.ogg");
+            }
+
 
             BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
                                         .OrderBy(s => s.BuildDesign.Key)
@@ -70,7 +84,7 @@ namespace Supremacy.Client.Views
             new FrameworkPropertyMetadata(
                 null,
                 FrameworkPropertyMetadataOptions.None));
-        private string _text;
+        //private string _text;
 
         public object AdditionalContent
         {
@@ -111,20 +125,23 @@ namespace Supremacy.Client.Views
             {
                 return;
             }
-            string _soundfile = "Resources\\SoundFX\\sound001.wav";
-            if (File.Exists(_soundfile))
-            {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfile);
-                //GameLog.Client.General.Debug("Playing sound001.wav");
-                //var soundPlayer = new SoundPlayer("Resources/SoundFX/sound001.wav");
-                player.Play();
-            }
-            else
-            {
-                _text = "Resources/SoundFX/Menu/sound001.wav not found...";
-                Console.WriteLine(_text);
-                GameLog.Client.Audio.InfoFormat(_text);
-            }
+
+            //string _soundfile = "Resources\\SoundFX\\sound001.wav"; // player just plays wav
+            //if (File.Exists(_soundfile))
+            //{
+            //    System.Media.SoundPlayer player = new System.Media.SoundPlayer(_soundfile);
+            //    //GameLog.Client.General.Debug("Playing sound001.wav");
+            //    //var soundPlayer = new SoundPlayer("Resources/SoundFX/sound001.wav");
+            //    player.Play();
+            //}
+            //else
+            //{
+            //    _text = "Resources/SoundFX/sound001.wav not found...";
+            //    Console.WriteLine("Step_1248:; " + _text);
+            //    GameLog.Client.Audio.InfoFormat(_text);
+            //}
+            _text = "dummy" + _text; // please keep
+
 
             DialogResult = true;   // just trying to solve the HowMany Ships to build by keeping screen open
         }

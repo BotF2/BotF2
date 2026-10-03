@@ -1,17 +1,16 @@
 //File:ForeignPowerViewModel.cs
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading;
-
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Types;
 using Supremacy.Utility;
-
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Supremacy.Client.Views
 {
@@ -43,25 +42,50 @@ namespace Supremacy.Client.Views
             //GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
             if (_foreignPower.ResponseReceived == null && _foreignPower.ProposalReceived == null)
             {
+                _text = "Step_5774:; Turn " + GameContext.Current.TurnNumber
++ ";Incoming RESPONSE Owner=; " + _foreignPower.Owner.Key
++ " ;CounterParty=; " + _foreignPower.Counterparty.Key
++ "; >>> no incoming message yet"
+;
+                Console.WriteLine(_text);
+                //Debugger.Break();
                 // GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower Response and Proposal = null, no incoming message yet");
                 return;
             }
             if (_foreignPower.ResponseReceived != null)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner ={0} CounterParty ={1} Message Treaty Leadin text ={2}"
-                    , _foreignPower.Owner.Key
-                    , _foreignPower.Counterparty.Key
-                    , IncomingMessage.TreatyLeadInText);
+
+                _text = "Step_5775:; Turn " + GameContext.Current.TurnNumber
++ ";Incoming RESPONSE Owner=; " + _foreignPower.Owner.Key
++ " ;CounterParty=; " + _foreignPower.Counterparty.Key
++ " ;IncomingMessage.TreatyLeadInText=; " + IncomingMessage.TreatyLeadInText
+
+;
+                Console.WriteLine(_text);
+                //Debugger.Break();
+                //GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner ={0} CounterParty ={1} Message Treaty Leadin text ={2}"
+                //    , _foreignPower.Owner.Key
+                //    , _foreignPower.Counterparty.Key
+                //    , IncomingMessage.TreatyLeadInText);
             }
 
             else if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
-                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner ={0} CounterParty ={1} message Treaty Leadin text ={2}"
-                    , _foreignPower.Owner.Key
-                    , _foreignPower.Counterparty.Key
-                    , IncomingMessage.TreatyLeadInText);
+
+                _text = "Step_5776:; Turn " + GameContext.Current.TurnNumber
+    + ";Incoming Proposal Owner=; " + _foreignPower.Owner.Key
+    + " ;CounterParty=; " + _foreignPower.Counterparty.Key
+    + " ;IncomingMessage.TreatyLeadInText=; " + IncomingMessage.TreatyLeadInText
+
+    ;
+                Console.WriteLine(_text);
+                Debugger.Break();
+                //GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner ={0} CounterParty ={1} message Treaty Leadin text ={2}"
+                //    , _foreignPower.Owner.Key
+                //    , _foreignPower.Counterparty.Key
+                //    , IncomingMessage.TreatyLeadInText);
                 DiplomacyHelper.DiploScreenSelectedForeignPower = GameContext.Current.CivilizationManagers[_foreignPower.Counterparty.CivID].Civilization;
             }
         }
@@ -79,14 +103,14 @@ namespace Supremacy.Client.Views
             foreach (IAgreement agreement in agreements.OrderByDescending(o => o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
-                _text = "Turn " + GameContext.Current.TurnNumber
-                    + ";added;sender=;" + agreement.Sender
-                    + ";recipient=;" + agreement.Recipient
-                    + ";agreement=;" + agreement.Proposal.Clauses[0].ClauseType.ToString()
+                _text = "Step_5777:; Turn " + GameContext.Current.TurnNumber
+                    + ";added;sender=; " + agreement.Sender
+                    + " ;recipient=; " + agreement.Recipient
+                    + " ;agreement=; " + agreement.Proposal.Clauses[0].ClauseType.ToString()
 
                     ;
                 Console.WriteLine(_text);
-                GameLog.Client.Diplomacy.DebugFormat(Environment.NewLine + _text);
+                //GameLog.Client.Diplomacy.DebugFormat(/*Environment.NewLine + */_text);
             }
         }
 
@@ -97,6 +121,25 @@ namespace Supremacy.Client.Views
         public string CounterpartyDiplomacyReport =>
                 //works, but too long    GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
                 _foreignPower.Counterparty.DiplomacyReport;
+
+        public string CounterpartyLocation
+        //works, but too long    GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
+        {
+            get
+            {
+                if (_foreignPower.Counterparty.IsEmpire)
+                {
+                    return ("( Empire )");
+                }
+                else
+                {
+                    return GameEngine.Get_civM(_foreignPower.Counterparty).HomeSystem.Location.ToString();
+                    //return _foreignPower.Counterparty.CivID.ToString();
+                }
+
+            }
+
+            }
 
         public Civilization Owner => _foreignPower.Owner;
 
@@ -141,7 +184,12 @@ namespace Supremacy.Client.Views
             {
                 if (_incomingMessage != null && _incomingMessage.Elements.Count() > 0)
                 {
-                    GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage = {0}, Count = {1}", _incomingMessage.TreatyLeadInText, _incomingMessage.Elements.Count());
+                    _text = "Step_6573:; get IncomingMessage="
+                        + _incomingMessage.TreatyLeadInText
+                        + ", Count= " + _incomingMessage.Elements.Count()
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage = {0}, Count = {1}", _incomingMessage.TreatyLeadInText, _incomingMessage.Elements.Count());
                 }
 
                 return _incomingMessage;
@@ -154,7 +202,13 @@ namespace Supremacy.Client.Views
                 }
 
                 _incomingMessage = value;
-                GameLog.Client.Diplomacy.DebugFormat("set _incomingMessage = {0}", _incomingMessage.TreatyLeadInText);
+
+                _text = "Step_6575:; set IncomingMessage="
+                        + _incomingMessage.TreatyLeadInText
+                        //+ ", Count= " + _incomingMessage.Elements.Count()
+                        ;
+                Console.WriteLine(_text);
+                //GameLog.Client.Diplomacy.DebugFormat("set _incomingMessage = {0}", _incomingMessage.TreatyLeadInText);
 
                 OnIncomingMessageChanged();
             }
@@ -198,19 +252,54 @@ namespace Supremacy.Client.Views
 
                 string _gamelogPart2 = "";
 
-                if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
+                if (_outgoingMessage != null)
                 {
-                    for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                    //for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                    //{
+                    _text =
+                        "Step_6578:; OutgoingMessage SET = " + _outgoingMessage.Sender.Name
+                        //{0} to {1}, count{2}, {3} = {4} {5}",
+                        + " to " + _outgoingMessage.Recipient.Name
+                    //+ ", count= " + _outgoingMessage.Elements.Count().ToString()
+                    //+ ", " + _outgoingMessage.Elements[i].ActionCategory.ToString()
+                    //+ ", " + _outgoingMessage.Elements[i].Description.ToString()
+                    //+ ". " + _gamelogPart2
+                    ;
+                    if (_outgoingMessage.AcceptedRejected.Count > 0)
                     {
-                        GameLog.Client.Diplomacy.DebugFormat(
-                            "OutgoingMessage SET = {0} to {1}, count{2}, {3} = {4} {5}",
-                            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
-                            , _outgoingMessage.Elements.Count().ToString()
-                            , _outgoingMessage.Elements[i].ActionCategory.ToString()
-                            , _outgoingMessage.Elements[i].Description.ToString()
-                            , _gamelogPart2
-                        );
+                        foreach (var item in _outgoingMessage.AcceptedRejected)
+                        {
+                            if (item.Key.ToString() != "999")
+                            {
+                                _text += ", key= " + _outgoingMessage.AcceptedRejected.FirstOrDefault().Key
+                                        + ", value= " + _outgoingMessage.AcceptedRejected.FirstOrDefault().Value
+                                        //+ ", " + _outgoingMessage.Elements[i].Description.ToStrin
+                                        + ". " + _gamelogPart2;
+                            }
+                            else
+                            {
+                                _text += " > Recipient was just selected... (nothing more yet)";
+                            }
+                        }
+
                     }
+
+
+                    if (_outgoingMessage.Elements.Count() > 0)
+                    {
+                        for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                        {
+                            _text += ", count= " + _outgoingMessage.Elements.Count().ToString()
+                            + ", " + _outgoingMessage.Elements[i].ActionCategory.ToString()
+                            + ", " + _outgoingMessage.Elements[i].Description.ToString()
+                            + ". " + _gamelogPart2;
+                        }
+                    }
+                    //Console.WriteLine(_text);
+
+
+                    //GameLog.Client.Diplomacy.DebugFormat(_text);
+                    //}
                 }
             }
         }
@@ -220,6 +309,7 @@ namespace Supremacy.Client.Views
             //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingMessageChanged() - call OnPropertyChanged");
             OutgoingMessageChanged.Raise(this);
             OnPropertyChanged("OutgoingMessage");
+            //if (this.OutgoingMessageCategory != null) // doesn't work
             OnOutgoingMessageCategoryChanged();
         }
 
@@ -355,6 +445,7 @@ namespace Supremacy.Client.Views
                     }
                 }
                 catch { GameLog.Client.Diplomacy.DebugFormat("Unable to get outgoing message to reslove catagory"); }
+
                 if (ResolveMessageCategory(OutgoingMessage).ToString() != "None")
                 {
                     GameLog.Client.Diplomacy.DebugFormat("OutgoingMessageCategory = {0}", ResolveMessageCategory(OutgoingMessage));
@@ -574,15 +665,9 @@ namespace Supremacy.Client.Views
 
         public void InvalidateCommands()
         {
-            if (_outgoingMessage != null)
-            {
-                _outgoingMessage.InvalidateCommands();
-            }
+            _outgoingMessage?.InvalidateCommands();
 
-            if (_incomingMessage != null)
-            {
-                _incomingMessage.InvalidateCommands();
-            }
+            _incomingMessage?.InvalidateCommands();
         }
     }
 }

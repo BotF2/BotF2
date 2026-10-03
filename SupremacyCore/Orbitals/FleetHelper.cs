@@ -1,4 +1,4 @@
-// FleetHelper.cs
+// File:FleetHelper.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -45,13 +45,13 @@ namespace Supremacy.Orbitals
                 throw new ArgumentNullException("fleet");
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            if (_civM == null)
             {
                 return false;
             }
 
-            return civManager.MapData.GetFuelRange(fleet.Location) <= fleet.Range;
+            return _civM.MapData.GetFuelRange(fleet.Location) <= fleet.Range;
         }
 
         /// <summary>
@@ -84,14 +84,14 @@ namespace Supremacy.Orbitals
             return mapData.GetFuelRange(sector.Location) <= fleet.Range;
         }
 
-        public static int Firepower(this Fleet fleet)
+        public static int Fire_power_fleet(this Fleet fleet)
         {
             if (fleet == null)
             {
                 throw new ArgumentNullException("fleet");
             }
 
-            return fleet.Ships.Sum(f => f.Firepower());
+            return fleet.Ships.Sum(f => f.Fire_power_calculated());
         }
 
         public static int EffectiveCombatStrength(this Fleet fleet)

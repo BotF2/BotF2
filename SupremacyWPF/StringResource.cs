@@ -26,14 +26,20 @@ namespace Supremacy.Client
         Upper = 2
     }
 
+    //public bool AddGerman => _addGerman;
+
     [ContentProperty("Key")]
     [MarkupExtensionReturnType(typeof(object))]
     public sealed class StringResource : MarkupExtension
     {
+        //private bool _addGerman = true;
+
         [ConstructorArgument("key")]
         public string Key { get; set; }
 
         public StringCaseEnum Case { get; set; }
+
+        //public bool AddGerman => _addGerman;
 
         public StringResource()
         {
@@ -45,6 +51,8 @@ namespace Supremacy.Client
         {
             Key = key;
         }
+
+
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {

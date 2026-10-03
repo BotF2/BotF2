@@ -14,6 +14,7 @@ using Supremacy.Types;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Xml.Schema;
@@ -40,7 +41,7 @@ namespace Supremacy.Entities
         private int _nextCivId;
         [NonSerialized]
         private Dictionary<string, Civilization> _reverseLookup;
-        private static string _text;
+        //private static string _text;
 
         //private readonly  _appContext;
 
@@ -165,6 +166,7 @@ namespace Supremacy.Entities
         //  Zero References ??
         private void OnDeserialized(StreamingContext context)
         {
+            string _text = "";
             if (_reverseLookup == null)
             {
                 _reverseLookup = new Dictionary<string, Civilization>(StringComparer.OrdinalIgnoreCase);
@@ -176,12 +178,17 @@ namespace Supremacy.Entities
                 {
                     _reverseLookup[civ.Key] = civ;
 
-                    GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0}", civ.Key);
+                    _text = "Step_0825: OnDeserialized: civ.Key= " + civ.Key;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0}", civ.Key);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
-                            GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
+                            _text = "Step_0827: OnDeserialized: civ.Key= " + civ.Key
+                                + ", spying on " + spiedCiv.Key;
+                            Console.WriteLine(_text);
+                            //GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
                         }
                     }
                 }
@@ -191,6 +198,8 @@ namespace Supremacy.Entities
         public override void DeserializeOwnedData(IO.Serialization.SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
+
+            string _text = "";
 
             if (_reverseLookup == null)
             {
@@ -204,17 +213,17 @@ namespace Supremacy.Entities
                     _reverseLookup[civ.Key] = civ;
 
                     // works 
-                    _text = "de-serialize civ " + civ.Key;
+                    //_text = "Step_0826: de-serialize civ " + civ.Key;
                     //Console.WriteLine(_text);
-                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     if (civ.SpiedCivList != null)
                     {
                         foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
-                            _text = "DeserializeOwnedData: civ.Key= " + civ.Key
+                            _text = "Step_0828: DeserializeOwnedData: civ.Key= " + civ.Key
                                 + ", spying on " + spiedCiv.Key;
-                            //Console.WriteLine(_text);
-                            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                            Console.WriteLine(_text);
+                            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                         }
                     }
 
@@ -291,7 +300,10 @@ namespace Supremacy.Entities
         /// <returns></returns>
         public static CivDatabase Load()
         {
-            GameLog.Core.GameData.Debug("Loading civilization database....");
+            String _text = "Step_0824:; " + DateTime.Now + " > CivDatabase: loading civilization database from "
+                + ResourceManager.GetResourcePath(DefaultDatabasePath);
+            Console.WriteLine(_text);
+            //GameLog.Core.GameData.Debug("Loading civilization database....");
             try
             {
                 CivDatabase civDatabase = new CivDatabase();
@@ -314,20 +326,28 @@ namespace Supremacy.Entities
                         // for problems with Civilizations.xml active ...
                         //_text = "CivDatabase: adding civilization " + civElement.ToString();
                         //Console.WriteLine(_text);
+
                         //GameLog.Core.GameData.DebugFormat(_text);
 
                         civDatabase.Add(new Civilization(civElement));
                     }
                     catch (Exception e)
                     {
+                        _text = "Step_0827:; " + DateTime.Now + " > Problem adding civilization "
+                            + civElement.ToString() +" to CivDatabase" + Environment.NewLine + e;
+                        Console.WriteLine(_text);
                         GameLog.Core.GameData.Error(string.Format("Problem adding civilization {0} to CivDatabase", civElement.ToString()), e);
+                        Debugger.Break();
                     }
                 }
-                GameLog.Core.GameData.Debug("Civilization database loaded");
+                _text = "Step_0829:; " + DateTime.Now + " > CivDatabase: loaded " + civDatabase.Count + " civilizations";
+                Console.WriteLine(_text);
+                //GameLog.Core.GameData.Debug("Civilization database loaded");
                 return civDatabase;
             }
             catch (SupremacyException)
             {
+                Debugger.Break();
                 throw;
             }
             catch (Exception e)

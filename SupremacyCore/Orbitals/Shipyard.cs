@@ -1,4 +1,4 @@
-// Shipyard.cs
+// File:Shipyard.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -9,10 +9,10 @@
 
 using Supremacy.Collections;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Universe;
-using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,8 +30,8 @@ namespace Supremacy.Orbitals
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
         // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
-        private string _text;
-        private readonly string newline = Environment.NewLine;
+        //private string _text;
+        //private readonly string _newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -95,23 +95,27 @@ namespace Supremacy.Orbitals
         public int GetBuildOutput(int slot)
         {
             float output = ShipyardDesign.BuildSlotOutput;
-            switch (ShipyardDesign.BuildSlotOutputType)
+            if (Sector.System.Colony != null && Sector.System.Colony.Industry_Net != 0) // to avoid crashes
             {
-                case ShipyardOutputType.PopulationRatio:
-                    output = output / 100 * Sector.System.Colony.Population.CurrentValue;
-                    break;
-                case ShipyardOutputType.IndustryRatio:
-                    output = output / 100 * Sector.System.Colony.NetIndustry;
-                    break;
-                case ShipyardOutputType.Static:
-                default:
-                    break;
+                switch (ShipyardDesign.BuildSlotOutputType)
+                {
+                    case ShipyardOutputType.PopulationRatio:
+                        output = Sector.System.Colony.Population.CurrentValue* output / 100 ;
+                        break;
+                    case ShipyardOutputType.IndustryRatio:
+                        output = Sector.System.Colony.Industry_Net * output / 1000 ;// / Sector.System.Colony.Facilities_Active2_Industry;
+                        break;
+                    case ShipyardOutputType.Static:
+                    default:
+                        break;
+                }
             }
 
-            if (ShipyardDesign.BuildSlotMaxOutput > 0)
-            {
-                output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
-            }
+            // ignoring BuildSlotMaxOutput because the value makes no sense
+            //if (ShipyardDesign.BuildSlotMaxOutput > 0)
+            //{
+            //    output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
+            //}
 
             float shipBuildingBonus = Sector.System.Colony.Buildings
                 .Where(o => o.IsActive)
@@ -138,9 +142,10 @@ namespace Supremacy.Orbitals
         public void ProcessQueue()
         {
             int count = 0;
+            string _text;
             //if (_buildQueue.Count > 0)
             //{
-                
+
             //    _text = "BuildQueue.Count= " + BuildQueue.Count; 
             //    Console.WriteLine(_text);
             //    //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
@@ -148,23 +153,30 @@ namespace Supremacy.Orbitals
 
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "buildQueueItem= " + buildQueueItem.Description + ", index " + count 
-                    + ", TurnsRemaining " + buildQueueItem.TurnsRemaining 
-                    + " at " + buildQueueItem.Project.Location 
-                    + " at " + buildQueueItem.Project.ProductionCenter;
+                _text = "Step_8301:; " + GameEngine.LocationString(buildQueueItem.Project.Location.ToString())
+                    + " " + buildQueueItem.Project.ProductionCenter
+                    + "; TurnsRemaining " + buildQueueItem.TurnsRemaining
+                    + " buildQueueItem index " + count + " = " + buildQueueItem.Description
+
+                    ;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
                 count++;
             }
+
             //int bays = BuildSlots.Count();
             int baysWithProjects = 0;
             foreach (ShipyardBuildSlot slot in BuildSlots)
             {
-                _text = "checking " + slot.Shipyard.Design /*+ ", index " + count*/
+                _text = "Step_8303:; " + GameEngine.LocationString(slot.Shipyard.Location.ToString()) //+ " checking"
+                    + " " + slot.Shipyard.Design /*+ ", index " + count*/
 
-                    + " Slot= " + slot.SlotID
-                    + " at " + slot.Shipyard.Location
-                    + ", Owner=" + slot.Shipyard.Owner
+                    + "; Slot= " + slot.SlotID
+                    //+ " at " + slot.Shipyard.Location
+                    + "; Owner=" + slot.Shipyard.Owner
+                    + "; HasProject=" + slot.HasProject
+                    + "; IsActive=" + slot.IsActive
+                    + "; > each " + slot.Shipyard.ShipyardDesign.BuildSlotEnergyCost + " energy"
 
                     ;
                 Console.WriteLine(_text);
@@ -205,10 +217,11 @@ namespace Supremacy.Orbitals
             int afterCount = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
-                _text = "Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
+                _text = "Step_8307:; " + GameEngine.LocationString(buildQueueItem.Project.Location.ToString())
+                    + " Shipyard before BuildQueueItem = " + buildQueueItem.Description + ", index " + count;
                 Console.WriteLine(_text);
                 //GameLog.Client.ShipProductionDetails.DebugFormat(_text);
-                GameLog.Client.ShipProductionDetails.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
+
                 afterCount++;
             }
         }
@@ -226,10 +239,16 @@ namespace Supremacy.Orbitals
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
 
-            //Console.WriteLine("------------");
+            string _text;
+            string _newline = Environment.NewLine;
+
+            //_text = "Step_7601: SerializeOwnedData ------------";
+            //Console.WriteLine(_text);
+            //GameLog.Core.CombatDetails.DebugFormat("Step_7601: " + _text);
+
             try
             {
-                foreach (ShipyardBuildSlot slot in _buildSlots)
+                foreach (var slot in _buildQueue)
                 {
                     string _design = "nothing";
                     string _percent = "0 %";
@@ -239,27 +258,120 @@ namespace Supremacy.Orbitals
                         _percent = slot.Project.PercentComplete.ToString();
                     }
 
+                    //if (_percent != "0 %")
+                    //{
+                    _text = "Step_7609:; Serialize " + slot.Project.Location
+                        //+ " > Slot= " + slot.SlotID
+                        //+ " at " + slot.Shipyard.Name
+                        //+ " " + 
+                        + " > " + _percent
+                        + " done for " + _design
+                        ;
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //}
+
+                }
+            }
+            catch
+            {
+                _text = "Step_7608: Serialize failed"
+                     //+ slot.Project.Location
+                     //+ " > Slot= " + slot.SlotID
+                     //+ " at " + slot.Shipyard.Name
+                     //+ " " + 
+                     //+ " > " + _percent
+                     //+ " done for " + _design
+                     ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            }
+
+            string _slots_summary = "";
+            try
+            {
+                string _loc = "";
+                _text = "";
+
+                foreach (ShipyardBuildSlot slot in _buildSlots)
+                {
+                    string _design = "nothing ";
+                    string _percent = "0 %";
+                    //_loc = slot.Shipyard.Location.ToString();
+                    _loc = GameEngine.LocationString(slot.Shipyard.Location.ToString());
+                    int _slotID = slot.SlotID;
+
+                    if (slot.Project != null && slot.Project.BuildDesign != null)
+                    {
+                        _design = slot.Project.BuildDesign.ToString();
+                        _percent = GameEngine.Do_x_Digit_String(3, slot.Project.PercentComplete.ToString());
+                    }
+
                     if (_percent != "0 %")
                     {
-                        _text = slot.Shipyard.Location + 
-                            " > Slot= " + slot.SlotID
+                        _text = "Step_7605:; Serialize " + _loc
+                            + " > Slot= " + _slotID
                             + " at " + slot.Shipyard.Name
-                            //+ " " + 
+                            + " "
                             + " > " + _percent
                             + " done for " + _design
+                            //+ "    .. from Step_7607:; "
+                        ;
+                        //Console.WriteLine(_text);
+                        _slots_summary += _text + _newline;
+                        //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    }
+                    else
+                    {
+                        _text = "Step_7606:; Serialize " + _loc
+                            + " > Slot= " + _slotID  // crashes with a StackOverFlow
+                                                         + " at " + slot.Shipyard.Design
+                            + " "
+                            + " > " + _percent
+                            + " done for " + _design
+                            //+_newline
                             ;
-                        Console.WriteLine(_text);
+                        //Console.WriteLine(_text);
+
+                        //_slots_summary += _newline + _text;
+
                         //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                     }
 
                 }
+                //Console.WriteLine("Step_7607:; " + _newline + "Begin of _slots_summary"  + _newline + _slots_summary  + _newline + "end of _slots_summary");
             }
-            catch { };
+            catch
+            {
+                _text = "Step_7609:; Serialize failed"
+                     //+ slot.Project.Location
+                     //+ " > Slot= " + slot.SlotID
+                     //+ " at " + slot.Shipyard.Name
+                     //+ " " + 
+                     //+ " > " + _percent
+                     //+ " done for " + _design
+                     ;
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            }
+            if (_slots_summary == "")
+            {
+
+                //Console.WriteLine("Step_7619:; " + " > no ShipYard-Slots-Building here ");
+
+                //Console.WriteLine("Step_7609:; "+ "Begin of _slots_summary" + _newline + _slots_summary + _newline + "end of _slots_summary");
+            }else
+            {
+                Console.WriteLine( /*begin of _slots_summary= "*/  _newline + _slots_summary + " from Step_7617"/*:; "+ _newline + "end of _slots_summary"*/);
+            }
+
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
+
+            string _text;
 
             _buildQueue = new ObservableCollection<BuildQueueItem>((BuildQueueItem[])reader.ReadObjectArray(typeof(BuildQueueItem)));
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>((ShipyardBuildSlot[])reader.ReadOptimizedObjectArray(typeof(ShipyardBuildSlot)));
@@ -268,21 +380,22 @@ namespace Supremacy.Orbitals
             {
                 if (_buildQueue[i].Project != null)
                 {
-                    _text = _buildQueue[i].Project.Location
+                    _text = "Step_7800:; " + _buildQueue[i].Project.Location
                         //+ "; " + _buildQueue[i].Project.ProductionCenter   // crashes
                         //+ "; " + _buildQueue[i].Project.ProductionCenter.Owner
                         + ";Shipyard-Slot-BuildQueue;" + i
                         //+ ";" + _buildQueue[i].Project.Builder
                         + ";"
-                        //+ ";" + _buildQueue[i].Project.TurnsRemaining
+                    //+ ";" + _buildQueue[i].Project.TurnsRemaining
 
 
                     ;
+                    //Console.WriteLine(_text);
                 }
 
                 //if (!item.HasProject)
                 //{
-                //    _text += "Shipyard_buildSlot: No Project" + newline;
+                //    _text += "Shipyard_buildSlot: No Project" + _newline;
                 //    Console.WriteLine(_text);
                 //    //GameLog.Core.Stations.DebugFormat(_text);
                 //}
@@ -290,13 +403,13 @@ namespace Supremacy.Orbitals
                 //{
                 //    if (item.Project != null)
                 //    {
-                        //_text += item.Project.Builder
-                        //    //+ "; " + item.Project.BuildDesign
-                        //    + newline
-                        //;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.Stations.DebugFormat(_text);
-                    //}
+                //_text += item.Project.Builder
+                //    //+ "; " + item.Project.BuildDesign
+                //    + _newline
+                //;
+                //Console.WriteLine(_text);
+                //GameLog.Core.Stations.DebugFormat(_text);
+                //}
                 //}
             }
 
@@ -305,12 +418,14 @@ namespace Supremacy.Orbitals
             {
                 if (item.Project != null)
                 {
-                    _text = item.Project.Location
+                    _text = "Step_5860:; " + item.Project.Location
                         //+ "; " + item.Project.ProductionCenter   // crashes
                         //+ "; " + item.Project.ProductionCenter.Owner
-                        + ";" + newline/*+ item.Project.Design*/
+                        + ";No Project for _Shipyard._buildslots" + _newline//+ item.Project.Design
 
                     ;
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
                 //else
                 //{
@@ -323,14 +438,15 @@ namespace Supremacy.Orbitals
                     //_text += item
                     //    //+ "; " + item.Shipyard.Location// crashes
                     //    //+ "; " + item.Shipyard.Design
-                    //    + " > BuildSlot: No Project" + newline;
+                    //    + " > BuildSlot: No Project" + _newline;
                     //Console.WriteLine(_text);
                     //GameLog.Core.Stations.DebugFormat(_text);
-                    _text = "";
+                    //_text += "";
                 }
                 else
                 {
-                    if (item.Project != null)
+                    _text = "";
+                    if (item.Project != null && item.Project.BuildDesign != null)
                     {
                         string _builder = "";
                         // still crashing....
@@ -339,19 +455,25 @@ namespace Supremacy.Orbitals
                         //    if (item.Project.Builder != null && item.Project.Builder.Key != null)
                         //        _builder = item.Project.Builder.Key; 
                         //} catch { }
-                                
-                        _text += _builder
-                            + "; " + item
+
+                        _text = "Step_5880:; " + _builder
+                            + ";Project for _Shipyard._buildslots " + item
                             + "; " + item.Project
                             + "; "
                         ;
                         Console.WriteLine(_text);
-                    //GameLog.Core.Stations.DebugFormat(_text);
+                        //GameLog.Core.Stations.DebugFormat(_text);
                     }
                     else
                     {
-                        _text += ""; //   ??
-                        Console.WriteLine(_text);
+                        _text += "Step_5885:; "
+                            + item.Project.Location
+                            + " > Slot " + item.SlotID
+                            + " Shipyard._buildslots - unsure whether project..."
+                            ; //   ??
+                        //Console.WriteLine(_text);
+                        //GameLog.Core.Stations.DebugFormat(_text);
+                        _text = "";
                     }
                 }
                 //_text = "";

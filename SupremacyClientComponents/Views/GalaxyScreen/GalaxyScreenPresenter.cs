@@ -1,3 +1,4 @@
+// File:GalaxyScreenPresenter.cs
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -109,6 +110,8 @@ namespace Supremacy.Client.Views
             _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             ISoundPlayer dummy = _soundPlayer;
+
+            //GalaxyScreenCommands.SelectSector.Execute(colony.Sector);
         }
         #endregion
 
@@ -441,7 +444,7 @@ namespace Supremacy.Client.Views
 
                         StarSystem system = GameContext.Current.Universe.Map[fleet.Location].System;
 
-                        if (!DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner))
+                        if (!DiplomacyHelper.Status_AtWar(system.Colony.Owner, fleet.Owner))
                         {
 
                             _ = _navigationService.ActivateScreen(StandardGameScreens.DiplomacyScreen);
@@ -718,16 +721,16 @@ namespace Supremacy.Client.Views
                 {
                     selectedShipInTaskForce = selectedTaskForce.View.Ships.FirstOrDefault(o => o.Source == selectedShip);
 
-                    GameLog.Client.IntelDetails.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                    GameLog.Client.Intel.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
                 }
                 else
                 {
                     selectedShipInTaskForce = Model.SelectedShipInTaskForce;
-                    GameLog.Client.IntelDetails.DebugFormat("ELSE ... selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
+                    GameLog.Client.Intel.DebugFormat("ELSE ... selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
 
                     if (!selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce))
                     {
-                        //GameLog.Client.IntelDetails.DebugFormat("selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce) is FALSE - count = {0}", selectedTaskForce.View.Ships.Count);
+                        //GameLog.Client.Intel.DebugFormat("selectedTaskForce.View.Ships.Contains(selectedShipInTaskForce) is FALSE - count = {0}", selectedTaskForce.View.Ships.Count);
                         selectedShipInTaskForce = null;
                     }
                 }
@@ -739,7 +742,7 @@ namespace Supremacy.Client.Views
 
             if (selectedTaskForce != null)
             {
-                GameLog.Client.IntelDetails.DebugFormat("selectedShipInTaskForceLISTVIEW = {0} (for own: only the first one is shown in detail view = System Panel because one single ship in the fleet) ",
+                GameLog.Client.Intel.DebugFormat("selectedShipInTaskForceLISTVIEW = {0} (for own: only the first one is shown in detail view = System Panel because one single ship in the fleet) ",
                         selectedTaskForce.View.Ships.Count);
             }
         }

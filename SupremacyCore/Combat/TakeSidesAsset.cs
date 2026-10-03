@@ -47,7 +47,7 @@ namespace Supremacy.Combat
                             {
                                 OppositionFleets.Add(fleetsAtLocation[j]);
                             }
-                            //_ = OppositionFleets.Distinct();
+                            OppositionFleets = OppositionFleets.Distinct().ToList();
                         }
 
                         //if (OppositionFleets.Count() > 0)

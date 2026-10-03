@@ -86,10 +86,7 @@ namespace Supremacy.Client.Controls
                                     variantControl.VariantSize = _itemVariantSize.Value;
                                 }
                             }
-                            if (logicalParent != null)
-                            {
-                                logicalParent.AddLogicalChild(newItem);
-                            }
+                            logicalParent?.AddLogicalChild(newItem);
                         }
                         break;
                     }

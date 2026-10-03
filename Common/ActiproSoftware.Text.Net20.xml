@@ -1679,8 +1679,8 @@
             Gets whether the current <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Offset" /> is at the start of the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Token" />.
             </summary><value><c>true</c> if the current <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Offset" /> is at the start of the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Token" />; otherwise, <c>false</c>.
             </value></member><member name="P:ActiproSoftware.Text.ITextSnapshotReader.IsCharacterLineTerminator"><summary>
-            Gets whether the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Character" /> is a newline character.
-            </summary><value><c>true</c> if the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Character" /> is a newline character; otherwise, <c>false</c>.
+            Gets whether the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Character" /> is a _newline character.
+            </summary><value><c>true</c> if the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Character" /> is a _newline character; otherwise, <c>false</c>.
             </value></member><member name="P:ActiproSoftware.Text.ITextSnapshotReader.IsCharacterWhitespace"><summary>
             Gets whether the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Character" /> is categorized as a whitespace character.
             </summary><value><c>true</c> if the <see cref="P:ActiproSoftware.Text.ITextSnapshotReader.Character" /> is categorized as a whitespace character; otherwise, <c>false</c>.
@@ -3341,7 +3341,7 @@
             Returns the entire text of the snapshot using the specified <see cref="T:ActiproSoftware.Text.LineTerminator" /> for line ends.
             </summary><param name="lineTerminator">A <see cref="T:ActiproSoftware.Text.LineTerminator" /> specifying the type of line terminators to use.</param><returns>The entire text of the snapshot using the specified <see cref="T:ActiproSoftware.Text.LineTerminator" /> for line ends.</returns><remarks>
             To retrieve the text in the format expected by a language parser or tagger, 
-            pass <see cref="F:ActiproSoftware.Text.LineTerminator.Newline" /> as the <paramref name="lineTerminator" /> parameter.
+            pass <see cref="F:ActiproSoftware.Text.LineTerminator._newline" /> as the <paramref name="lineTerminator" /> parameter.
             </remarks></member><member name="M:ActiproSoftware.Text.ITextSnapshot.GetTextStatistics"><summary>
             Returns an <see cref="T:ActiproSoftware.Text.ITextStatistics" /> for the snapshot's text, which provides numerous statistics about the text
             such as word, sentence, character counts as well as readability scores.
@@ -3378,7 +3378,7 @@
             </summary><value>The entire text of the snapshot using <see cref="F:ActiproSoftware.Text.LineTerminator.CarriageReturnNewline" /> for line ends.</value><remarks>
             This property should not be used as input for language parsers or taggers since internally for performance reasons,
             text is stored with newlines-only as line terminators.
-            Instead, call <see cref="M:ActiproSoftware.Text.ITextSnapshot.GetText(ActiproSoftware.Text.LineTerminator)" /> with the <see cref="F:ActiproSoftware.Text.LineTerminator.Newline" /> parameter when 
+            Instead, call <see cref="M:ActiproSoftware.Text.ITextSnapshot.GetText(ActiproSoftware.Text.LineTerminator)" /> with the <see cref="F:ActiproSoftware.Text.LineTerminator._newline" /> parameter when 
             needing the text for parsing or tagging reasons.
             <para>
             The <see cref="M:ActiproSoftware.Text.ITextSnapshot.GetText(ActiproSoftware.Text.LineTerminator)" /> method can be used to obtain text using any of the <see cref="T:ActiproSoftware.Text.LineTerminator" /> options.
@@ -3503,8 +3503,8 @@
             </eventdata></member><member name="T:ActiproSoftware.Text.ITextBufferReader"><summary>
             Provides the base requirements for an object that reads characters from a fixed text buffer.
             </summary></member><member name="M:ActiproSoftware.Text.ITextBufferReader.GetSubstring(System.Int32,System.Int32)"><summary>
-            Returns a substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator.Newline" /> for line ends.
-            </summary><param name="offset">The offset at which to retrieve the text.</param><param name="length">The number of characters to return.</param><returns>The substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator.Newline" /> for line ends.</returns></member><member name="M:ActiproSoftware.Text.ITextBufferReader.Peek"><summary>
+            Returns a substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator._newline" /> for line ends.
+            </summary><param name="offset">The offset at which to retrieve the text.</param><param name="length">The number of characters to return.</param><returns>The substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator._newline" /> for line ends.</returns></member><member name="M:ActiproSoftware.Text.ITextBufferReader.Peek"><summary>
             Peeks at a single character from the text buffer without seeking past it.
             </summary><returns>The character that was read.</returns></member><member name="M:ActiproSoftware.Text.ITextBufferReader.Peek(System.Int32)"><summary>
             Peeks at a certain character from the text buffer after the current <see cref="P:ActiproSoftware.Text.ITextBufferReader.Offset" /> without seeking past it.
@@ -3562,8 +3562,8 @@
             </summary><value>The current reader <see cref="T:ActiproSoftware.Text.TextPosition" /> in the text buffer.</value></member><member name="T:ActiproSoftware.Text.Implementation.StringTextBufferReader"><summary>
             Represents an <see cref="T:ActiproSoftware.Text.ITextBufferReader" /> implementation for a <see cref="T:System.String" />.
             </summary></member><member name="M:ActiproSoftware.Text.Implementation.StringTextBufferReader.GetSubstring(System.Int32,System.Int32)"><summary>
-            Returns a substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator.Newline" /> for line ends.
-            </summary><param name="startOffset">The offset at which to retrieve the text.</param><param name="substringLength">The number of characters to return.</param><returns>The substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator.Newline" /> for line ends.</returns></member><member name="M:ActiproSoftware.Text.Implementation.StringTextBufferReader.Peek"><summary>
+            Returns a substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator._newline" /> for line ends.
+            </summary><param name="startOffset">The offset at which to retrieve the text.</param><param name="substringLength">The number of characters to return.</param><returns>The substring from the text buffer using <see cref="F:ActiproSoftware.Text.LineTerminator._newline" /> for line ends.</returns></member><member name="M:ActiproSoftware.Text.Implementation.StringTextBufferReader.Peek"><summary>
             Peeks at a single character from the text buffer without seeking past it.
             </summary><returns>The character that was read.</returns></member><member name="M:ActiproSoftware.Text.Implementation.StringTextBufferReader.Peek(System.Int32)"><summary>
             Peeks at a certain character from the text buffer after the current <see cref="P:ActiproSoftware.Text.Implementation.StringTextBufferReader.Offset" /> without seeking past it.
@@ -4427,14 +4427,14 @@
             To get the normalized last <see cref="T:ActiproSoftware.Text.TextPosition" /> in the range, use the <see cref="P:ActiproSoftware.Text.TextPositionRange.LastPosition" /> property.
             </remarks></member><member name="T:ActiproSoftware.Text.LineTerminator"><summary>
             Specifies a type of line terminator.
-            </summary></member><member name="F:ActiproSoftware.Text.LineTerminator.Newline"><summary>
-            A single newline character (ASCII value 10).
+            </summary></member><member name="F:ActiproSoftware.Text.LineTerminator._newline"><summary>
+            A single _newline character (ASCII value 10).
             This format is typically used on UNIX machines.
             </summary></member><member name="F:ActiproSoftware.Text.LineTerminator.CarriageReturn"><summary>
             A single carriage return character (ASCII value 13).
             This format is typically used on Macintosh machines.
             </summary></member><member name="F:ActiproSoftware.Text.LineTerminator.CarriageReturnNewline"><summary>
-            A carriage return character (ASCII value 13) followed by a newline character (ASCII value 10).
+            A carriage return character (ASCII value 13) followed by a _newline character (ASCII value 10).
             This format is typically used on Windows machines.
             </summary></member><member name="T:ActiproSoftware.Text.TextRange"><summary>
             Represents a zero-based range of two offset values within a text document.

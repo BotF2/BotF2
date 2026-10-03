@@ -49,8 +49,14 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
+                _text = "Step_0333:; MusicPacks.xml is missing ("
+                    + " ( " + libraryPath
+                    + ", " + e.Message
+                    + ", " + e.StackTrace
 
-                GameLog.Client.GameData.DebugFormat("MusicLibrary.cs: MusicPacks.xml is missing ({0} exception {1} {2})", libraryPath, e.Message, e.StackTrace);
+                    ;
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
                 _ = MessageBox.Show("MusicPacks.xml is missing for played empire", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -64,8 +70,8 @@ namespace Supremacy.Client.Audio
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 
-                _text = "adding: musicPack.Name " + musicPack.Name;
-                Console.WriteLine(_text);
+                _text = "Step_0156: adding: musicPack.Name " + musicPack.Name;
+                //Console.WriteLine(_text);
                 GameLog.Client.Audio.DebugFormat(_text);
             }
         }
@@ -83,8 +89,8 @@ namespace Supremacy.Client.Audio
             {
                 _ = pack.Dictionary.TryGetValue(trackName, out MusicEntry track);
 
-                _text = "trackName " + trackName
-                    + "track.FileName " + track.FileName
+                _text = "Step_0308:; trackName " + trackName
+                    + ", track.FileName " + track.FileName
                     ;
                 Console.WriteLine(_text);
                 GameLog.Client.Audio.DebugFormat(_text);

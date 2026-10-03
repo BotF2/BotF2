@@ -38,6 +38,11 @@ using Supremacy.Resources;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
+using Microsoft.Practices.Composite.Presentation.Regions.Behaviors;
+using System.Windows.Input;
+using Supremacy.Collections;
+using Supremacy.Client.Audio;
+using System.Media;
 
 namespace Supremacy.Client
 {
@@ -57,6 +62,13 @@ namespace Supremacy.Client
         private readonly IUnityContainer _container;
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
+        private readonly ISoundPlayer _soundPlayer;
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable IDE0052 // Remove unread private members
+        private readonly IMusicPlayer _musicPlayer;
+
+#pragma warning restore IDE0052 // Remove unread private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         private readonly SitRepDialog _sitRepDialog;
         //private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;
@@ -81,7 +93,7 @@ namespace Supremacy.Client
         private string _text;
         private int _lastOneDone;
         private string _contentHistoryFile = "";
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
 
         public GameController(
             [NotNull] IUnityContainer container,
@@ -91,7 +103,10 @@ namespace Supremacy.Client
             [NotNull] IRegionViewRegistry regionViewRegistry,
             [NotNull] IAppContext appContext,
             [NotNull] IGameClient client,
+            [NotNull] ISoundPlayer soundPlayer,
+            [NotNull] IMusicPlayer musicPlayer,
             [NotNull] IPlayerOrderService playerOrderService)
+
         {
             if (regionManager == null)
             {
@@ -106,6 +121,8 @@ namespace Supremacy.Client
             _container = container ?? throw new ArgumentNullException("container");
             _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
             _gameWindow = gameWindow ?? throw new ArgumentNullException("gameWindow");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
             _sitRepDialog = container.Resolve<SitRepDialog>();
             //_shipOverview = container.Resolve<ShipOverview>();
             _appContext = appContext ?? throw new ArgumentNullException("appContext");
@@ -341,43 +358,67 @@ namespace Supremacy.Client
 
         private void OnTurnStarted(EventArgs args)
         {
+            _text = "Step_4007:; "+ DateTime.Now + " > OnTurnStarted... (currentGame)";
+            Console.WriteLine(_text);
+
             IGameContext currentGame = _appContext.CurrentGame;
             if (currentGame == null)
             {
                 return;
             }
-            ProcessSitRepEntries();
+            //ProcessSitRepEntries();
 
             ClientEvents.ScreenRefreshRequired.Publish(ClientEventArgs.Default);
 
             if (!_firstTurnStarted)
             {
                 _firstTurnStarted = true;
+                //colony = 
                 _ = _navigationService.ActivateScreen(StandardGameScreens.GalaxyScreen);
                 ClearGameStartWaitCursor();
             }
 
+            //ProcessSitRepEntries();
+
+
+
             foreach (IInfoCardSubject infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
             {
+                _text = "Step_4008:; InfoCard...";
+                Console.WriteLine(_text);
+                //GameLog.Core.GeneralDetails.DebugFormat(_text);
+
                 infoCardSubject.RefreshData();
             }
 
+            _text = "Step_4013:; ClearTurnWaitCursor()...";
+            Console.WriteLine(_text);
+
             ClearTurnWaitCursor();
+
+            _text = "Step_4009:; " + DateTime.Now+ " > _endTurnCommand...";
+            Console.WriteLine(_text);
 
             _endTurnCommand.IsActive = true;
 
-            //ProcessSitRepEntries();
+            ProcessSitRepEntries();
+
+            _text = _newline + "Step_4011:; " + DateTime.Now+ " > ProcessSitRepEntries is DONE...";
+            Console.WriteLine(_text);
+
+            _text = "Step_4012:; " + DateTime.Now+ " > 5 binding errors (only at starting) ... resolve not figured out ..."; // 5 binding errors not (!) from ProcessSitRepEntries
+            Console.WriteLine(_text);
         }
 
         private void ProcessSitRepEntries()
         {
-            _text = "ProcessSitRepEntries...";
+            _text = "Step_4013:; "+ DateTime.Now + " > ProcessSitRepEntries...";
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
             {
-                return;
+                return; // e.g. at Game Start
             }
 
             bool _showDetailDialog = false;
@@ -401,11 +442,13 @@ namespace Supremacy.Client
                 }
             }
 
-            _text = "ProcessSitRepEntries... done ";
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+
 
             ShowSummary(false);
+
+            _text = _newline + "Step_4090:; "+ DateTime.Now + " > ProcessSitRepEntries... done ";
+            Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
         }
 
         private void ShowSummary(bool showIfEmpty)
@@ -415,20 +458,31 @@ namespace Supremacy.Client
                 return;
             }
 
-            //SendKeys.SendWait("{F1}");  // shows Map
+            _text = "Step_4050: ShowSummary...";
+            //Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-            _text = "ShowSummary...";
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            // works but less sense
+            //if (1 == 2)
+            //{
+            List<SitRepEntry> sr = (List<SitRepEntry>)_appContext.LocalPlayerEmpire.SitRepEntries;
+             // for working /*sr =*/ sr.OrderBy(o => o.Action).ToList();
+            _sitRepDialog.SitRepEntries = sr; 
+            //}
 
-            _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
 
             IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+            //IPlayerOrderService _soundplayer = ServiceLocator.Current.GetInstance<ISoundPlayer>();
 
             if (showIfEmpty)
             {
                 _sitRepDialog.Show();
+
+                //_musicPlayer.SwitchMusic("SummaryScreenMusic");  // I don't like if Music changes on Summary
+
+                _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Summary.ogg"); // better a short sound
+
             }
             else if (!service.AutoTurn)
             {
@@ -437,14 +491,16 @@ namespace Supremacy.Client
                 {
                     //GameLog.Client.GeneralDetails.DebugFormat("################ Setting EnableSummaryScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
+                    //_musicPlayer.SwitchMusic("SummaryScreenMusic");
+                    _soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/Summary.ogg"); // better a short sound
                 }
             }
 
-            //SendKeys.SendWait("{F1}");
+            
 
-            _text = "ShowSummary... before storing";
+            _text = "Step_4048:; ShowSummary... before storing";
             //Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
             //string _lastOneDone;
             if (GameContext.Current.TurnNumber > _lastOneDone)
@@ -459,17 +515,19 @@ namespace Supremacy.Client
                     //    _prio += " ";
                     //}
 
-                    _text += newline + "Turn;" + GameContext.Current.TurnNumber
+                    _text += _newline + "Turn;" + GameContext.Current.TurnNumber
                         //+ ";" + _prio
-                        + ";" + item.SummaryText
-                        //+ newline
+                        + "; " + item.SummaryText
+                        + ";( " + item.Priority + " )"
                         ;
                 }
-                GameLog.Core.SitReps.InfoFormat(_text);
-
-                _text = "SaveSUMMARY_TXT... offline - takes to long time";
                 Console.WriteLine(_text);
-                GameLog.Core.GeneralDetails.DebugFormat(_text);
+                GameLog.Client.General.Info(_newline + _text + _newline);
+                //GameLog.Core.SitReps.InfoFormat(_text);
+
+                _text = "Step_4887:; SaveSUMMARY_TXT... offline - takes to long time";
+                //Console.WriteLine(_text);
+                //GameLog.Core.GeneralDetails.DebugFormat(_text);
                 //SaveSUMMARY_TXT(_text);
                 _lastOneDone = GameContext.Current.TurnNumber;
                 //// \lib\_SUMMARY.txt
@@ -484,31 +542,32 @@ namespace Supremacy.Client
                 //    streamWriter.Close();
                 ////}
             }
-            _text = "ShowSummary... DONE";
-            Console.WriteLine(_text);
-            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            _text = "Step_4892:; ShowSummary... DONE";
+            //Console.WriteLine(_text);
+            //GameLog.Core.GeneralDetails.DebugFormat(_text);
 
-            //SendKeys.SendWait("{F1}");  // shows Map
         }
 
-//#pragma warning disable IDE0051 // Nicht verwendete private Member entfernen
-//#pragma warning disable IDE0060 // Nicht verwendete Parameter entfernen
+
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable IDE0051 // Remove unused private members
         private void SaveSUMMARY_TXT(string _text)
-//#pragma warning restore IDE0060 // Nicht verwendete Parameter entfernen
-//#pragma warning restore IDE0051 // Nicht verwendete private Member entfernen
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
+
         {
             //_text += " "; // dummy - please keep
-            _text = "SaveSUMMARY_TXT...";
+            _text = "Step_4777:; SaveSUMMARY_TXT..." + _text;
+
             Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
+
             if (GameContext.Current == null)
             {
                 return;
             }
 
-            string file = Path.Combine(
-                ResourceManager.GetResourcePath(".\\lib"),
-                "_SUMMARY");
+            string file = Path.Combine(ResourceManager.GetResourcePath(".\\lib"),"_SUMMARY");
         //file = file.Replace(".\\", "");
         //string _text1;
         //_text = "";
@@ -586,9 +645,9 @@ namespace Supremacy.Client
                 if (File.Exists(file))
                 {
                     _contentHistoryFile = "NEW started..." 
-                        + "-" + GameContext.Current.Options.StartingTechLevel
-                        + "-" + GameContext.Current.Options.GalaxySize
-                        //+ "-" + GameContext.Current.Options.
+                        + "-" + GameContext.Current.GameOptions.StartingTechLevel
+                        + "-" + GameContext.Current.GameOptions.GalaxySize
+                        //+ "-" + GameContext.Current.GameOptions.
                         ;
                 }
             }
@@ -638,7 +697,7 @@ namespace Supremacy.Client
                     var line = reader.ReadLine();
                     if (line == null)
                         break;
-                    _contentHistoryFile += line + newline;
+                    _contentHistoryFile += line + _newline;
                 }
                 reader.Close();
             }
@@ -647,10 +706,7 @@ namespace Supremacy.Client
         private void ClearTurnWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
-            if (handle != null)
-            {
-                handle.Dispose();
-            }
+            handle?.Dispose();
         }
 
         private void ClearWaitCursors()
@@ -663,49 +719,51 @@ namespace Supremacy.Client
         private void ClearConnectWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
-            if (handle != null)
-            {
-                handle.Dispose();
-            }
+            handle?.Dispose();
         }
 
         private void ClearGameStartWaitCursor()
         {
             IDisposable handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
-            if (handle != null)
-            {
-                handle.Dispose();
-            }
+            handle?.Dispose();
         }
 
         private void OnGameStarted(DataEventArgs<GameStartData> args)
         {
             CreatePresenters();
-            //SendKeys.SendWait("{F1}");  // shows Map
+            
         }
 
         private void CreatePresenters()
         {
             List<IPresenter> initializedPresenters = new List<IPresenter>();
 
-            GameLog.Client.UIDetails.DebugFormat("BEGINNING: CreatePresenters");
+            string _text = "Step_0711:; > BEGINNING: CreatePresenters";
+            Console.WriteLine(_text);
+            //GameLog.Client.UIDetails.DebugFormat("BEGINNING: CreatePresenters");
 
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
+                _text = "Step_0711:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F1-Screen";
+                Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
-
-                _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: INewDiplomacyScreenView");  // F3-Screen
+                _text = "Step_0712:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F2-Screen";
+                Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
+                _text = "Step_0714:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F3-Screen";
+                Console.WriteLine(_text);
+
+                _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, IDiplomacyScreenViewSecond>>());
+                _text = "Step_0713:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F4-Screen";
+                Console.WriteLine(_text);
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                GameLog.Client.UIDetails.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
+                _text = "Step_0715:; " + DateTime.Now + " > DONE: IGalaxyScreenPresenter = F5-Screen";
+                Console.WriteLine(_text);
+
 
                 // XXXXX  not realized yet
                 //_screenPresenters.Add(_container.Resolve<IEncyclopediaScreenPresenter>());
@@ -717,14 +775,20 @@ namespace Supremacy.Client
                     {
                         presenter.Run();
                         initializedPresenters.Add(presenter);
-                        GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
+                        _text = "Step_0717:; > DONE: " + presenter.ToString();
+                        Console.WriteLine(_text);
+                        //GameLog.Client.UIDetails.DebugFormat("DONE: {0}", presenter.ToString());
                     }
                     catch (Exception e)
                     {
-                        GameLog.Client.UI.Error(string.Format("###### problem with {0}",
-                            presenter.ToString()),
-                            e);
+                        _text = "Step_0719:; > ###### problem with " + presenter.ToString() 
+                            + Environment.NewLine + e;
+                        Console.WriteLine(_text);
+                        Debugger.Break();
+
                         throw;
+                        //GameLog.Client.UI.Error(string.Format("###### problem with {0}",
+                        //    presenter.ToString()), e);
                     }
                 }
             }

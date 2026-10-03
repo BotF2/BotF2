@@ -23,25 +23,25 @@ namespace Supremacy.PaceAndEmpirePower
             switch (EmpireID)
             {
                 case 0:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.FederationModifier), offensiveYes); // and based on that (-5 to +5) give a double modifier that can be used everywhere (credis, research etc. to make empire stronger or weaker)
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.FederationModifier), offensiveYes); // and based on that (-5 to +5) give a double modifier that can be used everywhere (credis, research etc. to make empire stronger or weaker)
                     break;
                 case 1:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.TerranEmpireModifier), offensiveYes);
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.TerranEmpireModifier), offensiveYes);
                     break;
                 case 2:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.RomulanModifier), offensiveYes);
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.RomulanModifier), offensiveYes);
                     break;
                 case 3:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.KlingonModifier), offensiveYes);
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.KlingonModifier), offensiveYes);
                     break;
                 case 4:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.CardassianModifier), offensiveYes);
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.CardassianModifier), offensiveYes);
                     break;
                 case 5:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.DominionModifier), offensiveYes);
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.DominionModifier), offensiveYes);
                     break;
                 case 6:
-                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.Options.BorgModifier), offensiveYes);
+                    universalPowerModifier = bonusMalus(Convert.ToInt16(GameContext.Current.GameOptions.BorgModifier), offensiveYes);
                     break;
                 default:
                     break;
@@ -53,7 +53,7 @@ namespace Supremacy.PaceAndEmpirePower
         {
             // Depending on the Game Pace, the Damage to Ship Combat is reduced or increased.
             double xGamePaceShip = 1;
-            switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+            switch (Convert.ToInt16(GameContext.Current.GameOptions.GamePace))
             {
                 case 0:
                     xGamePaceShip = 0.75; // Slow
@@ -157,7 +157,7 @@ namespace Supremacy.PaceAndEmpirePower
             return _minus5toplus5;
 
         }
-        //GameContext.Current.Options.CardassianModifier
+        //GameContext.Current.GameOptions.CardassianModifier
         //    -5
 
         //swtich 
@@ -175,7 +175,7 @@ namespace Supremacy.PaceAndEmpirePower
         {
             // Depending on the Game Pace, the Damage to Stations is reduced or increased.
             double xGamePaceStation = 1;
-            switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+            switch (Convert.ToInt16(GameContext.Current.GameOptions.GamePace))
             {
                 case 0:
                     xGamePaceStation = 0.55; // Slow
@@ -199,7 +199,7 @@ namespace Supremacy.PaceAndEmpirePower
             double xGamePaceOrbital = 1;
             if (FastIsMore)
             {
-                switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+                switch (Convert.ToInt16(GameContext.Current.GameOptions.GamePace))
                 {
                     case 0:
                         xGamePaceOrbital = 0.7; // Slow
@@ -215,7 +215,7 @@ namespace Supremacy.PaceAndEmpirePower
             }
             else
             {
-                switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+                switch (Convert.ToInt16(GameContext.Current.GameOptions.GamePace))
                 {
                     case 0:
                         xGamePaceOrbital = 1.3; // Slow
@@ -240,7 +240,7 @@ namespace Supremacy.PaceAndEmpirePower
         {
             // Depending on the Game Pace, the Damage to Stations is reduced or increased.
             double xGamePaceInvasion = 1;
-            switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+            switch (Convert.ToInt16(GameContext.Current.GameOptions.GamePace))
             {
                 case 0:
                     xGamePaceInvasion = 0.40; // Slow
@@ -268,7 +268,7 @@ namespace Supremacy.PaceAndEmpirePower
         {
             // Depending on the Game Pace, the Damage to Stations is reduced or increased.
             double xGamePaceResearch = 1;
-            switch (Convert.ToInt16(GameContext.Current.Options.GamePace))
+            switch (Convert.ToInt16(GameContext.Current.GameOptions.GamePace))
             {
                 case 0:
                     xGamePaceResearch = 0.50; // slow

@@ -21,6 +21,8 @@ using System.Threading;
 using Supremacy.Annotations;
 
 using E = System.Linq.Expressions.Expression;
+using Supremacy.Utility;
+using System.Diagnostics;
 
 namespace Supremacy.Collections
 {
@@ -72,6 +74,7 @@ namespace Supremacy.Collections
         protected ReaderWriterLockSlim SyncLock;
 
         [NonSerialized] private Dictionary<string, Index> _indexes;
+        private string _text;
 
         public IEqualityComparer<T> Comparer { get; }
 
@@ -356,9 +359,18 @@ namespace Supremacy.Collections
 
         protected void InsertItem(int listIndex, T item, bool upgradeableLockAlreadyHeld)
         {
+            //_text = "Step_4100: listIndex= " + listIndex + ", item= " + item.ToString();
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
+
+
             if ((listIndex < 0) || (listIndex > Count))
             {
-                throw new ArgumentOutOfRangeException(nameof(listIndex));
+                _text = "Step_4102: listIndex= " + listIndex + ", item= " + item.ToString();
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.DebugFormat(_text);
+                //throw new ArgumentOutOfRangeException(nameof(listIndex));
+
             }
 
             bool downgraded = false;
@@ -982,13 +994,17 @@ namespace Supremacy.Collections
             return outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer<TKey>.Default);
         }
 
+//#pragma warning disable IDE0051 // Remove unused private members
         private static bool HasIndexablePropertyOnLeft<T>(E leftSide, IndexedCollection<T> sourceCollection)
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             return leftSide.NodeType == ExpressionType.MemberAccess
                     && sourceCollection.PropertyHasIndex(((MemberExpression)leftSide).Member.Name);
         }
 
+//#pragma warning disable IDE0051 // Remove unused private members
         private static int? GetHashRight<T>(IndexedCollection<T> sourceCollection, E leftSide, E rightSide)
+//#pragma warning restore IDE0051 // Remove unused private members
         {
             //rightside is where we get our hash...
             switch (rightSide.NodeType)
@@ -1106,11 +1122,23 @@ namespace Supremacy.Collections
                 //}
                 //if (noIndex) //no index?  just do it the normal slow way then...
                 //{
+
+                //try can't be done here 
+                //try { 
+
                     IEnumerable<TSource> sourceEnum = sourceCollection.AsEnumerable();
                     foreach (TSource resultItem in sourceEnum.Where(expr.Compile()))
                     {
                         yield return resultItem;
                     }
+                //}
+                //catch
+                //{
+                //    Debugger.Break();
+                //    //return null;
+                //}
+
+                
                 //}
             }
         }

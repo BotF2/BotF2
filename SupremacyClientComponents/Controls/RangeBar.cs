@@ -209,10 +209,7 @@ namespace Supremacy.Client.Controls
             }
 
             BindingExpression bindingExpression = BindingOperations.GetBindingExpression(this, ValueProperty);
-            if (bindingExpression != null)
-            {
-                bindingExpression.UpdateTarget();
-            }
+            bindingExpression?.UpdateTarget();
         }
 
         private void ExecuteIncrementCommand(object sender, ExecutedRoutedEventArgs e)

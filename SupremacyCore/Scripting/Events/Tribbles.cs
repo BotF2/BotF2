@@ -8,6 +8,7 @@
 using Supremacy.Buildings;
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -22,6 +23,9 @@ namespace Supremacy.Scripting.Events
         private bool _productionFinished;
         private bool _shipProductionFinished;
         private int _occurrenceChance = 100;
+
+        [NonSerialized]
+        private string _text;
 
         public TribblesEvent()
         {
@@ -65,7 +69,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
@@ -75,16 +79,27 @@ namespace Supremacy.Scripting.Events
                     List<Colony> productionCenters = group.ToList();
 
                     Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
-                    GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
-                    GameLog.Client.GameData.DebugFormat("ProductionOutput(ProductionCategory.Food): {0}", target.GetProductionOutput(ProductionCategory.Food));
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    if (target.Owner.Key.Contains("BORG") || target.Owner.Key.Contains("DOMINION"))  // Tribbles don't disturb Borg or Dominion (Ketra-Cel)
+                    {
+                        continue;
+                    }
+
+                    _text = "Step_4777:; target.Name= " + target.Name;
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
+                    
+                    _text = "Step_4778:; ProductionOutput(ProductionCategory.Food)= " + target.GetProductionOutput(ProductionCategory.Food);
+                    Console.WriteLine(_text);
+                    //GameLog.Client.GameData.DebugFormat("ProductionOutput(ProductionCategory.Food): {0}", target.GetProductionOutput(ProductionCategory.Food));
+
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
 
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
                     tmpBuildings.AddRange(target.Buildings);
-                    tmpBuildings.ForEach(o => target.DeactivateFacility(ProductionCategory.Food));
+                    tmpBuildings.ForEach(o => target.Facility_Deactivate(ProductionCategory.Food));
 
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves before : {0}", target.FoodReserves);
 
@@ -92,15 +107,22 @@ namespace Supremacy.Scripting.Events
                     target.FoodReserves.UpdateAndReset();
                     GameLog.Client.GameData.DebugFormat("target.FoodReserves after : {0}", target.FoodReserves);
 
-                    _ = target.DeactivateFacility(ProductionCategory.Food);
+                    _ = target.Facility_Deactivate(ProductionCategory.Food);
 
                     OnUnitTargeted(target);
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new TribblesSitRepEntry(civManager.Civilization, target));
-                    }
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new TribblesSitRepEntry(_civM.Civilization, target));
+
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                        , _text + ResourceManager.GetString("TRIBBLES_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("TRIBBLES_DETAIL_TEXT")
+                        , "ScriptedEvents/Tribbles.png", SitRepPriority.RedYellow));
+                    //_civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target));
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("TRIBBLES_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Tribbles.png";
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

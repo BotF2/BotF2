@@ -1,4 +1,6 @@
-﻿// Copyright (c) 2009 Mike Strobel
+﻿// TerroristCaptured.cs 
+//
+// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -6,6 +8,7 @@
 // All other rights reserved.
 
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -18,6 +21,10 @@ namespace Supremacy.Scripting.Events
     public class TerroristsCaptured : UnitScopedEvent<Colony>
     {
         private int _occurrenceChance = 100;
+
+        [NonSerialized]
+        private string _text;
+
 
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
@@ -52,7 +59,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
@@ -69,18 +76,21 @@ namespace Supremacy.Scripting.Events
                         return;
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     OnUnitTargeted(target);
 
                     _ = target.Morale.AdjustCurrent(+3);
                     target.Morale.UpdateAndReset();
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));
-                    }
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    _text = target.Location + " " + target.Name + " > ";
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                        , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("TERRORISTS_CAPTURED_DETAIL_TEXT")
+                        , "ScriptedEvents/TerroristsCaptured.png", SitRepPriority.RedYellow));
+
+                    //_civM?.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(_civM.Civilization, target));
                 }
             }
         }

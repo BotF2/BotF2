@@ -7,6 +7,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +25,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public MajorAsteroidImpact()
         {
@@ -59,7 +61,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 72)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 12)  // before 72
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -68,7 +70,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
@@ -99,7 +101,7 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
                     int health = target.Health.CurrentValue;
@@ -148,13 +150,26 @@ namespace Supremacy.Scripting.Events
                     }
                     target.RemoveFacilities(ProductionCategory.Intelligence, removeIntelligence); // Intelligence: remaining everything up to 0
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(civManager.Civilization, target));
-                    }
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new MajorAsteroidImpactSitRepEntry(_civM.Civilization, target));
+
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                        , _text + ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT")
+                        , "ScriptedEvents/MajorAsteroidImpact.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("MAJOR_ASTEROID_STRIKE_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/MajorAsteroidImpact.png";
 
                     target.Population.UpdateAndReset();
+
+                    _text = "Step_5496:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                            + " > MajorAsteroidImpact (Event). Down: Population " + -population / 3 * 2 + ", Health " + -health / 3 * 2;
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

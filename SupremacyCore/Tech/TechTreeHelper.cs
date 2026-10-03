@@ -1,3 +1,5 @@
+// File:TechTreeHelper.cs
+//
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -82,59 +84,60 @@ namespace Supremacy.Tech
         /// Gets all of the tech designs of the specified design from the tech tree
         /// of the specified <see cref="CivilizationManager"/>.
         /// </summary>
-        /// <param name="civManager">The civilization's manager.</param>
+        /// <param name="_civM">The civilization's manager.</param>
         /// <param name="type">The type of designs to get.</param>
         /// <param name="researchedOnly">Whether to include only designs that have been researched.</param>
         /// <returns>The tech designs.</returns>
         public static ICollection<TechObjectDesign> GetTechDatabaseDesigns(
-            CivilizationManager civManager,
+            CivilizationManager _civM,
             TechObjectType type,
             bool researchedOnly)
         {
-            if (civManager == null)
+            if (_civM == null)
             {
-                civManager = ClientContext.LocalPlayerEmpire;
+                _civM = ClientContext.LocalPlayerEmpire;
             }
 
-            TechTree techTree = civManager.TechTree;
+            TechTree techTree = _civM.TechTree;
             List<TechObjectDesign> results = new List<TechObjectDesign>();
+            _text += " "; // just placeholder to avoid a "is never used"
 
             switch (type)
             {
                 case TechObjectType.Batteries:
                     results.AddRange(
                         techTree.OrbitalBatteryDesigns
-                            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
+                            .Where(o => !researchedOnly || MeetsTechLevels(_civM, o)));
                     break;
 
                 case TechObjectType.Buildings:
                     results.AddRange(
                         techTree.BuildingDesigns
-                            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
+                            .Where(o => !researchedOnly || MeetsTechLevels(_civM, o)));
                     break;
 
                 case TechObjectType.Facilities:
                     results.AddRange(
                         techTree.ProductionFacilityDesigns
-                            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
+                            .Where(o => !researchedOnly || MeetsTechLevels(_civM, o)));
                     break;
 
                 case TechObjectType.Ships:
                     results.AddRange(
                         techTree.ShipDesigns
-                            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
+                            .Where(o => !researchedOnly || MeetsTechLevels(_civM, o)));
                     break;
 
                 case TechObjectType.Shipyards:
                     results.AddRange(
                         techTree.ShipyardDesigns
-                            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
+                            .Where(o => !researchedOnly || MeetsTechLevels(_civM, o)));
                     break;
 
                 case TechObjectType.Stations:
                     results.AddRange(
                         techTree.StationDesigns
-                            .Where(o => !researchedOnly || MeetsTechLevels(civManager, o)));
+                            .Where(o => !researchedOnly || MeetsTechLevels(_civM, o)));
                     break;
             }
 
@@ -155,11 +158,11 @@ namespace Supremacy.Tech
             }
 
             HashSet<TechObjectDesign> results = new HashSet<TechObjectDesign>();
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civilization];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[civilization];
 
-            if (civManager != null)
+            if (_civM != null)
             {
-                results.UnionWith(civManager.TechTree.Where(o => MeetsTechLevels(civManager, o)));
+                results.UnionWith(_civM.TechTree.Where(o => MeetsTechLevels(_civM, o)));
             }
 
             return results;
@@ -172,7 +175,7 @@ namespace Supremacy.Tech
         /// <returns>The shipbuilding projects.</returns>
         public static IList<BuildProject> GetShipyardBuildProjects(Shipyard shipyard)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[shipyard.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[shipyard.OwnerID];
             List<ShipDesign> shipDesigns = new List<ShipDesign>();
             ShipyardDesign shipyardDesign = shipyard.ShipyardDesign;
             List<ShipDesign> unavailableShipDesigns = new List<ShipDesign>();
@@ -181,8 +184,8 @@ namespace Supremacy.Tech
              * Find all ship designs whose tech requirements have been met.
              */
             shipDesigns.AddRange(
-                civManager.TechTree.ShipDesigns.Where(
-                    o => MeetsTechLevels(civManager, o)));
+                _civM.TechTree.ShipDesigns.Where(
+                    o => MeetsTechLevels(_civM, o)));
 
             /*
              * Mark all obsolete designs for removal.
@@ -220,15 +223,27 @@ namespace Supremacy.Tech
         /// <returns>The planetary build projects.</returns>
         public static IList<BuildProject> GetBuildProjects(Colony colony)
         {
+            if (colony == null)
+            {
+                _text = "Step_6123: GetBuildProjects...Colony == null";
+                Console.WriteLine(_text);
+                GameLog.Client.GameData.ErrorFormat(_text);
+            }
+
+
             bool _tracingTechTreeHelper = false;   // turn true if you need
 
             Civilization colonyOwner = colony.Owner;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colonyOwner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[colonyOwner];
             List<BuildProject> results = new List<BuildProject>();
 
             foreach (ProductionCategory productionCategory in EnumHelper.GetValues<ProductionCategory>())
             {
                 ProductionFacilityDesign localFacilityType = colony.GetFacilityType(productionCategory);
+
+                _text = "Step_6125: GetBuildProjects...productionCategory= " + productionCategory;
+                //Console.WriteLine(_text);
+                //GameLog.Client.GameData.ErrorFormat(_text);
 
                 if (colony.GetTotalFacilities(productionCategory) > 0)
                 {
@@ -296,11 +311,12 @@ namespace Supremacy.Tech
                     }
 
                 NextCategory:
+                    //;
                     continue;
                 }
 
                 if (localFacilityType != null &&
-                    civManager.TechTree.Contains(localFacilityType))
+                    _civM.TechTree.Contains(localFacilityType))
                 {
                     results.Add(
                         new ProductionFacilityBuildProject(
@@ -318,7 +334,7 @@ namespace Supremacy.Tech
             }
 
             // w00t
-            if (colony.TotalOrbitalBatteries > 0)
+            if (colony.OrbitalBatteries_Total > 0)
             {
                 OrbitalBatteryDesign design = colony.OrbitalBatteryDesign;
                 OrbitalBatteryBuildProject baseDesign = new OrbitalBatteryBuildProject(colony, design);
@@ -364,7 +380,7 @@ namespace Supremacy.Tech
                 List<OrbitalBatteryDesign> upgrades = design.UpgradableDesigns
                     .OfType<OrbitalBatteryDesign>()
                     .Intersect(GameContext.Current.TechTrees[colonyOwner].OrbitalBatteryDesigns)
-                    .Where(o => !colony.IsBuilding(o) && MeetsTechLevels(civManager, o))
+                    .Where(o => !colony.IsBuilding(o) && MeetsTechLevels(_civM, o))
                     .ToList();
 
                 results.AddRange(
@@ -376,13 +392,13 @@ namespace Supremacy.Tech
             }
             else
             {
-                OrbitalBatteryDesign currentBuild = civManager.TechTree.OrbitalBatteryDesigns
+                OrbitalBatteryDesign currentBuild = _civM.TechTree.OrbitalBatteryDesigns
                     .FirstOrDefault(colony.IsBuilding);
 
                 if (currentBuild != null)
                 {
                     if (!IsOrbitalBatteryObsolete(colony, currentBuild) &&
-                        MeetsTechLevels(civManager, currentBuild) &&
+                        MeetsTechLevels(_civM, currentBuild) &&
                         MeetsPrerequisites(colony, currentBuild))
                     {
                         results.Add(new OrbitalBatteryBuildProject(colony, currentBuild));
@@ -391,9 +407,9 @@ namespace Supremacy.Tech
                 else
                 {
                     HashSet<OrbitalBatteryDesign> buildableBatteries =
-                        (from design in civManager.TechTree.OrbitalBatteryDesigns
+                        (from design in _civM.TechTree.OrbitalBatteryDesigns
                          where !IsOrbitalBatteryObsolete(colony, design) &&
-                               MeetsTechLevels(civManager, design) &&
+                               MeetsTechLevels(_civM, design) &&
                                MeetsPrerequisites(colony, design)
                          select design)
                             .ToHashSet();
@@ -408,7 +424,7 @@ namespace Supremacy.Tech
                 colony.Buildings
                     .SelectMany(
                         b => b.BuildingDesign.UpgradableDesigns
-                                 .Where(ud => civManager.TechTree.Contains(ud))
+                                 .Where(ud => _civM.TechTree.Contains(ud))
                                  .OfType<BuildingDesign>()
                                  .Select(
                                      ud => new
@@ -419,7 +435,7 @@ namespace Supremacy.Tech
                     .Where(
                         o => !colony.HasBuilding(o.UpgradeDesign) &&
                              !colony.IsBuilding(o.UpgradeDesign) &&
-                             MeetsTechLevels(civManager, o.UpgradeDesign) &&
+                             MeetsTechLevels(_civM, o.UpgradeDesign) &&
                              MeetsRestrictions(colony, o.UpgradeDesign) &&
                              MeetsPrerequisites(colony, o.UpgradeDesign))
                     .Select(
@@ -428,7 +444,7 @@ namespace Supremacy.Tech
                                  o.UpgradeDesign)));
 
             Civilization originalOwner = colony.OriginalOwner;
-            IEnumerable<BuildingDesign> buildingDesigns = civManager.TechTree.BuildingDesigns.AsEnumerable();
+            IEnumerable<BuildingDesign> buildingDesigns = _civM.TechTree.BuildingDesigns.AsEnumerable();
 
             if (originalOwner != colonyOwner &&
                 DiplomacyHelper.IsMember(originalOwner, colonyOwner))
@@ -442,7 +458,7 @@ namespace Supremacy.Tech
 
             HashSet<BuildingDesign> buildableStructures =
                 (from design in buildingDesigns
-                 where MeetsTechLevels(civManager, design) &&
+                 where MeetsTechLevels(_civM, design) &&
                        MeetsRestrictions(colony, design) &&
                        !IsBuildingObsolete(colony, design) &&
                        MeetsPrerequisites(colony, design)
@@ -455,9 +471,9 @@ namespace Supremacy.Tech
             if (CanBuildShipyard(colony))
             {
                 HashSet<ShipyardDesign> buildableShipyards =
-                    (from design in civManager.TechTree.ShipyardDesigns
+                    (from design in _civM.TechTree.ShipyardDesigns
                      where CanBuildShipyard(colony) &&
-                           MeetsTechLevels(civManager, design) &&
+                           MeetsTechLevels(_civM, design) &&
                            MeetsRestrictions(colony, design) &&
                            !IsShipyardObsolete(colony, design) &&
                            MeetsPrerequisites(colony, design)
@@ -472,12 +488,18 @@ namespace Supremacy.Tech
             {
                 if (_tracingTechTreeHelper)
                 {
-                    GameLog.Core.General.DebugFormat("shipyard = {0}, first UpgradableDesigns = {1}, Buildqueue has {2} orders", colony.Shipyard.Name, colony.Shipyard.ShipyardDesign.UpgradableDesigns.First().Name, colony.Shipyard.BuildQueue.Count);
+                    _text = "Step_5400: "
+                        + "shipyard = {0}, first UpgradableDesigns = {1}, Buildqueue has {2} orders" + colony.Shipyard.Name
+                        + ", first UpgradableDesigns = " + colony.Shipyard.ShipyardDesign.UpgradableDesigns.First().Name
+                        + ", Buildqueue has " + colony.Shipyard.BuildQueue.Count + " orders.";
+
+                    Console.WriteLine(_text);
+                    GameLog.Core.General.DebugFormat(_text);
                 }
 
                 results.AddRange(
                     colony.Shipyard.ShipyardDesign.UpgradableDesigns
-                                     .Where(ud => civManager.TechTree.Contains(ud))
+                                     .Where(ud => _civM.TechTree.Contains(ud))
                                      .OfType<ShipyardDesign>()
                                      .Select(
                                          ud => new
@@ -488,7 +510,7 @@ namespace Supremacy.Tech
                         .Where(
                             o => !colony.HasShipyard(o.UpgradeDesign) &&
                                  !colony.IsBuilding(o.UpgradeDesign) &&
-                                 MeetsTechLevels(civManager, o.UpgradeDesign) &&
+                                 MeetsTechLevels(_civM, o.UpgradeDesign) &&
                                  MeetsRestrictions(colony, o.UpgradeDesign) &&
                                  MeetsPrerequisites(colony, o.UpgradeDesign))
                         .Select(
@@ -539,12 +561,12 @@ namespace Supremacy.Tech
             BuildingDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
-            return civManager.TechTree.BuildingDesigns.Any(
+            return _civM.TechTree.BuildingDesigns.Any(
                 otherDesign => colony.HasBuilding(otherDesign) &&
-                               MeetsTechLevels(civManager, otherDesign) &&
-                               GetObsoletedTree(civManager, otherDesign).Contains(design));
+                               MeetsTechLevels(_civM, otherDesign) &&
+                               GetObsoletedTree(_civM, otherDesign).Contains(design));
         }
 
         /// <summary>
@@ -561,12 +583,12 @@ namespace Supremacy.Tech
             ShipyardDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
-            return civManager.TechTree.ShipyardDesigns.Any(
+            return _civM.TechTree.ShipyardDesigns.Any(
                 otherDesign => colony.HasShipyard(otherDesign) &&
-                               MeetsTechLevels(civManager, otherDesign) &&
-                               GetObsoletedTree(civManager, otherDesign).Contains(design));
+                               MeetsTechLevels(_civM, otherDesign) &&
+                               GetObsoletedTree(_civM, otherDesign).Contains(design));
         }
 
         /// <summary>
@@ -583,14 +605,14 @@ namespace Supremacy.Tech
             OrbitalBatteryDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             if (colony.OrbitalBatteryDesign == null)
             {
                 return false;
             }
 
-            if (GetObsoletedTree(civManager, colony.OrbitalBatteryDesign).Contains(design))
+            if (GetObsoletedTree(_civM, colony.OrbitalBatteryDesign).Contains(design))
             {
                 return true;
             }
@@ -608,7 +630,7 @@ namespace Supremacy.Tech
         /// </returns>
         private static bool IsFacilityObsolete(Colony colony, ProductionFacilityDesign design)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             ProductionFacilityDesign localDesign = colony.GetFacilityType(design.Category);
             if (localDesign == null)
@@ -616,7 +638,7 @@ namespace Supremacy.Tech
                 return false;
             }
 
-            if (GetObsoletedTree(civManager, localDesign).Contains(design))
+            if (GetObsoletedTree(_civM, localDesign).Contains(design))
             {
                 return true;
             }
@@ -628,20 +650,20 @@ namespace Supremacy.Tech
         /// Gets all of the tech designs in the tech tree of the given civilization
         /// manager that are rendered obsolete by the specified design.
         /// </summary>
-        /// <param name="civManager">The civilization manager.</param>
+        /// <param name="_civM">The civilization manager.</param>
         /// <param name="design">The design.</param>
         /// <returns>The obsoleted designs.</returns>
         private static ICollection<TechObjectDesign> GetObsoletedTree(
-            CivilizationManager civManager,
+            CivilizationManager _civM,
             TechObjectDesign design)
         {
             HashSet<TechObjectDesign> results = new HashSet<TechObjectDesign>();
-            TechTree techTree = civManager.TechTree;
+            TechTree techTree = _civM.TechTree;
 
             foreach (TechObjectDesign obsoleteDesign in design.ObsoletedDesigns.Where(techTree.Contains))
             {
                 _ = results.Add(obsoleteDesign);
-                results.UnionWith(GetObsoletedTree(civManager, obsoleteDesign));
+                results.UnionWith(GetObsoletedTree(_civM, obsoleteDesign));
             }
 
             return results;
@@ -729,16 +751,16 @@ namespace Supremacy.Tech
         /// Determines whether the tech levels of the given civilization manager are sufficient
         /// to unlock the given design.
         /// </summary>
-        /// <param name="civManager">The civilization manager.</param>
+        /// <param name="_civM">The civilization manager.</param>
         /// <param name="design">The design.</param>
         /// <returns><c>true</c> if tech levels are sufficient; otherwise, <c>false</c>.</returns>
         internal static bool MeetsTechLevels(
-            [NotNull] CivilizationManager civManager,
+            [NotNull] CivilizationManager _civM,
             [NotNull] TechObjectDesign design)
         {
-            if (civManager == null)
+            if (_civM == null)
             {
-                throw new ArgumentNullException("civManager");
+                throw new ArgumentNullException("_civM");
             }
 
             if (design == null)
@@ -748,7 +770,7 @@ namespace Supremacy.Tech
 
             return EnumHelper.GetValues<TechCategory>().All(
                 techCategory => design.TechRequirements[techCategory] <=
-                                civManager.Research.GetTechLevel(techCategory));
+                                _civM.Research.GetTechLevel(techCategory));
         }
 
         /// <summary>
@@ -828,7 +850,7 @@ namespace Supremacy.Tech
                 return null;
             }
 
-            CivilizationManager civManager = GetCivManager(colony);
+            CivilizationManager _civM = GetCivManager(colony);
             HashSet<TechObjectDesign> removedDesigns = new HashSet<TechObjectDesign>();
 
             List<ProductionFacilityDesign> designs = availableDesigns
@@ -836,13 +858,13 @@ namespace Supremacy.Tech
                     design => design != null &&
                               design.Category == category)
                 .Where(
-                    design => MeetsTechLevels(civManager, design) &&
+                    design => MeetsTechLevels(_civM, design) &&
                               MeetsPrerequisites(colony, design) &&
                               !IsFacilityObsolete(colony, design)).ToList();
 
             foreach (ProductionFacilityDesign design in designs)
             {
-                removedDesigns.UnionWith(GetObsoletedTree(civManager, design));
+                removedDesigns.UnionWith(GetObsoletedTree(_civM, design));
             }
 
             _ = designs.RemoveAll(removedDesigns.Contains);
@@ -1154,7 +1176,7 @@ namespace Supremacy.Tech
                    (p.HasRestriction(BuildRestriction.OnePerEmpire) &&
                     IsBuildLimitReachedCore(colony, design, 1, BuildLimitScope.Civilization, includeConstruction)) ||
                    (p.HasRestriction(BuildRestriction.OnePer100MaxPopUnits) &&
-                    IsBuildLimitReachedCore(colony, design, colony.Population.Maximum / 100, BuildLimitScope.System, includeConstruction));
+                    IsBuildLimitReachedCore(colony, design, colony.Population.Maximum / 50, BuildLimitScope.System, includeConstruction));
         }
 
         private static bool IsBuildLimitReachedCore(Colony colony, TechObjectDesign design, int buildLimit, BuildLimitScope buildLimitScope, bool includeConstruction = false)
@@ -1228,11 +1250,11 @@ namespace Supremacy.Tech
             {
                 if (includeInactive)
                 {
-                    count += colony.TotalOrbitalBatteries;
+                    count += colony.OrbitalBatteries_Total;
                 }
                 else
                 {
-                    count += colony.ActiveOrbitalBatteries;
+                    count += colony.OrbitalBatteries_Active;
                 }
 
                 return count;
@@ -1323,8 +1345,8 @@ namespace Supremacy.Tech
             {
                 if ((buildingDesign.Restriction & BuildRestriction.OnePerEmpire) == BuildRestriction.OnePerEmpire)
                 {
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
-                    if (civManager.Colonies.Any(c => c.HasBuilding(buildingDesign, isActive)))
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[colony.OwnerID];
+                    if (_civM.Colonies.Any(c => c.HasBuilding(buildingDesign, isActive)))
                     {
                         return true;
                     }
@@ -1337,8 +1359,8 @@ namespace Supremacy.Tech
             {
                 if ((shipyardDesign.Restriction & BuildRestriction.OnePerEmpire) == BuildRestriction.OnePerEmpire)
                 {
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
-                    if (civManager.Colonies.Any(c => c.HasShipyard(shipyardDesign)))
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[colony.OwnerID];
+                    if (_civM.Colonies.Any(c => c.HasShipyard(shipyardDesign)))
                     {
                         return true;
                     }

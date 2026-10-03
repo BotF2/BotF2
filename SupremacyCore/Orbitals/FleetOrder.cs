@@ -1,4 +1,4 @@
-// FleetOrder.cs
+// File:FleetOrder.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,15 +7,16 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Diagnostics;
+using Supremacy.AI;
 using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Supremacy.Orbitals
 {
@@ -23,7 +24,7 @@ namespace Supremacy.Orbitals
     /// Base class for all default and user-defined fleet orders.
     /// </summary>
     [Serializable]
-    [DebuggerDisplay("{DisplayText}")]
+    [DebuggerDisplay("{TaskForceStatusText}")]
     public abstract class FleetOrder : INotifyPropertyChanged
     {
         private int _fleetId;
@@ -105,31 +106,22 @@ namespace Supremacy.Orbitals
         /// Gets the complete status text that should be displayed in the task forces list in the game.
         /// </summary>
         /// <value>The complete status text.</value>
-        public virtual string DisplayText
+        public virtual string TaskForceStatusText// (Fleet fleet, out string taskForceStatusText)
         {
             get
             {
-                string displayText;
+                string taskForceStatusText = "";
                 Percentage? percentComplete = PercentComplete;
 
-                displayText = Fleet.IsInTow
-                    ? string.Format(
-                        ResourceManager.GetString("ORDER_IN_TOW"),
-                        Status)
-                    : Fleet.IsStranded
-                        ? string.Format(
-                                            ResourceManager.GetString("ORDER_STRANDED"),
-                                            Status)
-                        : Status;
-
-                if (percentComplete.HasValue)
+                if (Fleet != null)
                 {
-                    // Build station text
-                    displayText = string.Format(" ({0})" + displayText  + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
-                    //displayText = string.Format(displayText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                    taskForceStatusText = Fleet.IsInTow
+                        ? string.Format(ResourceManager.GetString("ORDER_IN_TOW"), Status)
+                        : Fleet.IsStranded ? string.Format(ResourceManager.GetString("ORDER_STRANDED"), Status)
+                        : Status;
                 }
 
-                if (!Fleet.Route.IsEmpty)
+                if (Fleet != null && !Fleet.Route.IsEmpty)
                 {
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;
@@ -138,12 +130,24 @@ namespace Supremacy.Orbitals
                         turns++;
                     }
 
-                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") : ResourceManager.GetString("ORDER_ETA_TURNS");
+                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") + " " : ResourceManager.GetString("ORDER_ETA_TURNS");
 
-                    displayText = string.Format(formatString, displayText, turns);
+                    taskForceStatusText = string.Format(formatString, taskForceStatusText, turns);
+
+                    
+                    //if (Fleet.Owner.IsHuman) { Debugger.Break(); }
                 }
 
-                return displayText;
+                if (percentComplete.HasValue)
+                {
+                    // Build station text
+                    taskForceStatusText = string.Format(" ({0})" + taskForceStatusText /*+ Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY")*/, percentComplete.Value);
+                    //taskForceStatusText = string.Format(taskForceStatusText + " ({0})" + Environment.NewLine + ResourceManager.GetString("DO_NOT_REDEPLOY"), percentComplete.Value);
+                }
+
+                //Console.WriteLine("Step_8921:; taskForceStatusText= " + taskForceStatusText + " > for " + UnitAI.CreateUpdateFleetText(Fleet, out String _fleetText));
+
+                return taskForceStatusText;
             }
         }
 
@@ -329,7 +333,7 @@ namespace Supremacy.Orbitals
             {
                 fleet.SetOrder(fleet.GetDefaultOrder());
             }
-            OnPropertyChanged("DisplayText");
+            OnPropertyChanged("TaskForceStatusText");
         }
 
         /// <summary>
@@ -387,10 +391,7 @@ namespace Supremacy.Orbitals
                 if (Fleet != null)
                 {
                     Fleet.SetOrder(Fleet.GetDefaultOrder());
-                    if (Fleet.Order != null)
-                    {
-                        Fleet.Order.OnTurnBeginning();
-                    }
+                    Fleet.Order?.OnTurnBeginning();
                 }
             }
         }

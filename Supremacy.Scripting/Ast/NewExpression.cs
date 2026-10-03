@@ -211,10 +211,7 @@ namespace Supremacy.Scripting.Ast
                 AllBindingFlags | BindingFlags.DeclaredOnly,
                 Span);
 
-            if (_arguments != null)
-            {
-                _arguments.Resolve(ec);
-            }
+            _arguments?.Resolve(ec);
 
             if (memberLookup == null)
             {

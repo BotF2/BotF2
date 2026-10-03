@@ -202,8 +202,8 @@ namespace Supremacy.Client.Views
                 //    DiplomacyScreenViewModel.ElementTypeFromClauseType(clause.ClauseType).ToString(),
                 //    proposal.Sender.ShortName,
                 //    proposal.Recipient.ShortName);
-                if (clause.ClauseType == ClauseType.OfferGiveCredits ||
-                    clause.ClauseType == ClauseType.RequestGiveCredits)
+                if (clause.ClauseType == ClauseType.OfferCredits ||
+                    clause.ClauseType == ClauseType.RequestCredits)
                 {
                     CreditsClauseData data = clause.GetData<CreditsClauseData>();
                     if (data != null)

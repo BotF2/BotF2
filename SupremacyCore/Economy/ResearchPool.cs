@@ -76,6 +76,7 @@ namespace Supremacy.Economy
     {
         private readonly int _ownerId;
         private readonly int[] _techLevels;
+
         private readonly DistributionGroup<int> _distributions;
         private readonly ResearchPoolValueCollection _values;
         private readonly ResearchBonusCollection _bonuses;
@@ -83,6 +84,13 @@ namespace Supremacy.Economy
 
         private readonly List<ResearchProject>[] _queue;
         private readonly Meter _cumulativePoints;
+
+        [NonSerialized]
+        private string _text;
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+        public new List<string> _alreadyDone = new List<string> { "Dummy-please keep" };
+#pragma warning restore CS0109 // Member does not hide an inherited member; new keyword is not required
+
 
         /// <summary>
         /// Gets the owner of this <see cref="ResearchPool"/>.
@@ -123,6 +131,9 @@ namespace Supremacy.Economy
         //    get { return _points; }
         //}
 
+        //List<string> _alreadyDone = new List<string>();
+
+
         /// <summary>
         /// Determines whether the specified application has been researched.
         /// </summary>
@@ -138,6 +149,8 @@ namespace Supremacy.Economy
                 {
                     foreach (ResearchProject project in _queue[field.FieldID])
                     {
+                        if (project == null)
+                            return true;
                         if (project.Application == application)
                         {
                             return false;
@@ -253,6 +266,7 @@ namespace Supremacy.Economy
             }
 
             List<int> fieldIds = new List<int>();
+            _alreadyDone = new List<string>();
 
             _ownerId = owner.CivID;
             _values = new ResearchPoolValueCollection();
@@ -262,8 +276,8 @@ namespace Supremacy.Economy
             _queue = new List<ResearchProject>[matrix.Fields.Count];
             _cumulativePoints = new Meter(0, int.MaxValue);
 
-            Data.Table startingTechLevelsTable = GameContext.Current.Tables.GameOptionTables["StartingTechLevels"];
-            StartingTechLevel startingTechLevel = GameContext.Current.Options.StartingTechLevel;
+            Data.Table startingTechLevelsTable = GameContext.Current.GameTables.GameOptionTables["StartingTechLevels"];
+            StartingTechLevel startingTechLevel = GameContext.Current.GameOptions.StartingTechLevel;
 
             Dictionary<TechCategory, int> initialFieldLevelValues = null;
 
@@ -347,11 +361,11 @@ namespace Supremacy.Economy
 
             _distributions.TotalValue = researchPoints;
 
-            List<string> _alreadyDone = new List<string>();
+            //List<string> _alreadyDone = new List<string>();
 
             string researchSummary = "";
             string distributionSummary = "";
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[_ownerId];
 
             researchSummary += "LT-Progress: ";// + "Gained P. = " + researchPoints + " Progress: "; 
             distributionSummary += "Research Distrib. ";
@@ -366,16 +380,27 @@ namespace Supremacy.Economy
 
                 fieldPoints += (int)(_bonuses[field.TechCategory] * fieldPoints);
                 _ = _cumulativePoints.AdjustCurrent(fieldPoints);
+                //_cumulativePoints.UpdateAndReset();
 
 
 
                 for (int i = 0; i < _queue[field.FieldID].Count; i++)
                 {
+                    int lvl = -1;
+                    Percentage progress = 0;
+                    if (_queue[field.FieldID][i] != null && _queue[field.FieldID][i].Application != null && _queue[field.FieldID][i].Progress != null)
+                    {
+                        lvl = _queue[field.FieldID][i].Application.Level;
+                        progress = _queue[field.FieldID][i].Progress.PercentFilled;
+                    }
+                    researchSummary += " - " + field.TechCategory + "-" + lvl + ": " + progress;
 
-                    researchSummary += " - " + field.TechCategory + "-" + _queue[field.FieldID][i].Application.Level + ": " + _queue[field.FieldID][i].Progress.PercentFilled;
+                    //_civM.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
 
-                    //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
-
+                    if (_queue[field.FieldID][i] == null)
+                    {
+                        break;
+                    }
 
                     if (_queue[field.FieldID][i].IsFinished)
                     {
@@ -397,31 +422,51 @@ namespace Supremacy.Economy
 
             }
 
+
+
             distributionSummary += " - Bio " + _distributions[0].Value.ToString()/* + ", "*/
                     + " - Comp. " + _distributions[1].Value.ToString()/* + ", "*/
                     + " - Constr. " + _distributions[2].Value.ToString()/* + ", "*/
                     + " - Energy " + _distributions[3].Value.ToString()/* + ", "*/
                     + " - Prop. " + _distributions[4].Value.ToString()/* + ", "*/
                     + " - Weapon " + _distributions[5].Value.ToString()/* + ", "*/
+                    + " - Total " + (100*(
+                    _distributions[0].Value 
+                    +_distributions[1].Value 
+                    +_distributions[2].Value 
+                    +_distributions[3].Value 
+                    +_distributions[4].Value 
+                    +_distributions[5].Value
+                    )).ToString()/* + ", "*/
                     ;
             //distributionSummary += "- Gained = " + researchPoints;
 
             //if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
             //{
-            //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, distributionSummary));  // Percentage each field
-            //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));  // Points each field
 
-            if(!_alreadyDone.Contains(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
+            if (_alreadyDone != null) 
             { 
-                civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
-                civManager.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
+                if (!_alreadyDone.Contains(_civM.Civilization.CivID + "-" + GameContext.Current.TurnNumber))
+            {
+                _civM.SitRepEntries.Add(new ReportEntry_NoAction(Owner, distributionSummary, "", "", SitRepPriority.Gray)); // Percentage each field
+                _civM.SitRepEntries.Add(new ReportEntry_NoAction(Owner, researchSummary, "", "", SitRepPriority.Purple));  // Points each field
             }
 
-            _alreadyDone.Add(civManager.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
+            _alreadyDone.Add(_civM.Civilization.CivID + "-" + GameContext.Current.TurnNumber);
+            }
+
+            _text = "Step_0398:; Research for "
+                + Owner.Key
+                + " > currentChange = " + _cumulativePoints.CurrentChange.ToString()
+                //+ " > lastChange = " + _cumulativePoints.LastChange.ToString()
+                + " > currentValue = " + _cumulativePoints.CurrentValue.ToString()
+                ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.SaveLoad.DebugFormat("Step_0366: Deserializing systems...");
 
             _cumulativePoints.UpdateAndReset();
             //GameLog.Client.ResearchDetails.InfoFormat("UpdatingResearch...DONE");
-        }
+        } // End of Research.UpdateAndReset
 
         /// <summary>
         /// Finishes the project located at the specified index in the queue for a given field.
@@ -431,19 +476,21 @@ namespace Supremacy.Economy
         private void FinishProject(int fieldId, int queueIndex)
         {
             ResearchApplication finishedApp = _queue[fieldId][queueIndex].Application;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner];
             ICollection<TechObjectDesign> designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
 
+
+            //if (_queue[fieldId].Count > 1)
+            //{
             _queue[fieldId].RemoveAt(queueIndex);
+            //}
+
             UpdateTechLevels();
 
             ICollection<TechObjectDesign> designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
             List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
 
-            if (civManager != null)
-            {
-                civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
-            }
+            _civM?.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
         }
 
         /// <summary>
@@ -472,6 +519,8 @@ namespace Supremacy.Economy
             OnPropertyChanged("Bonuses");
         }
 
+        
+
         #region INotifyPropertyChanged Members
         /// <summary>
         /// Occurs when a property value changes.
@@ -486,6 +535,30 @@ namespace Supremacy.Economy
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal void Report_Research_Distribution(CivilizationManager _civM)
+        {
+            var _v1 = _civM.Research.Distributions[0].Value;
+            var _v2 = _civM.Research.Distributions[1].Value;
+            var _v3 = _civM.Research.Distributions[2].Value;
+            var _v4 = _civM.Research.Distributions[3].Value;
+            var _v5 = _civM.Research.Distributions[4].Value;
+            var _v6 = _civM.Research.Distributions[5].Value;
+            var _total = _v1 + _v2 + _v3 + _v4 + _v5 + _v6;
+            _text = "Step_3776:; Research "
+
+                    + "; R1= " + _v1
+                    + "; R2= " + _v2
+                    + "; R3= " + _v3
+                    + "; R4= " + _v4
+                    + "; R5= " + _v5
+                    + "; R6= " + _v6
+                    + "  for " + _civM.A_Info_CivM
+                    + ", total= " + _total
+
+                    ;
+            Console.WriteLine(_text);
         }
         #endregion
     }
@@ -555,31 +628,31 @@ namespace Supremacy.Economy
         {
             get
             {
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[_ownerId];
                 switch (field)
                 {
                     case TechCategory.BioTech:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentBioTechResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Computers:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentComputerResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Construction:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentConstructionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Energy:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentEnergyResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Propulsion:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentPropulsionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                     case TechCategory.Weapons:
-                        return civManager.GlobalBonuses
+                        return _civM.GlobalBonuses
                             .Where(o => (o.BonusType == BonusType.PercentWeaponsResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide))
                             .Sum(o => 0.01f * o.Amount);
                 }

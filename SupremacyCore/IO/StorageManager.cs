@@ -14,6 +14,7 @@ using System.Collections;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
 
 namespace Supremacy.IO
 {
@@ -104,9 +105,10 @@ namespace Supremacy.IO
                     }
                     catch (Exception e)
                     {
-                        string _text = "IsolatedStorageFile is just missing at first start - simply CONTINUE !!!";
+                        string _text = "1: IsolatedStorageFile is just missing at first start - simply CONTINUE !!!";
                         GameLog.Core.General.ErrorFormat(_text);
                         Console.WriteLine(_text);
+                        MessageBox.Show(_text);
 
                         GameLog.Core.General.Error(e);
                     }
@@ -118,6 +120,7 @@ namespace Supremacy.IO
             }
             catch
             {
+                MessageBox.Show("2: IsolatedStorageFile is just missing at first start - simply CONTINUE !!!");
                 throw;
             }
         }

@@ -1894,11 +1894,11 @@ namespace Supremacy.Collections
 
         #region CollectionBase Conversions
 
-        [NotNull]
-        public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> source)
-        {
-            return new HashSet<T>(source);
-        }
+        //[NotNull]
+        //public static HashSet<T> ToHashSet<T>([NotNull] this IEnumerable<T> source)
+        //{
+        //    return new HashSet<T>(source);
+        //}
         #endregion
     }
 

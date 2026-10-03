@@ -72,7 +72,7 @@ namespace Supremacy.Game
             try
             {
                 _localGame.TurnNumber = _turnNumber;
-                _localGame.Options = _options;
+                _localGame.GameOptions = _options;
                 _localGame.GameMod = _gameMod;
                 _localGame.Civilizations = _civilizations;
                 _localGame.CivilizationManagers = new CivilizationManagerMap();
@@ -80,7 +80,7 @@ namespace Supremacy.Game
                 _localGame.Races = _races;
                 _localGame.Universe = _universe;
                 _localGame.TechDatabase = _techDatabase;
-                _localGame.Tables = _tables;
+                _localGame.GameTables = _tables;
                 _localGame.ResearchMatrix = _researchMatrix;
                 _localGame.SectorClaims = _sectorClaims;
                 _localGame.TechTrees = _techTrees;
@@ -150,14 +150,14 @@ namespace Supremacy.Game
             {
                 data._textDatabase = textDatabase;
                 data._turnNumber = game.TurnNumber;
-                data._options = game.Options;
+                data._options = game.GameOptions;
                 data._gameMod = game.GameMod;
                 data._civilizations = game.Civilizations;
                 data._civManagers = game.CivilizationManagers.ToArray();
                 data._races = game.Races;
                 data._universe = game.Universe;
                 data._techDatabase = game.TechDatabase;
-                data._tables = game.Tables;
+                data._tables = game.GameTables;
                 data._researchMatrix = game.ResearchMatrix;
                 data._sectorClaims = game.SectorClaims;
                 data._techTrees = game.TechTrees;
@@ -189,7 +189,7 @@ namespace Supremacy.Game
             {
                 _textDatabase = reader.Read<ITextDatabase>();
                 _localGame.TurnNumber = _turnNumber = reader.ReadOptimizedInt32();
-                _localGame.Options = _options = reader.Read<GameOptions>();
+                _localGame.GameOptions = _options = reader.Read<GameOptions>();
                 _localGame.GameMod = _gameMod = reader.Read<GameMod>();
                 _localGame.Civilizations = _civilizations = reader.Read<CivDatabase>();
                 _localGame.CivilizationManagers = new CivilizationManagerMap();
@@ -197,7 +197,7 @@ namespace Supremacy.Game
                 _localGame.Races = _races = reader.Read<RaceDatabase>();
                 _localGame.Universe = _universe = reader.Read<UniverseManager>();
                 _localGame.TechDatabase = _techDatabase = reader.Read<TechDatabase>();
-                _localGame.Tables = _tables = reader.Read<GameTables>();
+                _localGame.GameTables = _tables = reader.Read<GameTables>();
                 _localGame.ResearchMatrix = _researchMatrix = reader.Read<ResearchMatrix>();
                 _localGame.SectorClaims = _sectorClaims = reader.Read<SectorClaimGrid>();
                 _localGame.TechTrees = _techTrees = reader.Read<TechTreeMap>();

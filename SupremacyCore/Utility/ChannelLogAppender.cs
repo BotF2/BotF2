@@ -2,6 +2,7 @@ using log4net.Appender;
 using log4net.Core;
 
 using Supremacy.Messaging;
+using System.Windows;
 
 namespace Supremacy.Utility
 {
@@ -37,7 +38,15 @@ namespace Supremacy.Utility
                     return;
                 }
 
+                try
+                {
                 Channel.Publish(loggingEvent);
+                }
+                catch
+                {
+                    MessageBox.Show("On first run in VS this crashes - do a manual copy from an old \\lib-folder into the new one !");
+                }
+
             }
         }
 

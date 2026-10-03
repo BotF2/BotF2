@@ -36,7 +36,7 @@ namespace Supremacy.Orbitals
 
         public bool IsUnScannable { get; set; }
 
-        public string Name
+        public string FleetName
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Supremacy.Orbitals
                 }
                 else
                 {
-                    return View.Name;
+                    return View.FleetName;
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace Supremacy.Orbitals
 
         public bool IsPresenceKnown => _isPresenceKnown;
 
-        public string Name
+        public string FleetName
         {
             get
             {
@@ -118,7 +118,7 @@ namespace Supremacy.Orbitals
 
                 if (IsNumberOfShipsKnown)
                 {
-                    return _ships.Count + " in Nebula, Cloaked or Camouflaged";
+                    return _ships.Count + " " + string.Format(ResourceManager.GetString("FLEET_NOT_SCANABLE")); //" in Nebula, Cloaked or Camouflaged";
                 }
 
                 if (IsOwnerKnown)
@@ -134,6 +134,8 @@ namespace Supremacy.Orbitals
                 return string.Format(ResourceManager.GetString("UNKNOWN_FLEET")); //"Unknown Fleet";
             }
         }
+
+       
 
         public string ClassName
         {
@@ -181,7 +183,7 @@ namespace Supremacy.Orbitals
                 _isOwned = fleet.OwnerID == owner.CivID
             };
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
 
             foreach (Ship ship in fleet.Ships)
             {
@@ -199,7 +201,7 @@ namespace Supremacy.Orbitals
                 }
 
                 //If we've got this far, it's not the players ship
-                int scanStrength = civManager.MapData.GetScanStrength(fleet.Location);
+                int scanStrength = _civM.MapData.GetScanStrength(fleet.Location);
                 bool isPresenceKnown = false;
                 bool isDesignKnown = false;
                 int netScanStrength = 0;

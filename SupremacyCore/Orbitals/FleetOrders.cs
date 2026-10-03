@@ -1,4 +1,4 @@
-// FleetOrders.cs
+// File:FleetOrders.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -25,6 +25,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Supremacy.Orbitals
@@ -32,15 +33,23 @@ namespace Supremacy.Orbitals
     [Serializable]
     public static class FleetOrders
     {
-        public static readonly EngageOrder EngageOrder;
+        //public static readonly EngageOrder EngageOrder;
         public static readonly AssaultSystemOrder AssaultSystemOrder;
-        public static readonly AvoidOrder AvoidOrder;
+        //public static readonly AvoidOrder AvoidOrder;
+        public static readonly ScrapShipOrder ScrapShipOrder;
+        public static readonly MissionOrder MissionOrder;  // = busy in any kind
         public static readonly IdleOrder IdleOrder;
         public static readonly DefendOrder DefendOrder;
         public static readonly StrandedOrder StrandedOrder;
+
         public static readonly RedeployNoneOrder RedeployNoneOrder;
         public static readonly RedeploySameOrder RedeploySameOrder;
         public static readonly RedeployAllOrder RedeployAllOrder;
+
+        public static readonly AccumulateLocation_Set_Here_Order AccumulateLocation_Set_Here_Order;
+        public static readonly AccumulateLocation_Go_There_Order AccumulateLocation_Go_There_Order;
+        public static readonly AccumulateQuitOrder AccumulateQuitOrder;
+
         public static readonly ColonizeOrder ColonizeOrder;
         // public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
@@ -53,23 +62,29 @@ namespace Supremacy.Orbitals
         //public static readonly EscortOrder EscortOrder;
         public static readonly BuildStationOrder BuildStationOrder;
         public static readonly ExploreOrder ExploreOrder;
+        public static readonly TravelOrder TravelOrder;
 
 
         private static readonly List<FleetOrder> _orders;
-        public static string _text;
+
+        //[NonSerialized]
+        //public static string _text;
 
 
         static FleetOrders()
         {
-            EngageOrder = new EngageOrder();
+            //EngageOrder = new EngageOrder();
             AssaultSystemOrder = new AssaultSystemOrder();
-            AvoidOrder = new AvoidOrder();
+            //AvoidOrder = new AvoidOrder();
+            ScrapShipOrder = new ScrapShipOrder();
+            MissionOrder = new MissionOrder();
             IdleOrder = new IdleOrder();
             DefendOrder = new DefendOrder();
             StrandedOrder = new StrandedOrder();
             RedeployNoneOrder = new RedeployNoneOrder();
             RedeploySameOrder = new RedeploySameOrder();
             RedeployAllOrder = new RedeployAllOrder();
+
             ColonizeOrder = new ColonizeOrder();
             // RaidOrder = new RaidOrder();
             SabotageOrder = new SabotageOrder();
@@ -82,13 +97,18 @@ namespace Supremacy.Orbitals
             //EscortOrder = new EscortOrder();
             BuildStationOrder = new BuildStationOrder();
             ExploreOrder = new ExploreOrder();
+            TravelOrder = new TravelOrder();
+            AccumulateLocation_Set_Here_Order = new AccumulateLocation_Set_Here_Order();
+            AccumulateLocation_Go_There_Order = new AccumulateLocation_Go_There_Order();
+            AccumulateQuitOrder = new AccumulateQuitOrder();
 
 
-            _orders = new List<FleetOrder>
+            _orders = new List<FleetOrder>  // defines sorting
                       {
-                          EngageOrder,
-                          AvoidOrder,
+                          //EngageOrder,
+                          //AvoidOrder,
                           ExploreOrder,
+                          TravelOrder,
                           ColonizeOrder,
                           BuildStationOrder,
                           SabotageOrder,
@@ -100,6 +120,7 @@ namespace Supremacy.Orbitals
                           AssaultSystemOrder,
 
                           // no action, just showing 'a status'
+                          MissionOrder,
                           IdleOrder,
                           DefendOrder,
                           StrandedOrder,
@@ -108,6 +129,12 @@ namespace Supremacy.Orbitals
                           RedeployNoneOrder,
                           RedeploySameOrder,
                           RedeployAllOrder,
+
+                          AccumulateLocation_Set_Here_Order,
+                          AccumulateLocation_Go_There_Order,
+                          AccumulateQuitOrder,
+
+                          ScrapShipOrder,
 
 
                           //RaidOrder,
@@ -198,8 +225,8 @@ namespace Supremacy.Orbitals
             }
             //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
 
-            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner));
-            return DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner);
+            //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - returning {0}", DiplomacyHelper.Status_AtWar(system.Colony.Owner, fleet.Owner));
+            return DiplomacyHelper.Status_AtWar(system.Colony.Owner, fleet.Owner);
         }
 
         public override FleetOrder Create()
@@ -215,6 +242,7 @@ namespace Supremacy.Orbitals
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_AVOID");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_AVOID");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_AVOID"), Status);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
@@ -223,21 +251,56 @@ namespace Supremacy.Orbitals
     }
     #endregion AvoidOrder
 
-
-
     #region IdleOrder
     [Serializable]
     public sealed class IdleOrder : FleetOrder
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_IDLE");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_IDLE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_IDLE"), Status);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
             return new IdleOrder();
         }
+        protected internal override void OnTurnBeginning()   // IdleOrder
+        {
+            base.OnTurnBeginning(); // Redeploy_NONE_Order
+
+            List<Ship> _listOfShips = new List<Ship>();
+
+            if (Fleet != null)
+            {
+                Fleet.Ships.ToList();
+
+
+
+                if (/*!Fleet.Owner.IsHuman && */Fleet.Ships.Count > 1)
+                {
+                    foreach (Ship ship in _listOfShips)
+                    {
+                        ship.CreateFleet();
+                    }
+                }
+            }
+        }
     }
     #endregion IdleOrder
+
+    #region MissionOrder // Busy in any kind
+    [Serializable]
+    public sealed class MissionOrder : FleetOrder // Busy in any kind
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_MISSION");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_MISSION");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_MISSION"), Status);
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new MissionOrder();
+        }
+    }
+    #endregion MissionOrder
 
     #region StrandedOrder
     [Serializable]
@@ -245,6 +308,7 @@ namespace Supremacy.Orbitals
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_STRANDED");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_STRANDED");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_STRANDED"), Status);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
@@ -261,6 +325,7 @@ namespace Supremacy.Orbitals
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_NONE");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_NONE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_REDEPLOY_NONE"), Status);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
@@ -338,6 +403,7 @@ namespace Supremacy.Orbitals
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_REDEPLOY_SAME"), Status);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
@@ -374,8 +440,8 @@ namespace Supremacy.Orbitals
             int howMany = 0;
             foreach (var item in fleetsSameType)
             {
-                if (item.Order/*.OrderName*/ == FleetOrders.RedeploySameOrder/*.OrderName*/ 
-                    || item.Order == FleetOrders.RedeployAllOrder 
+                if (item.Order/*.OrderName*/ == FleetOrders.RedeploySameOrder/*.OrderName*/
+                    || item.Order == FleetOrders.RedeployAllOrder
                     || item.Order == FleetOrders.RedeployNoneOrder)
                     howMany += 1;
             }
@@ -429,7 +495,7 @@ namespace Supremacy.Orbitals
                 //aFeet.RemoveShip(ship);
                 if (ship.ShipType == type)
                 {
-                    fleet.AddShip(ship);
+                    //fleet.AddShip(ship);  // redeploysame
                     fleet.Location = location;
 
                     _text = "RedeploySame:;"
@@ -439,7 +505,7 @@ namespace Supremacy.Orbitals
                     Console.WriteLine(_text);
                 }
             }
-            fleet.Order = FleetOrders.EngageOrder;
+            //fleet.Order = FleetOrders.IdleOrder;
         }
     }
     #endregion RedeploySameOrder
@@ -452,6 +518,7 @@ namespace Supremacy.Orbitals
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_REDEPLOY_ALL"), Status);
         public override bool WillEngageHostiles => false;
         public override FleetOrder Create()
         {
@@ -506,23 +573,432 @@ namespace Supremacy.Orbitals
             {
                 Ship ship = aFeet.Ships.Last();
                 MapLocation location = ship.Location;
+
+                //fleet.AddShip(ship); // redeployALL
+                fleet.Location = location;
+
+                // works
+                _text = "Step_5555:; RedeployAll is done for:;"
+                + "Fleet; " + ship.Name
+                + " Ship:;" + ship.ObjectID
+                ;
+                Console.WriteLine(_text);
+
+            }
+            //fleet.Order = FleetOrders.IdleOrder;
+        }
+    }
+    #endregion RedeployAllOrder
+
+
+    #region AccumulateLocation_Set_Here
+    [Serializable]
+    public sealed class AccumulateLocation_Set_Here_Order : FleetOrder // all = all own ships in the sector
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_SET_HERE");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_SET_HERE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_SET_HERE"), Status);
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            if (Fleet == null)
+                return new AccumulateLocation_Set_Here_Order();
+
+            Fleet fleet = Fleet;
+            MapLocation _accumulateLocation = GameContext.Current.CivilizationManagers[fleet.Owner].AccumulateLocation;
+
+            if (Fleet == null)
+            {
+                _text = "Step_3782:; AccumulateLocation_Set_Here_Order for:"
+                    //+ ";Fleet; " + fleet.Name
+                    //+ " ;Ship:;" + fleet.ObjectID
+                    + " ; > Fleet was null (unsolved)"
+                    ;
+                Console.WriteLine(_text);
+                return new AccumulateLocation_Set_Here_Order();
+            }
+            else
+            {
+                _text = "Step_3783:; AccumulateLocation_Set_Here_Order for:"
+                    //+ ";Fleet; " + fleet.Name
+                    //+ " ;Ship:;" + fleet.ObjectID
+                    + " ; > Fleet was NOT null :-)"
+                    ;
+                Console.WriteLine(_text);
+                GameContext.Current.CivilizationManagers[fleet.Owner].AccumulateLocation = fleet.Location;
+                //GameContext.Current.CivilizationManagers[fleet.Owner].AccumulateLocation 
+            }
+
+
+
+
+            ////GameContext.Current.CivilizationManagers[fleet.Owner].AccumulateLocation = 
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //civM.AccumulateLocation = fleet.Location;
+            //civM.AccumulateSector = new Sector(fleet.Location);
+            //_text = "Step_3765:; AccumulateLocation_Set_Here_Order for:"
+            //        + ";Fleet; " + fleet.Name
+            //        + " ;Ship:;" + fleet.ObjectID
+            //        + " ;to:;" + civM.AccumulateLocation
+            //        + " ;=;" + civM.AccumulateSector.ToString()
+            //        ;
+            //Console.WriteLine(_text);
+
+            if (fleet != null)
+                SetAccumulatePlace();
+
+            return new AccumulateLocation_Set_Here_Order();
+        }
+
+        //private void AccumulateLocation_Set_Here_Order()
+        //{
+
+        //}
+
+        private void SetAccumulatePlace()
+        {
+            if (Fleet == null)
+                return;
+            Fleet fleet = Fleet;
+            //if (fleet)
+            CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            civM.AccumulateLocation = fleet.Location;
+            civM.AccumulateSector = new Sector(fleet.Location);
+            _text = "Step_3765:; AccumulateLocation_* Set *_Here_Order to "
+                    + " ;to:;" + civM.AccumulateLocation
+                    + " ;=;" + civM.AccumulateSector.ToString()
+                    + ";from Fleet; " + fleet.Name
+                    + " ;Ship:;" + fleet.ObjectID
+
+                    ;
+            Console.WriteLine(_text);
+        }
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            //if (!base.IsValidOrder(fleet))
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System == null)
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System.Colony == null)
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
+            //{
+            //    return false;
+            //}
+            return true;
+            //_text = "ShipOrder 'AccumulateLocation_Set_Here_Order' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+            //return false;
+
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
+
+            //if (_fleets.Count < 2)
+            //    return false;
+
+            //if (fleet.Owner != null)
+            //{
+            //    foreach (var item in _fleets)
+            //    {
+            //        if (fleet.Owner == item.Owner)
+            //            return true;
+            //    }
+
+            //    //return false;
+            //}
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            //return true;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // AccumulateLocation_Set_Here_Order
+        {
+            if (Fleet == null)
+                return;
+
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //civM.AccumulateLocation = fleet.Location;
+            //_text = "Step_3765:; AccumulateLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + fleet.Name
+            //    + " ;Ship:;" + fleet.ObjectID
+            //    ;
+            //Console.WriteLine(_text);
+            //}
+            Fleet.Order = FleetOrders.AccumulateLocation_Go_There_Order;
+
+            SetAccumulatePlace();
+
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
+
+            //foreach (Fleet aFeet in _fleets)
+            //{
+            //    Ship ship = aFeet.Ships.Last();
+            //    MapLocation location = ship.Location;
+            //    //aFeet.RemoveShip(ship);
+            //    //if (ship.ShipType == type)
+            //    //{
+            //    fleet.AddShip(ship);
+            //    fleet.Location = location;
+
+            //    _text = "Step_3765:; AccumulateLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + ship.Name
+            //    + " ;Ship:;" + ship.ObjectID
+            //    ;
+            //    Console.WriteLine(_text);
+            //    //}
+            //    fleet.Order = FleetOrders.AccumulateLocation_Go_There_Order;
+            //}
+            //fleet.Order = FleetOrders.AccumulateLocation_Set_Here_Order;
+        }
+
+        protected internal override void OnTurnEnding()  // AccumulateLocation_Set_Here_Order
+        {
+            if (Fleet == null)
+                return;
+
+            base.OnTurnEnding();
+
+            Fleet fleet = Fleet;
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //civM.AccumulateLocation = fleet.Location;
+            //_text = "Step_3765:; AccumulateLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + fleet.Name
+            //    + " ;Ship:;" + fleet.ObjectID
+            //    ;
+            //Console.WriteLine(_text);
+            //}
+            Fleet.Order = FleetOrders.AccumulateLocation_Go_There_Order;
+
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
+
+            //foreach (Fleet aFeet in _fleets)
+            //{
+            //    Ship ship = aFeet.Ships.Last();
+            //    MapLocation location = ship.Location;
+            //    //aFeet.RemoveShip(ship);
+            //    //if (ship.ShipType == type)
+            //    //{
+            //    fleet.AddShip(ship);
+            //    fleet.Location = location;
+
+            //    _text = "Step_3765:; AccumulateLocation_Set_Here_Order for:"
+            //    + ";Fleet; " + ship.Name
+            //    + " ;Ship:;" + ship.ObjectID
+            //    ;
+            //    Console.WriteLine(_text);
+            //    //}
+            //    fleet.Order = FleetOrders.AccumulateLocation_Go_There_Order;
+            //}
+            //fleet.Order = FleetOrders.AccumulateLocation_Set_Here_Order;
+        }
+    }
+    #endregion AccumulateLocation_Set_Here
+
+    #region AccumulateLocation_Go_There
+    [Serializable]
+    public sealed class AccumulateLocation_Go_There_Order : FleetOrder // all = all own ships in the sector
+    {
+        private string _text = "";
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_GO_THERE")/*, Status*/);
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            //Fleet.SetRoute = Fleet.SetRoute(AStar.FindPath(Fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { accumulateSector }));
+            return new AccumulateLocation_Go_There_Order();
+        }
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (fleet == null)
+                return false;
+
+            //_text += _text;  // dummy > just keep
+
+            //_text = "ShipOrder 'AccumulateLocation_Go_There_Order' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+            //return false;
+
+            return true;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // AccumulateLocation_Go_There_Order
+        {
+            if (Fleet == null)
+                return;
+
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+            IEnumerable<Sector> _deathStars = GameContext.Current.Universe.FindStarType<Sector>(StarType.BlackHole).ToList()
+                .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
+
+            MapLocation accumulateLocation = new MapLocation(civM.AccumulateLocation.X, civM.AccumulateLocation.Y);
+            //accumulateLocation.X = civM.AccumulateLocation.X;
+            //accumulateLocation.Y = civM.AccumulateLocation.X;
+            Sector accumulateSector = new Sector(accumulateLocation);
+
+
+            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { accumulateSector }));
+            //ShipType type = fleet.Ships[0].ShipType;
+            fleet.Order = FleetOrders.AccumulateLocation_Go_There_Order;
+            //fleet.Activity = UnitActivity.Mission;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            foreach (Fleet aFeet in fleets)
+            {
+                if (aFeet.Ships == null)
+                {
+                    continue;
+                }
+                Ship ship = aFeet.Ships.Last();
+                MapLocation location = ship.Location;
                 //aFeet.RemoveShip(ship);
                 //if (ship.ShipType == type)
                 //{
-                fleet.AddShip(ship);
+                //fleet.AddShip(ship);
                 fleet.Location = location;
 
-                _text = "RedeployAll:;"
+
+                _text = "Step_3766:; " + GameEngine.LocationString(fleet.Location.ToString())
+                        + " ; " + ship.ObjectID
+                        + "; " + ship.Name
+                        + "; " + ship.Design
+                        + " > go to AccumulateLocation= " + civM.AccumulateLocation
+                        ;
+                //Console.WriteLine(_text);
+                //}
+            }
+
+        }
+    }
+    #endregion AccumulateLocation_Go_There
+
+    #region AccumulateQuitOrder  
+    [Serializable]
+    public sealed class AccumulateQuitOrder : FleetOrder // all = all own ships in the sector
+    {
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_QUIT");
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_QUIT");
+
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_ACCUMULATE_QUIT"), Status);
+
+        public override bool WillEngageHostiles => false;
+        public override FleetOrder Create()
+        {
+            return new AccumulateQuitOrder();
+        }
+        public override bool IsValidOrder(Fleet fleet)  // AccumulateQuitOrder
+        {
+
+            return true;
+
+            //CivilizationManager civM = GameContext.Current.CivilizationManagers[fleet.Owner];
+
+            //MapLocation null_location = new MapLocation(99, 99);
+
+            //if (civM.AccumulateLocation != null && civM.AccumulateLocation != null_location)
+            //{
+            //    MapLocation null_location = new MapLocation(99,99);
+            //    civM.AccumulateLocation = null_location;
+            //    civM.AccumulateLocation = fleet.Location;
+            //}
+
+            //civM.AccumulateLocation = fleet.Location;
+            //_text = "ShipOrder 'AccumulateQuitOrder' is turned off due to not working yet";
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.Production.DebugFormat(_text);
+
+            //List<Fleet> _fleets = fleet.Sector.GetFleets().ToList();
+
+            //if (_fleets.Count < 2)
+            //    return false;
+
+            //if (fleet.Owner != null)
+            //{
+            //    foreach (var item in _fleets)
+            //    {
+            //        if (fleet.Owner == item.Owner)
+            //            return true;
+            //    }
+
+            //    return false;
+            //}
+
+            //if (!fleet.Sector.System.IsHabitable(fleet.Owner.Race))
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
+            //{
+            //    return false;
+            //}
+
+            //return false;  // to be done: coding !!
+        }
+        protected internal override void OnTurnBeginning()  // AccumulateQuitOrder
+        {
+            base.OnTurnBeginning();
+
+            Fleet fleet = Fleet;
+            //ShipType type = fleet.Ships[0].ShipType;
+
+            List<Fleet> fleets = fleet.Sector.GetFleets().ToList();
+
+            foreach (Fleet aFeet in fleets)
+            {
+                Ship ship = aFeet.Ships.Last();
+                MapLocation location = ship.Location;
+                //aFeet.RemoveShip(ship);
+                //if (ship.ShipType == type)
+                //{
+                //fleet.AddShip(ship); // AccumulateQuit
+                fleet.Location = location;
+
+                _text = "AccumulateQuit:;"
                 + "Fleet; " + ship.Name
                 + " Ship:;" + ship.ObjectID
                 ;
                 Console.WriteLine(_text);
                 //}
             }
-            fleet.Order = FleetOrders.EngageOrder;
+            //fleet.Order = FleetOrders.IdleOrder;
         }
     }
-    #endregion RedeployAllOrder
+    #endregion AccumulateQuitOrder
 
 
     #region DefendOrder
@@ -531,6 +1007,7 @@ namespace Supremacy.Orbitals
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_DEFEND");
         public override string Status => ResourceManager.GetString("FLEET_ORDER_DEFEND");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_DEFEND"), Status);
         public override bool WillEngageHostiles => true;
         public override FleetOrder Create()
         {
@@ -636,11 +1113,17 @@ namespace Supremacy.Orbitals
                 return;
             }
 
+            if (Fleet.Sector.System != null && Fleet.Sector.System.HasColony)
+            {
+                return;
+            }
+
+            // DoColonize = new colony
             Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
             colony.ObjectID = GameContext.Current.GenerateID();
-            colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity;
+            colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity; // population on new colony
             colony.Population.Reset();
             colony.Name = Fleet.Sector.System.Name;
             colony.Owner = Fleet.Owner;
@@ -649,20 +1132,20 @@ namespace Supremacy.Orbitals
             Fleet.Sector.System.Colony = colony;
 
             GameContext.Current.Universe.Objects.Add(colony);
-            civManager.Colonies.Add(colony);
-            colony.Morale.BaseValue = civManager.Civilization.BaseMoraleLevel;
+            _civM.Colonies.Add(colony);
+            colony.Morale.BaseValue = _civM.Civilization.BaseMoraleLevel;
 
             colony.Morale.Reset();
 
             ColonyBuilder.Build(colony);
 
-            civManager.MapData.SetScanned(colony.Location, true, 1);
-            civManager.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
+            _civM.MapData.SetScanned(colony.Location, true, 1);
+            _civM.ApplyMoraleEvent(MoraleEvent.ColonizeSystem, Fleet.Sector.System.Location);
 
-            _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
-            _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED"), colony.Name, colony.Location);
-            civManager.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
-            //civManager.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
+            _text = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_HEADER"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
+            _detailText = string.Format(ResourceManager.GetString("SITREP_NEW_COLONY_ESTABLISHED_DETAIL"), colony.Name, GameEngine.LocationString(colony.Location.ToString()));
+            _civM.SitRepEntries.Add(new ReportEntry_ShowColony(Fleet.Owner, colony, _text, _detailText, "GeneralEvents/NewColonyEstablished.png", SitRepPriority.Blue));
+            //_civM.SitRepEntries.Add(new NewColonySitRepEntry(Fleet.Owner, colony));
 
             _ = GameContext.Current.Universe.Destroy(colonyShip);
         }
@@ -684,22 +1167,16 @@ namespace Supremacy.Orbitals
     public sealed class MedicalOrder : FleetOrder
     {
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_MEDICAL");
-
         public override string Status => ResourceManager.GetString("FLEET_ORDER_MEDICAL");
-
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_MEDICAL"), Status);
         public override FleetOrder Create()
         {
             return new MedicalOrder();
         }
-
         public override bool IsCancelledOnMove => true;
-
         public override bool IsCancelledOnRouteChange => true;
-
         public override bool IsRouteCancelledOnAssign => true;
-
         public override bool WillEngageHostiles => false;
-
         public override bool IsValidOrder(Fleet fleet)
         {
             if (!base.IsValidOrder(fleet))
@@ -710,112 +1187,203 @@ namespace Supremacy.Orbitals
             {
                 return false;
             }
-            if (fleet.Sector.System.Colony == null)
-            {
-                return false;
-            }
-            if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
-            {
-                return false;
-            }
+            //if (fleet.Sector.System.Colony == null)
+            //{
+            //    return false;
+            //}
+            //if (fleet.Sector.System.Colony.Health.CurrentValue == 100)
+            //{
+            //    return false;
+            //}
             return fleet.Ships.Any(s => s.ShipType == ShipType.Medical);
         }
 
-        protected internal override void OnTurnEnding()
+        protected internal override void OnTurnEnding()  // MedicalOrder
         {
-            string blank = " ";
-
-            //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
-            //PopHealth = 0.16 (not 16)
+            string _text;
+            //Medicate the colony --- // PopulationHealth is a percent value !!  
+            // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
+            // PopHealth = 0.16 (not 16)
             //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
-            Colony colony = Fleet.Sector.System.Colony;
-            int oldHealth = colony.Health.CurrentValue;
-            float healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
-            //healthAdjustment = helpByShip / 10;
-            if (healthAdjustment > 1.24f)
+
+            int _delta_trust = 5;
+            int _delta_regard = 8;
+            int oldHealth = 0;
+            float healthAdjustment = 0f;
+
+            if (Fleet is null)
+            { _text = "do nothing"; }
+            else
             {
-                healthAdjustment = 1.24f;
-            }
-
-            if (Fleet.Sector.System.Colony is null)
-            { /*do nothing*/ }
-            else if (Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
-            {
-                _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
-                Fleet.Sector.System.Colony.Health.UpdateAndReset();
-
-
-                string _text = Fleet.ObjectID
-                    + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help at"
-                    + blank + Fleet.Sector.System.Colony.Name
-                    //+ blank + Fleet.Sector.System.Colony.ObjectID 
-                    + blank + Fleet.Sector.System.Colony.Location + ": value adjusted ="
-                    + blank + healthAdjustment + "%, new ="
-                    + blank + Fleet.Sector.System.Colony.Health.CurrentValue
-                    + blank + "(old=" + oldHealth + ")";
-
-                Console.WriteLine(_text);
-                GameLog.Core.ColoniesDetails.DebugFormat(_text);
-                //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
-                //    , Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
-                //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
-                //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
-
-                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > " + Fleet.Name + " (our Medical Ship) provided help: new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
-                GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
-
-                _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from " + Fleet.Name + " ( " + Fleet.Owner.ShortName + " Medical Ship ): new health: " + Fleet.Sector.System.Colony.Health.CurrentValue + " ( before: " + oldHealth + " )";
-                GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
-            }
-
-            //If the colony is not ours, just doing small medical help + increase regard + trust etc
-            if (Fleet.Sector.System.Colony is null) // currentx
-            {
-                //do nothing
-            }
-            else if (Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
-            {
-                ForeignPower foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
-                healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
-
-                // only small medical help = +1
-                _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
-                Fleet.Sector.System.Colony.Health.UpdateAndReset();
-                //ToDo: SitRep
-
-                // send a medical ship to other civilization's colony and get trust
-                if (Fleet.Sector.System.Colony.Owner != Fleet.Owner && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
+                Colony colony = Fleet.Sector.System.Colony;
+                oldHealth = colony.Health.CurrentValue;
+                if (oldHealth > 98)
                 {
-                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 50);
-                    DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, 55);
-                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                    goto Skip_Help;
                 }
-                // Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
-                else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
+                healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
+                //healthAdjustment = helpByShip / 10;
+                if (healthAdjustment > 1.24f)
                 {
-                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -55);
-                    DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, -65);
-                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
-                    foreignPower.CancelTreaty();
-                    //firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
+                    healthAdjustment = 1.24f;
                 }
 
-                string _text = Fleet.ObjectID
-                    + blank + Fleet.Name + " doing Medical help at "
-                    + blank + Fleet.Sector.System.Colony.Name
-                    //+ blank + Fleet.Sector.System.Colony.ObjectID 
-                    + blank + Fleet.Sector.System.Colony.Location + ": value adjusted = "
-                    + blank + healthAdjustment + "%, new = "
-                    + blank + Fleet.Sector.System.Colony.Health.CurrentValue;
+                if (healthAdjustment < 1.10f)
+                {
+                    healthAdjustment = 1.10f;
+                }
 
-                Console.WriteLine(_text);
-                GameLog.Core.ColoniesDetails.DebugFormat(_text);
+
+                if (Fleet.Sector.System.Colony is null)
+                { _text = "do nothing"; }
+                else if (Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
+                {
+                    _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(1); // at least 1
+                    Fleet.Sector.System.Colony.Health.UpdateAndReset();
+                    _ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
+                    Fleet.Sector.System.Colony.Health.UpdateAndReset();
+
+                    //301 RSE Torvath 1(Medical Ship I Torvath Class) doing Medical help at Romulus(13, 13): value adjusted = 1,08 %, new = 92(old = 86)
+                    _text = "Step_3987:; " + Fleet.Sector.System.Colony.Location
+                        + " " + Fleet.Sector.System.Colony.Name
+                        + " > " /*+ Fleet.ObjectID*/
+                        + " " + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help: value adjusted ="
+                        //+ " " + ": value adjusted ="
+                        + " " + healthAdjustment + "%, new ="
+                        + " " + Fleet.Sector.System.Colony.Health.CurrentValue
+                        + " " + "(old=" + oldHealth + ")";
+
+                    Console.WriteLine(_text);
+                    //GameLog.Core.ColoniesDetails.DebugFormat(_text);
+                    //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
+                    //    , Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
+                    //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
+                    //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
+
+                    _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name 
+                        + " * (our Medical Ship) provided help: health before: " + oldHealth 
+                        + " > new: " + Fleet.Sector.System.Colony.Health.CurrentValue;
+                    GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
+                        .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                    //Console.WriteLine(_text);
+
+                    _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * " 
+                        + Fleet.Name + " * ( " + Fleet.Owner.ShortName 
+                        + " Medical Ship ): health before: " + oldHealth + " > new: " 
+                        + Fleet.Sector.System.Colony.Health.CurrentValue;
+                    GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
+                        .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                    //Console.WriteLine(_text);
+                }
+
+                //for actual help > double values
+                _delta_trust *= 2;
+                _delta_regard *= 2;
+
+            Skip_Help:;
+                //If the colony is not ours, just doing small medical help + increase regard + trust etc
+                if (Fleet.Sector.System.Colony is null) // currentx
+                {
+                    _text = "do nothing";
+                }
+                else if (Fleet.Sector.System.Owner != null
+                    && Fleet.Sector.System.Colony.Owner != null
+                    && Fleet.Sector.System.Owner != Fleet.Owner)
+                {
+                    ForeignPower foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
+                    // healt was already Adjusted above
+                    //healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
+
+                    // only small medical help = +1
+                    //_ = Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);  // 10%
+                    //Fleet.Sector.System.Colony.Health.UpdateAndReset();
+                    //ToDo: SitRep
+
+                    // send a medical ship to other civilization's colony and get trust
+                    if (Fleet.Sector.System.Colony.Owner != Fleet.Owner
+                        && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
+                    {
+                        DiplomacyHelper.Apply_TrustChange("Medical help by fleet",_delta_trust,Fleet.Sector.System.Owner, Fleet.Owner );
+                        DiplomacyHelper.ApplyRegardChange("Medical help by fleet", _delta_regard,Fleet.Sector.System.Owner, Fleet.Owner );
+                        Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name
+                            + " * (our Medical Ship) provided help and increased: TRUST +"+ _delta_trust 
+                            +", REGARD +" + _delta_regard
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        //Console.WriteLine(_text);
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got medical supply from * "
+                            + Fleet.Name + " * ( " + Fleet.Owner.ShortName
+                            + " Medical Ship ): this increased: TRUST +" + _delta_trust
+                            + ", REGARD +" + _delta_regard
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        //Console.WriteLine(_text);
+                    }
+                    // Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
+                    else if (GameContext.Current.AgreementMatrix
+                        .IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
+                    {
+                        DiplomacyHelper.Apply_TrustChange("Fleet provided NO medical help", _delta_trust * -1, Fleet.Sector.System.Owner, Fleet.Owner);
+                        DiplomacyHelper.ApplyRegardChange("Fleet provided NO medical help", _delta_regard * -1, Fleet.Sector.System.Owner, Fleet.Owner);
+                        Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
+                        // foreignPower.CancelTreaty();  // no cancel, just decrease regard+trust
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > * " + Fleet.Name
+                            + " * (our Medical Ship) provided NO help. This decreased: TRUST -" + _delta_trust * -1
+                            + ", REGARD +" + _delta_regard *-1
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        Console.WriteLine(_text);
+
+                        _text = Fleet.Location + " " + Fleet.Sector.System.Name + " > We got NO medical supply from * "
+                            + Fleet.Name + " * ( " + Fleet.Owner.ShortName
+                            + " Medical Ship ): This decreased: TRUST -" + _delta_trust *-1
+                            + ", REGARD +" + _delta_regard *-1
+                            ;
+                        GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries
+                            .Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.Gray));
+                        Console.WriteLine(_text);
+
+
+                        //firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                        //secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                        ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
+                    }
+
+                    _text = Fleet.ObjectID
+                        + " " + Fleet.Name + " at "
+                        + " " + Fleet.Sector.System.Colony.Name
+                        //+ " " + Fleet.Sector.System.Colony.ObjectID 
+                        + " " + Fleet.Sector.System.Colony.Location + ": REGARD + TRUST adjusted = "
+                        ;
+
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.ColoniesDetails.DebugFormat(_text);
+                }
             }
         }
 
-        public override bool IsComplete => Fleet.Sector.System.Colony.Health.CurrentValue >= 100;
+        public override bool IsComplete
+        { 
+            get
+            {
+                if (Fleet is null)
+                {
+                    return true;
+                }
+                else
+                {
+                    Fleet.Order = FleetOrders.IdleOrder;
+                    return Fleet.Sector.System.Colony.Health.CurrentValue > 94;
+                }
+            }
+        }
     }
     #endregion
 
@@ -829,6 +1397,7 @@ namespace Supremacy.Orbitals
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_SPY_ON");
 
         public override string Status => ResourceManager.GetString("FLEET_ORDER_SPY_ON");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_SPY_ON"), Status);
 
         public override FleetOrder Create()
         {
@@ -867,12 +1436,12 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            //var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //var _civM = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
             {
                 return false;
             }
-            // if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
+            // if (_civM.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
             // return false;
             if (fleet.Sector.System == null)
             {
@@ -899,10 +1468,11 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
-            {
-                return false;
-            }
+            // 2025-01-05
+            //if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
+            //{
+            //    return false;
+            //}
 
             foreach (Ship ship in fleet.Ships)
             {
@@ -952,7 +1522,7 @@ namespace Supremacy.Orbitals
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
             UniverseObjectList<Colony> colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
-            //var civManager = GameContext.Current.CivilizationManagers[civ];
+                                                                                                                   //var _civM = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             //if (defenseIntelligence - 1 < 0.1)
@@ -1121,6 +1691,7 @@ namespace Supremacy.Orbitals
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_SABOTAGE");
 
         public override string Status => ResourceManager.GetString("FLEET_ORDER_SABOTAGE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_SABOTAGE"), Status);
 
         public override FleetOrder Create()
         {
@@ -1226,7 +1797,7 @@ namespace Supremacy.Orbitals
         private static void CreateSabotage(Civilization civ, StarSystem system)
         {
             //var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[civ.Key];
             int ratioLevel = 1;
 
             int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
@@ -1256,7 +1827,7 @@ namespace Supremacy.Orbitals
                 system.Colony.GetEnergyUsage(),
                 system.Colony.GetActiveFacilities(ProductionCategory.Energy),
                 system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities before={1}",
+            GameLog.Core.Intel.DebugFormat("{0}: Facilities_Total3_Energy before={1}",
                 system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
 
             //Effect of sabatoge
@@ -1286,20 +1857,142 @@ namespace Supremacy.Orbitals
 
             if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 0)
             {
-                CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[system.Owner];
-                attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+                CivilizationManager attacked_civM = GameContext.Current.CivilizationManagers[system.Owner];
+                attacked_civM.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                        system.Owner, civ, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
 
-                civManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
+                _civM.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                         civ, system.Owner, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
             }
-            //GameLog.Core.Intel.DebugFormat("{0}: TotalEnergyFacilities after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
-            //civManager.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
+            //GameLog.Core.Intel.DebugFormat("{0}: Facilities_Total3_Energy after={1}", system.Name, system.Colony.GetTotalFacilities(ProductionCategory.Energy));
+            //_civM.SitRepEntries.Add(new NewSabotageFromShipSitRepEntry(civ, system.Colony, removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy)));
 
         }
     }
 
     #endregion
+
+    #region ScrapShip // 2023-07-29
+
+    [Serializable]
+    // Diplomatic mission ... by sending a diplomatic ship, treaties are easier to make in DiplomaticScreen
+    // positive: ...increasing Regard + Trust
+    // negative: ...exit membership from foreign empire
+    // positive to your systems, colonies: increasing morale earth first
+    public sealed class ScrapShipOrder : FleetOrder
+    {
+        private readonly bool _isComplete;
+        private string _text;
+
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_SCRAP_SHIP");
+
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_SCRAP_SHIP");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_SCRAP_SHIP"), Status);
+
+        public override FleetOrder Create()
+        {
+            return new ScrapShipOrder();
+        }
+
+        public override bool IsComplete => _isComplete;
+
+        public override bool IsCancelledOnRouteChange => true;
+
+        public override bool IsRouteCancelledOnAssign => true;
+
+        public override bool WillEngageHostiles => false;
+
+        public ScrapShipOrder()
+        {
+            _isComplete = false;
+        }
+
+        //private Ship FindBestScrapShipShip()
+        //{
+        //    Ship bestShip = null;
+        //    foreach (Ship ship in Fleet.Ships)
+        //    {
+        //        if (ship.ShipType == ShipType.Diplomatic)
+        //        {
+        //            if ((bestShip == null)
+        //                || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
+        //            {
+        //                bestShip = ship;
+        //            }
+        //        }
+        //    }
+        //    return bestShip;
+        //}
+
+        public override bool IsValidOrder(Fleet fleet)
+        {
+            if (!base.IsValidOrder(fleet))
+            {
+                return false;
+            }
+
+            if (fleet.Sector.System == null)
+            {
+                return false;
+            }
+
+            //if (fleet.Sector.System.Name != fleet.Owner.HomeSystemName)
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Sector.System.HasColony)
+            //{
+            //    return false;
+            //}
+
+            //if (!fleet.Ships.Any(s => s.ShipType == ShipType.Diplomatic))
+            //{
+            //    return false;
+            //}
+
+            //if (fleet.Sector.System.Owner.Key == "BORG")
+            //{
+            //    return false;
+            //}
+
+            return true;
+        }
+
+        protected internal override void OnTurnBeginning()
+        {
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            base.OnTurnBeginning();
+            if (_isComplete)
+            {
+                return;
+            }
+            _text = Fleet.Location
+                + " > " + Fleet.ObjectID
+                + ": * " + Fleet.Name
+                + " * ( " + Fleet.ClassName
+                + " ) > " + ResourceManager.GetString("SCRAPPED")
+                ;
+
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(
+                    Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+
+            Fleet.Destroy(); // Order was SCRAPPED
+
+        }
+
+        protected internal override void OnOrderAssigned()
+        {
+            base.OnOrderAssigned();
+            if (!Fleet.Route.IsEmpty)
+            {
+                Fleet.Route = TravelRoute.Empty;
+            }
+        }
+
+    }
+
+    #endregion ScrapShip
 
     #region InfluenceOrder
 
@@ -1311,10 +2004,12 @@ namespace Supremacy.Orbitals
     public sealed class InfluenceOrder : FleetOrder
     {
         private readonly bool _isComplete;
+        //private string _text;
 
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_INFLUENCE");
 
         public override string Status => ResourceManager.GetString("FLEET_ORDER_INFLUENCE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_INFLUENCE"), Status);
 
         public override FleetOrder Create()
         {
@@ -1388,6 +2083,7 @@ namespace Supremacy.Orbitals
             {
                 return;
             }
+            string _text = "";
 
             Ship _influenceShip = FindBestInfluenceShip();
             if (_influenceShip == null)
@@ -1402,17 +2098,30 @@ namespace Supremacy.Orbitals
             // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
             // - maxValue for Regard= 1000 .... from Regard treaties are affected (see \Resources\Data\DiplomacyTables.txt Line 1 RegardLevels
 
+            UnitAI.CreateUpdateFleetText(Fleet, out string _fleetText);
+
             // part 1: increase morale at own colony  // not above 95 so it's just for bad morale (population in bad mood)
             if (Fleet.Sector.System.Owner == Fleet.Owner)
             {
-                GameLog.Core.Diplomacy.DebugFormat("{0} is influencing their colony at {1}",
-                    Fleet.Owner, Fleet.Sector.System.Name);
+                _text = GameEngine.LocationString(Fleet.Location.ToString())
+                     + _fleetText
+                     + " is influencing the colony"
+                     ;
+                Console.WriteLine("Step_5432:; " + _text);
+                //GameLog.Core.Diplomacy.DebugFormat(_text);
                 if (Fleet.Sector.System.Colony.Morale.CurrentValue < 95)
                 {
                     _ = Fleet.Sector.System.Colony.Morale.AdjustCurrent(+3);
                     Fleet.Sector.System.Colony.Morale.UpdateAndReset();
-                    GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
-                        influencerCiv, Fleet.Sector.System.Name);
+
+                    _text = GameEngine.LocationString(Fleet.Location.ToString())
+                         + _fleetText
+                         + " successfully increased the morale"
+                         ;
+                    Console.WriteLine("Step_5434:; " + _text);
+                    //GameLog.Core.Diplomacy.DebugFormat(_text);
+                    //GameLog.Core.Diplomacy.DebugFormat("{0} successfully increased the morale at {1}",
+                    //    influencerCiv, Fleet.Sector.System.Name);
                 }
                 return;
             }
@@ -1421,12 +2130,21 @@ namespace Supremacy.Orbitals
             {
                 Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
                 ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
-                DiplomacyHelper.ApplyRegardChange(influencerCiv.Civilization, influencedCiv.Civilization, +55);
+                DiplomacyHelper.ApplyRegardChange("system influenced",+25, influencerCiv.Civilization, influencedCiv.Civilization);
                 //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
-                DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +50);
-                GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2} regard ={3} trust ={4}",
-                       influencerCiv, influencedCiv, Fleet.Sector.System,
-                       foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
+                DiplomacyHelper.Apply_TrustChange("system influenced", +20, influencerCiv.Civilization, influencedCiv.Civilization);
+
+                _text = _fleetText + " > "
+                         + influencerCiv.Civilization + " is attempting to influence the "
+                         + influencedCiv.Civilization
+                         + ", regard = " + foreignPower.DiplomacyData.Regard.CurrentValue
+                         + ", trust = " + foreignPower.DiplomacyData.Trust.CurrentValue
+                         ;
+                Console.WriteLine("Step_5438:; " + _text);
+
+                //GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2} regard ={3} trust ={4}",
+                //       influencerCiv, influencedCiv, Fleet.Sector.System,
+                //       foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
             }
         }
 
@@ -1492,11 +2210,11 @@ namespace Supremacy.Orbitals
                     ResourceManager.GetString("FLEET_ORDER_STATUS_TOW"),
                     TargetFleet);
 
-        public override string DisplayText
+        public override string TaskForceStatusText // (Fleet fleet) > status or eta x Turns (to go) 
         {
             get
             {
-                if (!Fleet.Route.IsEmpty)
+                if (Fleet != null && !Fleet.Route.IsEmpty)
                 {
                     int turns = Fleet.Route.Length / Fleet.Speed;
                     string formatString;
@@ -1558,7 +2276,7 @@ namespace Supremacy.Orbitals
                 TargetFleet.UnlockOrder();
             }
 
-            TargetFleet.SetOrder(FleetOrders.AvoidOrder.Create());
+            TargetFleet.SetOrder(FleetOrders.MissionOrder.Create());
             TargetFleet.LockOrder();
 
             if (TargetFleet.IsRouteLocked)
@@ -1646,12 +2364,12 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected internal override void OnTurnEnding()
+        protected internal override void OnTurnEnding()  // TowOrder
         {
             base.OnTurnEnding();
 
             Fleet targetFleet = TargetFleet;
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
 
             if (targetFleet != null)
             {
@@ -1659,7 +2377,7 @@ namespace Supremacy.Orbitals
                 if ((ship != null) && (!FleetHelper.IsFleetInFuelRange(targetFleet)))
                 {
                     int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
-                    _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+                    _ = ship.FuelReserve.AdjustCurrent(_civM.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
                 }
             }
 
@@ -1725,30 +2443,16 @@ namespace Supremacy.Orbitals
     {
         private MapLocation _startingLocation;
 
+        [NonSerialized]
+        private string _text;
+
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE");
-
-        public override string Status => string.Format(
-                    ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"),
-                    Fleet);
-
-        public override string DisplayText => string.Format(
-                    ResourceManager.GetString("ORDER_ENTER_WORMHOLE"),
-                    Status);
-
+        public override string Status => string.Format(ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"), Fleet);
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("ORDER_ENTER_WORMHOLE"), Status);
         public override bool WillEngageHostiles => false;
-
         public override bool IsComplete => Fleet.Location != _startingLocation;
-
-        public override FleetOrder Create()
-        {
-            return new WormholeOrder();
-        }
-
-        public override bool IsTargetRequired(Fleet fleet)
-        {
-            return false;
-        }
-
+        public override FleetOrder Create() { return new WormholeOrder(); }
+        public override bool IsTargetRequired(Fleet fleet) { return false; }
         protected internal override void OnOrderAssigned()
         {
             base.OnOrderAssigned();
@@ -1758,29 +2462,48 @@ namespace Supremacy.Orbitals
             }
         }
 
-
-        protected internal override void OnTurnEnding()
+        protected internal override void OnTurnEnding()  // WormholeOrder
         {
 
             if (Fleet != null)
             {
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+
                 //Wormhole leads nowhere so destroy the fleet
                 if (Fleet.Sector.System.WormholeDestination == null)
                 {
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
-                    GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
-                    civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
-                    Fleet.Destroy();
+                    _text = Fleet.Location
+                        + " > " + Fleet.ObjectID
+                        + " > " + Fleet.Name
+                        + " > " + Fleet.ClassName
+                        + " > " + ResourceManager.GetString("DESTROYED_BY_WORMHOLE")
+
+                        ;
+                    Console.WriteLine(_text);
+                    _civM.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                    //GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
+                    //_civM.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
+
+
+                    Fleet.Destroy(); // unstable wormhole leads nowhere, so destroy the fleet
                 }
                 else
                 {
                     Fleet.Location = (MapLocation)Fleet.Sector.System.WormholeDestination;
-                    GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
 
-                    if (IsComplete)
-                    {
-                        Fleet.SetOrder(Fleet.GetDefaultOrder());
-                    }
+                    _text = Fleet.Location
+                        + " > " + Fleet.ObjectID
+                        + " > " + Fleet.Name
+                        + " > " + Fleet.ClassName
+                        + " > " + ResourceManager.GetString("MOVED_BY_WORMHOLE")
+                        //+ " > " + ResourceManager.GetString("MOVED_BY_WORMHOLE")
+
+                        ;
+                    Console.WriteLine(_text);
+                    _civM.SitRepEntries.Add(new ReportEntry_CoS(Fleet.Owner, Fleet.Location, _text, "", "", SitRepPriority.RedYellow));
+                    //GameLog.Core.General.DebugFormat("Fleet {0} entered wormhole at {1} and was moved to {2}", Fleet.ObjectID, _startingLocation, Fleet.Location);
+
+                    if (IsComplete) { Fleet.SetOrder(Fleet.GetDefaultOrder()); }
                 }
             }
         }
@@ -1812,6 +2535,7 @@ namespace Supremacy.Orbitals
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM");
 
         public override string Status => ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM"), Status);
 
         public override bool IsCancelledOnRouteChange => true;
 
@@ -1881,8 +2605,11 @@ namespace Supremacy.Orbitals
     {
         private bool _finished;
         private StationBuildProject _buildProject;
-        private object _text;
         private string _stationDesignName;
+
+        //[NonSerialized]
+        //private string _text;
+        //private int turnnumber = GameContext.Current.TurnNumber;
 
         public StationDesign StationDesign => BuildProject.BuildDesign as StationDesign;
 
@@ -1895,10 +2622,25 @@ namespace Supremacy.Orbitals
                 if (_buildProject != null)
                     _stationDesignName = _buildProject.StationDesign.Name;
                 else
-                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION");
+                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION");
 
                 return string.Format(
-                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION"),
+                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
+                    _stationDesignName);
+            }
+        }
+
+        public override string TaskForceStatusText // unknown or FLEET_ORDER_STATUS_BUILD_STATION
+        {
+            get
+            {
+                if (_buildProject != null)
+                    _stationDesignName = _buildProject.StationDesign.Name;
+                else
+                    _stationDesignName = ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_UNKNOWN_STATION");
+
+                return string.Format(
+                    ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
                     _stationDesignName);
             }
         }
@@ -1953,9 +2695,9 @@ namespace Supremacy.Orbitals
 
             List<StationDesign> designs = new List<StationDesign>();
             List<object> targets = new List<object>();
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[source.Owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[source.Owner];
 
-            if (civManager == null)
+            if (_civM == null)
             {
                 GameLog.Core.General.WarnFormat(
                     "Failed to load CivilizationManager for fleet owner (fleet ID = {0}, owner ID = {1})",
@@ -1964,9 +2706,9 @@ namespace Supremacy.Orbitals
                 return targets;
             }
 
-            foreach (StationDesign stationDesign in civManager.TechTree.StationDesigns)
+            foreach (StationDesign stationDesign in _civM.TechTree.StationDesigns)
             {
-                if (TechTreeHelper.MeetsTechLevels(civManager, stationDesign))
+                if (TechTreeHelper.MeetsTechLevels(_civM, stationDesign))
                 {
                     designs.Add(stationDesign);
                 }
@@ -2012,7 +2754,7 @@ namespace Supremacy.Orbitals
         {
             if (fleet.Sector.Station != null)
             {
-                return false;
+                return true;
             }
 
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
@@ -2041,7 +2783,14 @@ namespace Supremacy.Orbitals
             // if build order already set, can't assign it again
             if (fleet.Order is BuildStationOrder)
             {
-                return false;
+                if (fleet.Order.PercentComplete != null)
+                {
+                    if (fleet.Order.PercentComplete * 100 < 1)
+                    {
+                        return false;
+                    }
+                }
+                
             }
 
             // can't start building if any other ship is already building an outpost
@@ -2070,7 +2819,7 @@ namespace Supremacy.Orbitals
             return true;
         }
 
-        protected internal override void OnTurnBeginning()
+        protected internal override void OnTurnBeginning()  // here Station actually are build
         {
             base.OnTurnBeginning();
 
@@ -2080,10 +2829,12 @@ namespace Supremacy.Orbitals
             }
 
             StationBuildProject project = _buildProject;
+            string _text;
 
             if (project != null)
-            { 
-                _text = project.Location + " > project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
+            {
+                _text = "Step_8380:; Turn " + GameContext.Current.TurnNumber + ": "
+                    + project.Location + "> project: Builder = " + project.Builder + ", BuildDesign = " + project.BuildDesign;
                 Console.WriteLine(_text);
                 //GameLog.Core.Stations.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             }
@@ -2093,8 +2844,8 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[project.Builder];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[project.Builder];
+            if (_civM == null)
             {
                 Civilization owner = project.ProductionCenter.Owner;
                 GameLog.Core.General.WarnFormat(
@@ -2104,10 +2855,21 @@ namespace Supremacy.Orbitals
                 return;
             }
 
+            if (_civM.Civilization.IsHuman)
+            {
+                //Debugger.Break();
+            }
+
             int buildOutput = project.ProductionCenter.GetBuildOutput(0);
+
+            int _used_Duranium_2 = 1 + _civM.Resources[ResourceType.Duranium].CurrentValue / 10;
+            int _used_Duranium_1 = 1 + _civM.AverageTechLevel * 10; // 2026-05-13
+
+            int _used_Duranium = (_used_Duranium_1 > _used_Duranium_2) ? _used_Duranium_2 : _used_Duranium_1;
+
             ResourceValueCollection resources = new ResourceValueCollection
             {
-                [ResourceType.Duranium] = civManager.Resources[ResourceType.Duranium].CurrentValue
+                [ResourceType.Duranium] = _used_Duranium
             };
 
             ResourceValueCollection usedResources = resources.Clone();
@@ -2116,20 +2878,28 @@ namespace Supremacy.Orbitals
 
             //DuraniumBefore = usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium];
 
-            _text = project.Location
+            _text = "Step_8390:; " + project.Location
                 + " > project: Builder = " + project.Builder
                 + ", BuildDesign = " + project.BuildDesign
-                + ", Duranium before = " + civManager.Resources[ResourceType.Duranium].CurrentValue
-                //+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
+                + ", Duranium before = " + _civM.Resources[ResourceType.Duranium].CurrentValue
+                + ", AdjustValue = " + _used_Duranium
                 ;
             Console.WriteLine(_text);
             //GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
-            //    , project.BuildDesign, civManager.Resources[ResourceType.Duranium].CurrentValue
+            //    , project.BuildDesign, _civM.Resources[ResourceType.Duranium].CurrentValue
             //    , usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
 
-            _ = civManager.Resources[ResourceType.Duranium].AdjustCurrent(
-                usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
+            _ = _civM.Resources[ResourceType.Duranium].AdjustCurrent(
+                //usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]);
+                _used_Duranium * -1);
 
+            _text = GameEngine.LocationString(project.Location.ToString())
+                + " > ...building a station .. used Duranium = " + _used_Duranium
+
+                ;
+            Console.WriteLine("Step_5476:; > " + _text);
+
+            _civM.SitRepEntries.Add(new ReportEntry_CoS(_civM.Civilization, project.Location, _text, _text, "", SitRepPriority.GrayDark));
         }
 
         protected internal override void OnOrderCompleted()
@@ -2148,16 +2918,20 @@ namespace Supremacy.Orbitals
                 _ = GameContext.Current.Universe.Destroy(destroyedShip);
             }
 
+            //        _text = "Step_8395: " + project.Location
+            //+ " > project: Builder = " + project.Builder
+            //+ ", BuildDesign = " + project.BuildDesign
+            //+ ", Duranium before = " + _civM.Resources[ResourceType.Duranium].CurrentValue
+            ////+ ", AdjustValue = " + usedResources[ResourceType.Duranium] - resources[ResourceType.Duranium]
+            //;
+            //Console.WriteLine(_text);
             GameLog.Core.Stations.DebugFormat("Destroyed = {0}", destroyedShip);
         }
 
         public override void OnFleetMoved()
         {
             base.OnFleetMoved();
-            if (BuildProject != null)
-            {
-                BuildProject.Cancel();
-            }
+            BuildProject?.Cancel();
         }
 
         #region FleetProductionCenter Class
@@ -2224,6 +2998,7 @@ namespace Supremacy.Orbitals
         public override string OrderName => ResourceManager.GetString("FLEET_ORDER_EXPLORE");
 
         public override string Status => ResourceManager.GetString("FLEET_ORDER_STATUS_EXPLORE");
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_STATUS_EXPLORE"), Status);
 
         public override bool WillEngageHostiles => false;
 
@@ -2245,16 +3020,136 @@ namespace Supremacy.Orbitals
             {
                 return;
             }
+            string _text;
+            string _fleetText;
 
-            if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
+            _text = "Step_5552:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
+            //Console.WriteLine(_text);
+
+            // checkScoutShips;  
+            // Minor's ships are defined as Scout with the intention to fly around like Scouts
+            //Debugger.Break();
+            if (Fleet.Owner.IsHuman) 
             {
-                if (UnitAI.GetBestSectorToExplore(Fleet, out Sector bestSector))
-                {
-                    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
-                    Fleet.UnitAIType = UnitAIType.Explorer;
-                    Fleet.Activity = UnitActivity.Mission;
-                }
+                //Debugger.Break(); 
             }
+
+            //StarSystem fleetSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;
+            //StarSystem homeSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;
+            //StarSystem bestSystem;
+
+            //if (UnitAI.GetBestSystemFor_Science(Fleet, out bestSystem))
+            //{
+            //    if (bestSystem.Location != fleetSystem.Location)
+            //    {
+            //        Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystem.Sector }));
+            //        Fleet.AITypeUnit = UnitAIType.Explorer;
+            //        Fleet.Activity = UnitActivity.Mission;
+            //    }
+            //}
+
+            //    //this crashes on OnTurnBeginning
+
+            //    //if (!Fleet.Route.IsEmpty && Fleet.Route.Waypoints.LastOrDefault().X == homeSystem.Location.X)
+            //    //{
+            //    //    if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
+            //    //    {
+            //    //        Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+            //    //        Fleet.AITypeUnit = UnitAIType.Explorer;
+            //    //        Fleet.Activity = UnitActivity.Mission;
+            //    //    }
+            //    //}
+
+            //    if (Fleet.Route.IsEmpty && (Fleet.AITypeUnit != UnitAIType.SystemAttack || Fleet.AITypeUnit != UnitAIType.Reserve))
+            //{
+            //    if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
+            //    {
+            //        Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+            //        Fleet.AITypeUnit = UnitAIType.Explorer;
+            //        Fleet.Activity = UnitActivity.Mission;
+            //    }
+            //    else
+            //    {
+            //        //StarSystem homeSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;                    
+            //        //StarSystem fleetSystem = GameContext.Current.CivilizationManagers[Fleet.OwnerID].HomeSystem;  
+
+
+            //        // fly somewhere
+            //        if (Fleet.Sector.System != null)
+            //        {
+            //            fleetSystem = Fleet.Sector.System;
+            //        }
+
+            //        if (UnitAI.GetBestSystemFor_Science(Fleet, out bestSystem))
+            //        {
+            //            if (bestSystem.Location != fleetSystem.Location)
+            //            {
+            //                //Sector _bestSystemSector = new Sector();
+            //                Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystem.Sector }));
+            //                Fleet.AITypeUnit = UnitAIType.Explorer;
+            //                Fleet.Activity = UnitActivity.Mission;
+            //            }
+            //            else
+            //            {
+            //                // 'vacation at home' 
+            //                Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
+            //                Fleet.AITypeUnit = UnitAIType.Explorer;
+            //                Fleet.Activity = UnitActivity.Mission;
+            //            }
+            //        }
+            //    }
+            //}
+            //_text = "Step_5554:; " + UnitAI.CreateUpdateFleetText(Fleet, out _fleetText);
+            //Console.WriteLine(_text);
+        }
+    }
+
+    #endregion ExploreOrder
+
+    #region TravelOrder
+
+    [Serializable]
+    public sealed class TravelOrder : FleetOrder
+    {
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_TRAVEL");
+
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_STATUS_TRAVEL");
+
+        public override string TaskForceStatusText => string.Format(ResourceManager.GetString("FLEET_ORDER_STATUS_TRAVEL"), Status);
+
+        public override bool WillEngageHostiles => false;
+
+        public override bool IsCancelledOnRouteChange => true;
+
+        public override FleetOrder Create()
+        {
+            return new TravelOrder();
+        }
+
+        protected internal override void OnTurnBeginning() 
+        {
+            GameEngine.DummyCodeComment("TravelOrder");
+
+            base.OnTurnBeginning();
+            if (!IsAssigned)
+            {
+                return;
+            }
+            if (Fleet == null)
+            {
+                return;
+            }
+
+            //if (Fleet.Route.IsEmpty && (Fleet.AITypeUnit != AITypeUnit.SystemAttack || Fleet.AITypeUnit != AITypeUnit.Reserve))
+            //{
+            //    Fleet.Order = FleetOrders.IdleOrder;
+            //    //if (UnitAI.GetBestSectorTo_Explore(Fleet, out Sector bestSector))
+            //    //{
+            //    //    Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+            //    //    Fleet.AITypeUnit = AITypeUnit.Explorer;
+            //    //    Fleet.Activity = UnitActivity.Mission;
+            //    //}
+            //}
         }
     }
 

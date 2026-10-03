@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2022 Rise of the UFP")]
+[assembly: AssemblyCopyright("Copyright (c) 2023 Rise of the UFP")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.7.0.4")]
-[assembly: AssemblyFileVersion("1.7.0.4")]
+[assembly: AssemblyVersion("1.7.0.5")]
+[assembly: AssemblyFileVersion("1.7.0.5")]

@@ -43,6 +43,15 @@ namespace Supremacy.Orbitals
         private ushort _buildSlotMaxOutput;
         private ShipyardOutputType _buildSlotOutputType = ShipyardOutputType.Static;
 
+        // non sense .. sorry 
+        //public string SYName
+        //{
+        //    get {
+        //        Shipyard shipyard = new Shipyard(this);
+        //        return shipyard.Design.ToString();
+        //    }
+        //}
+
         /// <summary>
         /// Gets or sets the number of build slots.
         /// </summary>
@@ -73,7 +82,8 @@ namespace Supremacy.Orbitals
 
         public int BuildSlotMaxOutput
         {
-            get => _buildSlotMaxOutput;
+            //get => _buildSlotMaxOutput;
+            get => _buildSlotOutput * 3; // 3x of Output
             set => _buildSlotMaxOutput = (ushort)value;
         }
 
@@ -90,10 +100,10 @@ namespace Supremacy.Orbitals
                         slotOutputString = BuildSlotOutput.ToString();
                         break;
                     case ShipyardOutputType.PopulationRatio:
-                        slotOutputString = _popBasedString + ": " + BuildSlotOutput.ToString()/* + " % Pop"*/;
+                        slotOutputString = _popBasedString /* + ": " + BuildSlotOutput.ToString()+ " % Pop"*/;
                         break;
                     case ShipyardOutputType.IndustryRatio:
-                        slotOutputString = _industryBasedString + ": " + BuildSlotOutput.ToString()/* + "% Pop"*/;
+                        slotOutputString = _industryBasedString /*+ ": " + BuildSlotOutput.ToString() + "% Pop"*/;
                         break;
                 }
                 return slotOutputString;
@@ -153,10 +163,10 @@ namespace Supremacy.Orbitals
                 _buildSlotMaxOutput = _buildSlotOutput;
             }
 
-            if (element["BuildSlotMaxOutput"] != null)
-            {
-                _buildSlotMaxOutput = Number.ParseUInt16(element["BuildSlotMaxOutput"].InnerText.Trim());
-            }
+            //if (element["BuildSlotMaxOutput"] != null)  // not longer used - 2023-11-11
+            //{
+            //    _buildSlotMaxOutput = Number.ParseUInt16(element["BuildSlotMaxOutput"].InnerText.Trim());
+            //}
 
             if (element["BuildSlotOutputType"] != null)
             {

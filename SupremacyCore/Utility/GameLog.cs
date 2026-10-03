@@ -10,19 +10,24 @@
 using log4net;
 using log4net.Config;
 using log4net.Core;
+using Supremacy.Game;
 using System;
 using System.IO;
-
+using System.Windows.Automation;
 
 namespace Supremacy.Utility
 {
     public class GameLog
     {
+#pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly string _name;
+
 #pragma warning restore IDE0052 // Remove unread private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
         private static bool _initialized;
-        private static string _text;
+        //public static string _text;
+        //public static readonly string _newline = Environment.NewLine;
         private static readonly object _syncLock;
 
         static GameLog()
@@ -44,13 +49,15 @@ namespace Supremacy.Utility
                 _ = BasicConfigurator.Configure(new ChannelLogAppender());
                 _initialized = true;
             }
-            _text = "sorry... Game is sending a F1-Key, and sometimes it's targetting Visual Studio > Browser... saying 'No special help available'";
-            Console.WriteLine(_text);
+            //_text += _newline; // just avoid a "not used" for both
+            // not anymore
+            //_text = _newline + "sorry... Game is sending a F1-Key, and sometimes it's targetting Visual Studio > Browser... saying 'No special help available'";
+            //Console.WriteLine(_text);
 
-            Core.General.Info("Log Initialized");
-            Core.General.Info(_text);
+            Core.General.Info("Step_0100: Log Initialized" + Environment.NewLine);
+            //Core.General.Info(_text);
 
-            string now = "Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;
+            string now = "Step_0101: Possible file name prepared... (see next line)" + Environment.NewLine + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + "_" + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + " Gamelog.txt" + Environment.NewLine;
             Core.General.Info(now);  // new line for saving under Date
         }
 
@@ -98,8 +105,9 @@ namespace Supremacy.Utility
             public const string XMLCheck = "XMLCheck";
             public const string XML2CSVOutput = "XML2CSVOutput";
 
-            // Details
-            public const string AIDetails = "AIDetailsDetailsDetails";
+            // GameLog-Details > see here what is deactivated
+            public const string AIDetails = "AIDetails";
+            //public const string AIDetails = "AIDetailsDetailsDetails";
             public const string AudioDetails = "AudioDetails";
             public const string CivsAndRacesDetails = "CivsAndRacesDetails";
             public const string ColoniesDetails = "ColoniesDetails";
@@ -120,7 +128,7 @@ namespace Supremacy.Utility
             public const string MapDataDetails = "MapDataDetails";
             public const string MultiplayDetails = "MultiplayDetails";
             public const string ProductionDetails = "ProductionDetails";
-            //public const string ReportErrorsToEmail = "ReportErrorsToEmailDetails";  // that's no category
+            public const string ReportErrorsToEmail = "ReportErrorsToEmailDetails";  // that's no category
             public const string ResearchDetails = "ResearchDetails";
             public const string SaveLoadDetails = "SaveLoadDetails";
             public const string ShipsDetails = "ShipsDetails";
@@ -136,29 +144,29 @@ namespace Supremacy.Utility
             public const string XML2CSVOutputDetails = "XML2CSVOutputDetails";
         }
         public ILog AI => LogManager.GetLogger(Repositories.AI);
-        public ILog AIDetails => LogManager.GetLogger(Repositories.AIDetails);
+        //public ILog AIDetails => LogManager.GetLogger(Repositories.AIDetails);
         public ILog Audio => LogManager.GetLogger(Repositories.Audio);
-        public ILog AudioDetails => LogManager.GetLogger(Repositories.AudioDetails);
+        //public ILog AudioDetails => LogManager.GetLogger(Repositories.AudioDetails);
         public ILog CivsAndRaces => LogManager.GetLogger(Repositories.CivsAndRaces);
-        public ILog CivsAndRacesDetails => LogManager.GetLogger(Repositories.CivsAndRacesDetails);
+        //public ILog CivsAndRacesDetails => LogManager.GetLogger(Repositories.CivsAndRacesDetails);
         public ILog Colonies => LogManager.GetLogger(Repositories.Colonies);
-        public ILog ColoniesDetails => LogManager.GetLogger(Repositories.ColoniesDetails);
+        //public ILog ColoniesDetails => LogManager.GetLogger(Repositories.ColoniesDetails);
         public ILog Combat => LogManager.GetLogger(Repositories.Combat);
         public ILog CombatDetails => LogManager.GetLogger(Repositories.CombatDetails);
         public ILog Credits => LogManager.GetLogger(Repositories.Credits);
-        public ILog CreditsDetails => LogManager.GetLogger(Repositories.CreditsDetails);
+        //public ILog CreditsDetails => LogManager.GetLogger(Repositories.CreditsDetails);
         public ILog Deuterium => LogManager.GetLogger(Repositories.Deuterium);
-        public ILog DeuteriumDetails => LogManager.GetLogger(Repositories.DeuteriumDetails);
+        //public ILog DeuteriumDetails => LogManager.GetLogger(Repositories.DeuteriumDetails);
         public ILog Dilithium => LogManager.GetLogger(Repositories.Dilithium);
-        public ILog DilithiumDetails => LogManager.GetLogger(Repositories.DilithiumDetails);
+        //public ILog DilithiumDetails => LogManager.GetLogger(Repositories.DilithiumDetails);
         public ILog Duranium => LogManager.GetLogger(Repositories.Duranium);
-        public ILog DuraniumDetails => LogManager.GetLogger(Repositories.DuraniumDetails);
+        //public ILog DuraniumDetails => LogManager.GetLogger(Repositories.DuraniumDetails);
         public ILog Diplomacy => LogManager.GetLogger(Repositories.Diplomacy);
         public ILog DiplomacyDetails => LogManager.GetLogger(Repositories.DiplomacyDetails);
         public ILog Energy => LogManager.GetLogger(Repositories.Energy);
         public ILog EnergyDetails => LogManager.GetLogger(Repositories.EnergyDetails);
         public ILog Events => LogManager.GetLogger(Repositories.Events);
-        public ILog EventsDetails => LogManager.GetLogger(Repositories.EventsDetails);
+        //public ILog EventsDetails => LogManager.GetLogger(Repositories.EventsDetails);
         public ILog GalaxyGenerator => LogManager.GetLogger(Repositories.GalaxyGenerator);
         public ILog GalaxyGeneratorDetails => LogManager.GetLogger(Repositories.GalaxyGeneratorDetails);
         public ILog GameData => LogManager.GetLogger(Repositories.GameData);
@@ -170,11 +178,11 @@ namespace Supremacy.Utility
         public ILog InfoText => LogManager.GetLogger(Repositories.InfoText);
         public ILog InfoTextDetails => LogManager.GetLogger(Repositories.InfoTextDetails);
         public ILog Intel => LogManager.GetLogger(Repositories.Intel);
-        public ILog IntelDetails => LogManager.GetLogger(Repositories.IntelDetails);
+        //public ILog IntelDetails => LogManager.GetLogger(Repositories.IntelDetails);
         public ILog MapData => LogManager.GetLogger(Repositories.MapData);
         public ILog MapDataDetails => LogManager.GetLogger(Repositories.MapDataDetails);
         public ILog Multiplay => LogManager.GetLogger(Repositories.Multiplay);
-        public ILog MultiplayDetails => LogManager.GetLogger(Repositories.MultiplayDetails);
+        //public ILog MultiplayDetails => LogManager.GetLogger(Repositories.MultiplayDetails);
 
         public ILog Production => LogManager.GetLogger(Repositories.Production);
         public ILog ProductionDetails => LogManager.GetLogger(Repositories.ProductionDetails);
@@ -193,14 +201,14 @@ namespace Supremacy.Utility
         public ILog SitReps => LogManager.GetLogger(Repositories.SitReps);
         public ILog SitRepsDetails => LogManager.GetLogger(Repositories.SitRepsDetails);
         public ILog Stations => LogManager.GetLogger(Repositories.Stations);
-        public ILog StationsDetails => LogManager.GetLogger(Repositories.StationsDetails);
+        //public ILog StationsDetails => LogManager.GetLogger(Repositories.StationsDetails);
         public ILog Structures => LogManager.GetLogger(Repositories.Structures);
         public ILog StructuresDetails => LogManager.GetLogger(Repositories.StructuresDetails);
         public ILog SystemAssault => LogManager.GetLogger(Repositories.SystemAssault);
         public ILog SystemAssaultDetails => LogManager.GetLogger(Repositories.SystemAssaultDetails);
         public ILog Test => LogManager.GetLogger(Repositories.Test);
         public ILog TradeRoutes => LogManager.GetLogger(Repositories.TradeRoutes);
-        public ILog TradeRoutesDetails => LogManager.GetLogger(Repositories.TradeRoutesDetails);
+        //public ILog TradeRoutesDetails => LogManager.GetLogger(Repositories.TradeRoutesDetails);
         public ILog UI => LogManager.GetLogger(Repositories.UI);
         public ILog UIDetails => LogManager.GetLogger(Repositories.UIDetails);
         public ILog XMLCheck => LogManager.GetLogger(Repositories.XMLCheck);
@@ -243,7 +251,7 @@ namespace Supremacy.Utility
         public static void SetRepositoryToDebug(string repository)
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Debug;
-            string _text = "    Log.txt: Trace is set to      DEBUG for > " + repository;
+            string _text = "Step_0146:; Log.txt: Trace is set to      DEBUG for > " + repository;
             GameLog.Client.GeneralDetails.DebugFormat(_text);
             Console.WriteLine(_text);
         }
@@ -252,9 +260,12 @@ namespace Supremacy.Utility
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Error;
             //works 
-            string _text = "Log.txt: Trace is set to ERROR only for " + repository;
-            GameLog.Client.GeneralDetails.DebugFormat(_text);
-            Console.WriteLine(_text);
+            //if (ClientSettings.) // doChecks
+            //{
+            //    string _text = "Step_0137: Log.txt: Trace is set to ERROR only for " + repository;
+            //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+            //    Console.WriteLine(_text);
+            //}
         }
     }
 }

@@ -125,7 +125,7 @@ namespace Supremacy.Scripting.Ast
                 return false;
             }
 
-            return (Type == null) || (genericTypeExpression.Type == null) ? false : Type == genericTypeExpression.Type;
+            return Type != null && genericTypeExpression.Type != null && Type == genericTypeExpression.Type;
         }
 
         public override int GetHashCode()

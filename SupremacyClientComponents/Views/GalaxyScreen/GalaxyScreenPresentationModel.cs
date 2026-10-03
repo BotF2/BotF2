@@ -46,7 +46,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                Civilization _playerCiv = AppContext.LocalPlayer.Empire;
+                _playerCiv = AppContext.LocalPlayer.Empire;
                 return _playerCiv;
             }
             set
@@ -143,6 +143,7 @@ namespace Supremacy.Client.Views
     public class GalaxyScreenPresentationModel : PresentationModelBase
     {
         #region Fields
+        private Civilization _playerCiv = null;
         private IEnumerable<Ship> _availableShips;
         private GalaxyScreenInputMode _inputMode;
         private GalaxyScreenOverviewMode _overviewMode;
@@ -161,7 +162,10 @@ namespace Supremacy.Client.Views
         private IEnumerable<FleetViewWrapper> _otherVisibleTaskForces;
         private IEnumerable<FleetViewWrapper> _iSpyTaskForces;
         private IEnumerable<TradeRoute> _tradeRoutes;
+        
         private readonly EmpirePlayerStatusCollection _empirePlayers;
+        [NonSerialized]
+        public string _text;
         #endregion
 
         #region Events
@@ -179,12 +183,32 @@ namespace Supremacy.Client.Views
         public event EventHandler TaskForcesChanged;
         public event EventHandler LocalPlayerTaskForcesChanged;
         public event EventHandler VisibleTaskForcesChanged;
+
         public event EventHandler SelectedTradeRouteChanged;
         public event EventHandler TradeRoutesChanged;
+
         public event EventHandler SelectedSectorStationChanged;
+
+        public event EventHandler PlayerCivilizationAccumulatePlaceChanged;
+        public event EventHandler PlayerCivilizationSystemAssaultPlacesChanged;
+
         #endregion
 
         #region Constructors and Finalizers
+        public Civilization PlayerCiv
+        {
+            get
+            {
+                _playerCiv = AppContext.LocalPlayer.Empire;
+                return _playerCiv;
+            }
+            set
+            {
+                _playerCiv = value;
+                //Update();
+            }
+        }
+
         public GalaxyScreenPresentationModel([NotNull] IAppContext appContext)
             : base(appContext)
         {
@@ -205,6 +229,56 @@ namespace Supremacy.Client.Views
 
         #region Properties and Indexers
         public IEmpirePlayerStatusCollection EmpirePlayers => _empirePlayers;
+
+        public string PlayerCivilizationAccumulatePlace
+        {
+            get
+            {
+                _text = GameContext.Current.CivilizationManagers[PlayerCiv.CivID].AccumulateSector.Location.ToString();
+                if (_text == "(0, 0)") _text = "-";
+                return "Accumulate at: " + _text;
+            }
+            set
+            {
+                //if (Equals(_availableShips, value))
+                //{
+                //    return;
+                //}
+
+                //_availableShips = value;
+                OnPlayerCivilizationAccumulatePlaceChanged();
+            }
+        }
+
+        public string PlayerCivilizationSystemAssaultPlaces
+        {
+            get
+            {
+                
+                string _return = "Assault: ";
+                if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].Assault_Accumulate_Sector_1.Location.ToString() == "(0, 0)")
+                {
+                    _return += " - ";
+                }
+                else
+                {
+                    return _return += GameContext.Current.CivilizationManagers[_playerCiv.CivID].Assault_Accumulate_Sector_1.Location.ToString();
+                }
+
+                //if (GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssault_Accumulate_Sector_2.Location.ToString() != "(0, 0)")
+                //{
+                //    _return += " ,   Assault 2: " + GameContext.Current.CivilizationManagers[_playerCiv.CivID].SystemAssault_Accumulate_Sector_2.Location.ToString();
+                //}
+
+                return _return;
+            }
+            set
+            {
+                this.PlayerCivilizationSystemAssaultPlaces = value;
+                OnPlayerCivilizationSystemAssaultPlacesChanged();
+            }
+        }
+        ////public string PlayerCivilizationSystemAssaultPlace_2 => 
 
         public IEnumerable<Ship> AvailableShips
         {
@@ -532,9 +606,9 @@ namespace Supremacy.Client.Views
 
                         MapLocation location = SelectedSector.Station.Location;
 
-                        if ((!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)
+                        if ((!DiplomacyHelper.Status_AtWar(playerCiv, SelectedSector.Owner)
                             && !CombatHelper.WillFightAlongside(playerCiv, SelectedSector.Owner))
-                            || (DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner) && fleetView.View.Source.Sector == SelectedSector.Station.Sector))
+                            || (DiplomacyHelper.Status_AtWar(playerCiv, SelectedSector.Owner) && fleetView.View.Source.Sector == SelectedSector.Station.Sector))
                         {
                             fleetView.IsUnScannable = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");
@@ -693,6 +767,16 @@ namespace Supremacy.Client.Views
         private void OnTradeRoutesChanged()
         {
             TradeRoutesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnPlayerCivilizationAccumulatePlaceChanged()
+        {
+            PlayerCivilizationAccumulatePlaceChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnPlayerCivilizationSystemAssaultPlacesChanged()
+        {
+            PlayerCivilizationSystemAssaultPlacesChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

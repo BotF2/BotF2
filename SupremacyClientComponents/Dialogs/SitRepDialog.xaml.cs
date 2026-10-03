@@ -1,4 +1,6 @@
 ﻿// File:SitRepDialog.xaml.cs  
+using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Controls;
 using Supremacy.Game;
@@ -8,9 +10,11 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+//using System.Windows.Forms;
 
 namespace Supremacy.Client.Dialogs
 {
@@ -22,10 +26,20 @@ namespace Supremacy.Client.Dialogs
         private SitRepCategory _visibleCategories;
         private IEnumerable<SitRepEntry> _sitRepEntries;
         private string _previoussitRepCommentTextBox;
+        private readonly IMusicPlayer _musicPlayer;
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable IDE0052 // Remove unread private members
+        private readonly ISoundPlayer _soundPlayer;
 
-        public SitRepDialog()
+#pragma warning restore IDE0052 // Remove unread private members
+#pragma warning restore IDE0079 // Remove unnecessary suppression
+        public SitRepDialog([NotNull] IMusicPlayer musicPlayer,
+            [NotNull] ISoundPlayer soundPlayer)
         {
             InitializeComponent();
+
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             SitRepCategory visibleCategories = SitRepDialogSettings.GetVisibleCategories(ClientSettings.Current);
 
@@ -170,6 +184,16 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Green);
             }
 
+            if (GreenDarkCheck.IsChecked.HasValue && GreenDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.GreenDark);
+            }
+
+            if (GreenDark2Check.IsChecked.HasValue && GreenDark2Check.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.GreenDark2);
+            }
+
             if (OrangeCheck.IsChecked.HasValue && OrangeCheck.IsChecked.Value)
             {
                 visiblePriorities.Add(SitRepPriority.Orange);
@@ -185,9 +209,24 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Blue);
             }
 
+            if (Blue2Check.IsChecked.HasValue && Blue2Check.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Blue2);
+            }
+
+            if (BlueDarkCheck.IsChecked.HasValue && BlueDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.BlueDark);
+            }
+
             if (GrayCheck.IsChecked.HasValue && GrayCheck.IsChecked.Value)
             {
                 visiblePriorities.Add(SitRepPriority.Gray);
+            }
+
+            if (GrayDarkCheck.IsChecked.HasValue && GrayDarkCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.GrayDark);
             }
 
             if (PurpleCheck.IsChecked.HasValue && PurpleCheck.IsChecked.Value)
@@ -220,9 +259,24 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Yellow);
             }
 
-            if (BlueDarkCheck.IsChecked.HasValue && BlueDarkCheck.IsChecked.Value)
+            if (DilithiumCheck.IsChecked.HasValue && DilithiumCheck.IsChecked.Value)
             {
-                visiblePriorities.Add(SitRepPriority.BlueDark);
+                visiblePriorities.Add(SitRepPriority.Dilithium);
+            }
+
+            if (DeuteriumCheck.IsChecked.HasValue && DeuteriumCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Deuterium);
+            }
+
+            if (DuraniumCheck.IsChecked.HasValue && DuraniumCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Duranium);
+            }
+
+            if (CreditsCheck.IsChecked.HasValue && CreditsCheck.IsChecked.Value)
+            {
+                visiblePriorities.Add(SitRepPriority.Credits);
             }
 
             if (RedYellowCheck.IsChecked.HasValue && RedYellowCheck.IsChecked.Value)
@@ -240,9 +294,9 @@ namespace Supremacy.Client.Dialogs
         {
             get
             {
-                //_sitRepEntries.OrderBy(_sitRepEntries, SitRepPriority);
+                _sitRepEntries = _sitRepEntries.OrderBy(x => x.SummaryText);
 
-                _sitRepEntries = _sitRepEntries.OrderByDescending(x => x.Priority).ToList();
+                //_sitRepEntries = _sitRepEntries.OrderBy(x => x.SummaryText).T/*oL*/ist();
                 //foreach (var item in _sitRepEntries)
                 //{
                 //    item.
@@ -252,6 +306,7 @@ namespace Supremacy.Client.Dialogs
             set
             {
                 _sitRepEntries = value;
+                //_sitRepEntries.OrderByDescending(x => x.SummaryText).ToList();
                 ItemsView.ItemsSource = value;
                 ApplyFilter();
             }
@@ -274,16 +329,44 @@ namespace Supremacy.Client.Dialogs
             SitRepCategory visibleCategories = FilterMenu.Items
                 .OfType<MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
-                .Aggregate<MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
+                .Aggregate<MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag)
+                ;
+
+            //SitRepAction visibleCategories2 = FilterMenu.Items
+            //    .OfType<MenuItem>()
+            //    .Where(menuItem => menuItem.IsChecked)
+            //    .Aggregate<MenuItem, SitRepAction>(0, (current, menuItem) => current | (SitRepAction)menuItem.Tag)
+            //    ;
 
             VisibleCategories = visibleCategories;
         }
+
+
 
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
         {
 
             NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
+            ClientSettings.Current.SaveClientSettings();
             Close();
+            if (_musicPlayer != null)
+            {
+            _musicPlayer.SwitchMusic("DefaultMusic");
+            }
+
+        }
+
+        private void OnMapButtonClick(object sender, ExecuteRoutedEventArgs e)
+        {
+
+            NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen);
+            Close();
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.SwitchMusic("DefaultMusic");
+            }
+
+            System.Windows.Forms.SendKeys.SendWait("{F1}"); // avoid blank background and go to Map
         }
 
         private void OnSitRepEntrySelected(object sender, RoutedEventArgs e)
@@ -295,7 +378,7 @@ namespace Supremacy.Client.Dialogs
             if (ItemsView.SelectedItem is SitRepEntry selection)
             {
                 selection.SitRepComment = selection.SitRepComment == "" ? "X" : "";
-                Console.WriteLine("Changed SitRepComment to x or blank");
+                //Console.WriteLine("Step_8888: Changed SitRepComment to x or blank");
             }
             ItemsView.Items.Refresh();
             //UpdateCategoryFilter();
@@ -309,41 +392,66 @@ namespace Supremacy.Client.Dialogs
             if (ItemsView.SelectedItem is SitRepEntry selection)
             {
                 selection.SitRepComment = selection.SitRepComment == "" ? "X" : "";
-                Console.WriteLine("Changed SitRepComment to x or blank");
+                //Console.WriteLine("Step_8887: Changed SitRepComment to x or blank");
 
                 switch (selection.Action)
                 {
-                    case SitRepAction.ShowGalaxyScreen: // F3
+                    case SitRepAction.ShowGalaxyScreen: // F1
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         break;
 
-                    case SitRepAction.ShowColony:
+                    case SitRepAction.ShowColony: // F2
                         Close();
                         GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector); // F2
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
                         //Refresh the screen on an easy way
                         //SendKeys.SendWait("{F5}");
                         //SendKeys.SendWait("{F2}");
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F2_ScreenMusic");
+                        }
                         break;
 
                     case SitRepAction.ShowScienceScreen: // F3
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F3_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ScienceScreen); // F3
                         break;
 
-                    case SitRepAction.ShowDiploScreen:
+                    case SitRepAction.ShowDiploScreen: // F4
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F4_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.DiplomacyScreen);  // F4
                         break;
 
-                    case SitRepAction.ShowIntelScreen:
+                    case SitRepAction.ShowIntelScreen: // F5
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F5_ScreenMusic");
+                        }
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.IntelScreen); // F5
                         break;
 
                     case SitRepAction.CenterOnSector:
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+                        }
+                        NavigationCommands.ActivateScreen.Execute(StandardGameScreens.GalaxyScreen); // F1
                         Sector sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(sector);
@@ -351,6 +459,10 @@ namespace Supremacy.Client.Dialogs
 
                     case SitRepAction.SelectTaskForce:
                         Close();
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("F1_ScreenMusic");
+                        }
                         Fleet fleet = selection.ActionTarget as Fleet;
                         GalaxyScreenCommands.SelectSector.Execute(fleet.Sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(fleet.Sector);
@@ -359,6 +471,10 @@ namespace Supremacy.Client.Dialogs
 
                     case SitRepAction.None:
                     default:
+                        if (_musicPlayer != null)
+                        {
+                            _musicPlayer.SwitchMusic("DefaultMusic");
+                        }
                         break;
 
                 }

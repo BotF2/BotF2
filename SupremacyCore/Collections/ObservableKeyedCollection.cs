@@ -53,7 +53,7 @@ namespace Supremacy.Collections
         private int _keyCount;
 
         private Func<TValue, TKey> _keyRetriever;
-        private string _text;
+        private string _text_ObKeyCol;
 
         public KeyedCollectionBase(Func<TValue, TKey> keyRetriever)
             : this(keyRetriever, null, DefaultDictionaryCreationThreshold) { }
@@ -78,7 +78,10 @@ namespace Supremacy.Collections
                 dictionaryCreationThreshold = int.MaxValue;
             }
 
-            _keyRetriever = keyRetriever ?? throw new ArgumentNullException(nameof(keyRetriever));
+
+
+            //_keyRetriever = keyRetriever ?? throw new ArgumentNullException(nameof(keyRetriever));
+            _keyRetriever = keyRetriever ?? null;
             _keyComparer = comparer;
             _threshold = dictionaryCreationThreshold;
         }
@@ -91,36 +94,43 @@ namespace Supremacy.Collections
             {
                 if (key == null)
                 {
-                    _text = "Searched Key was null";
-                    Console.WriteLine(_text);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    _text_ObKeyCol = "Step_0873: Searched Key was null";
+                    Console.WriteLine(_text_ObKeyCol);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                     throw new ArgumentNullException(nameof(key));
                 }
 
+                // next works, but it is too often
+                //_text_ObKeyCol = "Step_0874: working on key > " + key.ToString();
+                //Console.WriteLine(_text_ObKeyCol);
+                //GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
+
                 //searching for crashes
+
                 if (key.ToString() == "-1")
                 {
-                    _text = "Searched Key was -1, sometimes this crashes";
-                    Console.WriteLine(_text);
-                    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                    _text_ObKeyCol = "Step_0875:; Searched Key was -1, sometimes this crashes";
+                    //if (_console) 
+                    Console.WriteLine(_text_ObKeyCol);
+                    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                     return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 }
 
                 //searching for crashes
                 //if (key.ToString() == "999")
                 //{
-                //    _text = "Searched Key was '999', sometimes this crashes";
-                //    Console.WriteLine(_text);
-                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    _text_ObKeyCol = "Searched Key was '999', sometimes this crashes";
+                //    Console.WriteLine(_text_ObKeyCol);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                 //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 //}
 
                 //searching for crashes
                 //if (key.ToString() == "789")
                 //{
-                //    _text = "Searched Key was '789', sometimes this crashes";
-                //    Console.WriteLine(_text);
-                //    GameLog.Client.GeneralDetails.DebugFormat(_text);
+                //    _text_ObKeyCol = "Searched Key was '789', sometimes this crashes";
+                //    Console.WriteLine(_text_ObKeyCol);
+                //    GameLog.Client.GeneralDetails.DebugFormat(_text_ObKeyCol);
                 //    return _keyValueMap.Values.FirstOrDefault(); // this is cheating !!
                 //}
 
@@ -138,8 +148,14 @@ namespace Supremacy.Collections
                         return item;
                     }
                 }
+                // avoids crashes
+
+                _text_ObKeyCol = "Step_0878:; Key not found >> key= " + key.ToString();
+                Console.WriteLine(_text_ObKeyCol);
+                GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
 
                 throw new KeyNotFoundException();
+
             }
         }
 
@@ -272,7 +288,35 @@ namespace Supremacy.Collections
 
         protected internal TKey GetKeyForItem(TValue item)
         {
-            return _keyRetriever(item);
+            string _text = "";
+                try
+            {
+                if (_keyRetriever != null)
+                {
+                    return _keyRetriever(item);
+                }
+                else
+                {
+                    Debugger.Break();
+
+                    return default(TKey);
+                    //    throw new InvalidOperationException();
+                    //}
+                }
+            }
+            catch
+            {
+                //var x = new TKey();
+
+                _text = "Step_3345:; Problem here > " + item;
+                Console.WriteLine(_text);
+
+                Debugger.Break();
+
+                return default(TKey);
+
+                //throw new InvalidOperationException();
+            }
         }
 
         protected override void InsertItem(int index, TValue item)
@@ -342,7 +386,12 @@ namespace Supremacy.Collections
 
             _threshold = reader.ReadInt32();
             _keyComparer = reader.Read<IEqualityComparer<TKey>>();
+            try
+            {
             _keyRetriever = reader.Read<Func<TValue, TKey>>();
+            }
+            catch { }
+
 
             if (Count < _threshold)
             {
@@ -353,9 +402,10 @@ namespace Supremacy.Collections
 
             foreach (TValue item in Items)
             {
-                //_text = "GetKeyForItem= " + item;
-                //Console.WriteLine(_text);
-                AddKey(GetKeyForItem(item), item);
+                //_text_ObKeyCol = "Step_4199: GetKeyForItem= " + item;
+                //Console.WriteLine(_text_ObKeyCol);
+                //if (_keyRetriever != null)  // 2023-06-24
+                    AddKey(GetKeyForItem(item), item);
             }
         }
 
@@ -390,10 +440,14 @@ namespace Supremacy.Collections
 
         protected virtual void OnKeyCollision(TKey key, TValue item)
         {
-            _text = "OnKeyCollision: key= " + key.ToString()
-                    + "item= " + item.ToString();
-            Console.WriteLine(_text);
-            GameLog.Core.General.ErrorFormat(_text);
+            _text_ObKeyCol = "Step_0496:; OnKeyCollision: key= " + key.ToString()
+                    + ", item= " + item.ToString()
+                    //+ ", item= " + item._lo
+                    //+ ", item= " + item.ToString()
+                    
+                    ;
+            Console.WriteLine(_text_ObKeyCol);
+            GameLog.Core.General.ErrorFormat(_text_ObKeyCol);
             throw new ArgumentException("Collection already contains an item with the specified key.");
         }
 

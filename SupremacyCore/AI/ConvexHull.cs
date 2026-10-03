@@ -84,29 +84,29 @@ namespace Supremacy.AI
                 Array.Sort(allPoints);
                 MapLocation left = allPoints[0];
                 MapLocation right = allPoints[n - 1];
-                C5.IList<MapLocation> lower = new C5.LinkedList<MapLocation>();
-                C5.IList<MapLocation> upper = new C5.LinkedList<MapLocation>();
-                lower.InsertFirst(left);
-                upper.InsertLast(left);
-                for (int i = 0; i < n; i++)
-                {
-                    double det = MapLocation.Area2(left, right, allPoints[i]);
-                    if (det > 0)
-                    {
-                        upper.InsertLast(allPoints[i]);
-                    }
-                    else
-                    {
-                        lower.InsertFirst(allPoints[i]);
-                    }
-                }
-                lower.InsertFirst(right);
-                upper.InsertLast(right);
-                Eliminate(lower);
-                Eliminate(upper);
-                _points = new MapLocation[lower.Count + upper.Count - 2];
-                lower[0, lower.Count - 1].CopyTo(_points, 0);
-                upper[0, upper.Count - 1].CopyTo(_points, lower.Count - 1);
+                //C5.IList<MapLocation> lower = new C5.LinkedList<MapLocation>();
+                //C5.IList<MapLocation> upper = new C5.LinkedList<MapLocation>();
+                //lower.InsertFirst(left);
+                //upper.InsertLast(left);
+                //for (int i = 0; i < n; i++)
+                //{
+                //    double det = MapLocation.Area2(left, right, allPoints[i]);
+                //    if (det > 0)
+                //    {
+                //        upper.InsertLast(allPoints[i]);
+                //    }
+                //    else
+                //    {
+                //        lower.InsertFirst(allPoints[i]);
+                //    }
+                //}
+                //lower.InsertFirst(right);
+                //upper.InsertLast(right);
+                ////Eliminate(lower);
+                ////Eliminate(upper);
+                //_points = new MapLocation[lower.Count + upper.Count - 2];
+                //lower[0, lower.Count - 1].CopyTo(_points, 0);
+                //upper[0, upper.Count - 1].CopyTo(_points, lower.Count - 1);
             }
         }
         #endregion
@@ -141,22 +141,23 @@ namespace Supremacy.AI
         #endregion
 
         #region Methods
-        public static void Eliminate(C5.IList<MapLocation> lst)
+        //public static void Eliminate(C5.IList<MapLocation> lst)
+        public static void Eliminate(IList<MapLocation> lst)
         {
-            C5.IList<MapLocation> view = lst.View(0, 0);
-            int slide = 0;
-            while (view.TrySlide(slide, 3))
-            {
-                if (MapLocation.Area2(view[0], view[1], view[2]) < 0) // right turn
-                {
-                    slide = 1;
-                }
-                else // left or straight
-                {
-                    _ = view.RemoveAt(1);
-                    slide = view.Offset != 0 ? -1 : 0;
-                }
-            }
+            //C5.IList<MapLocation> view = lst.View(0, 0);
+            //int slide = 0;
+            //while (view.TrySlide(slide, 3))
+            //{
+            //    if (MapLocation.Area2(view[0], view[1], view[2]) < 0) // right turn
+            //    {
+            //        slide = 1;
+            //    }
+            //    else // left or straight
+            //    {
+            //        _ = view.RemoveAt(1);
+            //        slide = view.Offset != 0 ? -1 : 0;
+            //    }
+            //}
         }
 
         public bool Contains(MapLocation point)

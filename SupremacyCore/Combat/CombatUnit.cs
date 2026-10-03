@@ -84,7 +84,7 @@ namespace Supremacy.Combat
                     return string.Format(
                         ResourceManager.GetString("COMBAT_DESCRIPTION_SHIP"),
                         ship.ShipDesign.ClassName,
-                        GameContext.Current.Tables.EnumTables["ShipType"][ship.ShipType.ToString()][0]);
+                        GameContext.Current.GameTables.EnumTables["ShipType"][ship.ShipType.ToString()][0]);
                 }
                 return null;
             }

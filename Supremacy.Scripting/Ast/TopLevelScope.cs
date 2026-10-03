@@ -18,10 +18,7 @@ namespace Supremacy.Scripting.Ast
             Parameters = parameters;
             Parent = parent;
 
-            if (parent != null)
-            {
-                parent.AddAnonymousChild(this);
-            }
+            parent?.AddAnonymousChild(this);
 
             if ((Parameters != null) && !Parameters.IsEmpty)
             {

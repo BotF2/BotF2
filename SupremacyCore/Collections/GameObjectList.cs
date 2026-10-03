@@ -215,7 +215,10 @@ namespace Supremacy.Collections
 
         public T this[int itemId]
         {
-            get => _lookupFunction(_internalList[itemId]);
+            get
+            {
+                return _lookupFunction(_internalList[itemId]);
+            }
             set
             {
                 if (value == null)

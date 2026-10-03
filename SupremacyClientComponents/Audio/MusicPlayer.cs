@@ -5,6 +5,7 @@ using Supremacy.Annotations;
 using Supremacy.Resources;
 using Supremacy.Client.Context;
 using Supremacy.Utility;
+using System.Diagnostics;
 
 namespace Supremacy.Client.Audio
 {
@@ -53,6 +54,7 @@ namespace Supremacy.Client.Audio
         private readonly List<IAudioTrack> _endingTracks = new List<IAudioTrack>();
         private readonly IObservable<long> _updateTimer = null;
         private IDisposable _updateTimerSubscription = null;
+        private string _text;
         #endregion
 
         #region Properties
@@ -155,7 +157,9 @@ namespace Supremacy.Client.Audio
 
                     for (int i = 0; i < musicPack.Entries.Count; i++)
                     {
-                        Console.WriteLine(i+1 + " > " + musicPack.Entries[i].FileName);
+                        _text = "Step_0158: " + i + " > " + musicPack.Entries[i].FileName;
+                        //Console.WriteLine(_text);
+                        GameLog.Client.Audio.DebugFormat(_text);
                     } 
 
                     if (trackName != null)
@@ -218,7 +222,11 @@ namespace Supremacy.Client.Audio
                         CurrentAudioTrack = _engine.CreateTrack(
                             ResourceManager.GetResourcePath(_musicEntry.Value.FileName));
 
-                        GameLog.Client.Audio.DebugFormat("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
+                        _text = "Step_9115:; " + DateTime.Now
+                                    + " > _musicEntry.Value.FileName= > " + _musicEntry.Value.FileName
+                                    ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.Audio.DebugFormat("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
 
                         if (CurrentAudioTrack != null)
                         {
@@ -236,6 +244,7 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
+                Debugger.Break();
                 GameLog.Client.Audio.Error(e);
             }
         }
@@ -269,7 +278,12 @@ namespace Supremacy.Client.Audio
                     }
 
                     {
-                        GameLog.Client.Audio.DebugFormat("Switch = true (1), _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Key);
+                        _text = "Step_9113:; " + DateTime.Now 
+                            + "_musicPack=" + _musicPack.Name
+                            + ", Entry=" + _musicEntry.Key
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.Audio.DebugFormat("Switch = true (1), _musicPack={0}, _musicEntry={1}", _musicPack.Name, _musicEntry.Key);
                         return true;
                     }
                 }
@@ -419,7 +433,9 @@ namespace Supremacy.Client.Audio
             }
             catch (Exception e)
             {
-                GameLog.Client.Audio.Error(e);
+                _text = "ERROR on OnTrackEnd...";
+                Console.WriteLine(_text);
+                GameLog.Client.Audio.Error(_text + e);
             }
         }
 

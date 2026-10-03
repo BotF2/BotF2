@@ -8,6 +8,7 @@
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -26,6 +27,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public TradeGuildStrikesEvent()
         {
@@ -70,7 +72,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
@@ -95,22 +97,31 @@ namespace Supremacy.Scripting.Events
                     foreach (BuildProject affectedProject in _affectedProjects)
                     {
                         affectedProject.IsPaused = true;
-                        Console.WriteLine("affectedProject: {0}", affectedProject);
-                        GameLog.Client.EventsDetails.DebugFormat("affectedProject: {0}", affectedProject);
+                        _text = "Step_5487:; TradeGuildStrike: affectedProject: " + affectedProject;
+                        Console.WriteLine(_text);
+                        GameLog.Client.Events.DebugFormat(_text);
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
-                    Console.WriteLine("target.OwnerID: {0}", target.OwnerID);
-                    GameLog.Client.EventsDetails.DebugFormat("target.OwnerID: {0}", target.OwnerID);
+                    Entities.Civilization targetEventCiv = target.Owner;
+                    _text = "Step_5488:; TradeGuildStrike: target.OwnerID = " + target.OwnerID;
+                    Console.WriteLine(_text);
+                    GameLog.Client.Events.DebugFormat(_text);
+
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new TradeGuildStrikesSitRepEntry(civManager.Civilization, target));
-                    }
+
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                        , _text + ResourceManager.GetString("TRADE_GUILD_STRIKES_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT")
+                        , "ScriptedEvents/TradeGuildStrikes.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("TRADE_GUILD_STRIKES_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/TradeGuildStrikes.png";
                 }
 
                 return;

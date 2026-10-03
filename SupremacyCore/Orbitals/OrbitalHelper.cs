@@ -1,4 +1,5 @@
-﻿using System;
+﻿// File:OrbitalHelper.cs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -86,7 +87,7 @@ namespace Supremacy.Orbitals
                 throw new ArgumentNullException("orbital");
             }
 
-            Data.Table dcmTable = GameContext.Current.Tables.GameOptionTables["DamageControlModifiers"];
+            Data.Table dcmTable = GameContext.Current.GameTables.GameOptionTables["DamageControlModifiers"];
             if (dcmTable != null)
             {
                 if (dcmTable[orbital.ExperienceRank.ToString()] != null)
@@ -117,7 +118,7 @@ namespace Supremacy.Orbitals
             }
 
             double returnModifier = 0.4;
-            Data.Table accuracyTable = GameContext.Current.Tables.GameOptionTables["AccuracyModifiers"];
+            Data.Table accuracyTable = GameContext.Current.GameTables.GameOptionTables["AccuracyModifiers"];
             if (accuracyTable != null)
             {
                 if (accuracyTable[orbital.ExperienceRank.ToString()] != null)
@@ -151,7 +152,7 @@ namespace Supremacy.Orbitals
         /// </summary>
         /// <param name="orbital"></param>
         /// <returns></returns>
-        public static int Firepower(this Orbital orbital)
+        public static int Fire_power_calculated(this Orbital orbital)
         {
             if (orbital == null)
             {

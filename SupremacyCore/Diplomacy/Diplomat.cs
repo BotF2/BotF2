@@ -25,7 +25,7 @@ namespace Supremacy.Diplomacy
         private int _ownerId;
         private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
-        private string _text;
+        //private string _text;
 
         public int OwnerID => _ownerId;
 
@@ -153,7 +153,7 @@ namespace Supremacy.Diplomacy
 
                 switch (clause.ClauseType)
                 {
-                    case ClauseType.OfferGiveCredits:
+                    case ClauseType.OfferCredits:
                         if (proposal.Sender == Owner)
                         {
                             if (ownerTreasury.CurrentLevel < clause.GetData<int>())
@@ -163,7 +163,7 @@ namespace Supremacy.Diplomacy
                         }
                         break;
 
-                    case ClauseType.RequestGiveCredits:
+                    case ClauseType.RequestCredits:
                         if (proposal.Recipient == Owner)
                         {
                             if (ownerTreasury.CurrentLevel < clause.GetData<int>())
@@ -253,17 +253,52 @@ namespace Supremacy.Diplomacy
             _ownerId = reader.ReadOptimizedInt32();
             _seatOfGovernmentId = reader.ReadOptimizedInt32();
             _foreignPowers = reader.Read<CivilizationKeyedMap<ForeignPower>>();
-            _text = "Deserialize Diplomat.cs= " 
-                + "OwnerId = " + _ownerId
-                + ", Id SeatofG = " + _seatOfGovernmentId
-                + "_foreignPowers.Count" + _foreignPowers.Count
-                ;
+            string _text = "";
+            string _foreignPowers_text = "";
+
+            if (GameContext.Current != null && _foreignPowers != null)
+            {
+                foreach (var _p in _foreignPowers)
+                {
+                    string _has_pending_action = "";
+                    if (_p.PendingAction != PendingDiplomacyAction.None)
+                    {
+                        _has_pending_action = " > has_pending_action";
+                    }
+                    
+
+                    _foreignPowers_text += Environment.NewLine 
+                        //+ _p.Counterparty
+                        + _p.All_Info
+                        + _has_pending_action
+
+                        ;
+
+                }
+            }
+
+            if (GameContext.Current != null) // && GameContext.Current.GameOptions.EmpireModifierRecurringBalancing == EmpireModifierRecurringBalancing.Debug) // doChecks
+            {
+                if (!_foreignPowers_text.Contains("NoContact")) // just all the other ones !
+                {
+
+
+                    _text = Environment.NewLine + "Step_0262:; " + DateTime.Now + " > Deserialize "
+                        + "OwnerId= " + _ownerId
+                        //+ ";" + _foreignPowers.Count + " _foreignPowers"
+                        //+ "; SeatofG= " + _seatOfGovernmentId
+                        + "; >> " /*+ "_foreignPowers_text= >> "*/ + _foreignPowers_text // uses Step_6661
+                        ;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                }
+            }
             //foreach (var item in _foreignPowers.)
             //{
 
             //}
-            //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
+            
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

@@ -1,0 +1,1194 @@
+﻿<!-- File:ctrl_f07_Dialog.xaml  - Memory Alpha Links to German(!) sites
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.CTRL_F07_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            Width="1000"
+            Height="750"
+            Background="Black"
+            SnapsToDevicePixels="True">
+
+
+    <DockPanel LastChildFill="True">
+
+        <!--<StackPanel DockPanel.Dock="Right"
+                Margin="0,12,0,0"
+                Orientation="Vertical"
+                HorizontalAlignment="Left">-->
+        <!--Header-->
+        <!--<StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                -->
+        <!--<Button x:Name="Accept0Button" 
+                  Command="{x:Static local:GenericCommands.AcceptCommand}"
+                  Style="{DynamicResource LCARS_StandardButtonStyle}"
+                  IsCancel="True"
+                        MinWidth="50"
+                        Height="20"
+                  Margin="0,0,10,10">
+                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                </Button>-->
+
+        <!--<TextBlock Text="F7 Dialog = Empire's History"-->
+
+        <!--<TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
+                           Margin="10,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+        </TextBlock>
+        </StackPanel> 
+        -->
+
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" HorizontalAlignment="Left" Margin="3,0,0,0">
+            <!--<scc:GameButton Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
+                            DisplayMode="Tiny" IsEnabled="True"
+                            Label="Buy" Foreground="Black" 
+                            Background="Transparent"
+                            Command="{x:Static scc:ClientCommands.OnMA_Ferengi}"
+                             />-->
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="Accept0Button" 
+                  Command="{x:Static local:GenericCommands.AcceptCommand}"
+                  Style="{DynamicResource LCARS_StandardButtonStyle}"
+                  IsCancel="True" HorizontalAlignment="Left"
+                        Width="150"
+                        Height="20"
+                  Margin="0,0,10,10">
+                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                </Button>
+
+                <TextBlock Text="{s:StringResource DIALOG_CTRL_F7_HEADER}"
+                           Margin="10,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>
+            </StackPanel>
+
+            <TextBlock TextWrapping="NoWrap">
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+MAJORS >>  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vereinigte_Föderation_der_Planeten" 
+> UFP </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Terranisches_Imperium" 
+> Terran </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Romulanisches_Sternenimperium" 
+> Romulan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Klingonisches_Reich" 
+> Klingon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Cardassianische_Union" 
+> Cardassian </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dominion" 
+> Dominion </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Borg-Kollektiv"
+> Borg </Hyperlink>                
+
+-
+<Hyperlink NavigateUri="http://botf2.square7.ch/wiki/index.php?title=Category:Races"
+> Game-WIKI </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://intl.startrek.com/shows"
+> Shows </Hyperlink>
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+
+-
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+SERIES > 
+                                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Serie" 
+> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Enterprise" 
+> ENT </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Strange_New_Worlds" 
+> SNW </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Discovery" 
+> DIS </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Raumschiff_Enterprise" 
+> TOS </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Die_Abenteuer_des_Raumschiff_Enterprise" 
+> TAS </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Raumschiff_Enterprise:_Das_nächste_Jahrhundert" 
+> TNG </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Deep_Space_Nine" 
+> DS9 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Raumschiff_Voyager" 
+> VOY </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Short_Treks" 
+> ST </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Picard" 
+> PIC </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Lower_Decks" 
+> LD </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Prodigy" 
+> PRO </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Unbetitelte_Sektion-31-Serie" 
+> S31 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Discovery#Staffel_3" 
+> DIS </Hyperlink>
+            </TextBlock>
+
+
+
+            <TextBlock TextWrapping="Wrap">
+
+-
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+MOVIES >
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star-Trek-Filme" 
+> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Der_Film" 
+> ST01 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_II:_Der_Zorn_des_Khan" 
+> ST02 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_III:_Auf_der_Suche_nach_Mr._Spock" 
+> ST03 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_IV:_Zur%C3%BCck_in_die_Gegenwart" 
+> ST04 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_V:_Am_Rande_des_Universums" 
+> ST05 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_VI:_Das_unentdeckte_Land" 
+> ST06 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Treffen_der_Generationen" 
+> ST07 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Der_erste_Kontakt" 
+> ST08 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Der_Aufstand" 
+> ST09 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek:_Nemesis" 
+> ST10 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_(Film)" 
+> ST11 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_Into_Darkness" 
+> ST12 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Star_Trek_Beyond" 
+> ST13 </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Unbetiteltes_Filmprojekt_2023" 
+> ST14 </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+
+-
+            </TextBlock>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            <TextBlock TextWrapping="Wrap">
+MINORS > A >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Acamarianer" 
+> Acamarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Akaali" 
+> Akaali </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Akritirianer" 
+> Akritirians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Aldeaner" 
+> Aldeans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Algolianer" 
+> Algolians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Alsaurianer" 
+> Alsaurians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Andorianer" 
+> Andorians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Angosianer" 
+> Angosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ankari" 
+> Ankari </Hyperlink>
+
+-
+    <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Antaraner" 
+> ( Antarans ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Antedeaner" 
+> Antedeans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Anticaner" 
+> Anticans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+A >  
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Arbazaner" 
+> Arbazan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ardaner" 
+> Ardanans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Argrathi" 
+> Argrathi </Hyperlink>
+                
+-                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Arkonianer" 
+> ( Arkonians ) </Hyperlink>
+                
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Atrean" 
+> Atreans </Hyperlink><!--German not available-->
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Axanar" 
+> Axanar </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+B >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Bajoraner" 
+> Bajorans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ba'ku" 
+> Baku </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Bandi" 
+> Bandi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Baneaner" 
+> Baneans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Barzaner" 
+> Barzans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Benzit" 
+> Benzites </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Betazoid" 
+> Betazoids </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ja%27Dar" 
+> Bilanaians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Bolianer" 
+> Bolians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/B%27omar"
+> B'omar </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Boslic" 
+> Boslics </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Bothaner" 
+> Botha </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/~/Spezies/TNG/3x13/1" 
+> Breellians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Breen" 
+> Breen </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Brekkianer" 
+> Brekkians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Bynar" 
+> Bynars </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+C >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Cairn" 
+> Cairn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Caldonier" 
+> Caldonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Capellaner" 
+> Capellans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Chalnoth" 
+> Chalnoth </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Coridanit" 
+> Coridans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Corvallener" 
+> Corvallen </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Cytherianer" 
+> Cytherians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Deltaner" 
+> Deltans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Denobulaner" 
+> Denobulans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Devore" 
+> Devore </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dopterianer" 
+> Dopterians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dosi" 
+> Dosi </Hyperlink>
+              
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tosk-J%C3%A4ger"
+> Drai </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Dremaner" 
+> Dremans </Hyperlink>
+</TextBlock>
+
+<TextBlock TextWrapping="Wrap">
+E >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Edo" 
+> Edo </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/El-Aurianer" 
+> El-Aurians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Elaysianer" 
+> Elaysians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Entharaner" 
+> Entharans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Evora" 
+> Evora </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Excalbianer" 
+> Excalbians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ferengi" 
+> Ferengi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Flaxianer" 
+> Flaxians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Gründer" 
+> Founders </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Gorn" 
+> Gorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Grazerit" 
+> Grazerites </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+H >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Haakonianer" 
+> Haakonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Halkanier" 
+> Halkans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Hazari" 
+> Hazari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Hekaraner" 
+> Hekarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Hirogen" 
+> Hirogen </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Horta" 
+> Horta </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Mensch" 
+> Humans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Iyaaraner" 
+> Iyaarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Jem'Hadar" 
+> Jem'Hadar </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/J'naii" 
+> J'naii </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+K >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kaelonianer" 
+> Kaelon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Karemma" 
+> Karemma </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kazon" 
+> Kazon </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kelleruner" 
+> Kellerun </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kesprytt_III" 
+> Kesprytt </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Klaestroner" 
+> Klaestrons </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kolaraner"
+> ( Kolaran ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kradin" 
+> Kradin </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kreetassaner" 
+> Kreetassans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Krenim" 
+> Krenim </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kressari" 
+> Kressari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kriosianer" 
+> Kriosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ktarianer" 
+> Ktarians </Hyperlink>
+                
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kzin" 
+> ( Kzin ) </Hyperlink>
+                
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap"> L >
+                
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ledosianer" 
+> Ledosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Lissepianer" 
+> Lissepians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Lokirrim" 
+> Lokirrim </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Lurianer" 
+> Lurians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Malcorianer" 
+> Malcorians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Malon" 
+> Malon </Hyperlink>
+
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Malurianer"
+> ( Malurians ) </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Markalian" 
+> Markalians </Hyperlink><!--German not available-->
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Meridianer" 
+> Meridians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Mintakaner" 
+> Mintakans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Miradorn" 
+> Miradorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Mizarianer" 
+> Mizarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Mokra-Orden" 
+> Mokra </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Moneaner" 
+> Moneans </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap"> N > 
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nassordin"
+> ( Nassordin ) </Hyperlink>
+
+            -
+            <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nausicaaner" 
+> Nausicaan </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nechani" 
+> Nechani </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nezu" 
+> Nezu </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Norcadianer" 
+> Norcadians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Numiri" 
+> Numiri </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nuu'Bari" 
+> Nuu'Bari </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Nyrianer" 
+> Nyrians </Hyperlink>
+
+</TextBlock>
+<TextBlock TextWrapping="Wrap"> O >
+
+
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ocampa" 
+> Ocampa </Hyperlink>
+
+  -
+  <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Organier"
+> ( Organier ) </Hyperlink>
+
+  -
+  <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Orioner" 
+> Orions </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ornaraner" 
+> Ornarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Pakled" 
+> Pakled </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Paradas" 
+> Paradans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Qomar"
+> ( Qomar ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Quarren_(Volk)" 
+> Quarren </Hyperlink>
+              
+              
+</TextBlock>
+<TextBlock TextWrapping="Wrap"> R >
+            
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Rakhari" 
+> RAKHARI </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Rakosaner" 
+> Rakosans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ramatis_III" 
+> Ramatisians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Remaner" 
+> ( Remans ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Rigelianer" 
+> Rigelians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Risianer" 
+> Risians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/R%27ongovianer" 
+> ( R'ongovians ) </Hyperlink>
+                
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Rutianer" 
+> Rutians </Hyperlink>
+                
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap"> S > 
+
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Selay" 
+> Selay </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Serosianer" 
+> Serosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Sheliak" 
+> Sheliak </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Sikarianer" 
+> Sikarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Skrreea" 
+> Skrreeans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Son'a" 
+> Son'a </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Suliban" 
+> Suliban </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+T >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tak_Tak" 
+> Tak Tak </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Takarane" 
+> Takarans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Takarianer" 
+> Takarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Talarianer" 
+> Talarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Talaxianer" 
+> Talaxians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Talosianer" 
+> Talosians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tamarianer" 
+> Tamarians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tanuganer" 
+> Tanugans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tellarit" 
+> Tellarites </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Teplaner" 
+> Teplans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tholianer" 
+> Tholians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tilonianer" 
+> Tilonians </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+T >                  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/T'Lani" 
+> T'Lani </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tosk" 
+> ( Tosk ) </Hyperlink>
+        
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tosk-Jäger" 
+> ( Tosk-Hunter ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Clan_der_Torothaner" 
+> Torothans </Hyperlink>
+
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Trabe" 
+> Trabe </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Trill" 
+> Trill </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/T-Rogoraner" 
+> T-Rogorans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Tzenkethi" 
+> Tzenkethi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ullianer" 
+> Ullians </Hyperlink>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+V >  
+                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vaadwaur" 
+> Vaadwaur </Hyperlink>
+
+-
+                                
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Valakianer" 
+> ( Valakians ) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Ventaxianer" 
+> Ventaxians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vhnori" 
+> Vhnori </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vidiianer" 
+> Vidiians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vissianer" 
+> Vissians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vorgone" 
+> Vorgons </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vori" 
+> Vori </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vorta" 
+> Vorta </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Voth" 
+> ( Voth) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Vulkanier" 
+> Vulcans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Wadi" 
+> Wadi </Hyperlink>
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+X >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Xanthan-Heimatwelt" 
+> Xanthans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Xepolit" 
+> Xepolites </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Xindi" 
+> Xindi </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Xyrillianer" 
+> Xyrillians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Yaderaner" 
+> Yaderans </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Yridianer" 
+> Yridians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zahl" 
+> Zahl </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zakdorn" 
+> Zakdorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zalkonianer" 
+> Zalkonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zibalianer" 
+> Zibalians </Hyperlink>
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+SHIPS >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Raumschiff" 
+> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Scoutschiff" 
+> Scouts </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zerst%C3%B6rer" 
+> Destroyer </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kreuzer" 
+> Cruiser </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Flaggschiff" 
+> Command or Flag Ship </Hyperlink>
+<!--
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zahl" 
+> Zahl </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zakdorn" 
+> Zakdorn </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zalkonianer" 
+> Zalkonians </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Zibalianer" 
+> Zibalians </Hyperlink>-->
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+TIMELINE >  
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Zeitlinie" 
+RequestNavigate="DoLink"> ALL </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/22._Jahrhundert" 
+RequestNavigate="DoLink"> 21xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/23._Jahrhundert" 
+RequestNavigate="DoLink"> 22xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/24._Jahrhundert" 
+RequestNavigate="DoLink"> 23xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/25._Jahrhundert" 
+RequestNavigate="DoLink"> 24xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/32._Jahrhundert" 
+RequestNavigate="DoLink"> 31xx </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://thestartrekchronologyproject.blogspot.com/2009/09/and-now-conclusion.html" 
+RequestNavigate="DoLink"> Footage </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Production_timeline" 
+RequestNavigate="DoLink"> Productions </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_timeline#Alternate_realities" 
+RequestNavigate="DoLink"> ALTERED </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_reality" 
+RequestNavigate="DoLink"> ALTERNATE </Hyperlink>
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+MORE (not included) >  
+
+
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Birth_of_the_Federation" 
+> BotF </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Planetares_Verteidigungssystem" 
+> OrbB </Hyperlink>
+
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Raumstation" 
+> Stations </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Schiffswerft"
+> Werften </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Kategorie:Sektor" 
+> Sectors </Hyperlink>
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Sternenflottenr%C3%A4nge"
+> ST ranks </Hyperlink>
+              
+            </TextBlock>
+
+<TextBlock TextWrapping="Wrap">
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Liste_von_astronomischen_Objekten" 
+> Galaxy Objects </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Stellarer_Nebel"
+> Nebel </Hyperlink>
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Neutronenstern"
+> Neutronenstern </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Pulsar"
+> Pulsare </Hyperlink>
+              
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Quasar" 
+> Quasare </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Schwarzes_Loch"
+> Schwarzes Loch </Hyperlink>
+
+              -
+              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/de/wiki/Wurmloch"
+> Wurmloch </Hyperlink>
+
+
+
+            </TextBlock>
+
+            <TextBlock TextWrapping="NoWrap">
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+Other links >  
+
+-
+<Hyperlink NavigateUri="https://www.ex-astris-scientia.org/" 
+RequestNavigate="DoLink"> Ex Astris (english only) </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://intl.startrek.com/database" 
+RequestNavigate="DoLink"> StarTrek.com </Hyperlink>
+
+
+-
+<Hyperlink NavigateUri="https://de.wikipedia.org/wiki/Star_Trek" 
+RequestNavigate="DoLink"> Wikipedia </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.wiki/wiki/Hauptseite" 
+RequestNavigate="DoLink"> MA Nova </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects" 
+RequestNavigate="DoLink"> . </Hyperlink>
+
+-
+<Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks" 
+RequestNavigate="DoLink"> . </Hyperlink>
+
+
+            </TextBlock>
+
+        </StackPanel>
+
+
+    </DockPanel>
+</scc:Dialog>

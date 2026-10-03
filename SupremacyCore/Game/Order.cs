@@ -416,7 +416,7 @@ namespace Supremacy.Game
 
             foreach (ProductionCategory category in EnumUtilities.GetValues<ProductionCategory>())
             {
-                while (colony.DeactivateFacility(category))
+                while (colony.Facility_Deactivate(category))
                 {
                     continue;
                 }
@@ -427,7 +427,7 @@ namespace Supremacy.Game
                 int facilitiesToActivate = _activeFacilities[(int)category];
                 while (facilitiesToActivate-- > 0)
                 {
-                    _ = colony.ActivateFacility(category);
+                    _ = colony.Facility_Activate(category);
                 }
             }
 
@@ -608,8 +608,8 @@ namespace Supremacy.Game
             if (_isActive != building.IsActive)
             {
                 _ = _isActive
-                    ? building.Sector.System.Colony.ActivateBuilding(building)
-                    : building.Sector.System.Colony.DeactivateBuilding(building);
+                    ? building.Sector.System.Colony.Building_Activate(building)
+                    : building.Sector.System.Colony.Building_Deactivate(building);
             }
 
             return true;
@@ -641,7 +641,7 @@ namespace Supremacy.Game
             }
 
             _colonyId = colony.ObjectID;
-            _activeCount = colony.ActiveOrbitalBatteries;
+            _activeCount = colony.OrbitalBatteries_Active;
         }
 
         public override bool DoExecute()
@@ -652,13 +652,13 @@ namespace Supremacy.Game
                 return false;
             }
 
-            int activeCountDifference = _activeCount - colony.ActiveOrbitalBatteries;
+            int activeCountDifference = _activeCount - colony.OrbitalBatteries_Active;
 
             while (activeCountDifference != 0)
             {
                 if (activeCountDifference > 0)
                 {
-                    if (colony.ActivateOrbitalBattery())
+                    if (colony.OrbitalBattery_Activate())
                     {
                         --activeCountDifference;
                     }
@@ -669,7 +669,7 @@ namespace Supremacy.Game
                 }
                 else
                 {
-                    if (colony.DeactivateOrbitalBattery())
+                    if (colony.OrbitalBattery_Deactivate())
                     {
                         ++activeCountDifference;
                     }
@@ -726,10 +726,10 @@ namespace Supremacy.Game
 
             if (_isActive)
             {
-                return shipyard.Sector.System.Colony.ActivateShipyardBuildSlot(buildSlot);
+                return shipyard.Sector.System.Colony.ShipyardBuildSlot_Activate(buildSlot);
             }
 
-            return shipyard.Sector.System.Colony.DeactivateShipyardBuildSlot(buildSlot);
+            return shipyard.Sector.System.Colony.ShipyardBuildSlot_Deactivate(buildSlot);
         }
 
         public override bool Overrides(Order o)
@@ -837,6 +837,10 @@ namespace Supremacy.Game
             if (fleet.Order is AssaultSystemOrder)
             {
                 fleet.Order = fleet.GetDefaultOrder();
+            }
+            else
+            {
+                fleet.Order = FleetOrders.TravelOrder;
             }
 
             _route = fleet.Route;
@@ -1223,8 +1227,8 @@ namespace Supremacy.Game
         public UpdateResearchOrder(Civilization owner)
             : base(owner)
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
-            if (civManager == null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
+            if (_civM == null)
             {
                 throw new InvalidOperationException(
                     "Cannot access CivilizationManager for owner");
@@ -1233,8 +1237,8 @@ namespace Supremacy.Game
             _locked = new bool[GameContext.Current.ResearchMatrix.Fields.Count];
             for (int i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
             {
-                _locked[i] = civManager.Research.Distributions[i].IsLocked;
-                _values[i] = civManager.Research.Distributions[i].Value;
+                _locked[i] = _civM.Research.Distributions[i].IsLocked;
+                _values[i] = _civM.Research.Distributions[i].Value;
             }
         }
 
@@ -1245,13 +1249,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
-            if (civManager != null)
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner];
+            if (_civM != null)
             {
                 for (int i = 0; i < GameContext.Current.ResearchMatrix.Fields.Count; i++)
                 {
-                    civManager.Research.Distributions[i].IsLocked = _locked[i];
-                    civManager.Research.Distributions[i].SetValueInternal(_values[i]);
+                    _civM.Research.Distributions[i].IsLocked = _locked[i];
+                    _civM.Research.Distributions[i].SetValueInternal(_values[i]);
                 }
                 return true;
             }
@@ -1339,13 +1343,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            CivilizationManager civManager = ExecutionContext.CivilizationManagers[OwnerID];
-            if (civManager == null)
+            CivilizationManager _civM = ExecutionContext.CivilizationManagers[OwnerID];
+            if (_civM == null)
             {
                 return false;
             }
 
-            _ = civManager.Credits.AdjustCurrent(_amount);
+            _ = _civM.Credits.AdjustCurrent(_amount);
 
             return true;
         }
@@ -1364,13 +1368,13 @@ namespace Supremacy.Game
 
         public override bool DoExecute()
         {
-            CivilizationManager civManager = ExecutionContext.CivilizationManagers[OwnerID];
-            if (civManager == null)
+            CivilizationManager _civM = ExecutionContext.CivilizationManagers[OwnerID];
+            if (_civM == null)
             {
                 return false;
             }
 
-            _ = civManager.Resources[_resourceType].AdjustCurrent(_amount);
+            _ = _civM.Resources[_resourceType].AdjustCurrent(_amount);  // give resource
             return true;
         }
     }

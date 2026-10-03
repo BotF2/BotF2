@@ -67,10 +67,7 @@ namespace Supremacy.Xna
                 _runHandle = null;
             }
 
-            if (oldRunHandle != null)
-            {
-                oldRunHandle.Dispose();
-            }
+            oldRunHandle?.Dispose();
         }
 
         private void EndRun()

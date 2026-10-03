@@ -42,10 +42,7 @@ namespace Supremacy.Xna
 
             GraphicsDevice device = Graphics.GraphicsDevice;
 
-            if (_tempBuffer != null)
-            {
-                _tempBuffer.Dispose();
-            }
+            _tempBuffer?.Dispose();
 
             _tempBuffer = new RenderTarget2D(
                 device,
@@ -61,10 +58,7 @@ namespace Supremacy.Xna
         {
             base.DisposeBuffers();
 
-            if (_tempBuffer != null)
-            {
-                _tempBuffer.Dispose();
-            }
+            _tempBuffer?.Dispose();
 
             _tempBuffer = null;
         }
@@ -98,17 +92,11 @@ namespace Supremacy.Xna
         {
             base.UnloadContent();
 
-            if (_sun != null)
-            {
-                _sun.Dispose();
-            }
+            _sun?.Dispose();
 
             _sun = null;
 
-            if (_postProcessor != null)
-            {
-                _postProcessor.Dispose();
-            }
+            _postProcessor?.Dispose();
 
             _postProcessor = null;
         }

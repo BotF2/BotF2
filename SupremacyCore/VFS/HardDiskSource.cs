@@ -17,6 +17,8 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+using Supremacy.Annotations;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,12 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Security.AccessControl;
-
-using Supremacy.Annotations;
-
-using IOPath = System.IO.Path;
-using Supremacy.Utility;
 using System.Windows;
+using IOPath = System.IO.Path;
 
 namespace Supremacy.VFS
 {
@@ -305,11 +303,15 @@ namespace Supremacy.VFS
             }
             catch
             {
-                string message = "File is NOT available > " + resolvedName;
-                _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                string message = "Step_9981:; ############## File is NOT available > " + resolvedName;
                 Console.WriteLine(message);
                 GameLog.Client.General.ErrorFormat(message);
-                return File.Open("vfs:///Resources/Images/__image_missing.png", FileMode.Open, access, share);
+                _ = MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                Console.WriteLine(message);
+                //GameLog.Client.General.ErrorFormat(message);
+                //var path = "vfs:///Resources/Images/";
+                //var file = path + "__image_missing.png";
+                return File.Open("\\Resources\\Images\\__image_missing.png", FileMode.Open, access, share);
             }
         }
 
@@ -365,6 +367,12 @@ namespace Supremacy.VFS
             {
                 if (File.Exists(path))
                 {
+                    string _file = new FileInfo(path).FullName;
+                    if (!_file.Contains("\\Images"))
+                    {
+                        Console.WriteLine("Step_2354:; Opening " + _file);
+                    }
+
                     return new FileInfo(path).FullName;
                 }
             }

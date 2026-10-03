@@ -72,7 +72,7 @@ namespace Supremacy.Combat
             }
             if (!_targetPrimaries.ContainsKey(source.ObjectID))
             {
-                _targetPrimaries[source.ObjectID] = CombatHelper.GetDefaultHoldFireCiv();
+                _targetPrimaries[source.ObjectID] = CombatHelper.GetDefault_OnlyReturnFireCiv_888();
                 //throw new ArgumentException("No target one has been set for the specified source");
             }
             GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);

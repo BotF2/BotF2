@@ -166,7 +166,7 @@ namespace Supremacy.Client
         public AltEnumStringConverter()
         {
             _enumTables = GameContext.Current != null
-                ? GameContext.Current.Tables.EnumTables
+                ? GameContext.Current.GameTables.EnumTables
                 : Designer.IsInDesignMode
                     ? TableMap.ReadFromFile(
                                     Path.Combine(

@@ -25,9 +25,9 @@ namespace Supremacy.Resources
 
                     bool _traceCivilizationsXML = false;  // file is writen while starting a game -> Federation -> Start
 
-                    _text = _traceCivilizationsXML + " for writing CivilizationsXML_To_CSV - may hang up a start of the game";
-                    Console.WriteLine(_text);
-                    GameLog.Core.XML2CSVOutput.DebugFormat(_text);
+                    _text = "Step_0720: " + _traceCivilizationsXML + " for writing CivilizationsXML_To_CSV - may hang up a start of the game";
+                    //Console.WriteLine(_text);
+                    //GameLog.Core.XML2CSVOutput.DebugFormat(_text);
 
                     if (_traceCivilizationsXML == true)
                     {
@@ -103,7 +103,7 @@ namespace Supremacy.Resources
                                 RaceName + separator +
                                 civ.HomeSystemName + separator +
                                 civ.Race.HomePlanetType + separator +
-                                civ.Race.CombatEffectiveness + separator +
+                                civ.Race.GroundCombatEffectiveness + separator +
                                 civ.Color + separator +
                                 civ.HomeQuadrant.ToString() + separator +
                                 civ.CivilizationType.ToString() + separator +
@@ -124,13 +124,13 @@ namespace Supremacy.Resources
                             }
                         WriterClose:
                             streamWriter.Close();
-                            _text = "STEP_1280: successfully ended writing " + file;
+                            _text = "Step_1280: successfully ended writing " + file;
                             Console.WriteLine(_text);
                             GameLog.Core.GameDataDetails.DebugFormat(_text);
                         }
                         catch (Exception e)
                         {
-                            _text = "STEP_1280: Cannot write ... " + file + e;
+                            _text = "Step_1280: Cannot write ... " + file + e;
                             Console.WriteLine(_text);
                             GameLog.Core.GameData.ErrorFormat(_text);
                         }

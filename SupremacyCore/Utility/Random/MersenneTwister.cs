@@ -203,7 +203,11 @@ namespace Supremacy.Utility
             {
                 if (maxValue < 0)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    //_text = ("Step_3252:; maxvalue below 0, exactly " + maxValue);
+                    Console.WriteLine("Step_3252:; maxvalue below 0, exactly " + maxValue);
+                    //GameLog.Core.CombatDetails.DebugFormat(_text);
+                    return 0;
+                    //throw new ArgumentOutOfRangeException();
                 }
 
                 return 0;

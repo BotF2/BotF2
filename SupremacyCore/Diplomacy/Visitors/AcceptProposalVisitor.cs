@@ -33,12 +33,18 @@ namespace Supremacy.Diplomacy.Visitors
                 throw new ArgumentNullException("proposal");
             }
 
-            GameLog.Client.DiplomacyDetails.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
-                , proposal.Sender.Key
-                , proposal.Recipient.Key
-                , proposal.Clauses[0].ClauseType
+            string _text = "Step_2334:; " 
+                /*+ " for " */+ proposal.Clauses[0].ClauseType
+                + " > Proposal ACCEPTED: Sender was " + proposal.Sender.Key
+                + " to " + proposal.Recipient.Key
 
-                );
+                ;
+            Console.WriteLine(_text);
+            //GameLog.Client.DiplomacyDetails.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
+            //    , proposal.Sender.Key
+            //    , proposal.Recipient.Key
+            //    , proposal.Clauses[0].ClauseType
+            //    );
 
             AcceptProposalVisitor visitor = new AcceptProposalVisitor(proposal);
 
@@ -56,8 +62,18 @@ namespace Supremacy.Diplomacy.Visitors
 
             Response response = new Response(ResponseType.Accept, proposal);
 
-            GameLog.Core.DiplomacyDetails.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
-                agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
+            // doubled
+            //_text = "Step_2336:; "
+            //        + "Agreement recipient= " + agreement.Recipient
+            //        + ", sender was= " + agreement.Sender
+            //        + ", turn sent= " + agreement.Proposal.TurnSent
+            //        + ", clauses= " + proposal.Clauses.Count
+            //        + ", response= " + response.ResponseType.ToString()
+            //        ;
+            //Console.WriteLine(_text);
+
+            //GameLog.Core.DiplomacyDetails.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
+            //    agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
 
             foreignPower.ResponseSent = response;
             foreignPower.UpdateStatus();
@@ -235,7 +251,7 @@ namespace Supremacy.Diplomacy.Visitors
             }
 
             List<int> transferredColonyIds = new List<int>();
-            // Transferr Ship Owner in GameEngine DoDiplomacy
+            // Transferr Ship Owner in GameEngine Do_13_Diplomacy
             foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(member))
             {
                 colony.TakeOwnership(empire, false);

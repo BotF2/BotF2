@@ -1,4 +1,6 @@
-﻿// Copyright (c) 2009 Mike Strobel
+﻿// TerroristEvent.cs
+//
+// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -7,6 +9,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +27,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public TerroristEvent()
         {
@@ -59,7 +63,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 55)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 25)  // before 55
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -68,7 +72,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
@@ -106,7 +110,7 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
 
@@ -115,20 +119,29 @@ namespace Supremacy.Scripting.Events
                         GameLog.Client.GameData.DebugFormat("{0} Shipyard: {1}, affectedProject: {2}", target.Name, target.Shipyard.Name, target.Shipyard.BuildSlots.Count);
                         List<ShipyardBuildSlot> tmpShipyards = new List<ShipyardBuildSlot>(target.Shipyard.BuildSlots.Count);
                         tmpShipyards.AddRange(target.Shipyard.BuildSlots.ToList());
-                        tmpShipyards.ForEach(o => target.DeactivateShipyardBuildSlot(o));
+                        tmpShipyards.ForEach(o => target.ShipyardBuildSlot_Deactivate(o));
                         tmpShipyards.ForEach(o => GameLog.Client.GameData.DebugFormat("affectedProject: {0}", target.Shipyard.BuildSlots.Count));
                         tmpShipyards.ForEach(o => target.Shipyard.BuildQueue.Clear());
                         tmpShipyards.ForEach(o => o.Shipyard.ObjectID = -1);
 
-                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                        if (civManager != null)
-                        {
-                            civManager.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(civManager.Civilization, target));
-                        }
+                        //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                        //_civM?.SitRepEntries.Add(new TerroristBombingOfShipProductionSitRepEntry(_civM.Civilization, target));
+                        CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+
+                        _text = target.Location + " " + target.Name + " > ";
+                        _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                            , _text + ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_HEADER_TEXT")
+                            , _text + ResourceManager.GetString("TERRORIST_BOMBING_OF_SHIP_PRODUCTION_DETAIL_TEXT")
+                            , "ScriptedEvents/TerroristBombingOfShipProduction.png", SitRepPriority.RedYellow));
 
                     }
 
                     OnUnitTargeted(target);
+
+                    _text = "Step_5495:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                            + " >Terrorist (Event). Down: Population " + -population / 3 * 2 + ", ";
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

@@ -66,7 +66,7 @@ namespace Supremacy.Diplomacy
         private string _text;
         private ForeignPowerStatus _diplomacyStatus;
 
-        //protected static TableMap GameOptionTables => GameContext.Current.Tables.GameOptionTables;
+        //protected static TableMap GameOptionTables => GameContext.Current.GameTables.GameOptionTables;
 
         public DiplomacyData(int ownerId, int counterpartyId)
         {
@@ -74,8 +74,8 @@ namespace Supremacy.Diplomacy
             _counterpartyId = counterpartyId;
             _contactTurn = 0;
             _firstDiplomaticAction = false;
-            _regard = new Meter(500, 0, 1000);
-            _trust = new Meter(500, 0, 1000);
+            _regard = new Meter(481, 0, 1000);
+            _trust = new Meter(460, 0, 1000);
             _regard.CurrentValueChanged += OnRegardCurrentValueChanged;
             _trust.CurrentValueChanged += OnTrustCurrentValueChanged;
         }
@@ -164,7 +164,7 @@ namespace Supremacy.Diplomacy
         public static RegardLevel CalculateRegardLevel(int regard)
         {
             RegardLevel regardLevel = RegardLevel.Detested;
-            Table regardLevelsTable = GameContext.Current.Tables.GameOptionTables["RegardLevels"];
+            Table regardLevelsTable = GameContext.Current.GameTables.GameOptionTables["RegardLevels"];
 
             foreach (RegardLevel enumValue in EnumHelper.GetValues<RegardLevel>())
             {

@@ -429,6 +429,9 @@ namespace Supremacy.UI
         private ButtonBase _decrementButton;
         private ButtonBase _incrementButton;
         private UIElement _contentArea;
+
+        [NonSerialized]
+        private string _text;
         #endregion
 
         #region Properties
@@ -739,8 +742,8 @@ namespace Supremacy.UI
                     ? _contentArea.RenderSize.Height
                     : ActualHeight);
 
-    //        return new Rect(
-    //offset.X + ((unitBlockWidth + (unitBlockWidth / 2.0)) * index) + (unitBlockWidth / 2.0),
+            //        return new Rect(
+            //offset.X + ((unitBlockWidth + (unitBlockWidth / 2.0)) * index) + (unitBlockWidth / 2.0),
         }
 
         protected override Size ArrangeOverride(Size arrangeBounds)
@@ -750,34 +753,66 @@ namespace Supremacy.UI
             double actualWidth = (_contentArea != null)
                                   ? _contentArea.RenderSize.Width
                                   : ActualWidth;
+            //actualWidth = ActualWidth *2;
+            //actualWidth = actualWidth * 1.5;
+
+            if (_contentArea != null)
+            {
+                actualWidth = _contentArea.RenderSize.Width;
+            }
 
             if ((Group != null) && (Group.Children.Count > 0))
             {
                 double maxSiblingWidth = Group.Children.Max(
                     o => (o._contentArea != null)
-                             ? o._contentArea.RenderSize.Width
-                             : o.ActualWidth);
+                             ? o._contentArea.RenderSize.Width * 1
+                             : o.ActualWidth * 1);
 
                 if (!double.IsNaN(maxSiblingWidth) && !double.IsInfinity(maxSiblingWidth) && (maxSiblingWidth < actualWidth))
                 {
-                    actualWidth = maxSiblingWidth;
+                    actualWidth = maxSiblingWidth * 1.1;
                 }
+                else // 2024-06-01
+                {
+                    actualWidth = (_contentArea != null)
+                     ? _contentArea.RenderSize.Width
+                     : ActualWidth;
+                    actualWidth = actualWidth * 2.5;
+                }
+                //Console.WriteLine("Step_9982:; maxSiblingWidth=" + maxSiblingWidth.ToString());
             }
+
+            //Console.WriteLine("Step_9983:; actualWidth=" + actualWidth.ToString());
 
             ////if ((actualWidth != 0)
             ////    && !double.IsNaN(actualWidth)
             //    && !double.IsInfinity(actualWidth))
             {
                 //double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 24.0), 1.0));
-                
+
                 // 2022-04-22: new 0.8 and back to 24 from 18
-                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.8 / GetMaxUnitsInGroup(), 24.0), 1.0));
+                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 12.0), 1.0));
+                if (unitBlockWidth < 6)
+                    unitBlockWidth = 6;
+                _text = "x" + _text; // dummy - please keep 
+                //_text = "Step_9982:; unitBlockWidth=" + unitBlockWidth.ToString()
+                //    + "; actualWidth= " + actualWidth
+                //    ;
+                //Console.WriteLine(_text);
 
                 _unitBlockBounds = new Rect[Units];
 
                 for (int i = 0; i < Units; i++)
                 {
-                    _unitBlockBounds[i] = GetUnitBounds(i, unitBlockWidth);
+                    _unitBlockBounds[i] = GetUnitBounds(i, unitBlockWidth - 2);
+                }
+
+                if ((unitBlockWidth * Units) > (_contentArea.RenderSize.Width + 0)) // 20 overlapping is ok
+                {
+                    for (int i = 0; i < Units; i++)
+                    {
+                        _unitBlockBounds[i] = GetUnitBounds(i, unitBlockWidth - 3);
+                    }
                 }
             }
 

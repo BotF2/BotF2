@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Microsoft.Practices.Composite.Regions;
+using Supremacy.Annotations;
+using Supremacy.Client.Context;
+using Supremacy.Game;
+using Supremacy.Utility;
+using System;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-
-using Microsoft.Practices.Composite.Regions;
-
-using Supremacy.Annotations;
-using Supremacy.Utility;
-using Supremacy.Client.Context;
 
 namespace Supremacy.Client.Views
 {
@@ -28,6 +27,8 @@ namespace Supremacy.Client.Views
         }
 
         public abstract string ViewName { get; }
+
+        public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
 
         protected IRegionManager RegionManager { get; }
 

@@ -7,14 +7,13 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using Supremacy.Collections;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
-
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Supremacy.Orbitals
@@ -28,7 +27,7 @@ namespace Supremacy.Orbitals
         private IIndexedEnumerable<BuildSlot> _buildSlots;
         private int _buildOutput;
         private List<BuildQueueItem> _buildQueue;
-        private string _text;
+        public string _locationColonyString;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -77,6 +76,24 @@ namespace Supremacy.Orbitals
             return _buildOutput;
         }
 
+        public string LocationStringStation
+        {
+            get
+            {
+                if (_locationColonyString == null)
+                {
+                    _locationColonyString = GameEngine.LocationString(Location.ToString());
+                    return _locationColonyString;
+
+                }
+                else
+                {
+                    return _locationColonyString;
+                }
+            }
+        }
+        
+
         /// <summary>
         /// Gets the build queue at this <see cref="Station"/>.
         /// </summary>
@@ -104,6 +121,7 @@ namespace Supremacy.Orbitals
             _buildSlots = new ArrayWrapper<BuildSlot>((BuildSlot[])reader.ReadOptimizedObjectArray(typeof(BuildSlot)));
             _buildOutput = reader.ReadOptimizedInt32();
             _buildQueue = reader.ReadList<BuildQueueItem>();
+            string _text;
 
 
             foreach (var item in _buildSlots)

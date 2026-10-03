@@ -9,6 +9,7 @@
 
 using Supremacy.Annotations;
 using Supremacy.Entities;
+using Supremacy.Tech;
 using Supremacy.Utility;
 using System;
 using System.ComponentModel;
@@ -35,7 +36,7 @@ namespace Supremacy.Game
         private SlotStatus[] _slotStatus;
 
         private static string _text;
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
         //private int _count;
         #endregion
 
@@ -51,7 +52,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("options");
             }
 
-            _text = "Step_1201: CreateSinglePlayerGame: "
+            _text = "Step_1201:; CreateSinglePlayerGame: "
                 + "SP-GameName=" + SinglePlayerGameName
                 + ", SP-Name=" + SinglePlayerName
                 + ", localPlayerEmpireID=" + localPlayerEmpireID
@@ -70,16 +71,18 @@ namespace Supremacy.Game
                 LocalPlayerName = SinglePlayerName,
             };
 
-            _text = "Step_1202: PopulateEmpires... "
-            ;
+            _text = "Step_1233:; PopulateEmpires... ";
+            
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
+
+            //TechObject.xaml + Klingon shipclass + new site ShipClasses + Info from ..to
 
             initData.PopulateEmpires();
 
             int empireCount = initData.EmpireIDs.Length;  // does not count Empires turned into ExpandingPower, but we need that amount too. 
 
-            //maybe works now......empireCount = 8; // hardcoded value, depending on defined empires in Civilizations.xaml
+            //maybe works now......empireCount = 8; // hardcoded value, depending on defined empires in Civilizations_xaml
 
             //if (empireCount < 1)
             //    empireCount = 2;
@@ -97,7 +100,7 @@ namespace Supremacy.Game
                 initData.SlotClaims[i] = SlotClaim.Unassigned;
                 initData.SlotStatus[i] = Game.SlotStatus.Open;
             }
-            _text = "Step_1203: Returning initData... ";
+            _text = "Step_1223:; Returning initData... ";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
             return initData;
@@ -164,39 +167,39 @@ namespace Supremacy.Game
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", empireName);
             }
 
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - GalaxySize;{0}", savedGameHeader.Options.GalaxySize);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - GalaxyShape;{0}", savedGameHeader.Options.GalaxyShape);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - StarDensity;{0}", savedGameHeader.Options.StarDensity);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - PlanetDensity;{0}", savedGameHeader.Options.PlanetDensity);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - StartingTechLevel (once);{0}", savedGameHeader.Options.StartingTechLevel);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - MinorRaceFrequency;{0}", savedGameHeader.Options.MinorRaceFrequency);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;GameOptions - GalaxySize;{0}", savedGameHeader.Options.GalaxySize);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - GalaxyShape;{0}", savedGameHeader.Options.GalaxyShape);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - StarDensity;{0}", savedGameHeader.Options.StarDensity);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - PlanetDensity;{0}", savedGameHeader.Options.PlanetDensity);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;GameOptions - StartingTechLevel (once);{0}", savedGameHeader.Options.StartingTechLevel);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - MinorRaceFrequency;{0}", savedGameHeader.Options.MinorRaceFrequency);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};FederationPlayable;", savedGameHeader.Options.FederationPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};RomulanPlayable", savedGameHeader.Options.RomulanPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};KlingonPlayable", savedGameHeader.Options.KlingonPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};CardassianPlayable", savedGameHeader.Options.CardassianPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};DominionPlayable", savedGameHeader.Options.DominionPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};BorgPlayable", savedGameHeader.Options.BorgPlayable);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - {0};TerranEmpirePlayable", savedGameHeader.Options.TerranEmpirePlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};FederationPlayable;", savedGameHeader.Options.FederationPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};RomulanPlayable", savedGameHeader.Options.RomulanPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};KlingonPlayable", savedGameHeader.Options.KlingonPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};CardassianPlayable", savedGameHeader.Options.CardassianPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};DominionPlayable", savedGameHeader.Options.DominionPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};BorgPlayable", savedGameHeader.Options.BorgPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - {0};TerranEmpirePlayable", savedGameHeader.Options.TerranEmpirePlayable);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Options: FederationModifier = {0}", savedGameHeader.Options.FederationModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: RomulanModifier = {0}", savedGameHeader.Options.RomulanModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: KlingonModifier = {0}", savedGameHeader.Options.KlingonModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: CardassianModifier = {0}", savedGameHeader.Options.CardassianModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: DominionModifier = {0}", savedGameHeader.Options.DominionModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: BorgModifier = {0}", savedGameHeader.Options.BorgModifier);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: TerranEmpireModifier = {0}", savedGameHeader.Options.TerranEmpireModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: FederationModifier = {0}", savedGameHeader.Options.FederationModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: RomulanModifier = {0}", savedGameHeader.Options.RomulanModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: KlingonModifier = {0}", savedGameHeader.Options.KlingonModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: CardassianModifier = {0}", savedGameHeader.Options.CardassianModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: DominionModifier = {0}", savedGameHeader.Options.DominionModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: BorgModifier = {0}", savedGameHeader.Options.BorgModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: TerranEmpireModifier = {0}", savedGameHeader.Options.TerranEmpireModifier);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Options: EmpireModifierRecurringBalancing = {0}", savedGameHeader.Options.EmpireModifierRecurringBalancing);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: GamePace = {0}", savedGameHeader.Options.GamePace);
-            GameLog.Core.GeneralDetails.DebugFormat("Options: TurnTimer = {0}", savedGameHeader.Options.TurnTimerEnum);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: EmpireModifierRecurringBalancing = {0}", savedGameHeader.Options.EmpireModifierRecurringBalancing);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: GamePace = {0}", savedGameHeader.Options.GamePace);
+            GameLog.Core.GeneralDetails.DebugFormat("GameOptions: TurnTimer = {0}", savedGameHeader.Options.TurnTimerEnum);
 
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - UseHomeQuadrants;{0}", savedGameHeader.Options.UseHomeQuadrants);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - TurnTimer;{0}", savedGameHeader.Options.TurnTimer);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - AIMode    ;{0}", savedGameHeader.Options.AIMode);
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - AITakeover;{0}", savedGameHeader.Options.AITakeover);
-            // not useful GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - ModID     ;{0}", savedGameHeader.Options.ModID);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - UseHomeQuadrants;{0}", savedGameHeader.Options.UseHomeQuadrants);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - TurnTimer;{0}", savedGameHeader.Options.TurnTimer);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - AIMode    ;{0}", savedGameHeader.Options.AIMode);
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;GameOptions - AITakeover;{0}", savedGameHeader.Options.AITakeover);
+            // not useful GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;GameOptions - ModID     ;{0}", savedGameHeader.GameOptions.ModID);
 
             foreach (SlotClaim slotClaim in savedGameHeader.SlotClaims)
             {
@@ -209,8 +212,8 @@ namespace Supremacy.Game
 
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad);
 
-            GameLog.Client.SaveLoad.DebugFormat("Loading Time = {0}", DateTime.Now - _time);
-            Console.WriteLine("Loading Time = {0}", DateTime.Now - _time);
+            GameLog.Client.SaveLoad.DebugFormat("Step_9811:; Loading Time = {0}", DateTime.Now - _time);
+            Console.WriteLine("Step_9811:; Loading Time = {0}", DateTime.Now - _time);
 
 
 
@@ -239,8 +242,8 @@ namespace Supremacy.Game
             {
                 _localPlayerEmpireID = value;
                 OnPropertyChanged("LocalPlayerEmpireID");
-                GameLog.Core.General.InfoFormat("LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
-                _text += value + ";;LocalPlayerEmpireID;" + newline;
+                GameLog.Core.General.InfoFormat("Step_0287: LocalPlayerEmpireID (beginning from 0): {0}", _localPlayerEmpireID);
+                _text += value + ";;LocalPlayerEmpireID;" + _newline;
             }
         }
 
@@ -251,7 +254,7 @@ namespace Supremacy.Game
             {
                 _localPlayerName = value;
                 OnPropertyChanged("LocalPlayerName");
-                _text += value + ";;LocalPlayerName;" + newline;
+                _text += value + ";;LocalPlayerName;" + _newline;
             }
         }
 
@@ -266,7 +269,7 @@ namespace Supremacy.Game
                 //foreach (var item in _empireIDs)
                 //{
 
-                //    _loadGameText += value[_count] + ";;EmpireIDs;" +_count + newline;
+                //    _loadGameText += value[_count] + ";;EmpireIDs;" +_count + _newline;
                 //    _count += 1;
                 //}
                 
@@ -285,7 +288,7 @@ namespace Supremacy.Game
                 //_count = 0;
                 //foreach (var item in _empireNames)
                 //{
-                //    _loadGameText += value[_count] + ";;EmpireNames;" +_count + newline;
+                //    _loadGameText += value[_count] + ";;EmpireNames;" +_count + _newline;
                 //    _count += 1;
                 //}
                 //Console.WriteLine("Step 222: " + _loadGameText);
@@ -299,7 +302,7 @@ namespace Supremacy.Game
             {
                 _gameName = value;
                 OnPropertyChanged("GameName");
-                _text += value + ";;GameName;" + newline;
+                _text += value + ";;GameName;" + _newline;
             }
         }
 
@@ -311,8 +314,8 @@ namespace Supremacy.Game
                 _gameType = value;
                 OnPropertyChanged("GameType");
                 OnPropertyChanged("IsMultiplayerGame");
-                _text += value + ";;GameType" + newline;
-                _text += value + ";;IsMultiplayerGame" + newline;
+                _text += value + ";;GameType" + _newline;
+                _text += value + ";;IsMultiplayerGame" + _newline;
             }
         }
 
@@ -322,14 +325,14 @@ namespace Supremacy.Game
             set
             {
                 _options = value;
-                OnPropertyChanged("Options");
+                OnPropertyChanged("GameOptions");
                 //foreach (var item in value)
                 //{
-                //    //_loadGameText += item.value + ";;Options:" + item + newline;
+                //    //_loadGameText += item.value + ";;GameOptions:" + item + _newline;
                 _text = _options.ToString();
                 _text += "GameOptions are set...";
                 //}
-                Console.WriteLine("Step_1200: " + _text);
+                Console.WriteLine("Step_1200:; " + _text);
             }
         }
 

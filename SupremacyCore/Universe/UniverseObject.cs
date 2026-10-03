@@ -35,13 +35,18 @@ namespace Supremacy.Universe
     {
         private Lazy<EffectBindingCollection> _effectBindings = new Lazy<EffectBindingCollection>();
         private MapLocation _location;
+        //private int _location_fire_power;
         private short _ownerId = (short)Civilization.InvalidID;
         private string _name;
         private int _turnCreated;
         private int _lastOwnershipChange;
 
+        //[NonSerialized]
+        //public string _text;
+        //public string _colony_Full_Report;
+
         //private string _text;
-        //private readonly string newline = Environment.NewLine;
+        //private readonly string _newline = Environment.NewLine;
 
 
 
@@ -248,6 +253,7 @@ namespace Supremacy.Universe
             }
         }
 
+
         public int DistanceTo([NotNull] UniverseObject other)
         {
             if (other == null)
@@ -279,7 +285,7 @@ namespace Supremacy.Universe
             //Console.WriteLine("UniverseObjects: DeserializeOwnedData... ");
 
             // no big result
-            //_text = newline
+            //_text = _newline
             //    + ";" + _location
             //    + ";" + _name
             //    + ";" + _ownerId
@@ -449,7 +455,10 @@ namespace Supremacy.Universe
                 catch (Exception e)
                 {
                     // doesn't work - only crashes when using Live Visual Tree directly in Visual Studio - then just click on Continue - use F5 to continue
-                    GameLog.Core.General.Error("No EffectBindings available " + e);
+                    string _text = "Step_2589:; EffectBindings crashed > " + e.Message;
+                    Console.WriteLine(_text);
+                    //GameLog.Core.General.Error(_text);
+                    Debugger.Break();
                     return _effectBindings.Value;
                 }
             }

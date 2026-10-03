@@ -42,8 +42,8 @@ namespace Supremacy.Client.Views
 
         TreatyWarPact,
         TreatyCeaseFireClause,
-        TreatyNonAggressionClause,
         TreatyOpenBordersClause,
+        TreatyNonAggressionClause,
         TreatyTradePactClause,
         TreatyResearchPactClause,
         TreatyAffiliationClause,

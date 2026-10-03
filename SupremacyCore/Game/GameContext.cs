@@ -25,7 +25,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 
 namespace Supremacy.Game
@@ -42,13 +45,13 @@ namespace Supremacy.Game
         /// Gets the game data tables.
         /// </summary>
         /// <value>The tables.</value>
-        GameTables Tables { get; }
+        GameTables GameTables { get; }
 
         /// <summary>
         /// Gets the game options with which this instance was created.
         /// </summary>
         /// <value>The options.</value>
-        GameOptions Options { get; }
+        GameOptions GameOptions { get; }
 
         /// <summary>
         /// Gets or sets the current game mod.
@@ -150,9 +153,9 @@ namespace Supremacy.Game
     {
         #region Instance Members
         #region Fields
-        private int _nextObjectId;
-        private int _turnNumber = 0;
-        private GameOptions _options;
+        private int _nextObjectId;// = 0; //2025-06-14
+        private int _turnnumber = 0;
+        private GameOptions _game_options;
         private GameMod _gameMod;
         private CivDatabase _civilizations;
         private CivilizationManagerMap _civManagers;
@@ -160,7 +163,7 @@ namespace Supremacy.Game
         private UniverseManager _universe;
         private TechDatabase _techDatabase;
         [NonSerialized]
-        private GameTables _tables;
+        private GameTables _game_tables;
         private ResearchMatrix _researchMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
@@ -170,90 +173,266 @@ namespace Supremacy.Game
         private StrategyDatabase _strategyDatabase;
         private ICollection<ScriptedEvent> _scriptedEvents;
         private DiplomacyDatabase _diplomacyDatabase;
-        #endregion
+
+        //[NonSerialized]
+        //public string _text;
+        //public readonly string _newline = Environment.NewLine;
+
+        //private bool _bool_Fac_Count_Active;
+        #endregion Fields
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
+            string _summary_write_serialized = "";
+            string _newline = Environment.NewLine;
+            string _text;
+
+            bool _write_serialized = true;
+            //bool _write_serialized = false;
+
+
+
+            _text = "Step_3701: --------------------------------------------------";
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            _text = "Step_3702:; ########### Serialising GameContext...";
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
             writer.Write(IsMultiplayerGame);
+            _text = "Step_3707:; write > IsMultiplayerGame= " + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
             writer.WriteOptimized(_nextObjectId);
-            writer.WriteOptimized((ushort)_turnNumber);
-            writer.WriteObject(_options);
+            _text = "Step_3712:; write > _nextObjectId= " + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
+            writer.WriteOptimized((ushort)_turnnumber);
+            _text = "Step_3713:; write > _turnnumber= " + _turnnumber;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
+            writer.WriteObject(_game_options);
+            _text = "Step_3714:; write > _game_options= xx";// + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_gameMod);
+            _text = "Step_3715:; write > _gameMod= " + _gameMod;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_civilizations);
+            _text = "Step_3716:; write > _civilizations...";// + IsMultiplayerGame;
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_civManagers);
+            _text = "Step_3717:; write > _civManagers...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_races);
+            _text = "Step_3718:; write > _races...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_universe);
+            _text = "Step_3721:; write > _universe...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_techDatabase);
+            _text = "Step_3725:; write > _techDatabase...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_researchMatrix);
+            _text = "Step_3727:; write > _researchMatrix...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_sectorClaims);
+            _text = "Step_3731:; write > _sectorClaims...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_techTrees);
+            _text = "Step_3735:; write > _techTrees...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_diplomacyData);
+            _text = "Step_3737:; write > _diplomacyData...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_agreementMatrix);
+            _text = "Step_3741:; write > _agreementMatrix...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_diplomats);
+            _text = "Step_3745:; write > _diplomats...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_strategyDatabase);
+            _text = "Step_3747:; write > _strategyDatabase...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_scriptedEvents);
+            _text = "Step_3751:; write > _scriptedEvents...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
+
+
             writer.WriteObject(_diplomacyDatabase);
+            _text = "Step_3755:; write > _diplomacyDatabase...";// 
+            if (_write_serialized) Console.WriteLine(_text);
+            _summary_write_serialized += _newline + _text;
+            GameLog.Core.SaveLoad.DebugFormat(_text);
         }
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
             PushThreadContext(this);
+            string _text;
 
             try
             {
-                GameLog.Core.SaveLoad.DebugFormat("--------------------------------------------------");
-                _text = "########### Deserialising GameContext...";
+                GameLog.Core.SaveLoad.DebugFormat("Step_3600: --------------------------------------------------");
+                _text = "Step_3600:; ########### Deserialising GameContext...";
                 Console.WriteLine(_text);
-                GameLog.Core.SaveLoad.DebugFormat("########### Deserialising GameContext...");
+                GameLog.Core.SaveLoad.DebugFormat(_text);
 
                 IsMultiplayerGame = reader.ReadBoolean();
-                Console.WriteLine("reading IsMultiplayerGame..... > " + IsMultiplayerGame.ToString());
-                GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
+                _text = "Step_3610:; already read  IsMultiplayerGame..... > " + IsMultiplayerGame.ToString();
+                Console.WriteLine(_text);
+                GameLog.Core.SaveLoad.DebugFormat("Step_3611: IsMultiplayerGame = {0}", IsMultiplayerGame);
 
                 _nextObjectId = reader.ReadOptimizedInt32();
-                Console.WriteLine("reading _nextObjectId.....");
-                _turnNumber = reader.ReadOptimizedUInt16();
-                Console.WriteLine("reading _turnNumber..... > " + _turnNumber);
-                GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+                _text = "Step_3630:; already read  _nextObjectId..... > " + _nextObjectId;
+                Console.WriteLine(_text);
 
-                _options = reader.Read<GameOptions>();
-                Console.WriteLine("reading _options.....");
+                _turnnumber = reader.ReadOptimizedUInt16();
+                _text = "Step_3640:; already read _turnnumber..... > " + _turnnumber;
+                Console.WriteLine(_text);
+                GameLog.Core.SaveLoad.DebugFormat("Step_3641: _turnnumber = {0}", _turnnumber);
+
+                _game_options = reader.Read<GameOptions>();
+                _text = "Step_3660:; already read _game_options.....";
+                Console.WriteLine(_text);
+
                 _gameMod = reader.Read<GameMod>();
-                Console.WriteLine("reading _gameMod.....");
+                _text = "Step_3680:; already read _gameMod.....";
+                Console.WriteLine(_text);
+
                 _civilizations = reader.Read<CivDatabase>();
-                Console.WriteLine("reading _civilizations.....");
+                _text = "Step_3710:; already read _civilizations..... > " + _civilizations.Count;
+                Console.WriteLine(_text);
                 // CivDatabase = basic Civs (like ShortName etc)
+
                 _civManagers = reader.Read<CivilizationManagerMap>();
-                Console.WriteLine("reading _civManagers.....");
+                _text = "Step_3740:; already read _civManagers..... > " + _civManagers.Count;
+                Console.WriteLine(_text);
                 // _civManagers = basic Civs (like ShortName etc)
+
                 _races = reader.Read<RaceDatabase>();
-                Console.WriteLine("reading _races.....");
+                _text = "Step_3780:; already read _races..... > " + _races.Count;
+                Console.WriteLine(_text);
+
+                Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off - use ALT+M at Map > \\Addon\\_MapData.txt");
                 _universe = reader.Read<UniverseManager>();
-                GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+                _text = "Step_3810:; already read _universe.....";
+                Console.WriteLine(_text);
+                //GameLog.Core.SaveLoad.DebugFormat(_text);
 
                 _techDatabase = reader.Read<TechDatabase>();
-                Console.WriteLine("reading _techDatabase.....");
-                _researchMatrix = reader.Read<ResearchMatrix>();
-                Console.WriteLine("reading _researchMatrix.....");
-                _sectorClaims = reader.Read<SectorClaimGrid>();
-                Console.WriteLine("reading _sectorClaims.....");
-                _techTrees = reader.Read<TechTreeMap>();
-                Console.WriteLine("reading _techTrees.....");
-                _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
-                Console.WriteLine("reading _diplomacyData.....");
-                _agreementMatrix = reader.Read<AgreementMatrix>();
-                Console.WriteLine("reading _agreementMatrix.....");
-                _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
-                Console.WriteLine("reading _diplomats.....");
-                _strategyDatabase = reader.Read<StrategyDatabase>();
-                Console.WriteLine("reading _strategyDatabase.....");
-                _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
-                Console.WriteLine("reading _scriptedEvents.....");
-                _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
-                Console.WriteLine("reading _diplomacyDatabase.....");
+                _text = "Step_3910:; already read _techDatabase.....";
+                Console.WriteLine(_text);
 
+                _researchMatrix = reader.Read<ResearchMatrix>();
+                _text = "Step_3920:; already read _researchMatrix.....";
+                Console.WriteLine(_text);
+
+                _sectorClaims = reader.Read<SectorClaimGrid>();
+                _text = "Step_3930:; already read _sectorClaims.....";
+                Console.WriteLine(_text);
+
+                _techTrees = reader.Read<TechTreeMap>();
+                _text = "Step_3940:; already read _techTrees.....";
+                Console.WriteLine(_text);
+
+                _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
+                _text = "Step_3950:; already read _diplomacyData.....";
+                Console.WriteLine(_text);
+
+                _agreementMatrix = reader.Read<AgreementMatrix>();
+                _text = "Step_3960:; already read _agreementMatrix.....";
+                Console.WriteLine(_text);
+
+                _diplomats = reader.Read<CivilizationKeyedMap<Diplomat>>();
+                _text = "Step_3970:; already read _diplomats.....";
+                Console.WriteLine(_text);
+
+                _strategyDatabase = reader.Read<StrategyDatabase>();
+                _text = "Step_3980:; already read _strategyDatabase.....";
+                Console.WriteLine(_text);
+
+                _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
+                _text = "Step_3985:; already read _scriptedEvents.....";
+                Console.WriteLine(_text);
+
+                _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
+                _text = "Step_3990:; already read _diplomacyDatabase.....";
+                Console.WriteLine(_text);
+
+                Report_DiplomacyData();
 
                 FixupDiplomacyData();
+                _text = "Step_3995:; already done > FixupDiplomacyData().....";
+                Console.WriteLine(_text);
             }
             finally
             {
@@ -265,25 +444,190 @@ namespace Supremacy.Game
         {
             CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
 
-            // going through civ managers better reflects which civ got spawned
-            foreach (CivilizationManager civMgr1 in _civManagers)
+            // going through _civ managers better reflects which _civ got spawned
+            foreach (CivilizationManager _civM_1 in _civManagers)
             {
-                Civilization civ1 = civMgr1.Civilization;
-                Diplomat diplomat = _diplomats[civ1];
+                Civilization _civ1 = _civM_1.Civilization;
+                Diplomat _diplomat = _diplomats[_civ1];
 
-                foreach (CivilizationManager civMgr2 in _civManagers)
+                foreach (CivilizationManager _civM_2 in _civManagers)
                 {
-                    Civilization civ2 = civMgr2.Civilization;
-                    if (civ1 == civ2)
+                    Civilization _civ2 = _civM_2.Civilization;
+                    if (_civ1 == _civ2)
                     {
                         continue;
                     }
 
-                    diplomacyData.Add(civ1, civ2, diplomat.GetData(civ2));
+                    diplomacyData.Add(_civ1, _civ2, _diplomat.GetData(_civ2));
                 }
             }
 
+            //Report_DiplomacyData();
+
+
+
             _diplomacyData = diplomacyData;
+
+            //Report_DiplomacyData();
+
+        }
+
+        public static void Report_DiplomacyData()
+        {
+            CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
+            CivilizationKeyedMap<Diplomat> _diplomats = GameContext.Current._diplomats;
+
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
+            var _active_agreements = new List<(int ID_1, int ID_2, string Treaty)>();
+            //_active_agreements.Add((0, 999, "x"));
+
+
+            //string _active_agreements_text = "";
+            string _agreement_text = "";
+
+            foreach (var item in GameContext.Current.AgreementMatrix)
+            {
+                string _proposal = item.Proposal.Clauses[0].ClauseType.ToString();
+                _active_agreements.Add((item.SenderID, item.RecipientID, _proposal));
+            }
+
+            foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
+            {
+                Civilization _civ1 = _civM_1.Civilization;
+                Diplomat _diplomat = _diplomats[_civ1];
+
+                foreach (CivilizationManager _civM_2 in GameContext.Current._civManagers)
+                {
+                    Civilization _civ2 = _civM_2.Civilization;
+                    if (_civ1 == _civ2)
+                    {
+                        continue;
+                    }
+
+                    diplomacyData.Add(_civ1, _civ2, _diplomat.GetData(_civ2));
+
+                    //_active_agreements = agreementMatrix[_civ1.CivID, _civ2.CivID];
+
+                }
+            }
+
+            string _text_diplomacyData = "Step_1778:; " + DateTime.Now + " > diplomacyData" + Environment.NewLine;
+
+            // going through _civ managers better reflects which _civ got spawned
+            //foreach (CivilizationManager _civM_1 in GameContext.Current._civManagers)
+            //{
+            //    Civilization _civ1 = _civM_1.Civilization;
+            //    Diplomat _diplomat = _diplomats[_civ1];
+
+            //foreach (CivilizationManager _civM_2 in GameContext.Current._civManagers)
+            //{
+            foreach (var item in diplomacyData)
+            {
+                _agreement_text = "";
+                _agreement_text = string.Join("", _active_agreements
+                    .Where(x => x.ID_1 == item.OwnerID)
+                    .Select(x => x.Treaty)
+                    .ToList());
+
+                _agreement_text += string.Join("", _active_agreements
+                        .Where(x => x.ID_2 == item.OwnerID)
+                        .Select(x => x.Treaty)
+                        .ToList());
+
+
+                if (item.Status != ForeignPowerStatus.NoContact)
+                {
+                    // works but we want to have the agreementmatrix to find out the active treaties
+                    //Diplomat _diplomat = _diplomats[item.CounterpartyID];
+                    //Civilization _civ1 = GameContext.Current.CivilizationManagers[item.OwnerID].Civilization;
+                    //ForeignPower foreignPower = _diplomat.GetForeignPower(_civ1);
+
+                    //_agreement_text = _active_agreements.Where(_active_agreements.TryFindFirstItem == item.OwnerID).tolist();
+
+                    _agreement_text = _agreement_text.Replace("TreatyOpenBordersTreatyOpenBordersTreatyOpenBorders",
+                        "TreatyOpenBorders");
+                    _agreement_text = _agreement_text.Replace("TreatyOpenBordersTreatyOpenBorders",
+                        "TreatyOpenBorders");
+                    
+                    if (_agreement_text != "")
+                    {
+                    Console.WriteLine("Step_1774:; " + _agreement_text);
+                    }
+
+
+
+                    var _sb = new StringBuilder();
+                    _sb.Append("Step_1777:; ");
+                    //_sb.Append(" for ");
+
+                    _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.OwnerID].Civilization.ToString()));
+                    //_sb.Append("= ");
+
+
+                    _sb.Append(" vs  ");
+                    //_foreignPower.CounterpartyDiplomacyData.Status;
+                    //ForeignPowerStatus.coun
+
+                    _sb.Append(GameEngine.Do_x_String(15, GameContext.Current.CivilizationManagers[item.CounterpartyID].Civilization.ToString()));
+                    _sb.Append(" > ");
+                    _sb.Append(GameEngine.Do_x_String(15, item.Status.ToString()));
+                    _sb.Append(" ");
+                    _sb.Append(GameEngine.Do_x_String(15, _agreement_text));
+                    _sb.Append(" > R= ");
+                    _sb.Append(GameEngine.Do_x_Digit_String(4, item.Regard.ToString()));
+                    _sb.Append(" > T= ");
+                    _sb.Append(GameEngine.Do_x_Digit_String(4, item.Trust.ToString()));
+
+                    _sb.Append(" > FirePowerSpace: ");
+                    _sb.Append(GameEngine.Do_x_Digit_String(5, 
+                        GameContext.Current.CivilizationManagers[item.OwnerID].FirePowerSpace.ToString()));
+                    _sb.Append(" vs ");
+                    _sb.Append(GameEngine.Do_x_Digit_String(5, 
+                        GameContext.Current.CivilizationManagers[item.CounterpartyID].FirePowerSpace.ToString()));
+                    //_sb.Append(" > ContactDuration= ");
+                    //_sb.Append(GameEngine.Do_x_Digit_String(3, item.ContactDuration.ToString()));
+                    //_sb.Append(" > LastStatusChange= ");
+                    //_sb.Append(GameEngine.Do_x_Digit_String(3, item.TurnsSinceLastStatusChange.ToString()));
+
+                    _sb.Append(Environment.NewLine);
+
+                    _text_diplomacyData += _sb.ToString();// + "/r/n";
+                                                          //Console.WriteLine(_sb.ToString());
+                                                          //    }
+                                                          //}
+                }
+            }
+            Console.WriteLine(DateTime.Now + Environment.NewLine + _text_diplomacyData);
+
+            Output_File(".\\Resources\\Data\\Addon", "_diplomacyData.txt", _text_diplomacyData);
+
+            //string _path_Resources_Data_Addon = ResourceManager.GetResourcePath(".\\Resources\\Data\\Addon"); // "_diplomacyData.txt"
+            //string _file = Path.Combine(_path_Resources_Data_Addon, "_diplomacyData.txt"); // by ALT+M at GalaxyMap
+            //if (!string.IsNullOrEmpty(_file))
+            //{
+            //    StreamWriter streamWriter = new StreamWriter(_file);
+            //    streamWriter.WriteLine(_text_diplomacyData);
+            //    streamWriter.Close();
+            //    _text_diplomacyData = "Step_1778:; output of _diplomacyData.txt done to " + _file;
+            //    //if (writeDirectly)
+            //    Console.WriteLine(_text_diplomacyData);
+            //}
+
+        }
+
+        public static void Output_File(string _folder, string _file_name, string _output_text)
+        {
+
+            string _file = Path.Combine(ResourceManager.GetResourcePath(_folder), _file_name); 
+            if (!string.IsNullOrEmpty(_file))
+            {
+                StreamWriter streamWriter = new StreamWriter(_file);
+                streamWriter.WriteLine(_output_text);
+                streamWriter.Close();
+                _output_text = "Step_1778:; output of _diplomacyData.txt done to " + _file;
+                //if (writeDirectly)
+                Console.WriteLine(_output_text);
+            }
         }
 
         public bool IsMultiplayerGame { get; internal set; }
@@ -294,13 +638,28 @@ namespace Supremacy.Game
             {
                 throw new ArgumentNullException("textDatabase");
             }
+            string _text = "";
 
             ITextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
+            // outdated .. maybe somewhere else >> _text = "Step_0932:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+            Console.WriteLine(_text);
+
             foreach (TechObjectDesign design in _techDatabase)
             {
+                _text = "Step_0933:; TextDatabase Key= " + design.Key
+                    + ", Name= " + design.Name
+                    + ", Description= " + design.Description
+                    ;
+                //Console.WriteLine(_text);
                 ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
-                        // This is Orbital Batteries Only!!! 
+                // This is Orbital Batteries Only!!! 
+
+
+                // Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works
+                //_text = "Step_0933:; TextDatabase ..next > Exception thrown: 'System.Xml.XmlException' in System.Xml.dll but it works";
+                //Console.WriteLine(_text);
+
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out LocalizedTextGroup localizedText))
                 {
                     //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
@@ -308,12 +667,20 @@ namespace Supremacy.Game
                     design.LocalizedText = localizedText;
                     continue;
                 }
+
+                // this populates 'entry'
                 if (!techObjectTable.TryGetEntry(design.Key, out ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry))
                 {
                     continue;
                 }
 
+                // tries to find a Local, maybe German one
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
+                //_text = "Step_0934:; TextDatabase Key = " + design.Key
+                //        + ", Name= " + design.Name
+                //        + ", Description= " + design.Description
+                //        ;
+                //Console.WriteLine(_text);
                 //GameLog.Client.GameInitData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
             }
         }
@@ -323,20 +690,20 @@ namespace Supremacy.Game
         /// Gets the game data tables.
         /// </summary>
         /// <value>The tables.</value>
-        public GameTables Tables
+        public GameTables GameTables
         {
-            get => _tables;
-            internal set => _tables = value;
+            get => _game_tables;
+            internal set => _game_tables = value;
         }
 
         /// <summary>
         /// Gets the game options with which this instance was created.
         /// </summary>
         /// <value>The options.</value>
-        public GameOptions Options
+        public GameOptions GameOptions
         {
-            get => _options;
-            internal set => _options = value;
+            get => _game_options;
+            internal set => _game_options = value;
         }
 
         /// <summary>
@@ -420,7 +787,7 @@ namespace Supremacy.Game
 
         private void OnTurnNumberChanged()
         {
-            _text = "------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
+            string _text = "Step_4001:; " + DateTime.Now + " ------------------------------ BEGIN OF TURN " + TurnNumber + " ------------------------------";
             Console.WriteLine(_text);
             GameLog.Client.General.InfoFormat(_text);
             TurnNumberChanged?.Invoke(this, EventArgs.Empty);
@@ -428,8 +795,8 @@ namespace Supremacy.Game
             if (!IsMultiplayerGame)
             {
                 // doesn't work - plan is to give output to Log.txt: Credits and more out of own Empire Info
-                //var civ = Current.Civilizations["FEDERATION"] ?? Current.Civilizations.FirstOrDefault(o => o.IsEmpire);
-                //GameLog.Client.GameData.DebugFormat("Player.GameHostID: {0}", civ.Name);
+                //var _civ = Current.Civilizations["FEDERATION"] ?? Current.Civilizations.FirstOrDefault(o => o.IsEmpire);
+                //GameLog.Client.GameData.DebugFormat("Player.GameHostID: {0}", _civ.Name);
             }
         }
 
@@ -439,15 +806,15 @@ namespace Supremacy.Game
         /// <value>The turn number.</value>
         public int TurnNumber
         {
-            get => _turnNumber;
+            get => _turnnumber;
             set
             {
-                if (Equals(_turnNumber, value))
+                if (Equals(_turnnumber, value))
                 {
                     return;
                 }
 
-                _turnNumber = value;
+                _turnnumber = value;
                 OnTurnNumberChanged();
             }
         }
@@ -480,6 +847,38 @@ namespace Supremacy.Game
         {
             get => _sectorClaims;
             internal set => _sectorClaims = value;
+        }
+
+        public string AA_Report_GameContext
+        {
+            get {
+                string _newline = Environment.NewLine;
+                string _report_gamecontext = "Step_4002:; " + DateTime.Now + " > GameContext: "
+                    + "TurnNumber= " + GameContext.Current.TurnNumber /*+ _newline*/
+                    + ", IsMultiplayerGame= " + IsMultiplayerGame
+                    + ", GameMod" + GameMod
+                    + ", _nextObjectId= " + _nextObjectId + _newline
+                    + ", GameOptions= > see the GameOptions" + GameOptions.ToString() + _newline
+                    + ", GameTables(Enum/GameOptions/Morale/Universe)= > see the tables-files" /*+ GameTables.ToString()*/ + _newline
+                    + ", CivilizationManagers.Count= " + CivilizationManagers.Count + _newline
+                    + ", AgreementMatrix= " + GameContext.Current.TurnNumber + _newline
+                    + ", Civilizations.Count= " + Civilizations.Count + " > see Civilization.xml" + _newline
+                    + ", DiplomacyData= " + DiplomacyData.ToString() + _newline
+                    + ", DiplomatsDatabase= " + DiplomacyDatabase.ToString() + _newline
+                    + ", Diplomats.Count= " + Diplomats.Count + _newline
+                    + ", Races.Count= " + Races.Count + " > see Races.xml" + _newline
+                    + ", ResearchMatrix= " + ResearchMatrix.ToString() + _newline
+                    + ", ScriptedEvents= > mostly see > see ScriptedEvents.xml" /*+ ScriptedEvents.ToString()*/ + _newline
+                    + ", SectorClaims= " + SectorClaims.ToString() + _newline
+                    + ", StrategyDatabase.Count= " + StrategyDatabase.Count + " > always 0 ?" + _newline
+
+                    + ", TechDatabase= > see TechObj_x_*.xml" + TechDatabase.ToString() + _newline
+                    + ", TechTrees=  > see TechTrees.xml" /*+ TechTrees.ToString()*/ + _newline
+                    + ", Universe= " + Universe.ToString() + _newline
+                    + "END of GameContext" + _newline
+                    ;
+                return _report_gamecontext
+                    ; }
         }
 
         public TechTreeMap TechTrees
@@ -542,21 +941,26 @@ namespace Supremacy.Game
 
         #region Static Members
         private static readonly ConcurrentStack<GameContext> _stack = new ConcurrentStack<GameContext>();
-        private string _text;
-        private bool _bool_Fac_Count_Active;
+        //private string _text;
+
 
         [ThreadStatic]
         private static Stack<GameContext> _threadStack;
 
 
-        private static Stack<GameContext> ThreadStack
+        private static Stack<GameContext> ThreadStack  // not worth to monitor ... just creating a new one if necessary
         {
             get
             {
-                if (_threadStack == null)
+                if (_threadStack == null)// > not, otherwise Stack Overflow || _threadStack.Count == 0)
                 {
                     _threadStack = new Stack<GameContext>();
                 }
+
+                //if (_threadStack.Count > 1)
+                //{
+                //    Debugger.Break();
+                //}
 
                 return _threadStack;
             }
@@ -568,7 +972,15 @@ namespace Supremacy.Game
         /// <param name="context">The context.</param>
         public static void PushThreadContext(GameContext context)
         {
-            ThreadStack.Push(context);
+            // to often !
+            //Console.WriteLine("Step_0567:; " + DateTime.Now + " > PushThreadContext(GameContext context) !  "
+            //    //+ ", _civM= " + context.CivilizationManagers.Count
+            //    );
+            if (context == null)
+            {
+                Debugger.Break();
+            }
+            ThreadStack.Push(context); // PushThreadContext(GameContext context)
         }
 
         /// <summary>
@@ -577,14 +989,59 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext PopThreadContext()
         {
+            string _text = "";
+            _text = "Step_0567:; " + DateTime.Now + " > PopThreadContext > GameContext: "
+                    //+ "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
+                    ;
+            //Console.WriteLine(_text);  // too often
 
             if (!ThreadStack.TryPop(out GameContext result))
             {
+                _text = "Step_0568:; " + DateTime.Now + " > PopThreadContext > GameContext: "
+                    + "result.CivilizationManagers.Count=" + result.CivilizationManagers.Count
+                    ;
+                Console.WriteLine(_text);
+                //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore " );
                 return result;
             }
 
-            return null;
+            //IGameContext _gameContext = result as IGameContext;
+            //AA_Report_GameContext;
+
+            int _count = -1;
+            try
+            {
+                if (result != null && result.CivilizationManagers != null)
+                {
+                    _count = result.CivilizationManagers.Count;
+                }
+
+            }
+            catch
+            {
+                Debugger.Break();
+            }
+
+            //_text = "Step_0569:; " + DateTime.Now + " > GameContext: "
+            //        + "result.CivilizationManagers.Count=" + _count
+            //        ;
+            //Console.WriteLine(_text);
+
+
+            //Console.WriteLine("Step_0568:; " + DateTime.Now + " ####### PopThreadContext(GameContext context) !!!!  No Context = no game running anymore ");
+            //Debugger.Break();
+
+            if (result == null)
+            {
+                return null;
+            }
+            else
+            {
+                return result;
+            }
         }
+
+
 
         /// <summary>
         /// Checks to see if the <see cref="GameContext"/> currently at the top of the
@@ -649,34 +1106,34 @@ namespace Supremacy.Game
                 if (gameContext != null)
                 {
                     // keep this for next time we have to check Game Context
-                    //foreach (var civManager in gameContext.CivilizationManagers)
+                    //foreach (var _civM in gameContext.CivilizationManagers)
                     //{
-                    //    //    if (civManager.Civilization.IsEmpire)
+                    //    //    if (_civM.Civilization.IsEmpire)
                     //    //        continue;
-                    //    if (civManager.CivilizationID != 4) // only Cardassians
+                    //    if (_civM.CivilizationID != 4) // only Cardassians
                     //        continue;
 
                     //bool output = false;
 
-                    //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
+                    //    string _gameLogText = "Civ= " + _civM.CivilizationID +"  :";//  .Civilization.Key;
                     //                                                                     //string _gameLogText = "Hello";
-                    //if (civManager.IntelOrdersGoingToHost != null)
+                    //if (_civM.IntelOrdersGoingToHost != null)
                     //{
-                    //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
-                    //    if (civManager.IntelOrdersGoingToHost.Count > 0)
+                    //    _gameLogText += _civM.IntelOrdersGoingToHost.Count + " for _civM.IntelOrdersGoingToHost,  ";
+                    //    if (_civM.IntelOrdersGoingToHost.Count > 0)
                     //        output = true;
                     //}
-                    //if (civManager.IntelOrdersIncomingToHost != null)
+                    //if (_civM.IntelOrdersIncomingToHost != null)
                     //{
-                    //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
-                    //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
+                    //    _gameLogText += _civM.IntelOrdersIncomingToHost.Count + " for _civM.IntelOrdersIncomingToHost";
+                    //    if(_civM.IntelOrdersIncomingToHost.Count > 0)
                     //        output = true;
                     //}
-                    ////    // same for civ, not for CivManager
-                    ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
-                    ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
-                    ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
-                    ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                    ////    // same for _civ, not for CivManager
+                    ////    if (_civM.Civilization.IntelOrdersGoingToHost != null)
+                    ////        _gameLogText += "_civ.IntelOrdersGoingToHost={1} , " + _civM.Civilization.IntelOrdersIncomingToHost.Count;
+                    ////    if (_civM.Civilization.IntelOrdersIncomingToHost != null)
+                    ////        _gameLogText += "_civ.IntelOrdersIncomingToHost={1} , " + _civM.Civilization.IntelOrdersIncomingToHost.Count;
 
                     //if (output == true)
                     //GameLog.Core.Test.DebugFormat(_gameLogText);
@@ -723,7 +1180,8 @@ namespace Supremacy.Game
                     BorgModifier = EmpireModifier.Standard,
                     TerranEmpireModifier = EmpireModifier.Standard,
 
-                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No,
+                    //EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.No,
+                    EmpireModifierRecurringBalancing = EmpireModifierRecurringBalancing.Run,
                     GamePace = GamePace.Normal,
                     TurnTimerEnum = TurnTimerEnum.Unlimited,
                 },
@@ -732,17 +1190,17 @@ namespace Supremacy.Game
             _stack.Push(gameContext);
 
             gameContext.TurnNumber = 1;
-            Civilization civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
-            GameLog.Client.GameData.DebugFormat("civ={0}, type={1}", civ.Name, civ.CivilizationType);
+            Civilization _civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
+            //GameLog.Client.GameData.DebugFormat("_civ={0}, type={1}", _civ.Name, _civ.CivilizationType);
 
-            CivilizationManager civManager = gameContext.CivilizationManagers[civ];
-            Colony homeColony = civManager.HomeColony;
+            CivilizationManager _civM = gameContext.CivilizationManagers[_civ];
+            Colony homeColony = _civM.HomeColony;
 
             ShipyardDesign shipyardDesign = TechTreeHelper.GetBuildProjects(homeColony).Select(o => o.BuildDesign).OfType<ShipyardDesign>().FirstOrDefault();
 
             if (shipyardDesign != null)
             {
-                if (shipyardDesign.TrySpawn(homeColony.Location, civ, out TechObject spawnedInstance))
+                if (shipyardDesign.TrySpawn(homeColony.Location, _civ, out TechObject spawnedInstance))
                 {
                     Shipyard shipyard = homeColony.Shipyard;
                     IList<BuildProject> shipBuildProjects = TechTreeHelper.GetShipyardBuildProjects(shipyard);
@@ -776,15 +1234,15 @@ namespace Supremacy.Game
                 homeColony.OrbitalBatteryDesign = batteryDesign;
                 homeColony.AddOrbitalBatteries(5);
 
-                while (homeColony.DeactivateFacility(ProductionCategory.Industry))
+                while (homeColony.Facility_Deactivate(ProductionCategory.Industry))
                 {
-                    if (!homeColony.ActivateFacility(ProductionCategory.Energy))
+                    if (!homeColony.Facility_Activate(ProductionCategory.Energy))
                     {
                         break;
                     }
                 }
 
-                while (homeColony.ActivateOrbitalBattery())
+                while (homeColony.OrbitalBattery_Activate())
                 {
                     continue;
                 }
@@ -799,13 +1257,13 @@ namespace Supremacy.Game
 
             homeColony.ProcessQueue();
 
-            _ = gameContext._diplomacyData.GetValuesForOwner(civ).ForEach(
+            _ = gameContext._diplomacyData.GetValuesForOwner(_civ).ForEach(
                 o =>
                 {
                     Civilization counterparty = gameContext.Civilizations[o.CounterpartyID];
 
                     DiplomacyHelper.EnsureContact(
-                        civ,
+                        _civ,
                         counterparty,
                         gameContext.CivilizationManagers[o.CounterpartyID].HomeColony.Location);
                 });
@@ -817,9 +1275,19 @@ namespace Supremacy.Game
         {
             get
             {
-                if (ThreadStack.TryPeek(out GameContext context))
+
+                bool _bool_Step_0879_FAILED = false;
+                if (ThreadStack.Count > 0 && ThreadStack.TryPeek(out GameContext context))
                 {
                     return context;
+                }
+
+                if (_bool_Step_0879_FAILED == false)
+                {
+                    //string _text = "Step_0879: No ThreadContext = no GameContext anymore ";
+                    //Console.WriteLine(_text);
+                    ////GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                    //_bool_Step_0879_FAILED = true;
                 }
 
                 return null;
@@ -840,7 +1308,10 @@ namespace Supremacy.Game
             }
             catch (Exception e)
             {
-                GameLog.Core.General.Error("Problem while creating a new game context", e);
+                string _text = "Err_0001:; Problem while creating a new game context" + e;
+                Console.WriteLine(_text);
+                GameLog.Core.General.Error("Err_0001:; Problem while creating a new game context", e);
+
                 return new GameContext(options, isMultiplayerGame);
             }
         }
@@ -853,7 +1324,7 @@ namespace Supremacy.Game
         /// <param name="options">The options.</param>
         private GameContext(GameOptions options, bool isMultiplayerGame)
         {
-            _options = options;
+            _game_options = options;
             IsMultiplayerGame = isMultiplayerGame;
             Initialize();
         }
@@ -863,7 +1334,7 @@ namespace Supremacy.Game
         /// </summary>
         private void Initialize()
         {
-            _text = "Step_3000: GameContext Initialize...";
+            string _text = "Step_3003:; " + DateTime.Now + " > GameContext Initialize...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -872,26 +1343,41 @@ namespace Supremacy.Game
             {
                 _gameMod = GameModLoader.GetModFromCommandLine();
                 _races = RaceDatabase.Load();
-                GameLog.Client.GameData.DebugFormat("Races loaded");
+                Console.WriteLine("Races loaded");
+                //GameLog.Client.GameData.DebugFormat("Races loaded");
+
                 _civilizations = CivDatabase.Load();
-                GameLog.Client.GameData.DebugFormat("Civilizations loaded");
+                Console.WriteLine("Civilizations loaded");
+                //GameLog.Client.GameData.DebugFormat("Civilizations loaded");
+
                 _civManagers = new CivilizationManagerMap();
-                _tables = GameTables.Load();
-                GameLog.Client.GameData.DebugFormat("Tables loaded");
+                _game_tables = GameTables.Load();
+                Console.WriteLine("GameTables loaded");
+                //GameLog.Client.GameData.DebugFormat("GameTables loaded");
+
                 _techDatabase = TechDatabase.Load();
-                GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
+                Console.WriteLine("TechDatabase loaded");
+                //GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
+
                 _researchMatrix = ResearchMatrix.Load();
-                GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
+                Console.WriteLine("ResearchMatrix loaded");
+                //GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
                 //_intelMatrix = IntelMatrix.Load();
                 //GameLog.Client.GameData.DebugFormat("IntelMatrix loaded");
                 _techTrees = new TechTreeMap();
-                GameLog.Client.GameData.DebugFormat("TechTree loaded");
+                Console.WriteLine("TechTree loaded");
+                //GameLog.Client.GameData.DebugFormat("TechTree loaded");
+
                 _strategyDatabase = StrategyDatabase.Load();
                 _scriptedEvents = new List<ScriptedEvent>();
-                _diplomacyDatabase = DiplomacyDatabase.Load();
-                _agreementMatrix = new AgreementMatrix();
 
-                //string _text; 
+                _diplomacyDatabase = DiplomacyDatabase.Load();
+                Console.WriteLine("DiplomacyDatabase loaded");
+                //GameLog.Client.GameData.DebugFormat("DiplomacyDatabase loaded");
+
+                _agreementMatrix = new AgreementMatrix();
+                Console.WriteLine("AgreementMatrix loaded");
+                //GameLog.Client.GameData.DebugFormat("AgreementMatrix loaded");
 
                 ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
@@ -923,13 +1409,17 @@ namespace Supremacy.Game
                         }
                         _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("MinTurnsBetweenExecutions", "TurnDist.");
                         _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("CivilizationRecurrencePeriod", "CivRecur.");
-                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("UnitRecurrencePeriod", "Unit-Recur.");
-                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("OccurrenceChance", "Occur.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("UnitRecurrencePeriod", " Unit-Recur.");
+                        _eventOptionsGameLogText = _eventOptionsGameLogText.Replace("OccurrenceChance", " Occur.");
 
                         _scriptedEventGameLogText = scriptedEvent.GetType().ToString();
                         _scriptedEventGameLogText = _scriptedEventGameLogText.Replace("Supremacy.Scripting.Events.", "");
 
-                        GameLog.Client.EventsDetails.InfoFormat("Scripted Event loaded - Options from file: " + _eventOptionsGameLogText + " for {0}", _scriptedEventGameLogText);
+                        _text = "Step_1334:; Scripted Event loaded - GameOptions from file: "
+                            + _eventOptionsGameLogText + " for " + _scriptedEventGameLogText;
+                        Console.WriteLine(_text);
+                        GameLog.Client.Events.InfoFormat(_text);
+
                         _eventOptionsGameLogText = "";
                         _scriptedEventGameLogText = "";
                     }
@@ -937,15 +1427,18 @@ namespace Supremacy.Game
                     {
                         GameLog.Core.General.Error(
                             string.Format(
-                                "Error initializing scripted event \"{0}\".",
+                                "Step_1335:; Error initializing scripted event \"{0}\".",
                                 eventDefinition.Description),
                             e);
                     }
                 }
 
+                _text = "Step_1287:; NEXT:GenerateGalaxy...";
+                Console.WriteLine(_text);
+
                 GalaxyGenerator.GenerateGalaxy(this);
 
-                _text = "Galaxy generated...";
+                _text = "Step_1288:; " + DateTime.Now + " > Galaxy generated...";
                 Console.WriteLine(_text);
                 //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
@@ -954,13 +1447,16 @@ namespace Supremacy.Game
                 // Prep up the settings for initial homeworlds
                 HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
 
-                foreach (CivilizationManager civManager in _civManagers)
+                bool _bool_Fac_Count_Active = false;
+                //bool _bool_Fac_Count_Active = true;
+
+                foreach (CivilizationManager _civM in _civManagers)
                 {
-                    foreach (Colony colony in civManager.Colonies)
+                    foreach (Colony colony in _civM.Colonies)
                     {
-                        _text = "Generating HomeSystems... > " + colony.Name;
-                        Console.WriteLine(_text);
-                        //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                        //_text = "Generating HomeSystems... > " + colony.Name;
+                        //Console.WriteLine(_text);
+                        ////GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                         // get the home system settings
                         Civilization civ = colony.Owner;
@@ -978,31 +1474,31 @@ namespace Supremacy.Game
                         // adjust starting credits
                         if (homeSystemDescriptor.Credits != -1.0f)
                         {
-                            civManager.Credits.CurrentValue = (int)homeSystemDescriptor.Credits;
-                            civManager.Credits.UpdateAndReset();
-                            civManager.Credits.SaveCurrentAndResetToBase();
+                            _civM.Credits.CurrentValue = (int)homeSystemDescriptor.Credits;
+                            _civM.Credits.UpdateAndReset();
+                            _civM.Credits.SaveCurrentAndResetToBase();
                         }
 
                         // adjust starting resources
                         if (homeSystemDescriptor.Deuterium != -1.0f)
                         {
-                            civManager.Resources.Deuterium.CurrentValue = (int)homeSystemDescriptor.Deuterium;
-                            civManager.Resources.Deuterium.UpdateAndReset();
-                            civManager.Resources.Deuterium.SaveCurrentAndResetToBase();
+                            _civM.Resources.Deuterium.CurrentValue = (int)homeSystemDescriptor.Deuterium;
+                            _civM.Resources.Deuterium.UpdateAndReset();
+                            _civM.Resources.Deuterium.SaveCurrentAndResetToBase();
                         }
 
                         if (homeSystemDescriptor.Dilithium != -1.0f)
                         {
-                            civManager.Resources.Dilithium.CurrentValue = (int)homeSystemDescriptor.Dilithium;
-                            civManager.Resources.Dilithium.UpdateAndReset();
-                            civManager.Resources.Dilithium.SaveCurrentAndResetToBase();
+                            _civM.Resources.Dilithium.CurrentValue = (int)homeSystemDescriptor.Dilithium;
+                            _civM.Resources.Dilithium.UpdateAndReset();
+                            _civM.Resources.Dilithium.SaveCurrentAndResetToBase();
                         }
 
                         if (homeSystemDescriptor.Duranium != -1.0f)
                         {
-                            civManager.Resources.Duranium.CurrentValue = (int)homeSystemDescriptor.Duranium;
-                            civManager.Resources.Duranium.UpdateAndReset();
-                            civManager.Resources.Duranium.SaveCurrentAndResetToBase();
+                            _civM.Resources.Duranium.CurrentValue = (int)homeSystemDescriptor.Duranium;
+                            _civM.Resources.Duranium.UpdateAndReset();
+                            _civM.Resources.Duranium.SaveCurrentAndResetToBase();
                         }
 
                         if (homeSystemDescriptor.Food != -1.0f)
@@ -1020,24 +1516,53 @@ namespace Supremacy.Game
                         }
 
                         ColonyBuilder.Build(colony);
-                        _ = civManager.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
+                        _ = _civM.TotalPopulation.AdjustCurrent(colony.Population.CurrentValue);
                         int _laborAvailable = colony.Population.CurrentValue / 10;
+
+                        int _more_by_start_level = 0;
+                        switch (this.GameOptions.StartingTechLevel)
+                        {
+                            case StartingTechLevel.Early:
+                                break;
+                            case StartingTechLevel.Developed:
+                                _more_by_start_level = 2;
+                                break;
+                            case StartingTechLevel.Sophisticated:
+                                _more_by_start_level = 3;
+                                break;
+                            case StartingTechLevel.Advanced:
+                                _more_by_start_level = 4;
+                                break;
+                            case StartingTechLevel.Supreme:
+                                _more_by_start_level = 5;
+                                break;
+                        }
 
 
                         //_text = "Adjusting facilities if necessary...";
                         //Console.WriteLine(_text);
 
-                        bool _checkXML;
-                        _checkXML = true;
+                        bool _use_value_from_XML = true;
+
+                        if (!colony.Owner.IsEmpire)
+                        {
+                            _use_value_from_XML = false;
+                            _text = "OFFLINE > _use_value_from_XML = false;";
+                        }
+
+
+                        //_bool_Fac_Count_Active = false;
 
                         if (_bool_Fac_Count_Active == false)
                         {
-                            _text = "####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
+                            _text = "Step_1312:; ####### From HomeSystems.xml > Facilities (Count/Active) is ignored...";
                             Console.WriteLine(_text);
                             GameLog.Client.GalaxyGenerator.InfoFormat(_text);
                             _bool_Fac_Count_Active = true; // just do once
                         }
 
+                        int facilitiesRequired = 0;
+                        int _additional_facilities = 0;
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
@@ -1045,47 +1570,69 @@ namespace Supremacy.Game
 
                             ProductionFacilityDesign foodFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.FoodPF.DesignType]];
 
+
+
                             if (foodFacility != null)
                             {
+
+
                                 // Start by clearing already existing facilities
                                 colony.RemoveFacilities(ProductionCategory.Food, colony.GetTotalFacilities(ProductionCategory.Food));
                                 colony.SetFacilityType(ProductionCategory.Food, null);
 
+
+                                // have a look why some minors (low populated) generate 255 facilities
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Food, foodFacility);
 
                                 int pop = colony.Population.CurrentValue;
                                 float growth = colony.System.GetGrowthRate(colony.Inhabitants);
-                                if (pop == colony.MaxPopulation)
+                                if (pop == colony.Population_Max)
                                 {
                                     growth = 0.0f;
                                 }
 
                                 int foodNeeded = (int)(pop * (1 + (3 * growth)));
                                 /* should take into account planetary food bonuses */
-                                int facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1) ;
+                                facilitiesRequired = foodNeeded / (foodFacility.UnitOutput + 1);
 
-                                if (!_checkXML && homeSystemDescriptor.FoodPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.FoodPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.FoodPF.Count;
                                 }
-                                
-
-                                colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
-
-                                if (!_checkXML && homeSystemDescriptor.FoodPF.Active != -1.0f)
+                                else
                                 {
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.FoodPF.Active, colony.GetTotalFacilities(ProductionCategory.Food));
+                                    _additional_facilities = 2;
                                 }
+
+                                if (facilitiesRequired > 19)
+                                {
+                                    _text = "Step_1312:; ####### From HomeSystems.xml > facilitiesRequired= " + facilitiesRequired;
+                                    Console.WriteLine(_text);
+                                }
+
+
+
+
+                                colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + _additional_facilities);
+                                _additional_facilities = 0;
+
+                                //if (_use_value_from_XML && homeSystemDescriptor.FoodPF.Active != -1.0f)
+                                //{
+                                //    facilitiesRequired = Math.Min((int)homeSystemDescriptor.FoodPF.Active, colony.GetTotalFacilities(ProductionCategory.Food));
+                                //}
+
+                                //colony.AddFacilities(ProductionCategory.Food, facilitiesRequired + 2);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Food);
+                                    _ = colony.Facility_Activate(ProductionCategory.Food);
                                     _laborAvailable -= 1;
                                 }
                             }
                         }
 
+                        _text = "EnergyPF";
                         if (homeSystemDescriptor.EnergyPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1101,29 +1648,39 @@ namespace Supremacy.Game
 
                                 //int energyNeeded = colony.GetEnergyUsage();
 
-                                int facilitiesRequired = 2;
+                                facilitiesRequired = 2;
+                                //int _additional_energy = 0;
 
 
-                                if (!_checkXML && homeSystemDescriptor.EnergyPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.EnergyPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.EnergyPF.Count;
                                 }
-
-                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + 4);
-
-                                if (!_checkXML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
+                                else
                                 {
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
+                                    _additional_facilities = 4 + _more_by_start_level;
                                 }
+
+                                colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + _additional_facilities);
+                                _additional_facilities = 0;
+
+                                //if (_use_value_from_XML && homeSystemDescriptor.EnergyPF.Active != -1.0f)
+                                //{
+                                //    facilitiesRequired = Math.Min((int)homeSystemDescriptor.EnergyPF.Active, colony.GetTotalFacilities(ProductionCategory.Energy));
+                                //}
+
+                                //colony.AddFacilities(ProductionCategory.Energy, facilitiesRequired + _additional_energy);
 
                                 for (int i = 0; i < facilitiesRequired + 2; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Energy);
+                                    _ = colony.Facility_Activate(ProductionCategory.Energy);
                                     _laborAvailable -= 1;
                                 }
                             }
                         }
 
+                        _text = "IndustryPF";
+                        //IndustryPF
                         if (homeSystemDescriptor.IndustryPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1137,7 +1694,7 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
 
-                                int facilitiesRequired = _laborAvailable;
+                                facilitiesRequired = _laborAvailable;
 
                                 // facilitiesRequired.Value is reduce each time as well !!
                                 if (facilitiesRequired > 4) facilitiesRequired -= 2; // 3 to industry, 1 to research, 1 to intelligence
@@ -1147,26 +1704,34 @@ namespace Supremacy.Game
                                 if (facilitiesRequired > 12) facilitiesRequired -= 2;
 
 
-                                if (!_checkXML && homeSystemDescriptor.IndustryPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.IndustryPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.IndustryPF.Count;
                                 }
-
-                                colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + 1);
-
-                                if (!_checkXML && homeSystemDescriptor.IndustryPF.Active != -1.0f)
+                                else
                                 {
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.IndustryPF.Active, colony.GetTotalFacilities(ProductionCategory.Industry));
+                                    _additional_facilities = 1;
                                 }
+
+                                colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + _additional_facilities);
+                                _additional_facilities = 0;
+
+                                //if (_use_value_from_XML && homeSystemDescriptor.IndustryPF.Active != -1.0f)
+                                //{
+                                //    facilitiesRequired = Math.Min((int)homeSystemDescriptor.IndustryPF.Active, colony.GetTotalFacilities(ProductionCategory.Industry));
+                                //}
+
+                                //colony.AddFacilities(ProductionCategory.Industry, facilitiesRequired + 1);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Industry);
+                                    _ = colony.Facility_Activate(ProductionCategory.Industry);
                                     _laborAvailable -= 1;
                                 }
                             }
                         }
 
+                        _text = "IntelligencePF";
                         if (homeSystemDescriptor.IntelligencePF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1180,28 +1745,36 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
 
-                                int facilitiesRequired = _laborAvailable / 2;
+                                facilitiesRequired = _laborAvailable / 2;
 
-                                if (!_checkXML && homeSystemDescriptor.IntelligencePF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.IntelligencePF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.IntelligencePF.Count;
                                 }
-
-                                colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired);
-
-                                if (!_checkXML && homeSystemDescriptor.IntelligencePF.Active != -1.0f)
+                                else
                                 {
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.IntelligencePF.Active, colony.GetTotalFacilities(ProductionCategory.Intelligence));
+                                    _additional_facilities = 0;
                                 }
+
+                                colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired + _additional_facilities);
+                                _additional_facilities = 0;
+
+                                //if (_use_value_from_XML && homeSystemDescriptor.IntelligencePF.Active != -1.0f)
+                                //{
+                                //    facilitiesRequired = Math.Min((int)homeSystemDescriptor.IntelligencePF.Active, colony.GetTotalFacilities(ProductionCategory.Intelligence));
+                                //}
+
+                                //colony.AddFacilities(ProductionCategory.Intelligence, facilitiesRequired);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                                    _ = colony.Facility_Activate(ProductionCategory.Intelligence);
                                     _laborAvailable -= 1;
                                 }
                             }
                         }
 
+                        _text = "ResearchPF";
                         if (homeSystemDescriptor.ResearchPF != null)
                         {
                             TechDatabase db = Current.TechDatabase;
@@ -1215,23 +1788,30 @@ namespace Supremacy.Game
                                 // Create new one
                                 colony.SetFacilityType(ProductionCategory.Research, researchFacility);
 
-                                int facilitiesRequired = _laborAvailable;
+                                facilitiesRequired = _laborAvailable;
 
-                                if (!_checkXML && homeSystemDescriptor.ResearchPF.Count != -1.0f)
+                                if (_use_value_from_XML && homeSystemDescriptor.ResearchPF.Count != -1.0f)
                                 {
                                     facilitiesRequired = (int)homeSystemDescriptor.ResearchPF.Count;
                                 }
-
-                                colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
-
-                                if (!_checkXML && homeSystemDescriptor.ResearchPF.Active != -1.0f)
+                                else
                                 {
-                                    facilitiesRequired = Math.Min((int)homeSystemDescriptor.ResearchPF.Active, colony.GetTotalFacilities(ProductionCategory.Research));
+                                    _additional_facilities = 0;
                                 }
+
+                                colony.AddFacilities(ProductionCategory.Research, facilitiesRequired + _additional_facilities);
+                                _additional_facilities = 0;
+
+                                //if (_use_value_from_XML && homeSystemDescriptor.ResearchPF.Active != -1.0f)
+                                //{
+                                //    facilitiesRequired = Math.Min((int)homeSystemDescriptor.ResearchPF.Active, colony.GetTotalFacilities(ProductionCategory.Research));
+                                //}
+
+                                //colony.AddFacilities(ProductionCategory.Research, facilitiesRequired);
 
                                 for (int i = 0; i < facilitiesRequired; i++)
                                 {
-                                    _ = colony.ActivateFacility(ProductionCategory.Research);
+                                    _ = colony.Facility_Activate(ProductionCategory.Research);
                                     //_laborAvailable -= 1;
                                 }
                             }
@@ -1252,7 +1832,7 @@ namespace Supremacy.Game
                                 //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
                                 if (instance != null)
                                 {
-                                    _ = colony.ActivateBuilding(instance as Building);
+                                    _ = colony.Building_Activate(instance as Building);
                                 }
                             }
                         }
@@ -1271,7 +1851,7 @@ namespace Supremacy.Game
                                     Shipyard newShipyard = instance as Shipyard;
                                     foreach (ShipyardBuildSlot buildSlot in newShipyard.BuildSlots)
                                     {
-                                        _ = colony.ActivateShipyardBuildSlot(buildSlot);
+                                        _ = colony.ShipyardBuildSlot_Activate(buildSlot);
                                     }
                                 }
                             }
@@ -1309,29 +1889,31 @@ namespace Supremacy.Game
                                 _ = Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 if (instance != null)
                                 {
-                                    _ = colony.ActivateOrbitalBattery();
+                                    _ = colony.OrbitalBattery_Activate();
                                 }
                             }
                         }
                     }
                 }
-                _text = "Starting items are done!";
+                _text = "Step_4002:; Starting items are done!";
                 Console.WriteLine(_text);
                 GameLog.Core.General.InfoFormat(_text);
 
                 _sectorClaims = new SectorClaimGrid();
                 _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
-                foreach (CivilizationManager civManager in _civManagers)
+                foreach (CivilizationManager _civM in _civManagers)
                 {
-                    if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
+                    if (_civM.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
-                        _diplomats.Add(new Diplomat(civManager.Civilization));
+                        _diplomats.Add(new Diplomat(_civM.Civilization));
                         //_diplomats.Add(new List<IntelHelper.NewIntelOrders>());
-                        civManager.EnsureSeatOfGovernment();
+                        _civM.EnsureSeatOfGovernment();
                     }
                 }
-                GameLog.Core.General.InfoFormat("SeatOfGovernment ensured...");
+                _text = "Step_4502:; SeatOfGovernment ensured...";
+                Console.WriteLine(_text);
+                GameLog.Core.General.InfoFormat(_text);
 
                 _ = _diplomats.ForEach(d => d.EnsureForeignPowers());
 

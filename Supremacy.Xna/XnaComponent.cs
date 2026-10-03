@@ -148,10 +148,7 @@ namespace Supremacy.Xna
                 _targetSizeChanged = true;
 
                 EventHandler<TargetSizeChangedEventArgs> onTargetSizeChanged = TargetSizeChanged;
-                if (onTargetSizeChanged != null)
-                {
-                    onTargetSizeChanged.Raise(this, new TargetSizeChangedEventArgs(oldSize, value));
-                }
+                onTargetSizeChanged?.Raise(this, new TargetSizeChangedEventArgs(oldSize, value));
             }
         }
 
@@ -304,10 +301,7 @@ namespace Supremacy.Xna
                 device.SetRenderTarget(0, null);
             }
 
-            if (FrontBuffer != null)
-            {
-                FrontBuffer.Dispose();
-            }
+            FrontBuffer?.Dispose();
 
             if (FrontBuffer != null)
             {
@@ -329,10 +323,7 @@ namespace Supremacy.Xna
                 }
             }
 
-            if (_depthStencilBuffer != null)
-            {
-                _depthStencilBuffer.Dispose();
-            }
+            _depthStencilBuffer?.Dispose();
 
             _depthStencilBuffer = null;
             _deviceDepthStencilBuffer = null;
@@ -722,17 +713,11 @@ namespace Supremacy.Xna
 
                 DisposeBuffers();
 
-                if (Graphics != null)
-                {
-                    Graphics.Dispose();
-                }
+                Graphics?.Dispose();
 
                 Graphics = null;
 
-                if (Content != null)
-                {
-                    Content.Dispose();
-                }
+                Content?.Dispose();
 
                 Content = null;
 

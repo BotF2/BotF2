@@ -34,7 +34,7 @@ namespace Supremacy.Entities
 
         private PlanetType _homePlanetType;
         private readonly PlanetTypeFlags _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
-        private double _combatEffectiveness = 1.0;
+        private double _groundcombatEffectiveness = 1.0;
 
         /// <summary>
         /// Gets or sets the unique key of this <see cref="Race"/>.
@@ -84,10 +84,10 @@ namespace Supremacy.Entities
             }
         }
 
-        public double CombatEffectiveness
+        public double GroundCombatEffectiveness
         {
-            get => _combatEffectiveness;
-            set => _combatEffectiveness = value;
+            get => _groundcombatEffectiveness;
+            set => _groundcombatEffectiveness = value;
         }
 
         public PlanetTypeFlags HabitablePlanetTypes => _habitablePlanetTypes;
@@ -120,7 +120,7 @@ namespace Supremacy.Entities
             }
 
             Description = description ?? string.Empty;
-            CombatEffectiveness = (double?)element.Element(ns + "CombatEffectiveness") ?? 1.0;
+            GroundCombatEffectiveness = (double?)element.Element(ns + "GroundCombatEffectiveness") ?? 1.0;
 
             PlanetType? homePlanetType = EnumHelper.Parse<PlanetType>((string)element.Element(ns + "HomePlanetType"));
             if (!homePlanetType.HasValue)
@@ -188,8 +188,8 @@ namespace Supremacy.Entities
                         ns + "Description",
                         string.Join(Environment.NewLine, Description.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))),
                     new XElement(
-                        ns + "CombatEffectiveness",
-                        CombatEffectiveness),
+                        ns + "GroundCombatEffectiveness",
+                        GroundCombatEffectiveness),
                     new XElement(
                         ns + "HomePlanetType",
                         HomePlanetType.ToString()),
@@ -282,7 +282,7 @@ namespace Supremacy.Entities
             PluralName = reader.ReadString();
             Description = reader.ReadString();
             HomePlanetType = (PlanetType)reader.ReadByte();
-            CombatEffectiveness = reader.ReadDouble();
+            GroundCombatEffectiveness = reader.ReadDouble();
         }
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
@@ -292,7 +292,7 @@ namespace Supremacy.Entities
             writer.Write(PluralName);
             writer.Write(Description);
             writer.Write((byte)HomePlanetType);
-            writer.Write(CombatEffectiveness);
+            writer.Write(GroundCombatEffectiveness);
         }
     }
 }

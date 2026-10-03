@@ -1745,10 +1745,7 @@ namespace Supremacy.Effects
                 throw new ArgumentNullException("list");
             }
 
-            if (_mapStore != null)
-            {
-                _mapStore.Iterate(list, callback);
-            }
+            _mapStore?.Iterate(list, callback);
         }
 
         public int Count
@@ -2039,10 +2036,7 @@ namespace Supremacy.Effects
 
         public void Sort()
         {
-            if (_mapStore != null)
-            {
-                _mapStore.Sort();
-            }
+            _mapStore?.Sort();
         }
 
         public void GetKeyValuePair(int index, out int key, out object value)
@@ -2063,10 +2057,7 @@ namespace Supremacy.Effects
             {
                 if (null != list)
                 {
-                    if (_mapStore != null)
-                    {
-                        _mapStore.Iterate(list, callback);
-                    }
+                    _mapStore?.Iterate(list, callback);
                 }
                 else
                 {

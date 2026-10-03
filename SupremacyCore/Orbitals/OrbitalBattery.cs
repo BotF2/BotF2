@@ -77,7 +77,7 @@ namespace Supremacy.Orbitals
 
             system.Colony.OrbitalBatteryDesign = this;
             system.Colony.AddOrbitalBatteries(1);
-            _ = system.Colony.ActivateOrbitalBattery();
+            _ = system.Colony.OrbitalBattery_Activate();
 
             spawnedInstance = null;
             return true;

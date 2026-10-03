@@ -1,0 +1,143 @@
+// File:ClientOptionsDialog.xaml.cs
+//
+// Copyright (c) 2007 Mike Strobel
+//
+// This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+// For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+//
+// All other rights reserved.
+
+using System.Windows.Input;
+
+namespace Supremacy.Client
+{
+    /// <summary>
+    /// Interaction logic for ClientSettingsWindow.xaml
+    /// </summary>
+    public partial class ClientOptionsDialog
+    {
+        public ClientOptionsDialog()
+        {
+            InitializeComponent();
+
+            _ = InputBindings.Add(
+                new KeyBinding(
+                    GenericCommands.CancelCommand,
+                    Key.Escape,
+                    ModifierKeys.None));
+
+            _ = InputBindings.Add(
+                new KeyBinding(
+                    GenericCommands.AcceptCommand,
+                    Key.Enter,
+                    ModifierKeys.None));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.CancelCommand,
+                    OnGenericCommandsCancelCommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.AcceptCommand,
+                    OnGenericCommandsAcceptCommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetAllwithoutDetailsCommand,
+                    OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetAllandDetailsCommand,
+                    OnGenericCommandsTracesSetAllandDetailsCommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetSomeCommand,
+                    OnGenericCommandsTracesSetSomeCommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetSelection2Command,
+                    OnGenericCommandsTracesSetSelection2CommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetNoDetailsCommand,
+                    OnGenericCommandsTracesSetNoDetailsCommandExecuted));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetNoneCommand,
+                    OnGenericCommandsTracesSetNoneCommandExecuted));
+        }
+
+        private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            ClientSettings.Current.ReloadClientSettings();
+            Close();
+        }
+
+        private void OnGenericCommandsAcceptCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            SaveChangesAndHide();
+        }
+
+        private void SaveChangesAndHide()
+        {
+            ClientSettings.Current.SaveClientSettings();
+            Close();
+        }
+
+        private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            //ClientSettings.Current.TracesAudio = true;  // just for testing
+
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
+        }
+
+        private void OnGenericCommandsTracesSetSomeCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            //ClientSettings.Current.TracesAudio = false;  // just for testing
+
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
+        }
+
+        private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            //ClientSettings.Traces_ClearAllProperty();
+            //ClientSettings.Current.TracesAudio = false;
+
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
+        }
+
+        private void OnGenericCommandsTracesSetAllandDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            ClientSettings.Current.TracesAudio = true;  // just for testing
+
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
+        }
+
+        private void OnGenericCommandsTracesSetSelection2CommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            ClientSettings.Current.TracesAudio = false;  // just for testing
+
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
+        }
+
+        private void OnGenericCommandsTracesSetNoDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            //ClientSettings.Traces_ClearAllProperty();
+            ClientSettings.Current.TracesAudio = false;
+
+            ClientSettings.Current.SaveClientSettings();
+            ClientSettings.Current.ReloadClientSettings();
+        }
+    }
+}

@@ -32,9 +32,11 @@ namespace Supremacy.Universe
         private Colony _colony;
         private ArrayWrapper<Planet> _planets;
         private StarType _starType;
-        public string _text;
+        //public string _text;
         public bool _checkLoading = true;
-        public readonly string newline = Environment.NewLine;
+        //private bool _once_only;
+
+        //public readonly string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -365,11 +367,22 @@ namespace Supremacy.Universe
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
+            string _text;
+
             base.DeserializeOwnedData(reader, context);
             // to often
             //_text = "This is a good place for checking context of reader (_stringTokenList) and for bool _checkLoading";
             //Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
+
+            //bool _once_only = false;
+            //if (_once_only == false)
+            //{
+            //    Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off");
+            //    _once_only = true;
+            //    //Console.WriteLine(_text);
+            //}
+
 
             string _col = "";
             if (Colony != null)
@@ -379,7 +392,8 @@ namespace Supremacy.Universe
 
             _bonuses = (SystemBonus)reader.ReadByte();
             _text = _col;// + _bonuses;
-            //Console.WriteLine(_bonuses);
+            // OFF   Console.WriteLine("Step_4444:; > " + _col + _bonuses);
+
             _planets = new ArrayWrapper<Planet>((Planet[])reader.ReadOptimizedObjectArray(typeof(Planet)));
             foreach (var item in _planets)
             {
@@ -414,7 +428,7 @@ namespace Supremacy.Universe
             //}
             //else
             //{
-                //Console.WriteLine("Print of List of systems from saved game is turned off");
+            //Console.WriteLine("Step_4447:; Print of List of systems from saved game is turned off");
             //}
         }
 

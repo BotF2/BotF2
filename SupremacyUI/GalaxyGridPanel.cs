@@ -9,6 +9,7 @@
 
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.ServiceLocation;
+//using Microsoft.Xna.Framework.Graphics;
 using Supremacy.Annotations;
 using Supremacy.Client;
 using Supremacy.Client.Audio;
@@ -28,11 +29,13 @@ using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Concurrency;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -65,6 +68,7 @@ namespace Supremacy.UI
         public static readonly DependencyProperty UseSummaryScreenProperty;
         public static readonly DependencyProperty UseSitRepDetailsScreenProperty;
         public static readonly DependencyProperty SelectedFleetProperty;
+        public static readonly DependencyProperty SelectedTaskForceProperty;
         public static readonly DependencyProperty SelectedSectorProperty;
         public static readonly DependencyProperty SelectedSectorAllegianceProperty;
         public static readonly DependencyProperty SelectedTradeRouteProperty;
@@ -132,24 +136,33 @@ namespace Supremacy.UI
         private Point _scrollStartPoint;
         private List<Clock> _animationClocks;
         private readonly DelegateCommand<Sector> _centerOnSectorCommand;
+        //private readonly DelegateCommand<Sector> _view25PercentCommand;
         private readonly DelegateCommand<Sector> _centerOnHomeSectorCommand;
         private readonly DelegateCommand<Sector> _centerOn1Command;
         private readonly DelegateCommand<Sector> _centerOn2Command;
         private readonly DelegateCommand<Sector> _centerOn3Command;
         private readonly DelegateCommand<Sector> _centerOn4Command;
         private readonly DelegateCommand<Sector> _SummaryOnOffCommand;
+        private readonly DelegateCommand<Sector> _centerOnAccumulateSectorCommand;
+        private readonly DelegateCommand<Sector> _centerOnSystemAssault_1_SectorCommand;
+        //private readonly DelegateCommand<Sector> _centerOnSystemAssault_2_SectorCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
-        private static readonly string _text;
+        private readonly DelegateCommand<object> _zoom25Command;
+        private readonly DelegateCommand<object> _zoomMaxCommand;
         private GalaxyScreenPresentationModel _screenModel;
         private IObservable<Sector> _hoveredSector;
         private IDisposable _hoveredSectorSubscription;
+
+        [NonSerialized]
+        public static string  _text;
         #endregion
 
         #region Events
         public event DependencyPropertyChangedEventHandler<GalaxyViewOptions> OptionsChanged;
         public event DependencyPropertyChangedEventHandler<Fleet> SelectedFleetChanged;
+        public event DependencyPropertyChangedEventHandler<Fleet> SelectedTaskForceChanged;
         public event DependencyPropertyChangedEventHandler<TradeRoute> SelectedTradeRouteChanged;
         public event DependencyPropertyChangedEventHandler<Sector> SelectedSectorChanged;
         public event SectorEventHandler SectorDoubleClicked;
@@ -158,7 +171,7 @@ namespace Supremacy.UI
         #region Constructors
         static GalaxyGridPanel()
         {
-            _text = "Step_2000: GalaxyGridPanel generated...";
+            _text = "Step_2060:; GalaxyGridPanel generated...";
             Console.WriteLine(_text);
             GameLog.Client.GameData.DebugFormat(_text);
 
@@ -211,10 +224,15 @@ namespace Supremacy.UI
             s_tradeRouteSetPen.Freeze();
 
             //Fleet Icons
+            //Report("loading ... Insignias/__default.png");
             s_defaultFleetIcon = LoadFleetIcon(
                 ResourceManager.GetResourceUri("Resources/Images/Insignias/__default.png"));
+
+            //Report("loading ... Insignias/__unknown.png");
             s_unknownFleetIcon = LoadFleetIcon(
                 ResourceManager.GetResourceUri("Resources/Images/Insignias/__unknown.png"));
+
+            //Report("loading ... Insignias/__multi_fleet_indicator.png");
             s_multiFleetIcon = LoadFleetIcon(
                 ResourceManager.GetResourceUri("Resources/Images/Insignias/__multi_fleet_indicator.png"));
 
@@ -234,15 +252,20 @@ namespace Supremacy.UI
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
 
-            _text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'";
-            Console.WriteLine(_text);
-            GameLog.Client.GameData.DebugFormat(_text);
+            //_text = "Step_1290: PopulateEmpires from MasterResources.CivDB... >>> ignore 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll' or better DEBUG 'just my Code'";
+            //Console.WriteLine(_text);
+            //GameLog.Client.GameData.DebugFormat(_text);
+
+            // https://youtu.be/aQk53OeV9fE?t=38 ...avoid 'Exception thrown: 'System.NotSupportedException' in PresentationCore.dll'
+            var _civDB = (from civ in MasterResources.CivDB
+                          select civ).ToList();
+
 
             //Load empire specific ones
             //Instead of loading the civilizations from the gamecontext,
             //load them straight from the db, as this panel is only constructed once.
             //Failure to do so will cause crashes when starting a second game
-            foreach (Civilization civ in MasterResources.CivDB)
+            foreach (Civilization civ in _civDB)
             {
                 //_text = "Step_1290: PopulateEmpires... " + civ.Name;
                 //Console.WriteLine(_text);
@@ -297,19 +320,48 @@ namespace Supremacy.UI
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(1, 1)
             };
+
             List<SolidColorBrush> uniqueEmpireFills = s_empireFills.Values.Distinct().ToList();
             double stepOffset = 1.0 / uniqueEmpireFills.Count / 2;
             int i = 0;
-            foreach (SolidColorBrush empireBrush in uniqueEmpireFills)
-            {
-                s_disputedSectorFill.GradientStops.Add(
-                    new GradientStop(empireBrush.Color,
-                                     stepOffset * i));
-                s_disputedSectorFill.GradientStops.Add(
-                    new GradientStop(empireBrush.Color,
-                                     0.5 + (stepOffset * i)));
-                i++;
-            }
+
+
+            //for (int j = 0; j < 4; j++)
+            //{
+            var color1 = new SolidColorBrush(Colors.Indigo) { Opacity = 0.05 };
+            s_disputedSectorFill.GradientStops.Add(
+                //new GradientStop(uniqueEmpireFills[0].Color,
+                new GradientStop(color1.Color,
+                                 stepOffset * i));
+
+            var color2 = new SolidColorBrush(Color.FromArgb(40, 165, 42, 42));
+            s_disputedSectorFill.GradientStops.Add(
+                    new GradientStop(color2.Color,
+            0.2 + (stepOffset * i)));
+            //new GradientStop(uniqueEmpireFills[1].Color,
+
+
+            // old code: original for 5 empires, but with 7 empires this just looks like ... so replaced with just 2 colors
+            //foreach (SolidColorBrush empireBrush in uniqueEmpireFills)
+            //{
+            //    s_disputedSectorFill.GradientStops.Add(
+            //        new GradientStop(empireBrush.Color,
+            //                         stepOffset * i));
+            //    //s_disputedSectorFill.GradientStops.Add(    // would like to add color Aqua
+            //    //    new GradientStop(uniqueEmpireFills.
+            //    //     0.3 + (stepOffset * i)));
+            //    s_disputedSectorFill.GradientStops.Add(
+            //        new GradientStop(empireBrush.Color,
+            //                         0.5 + (stepOffset * i)));
+            //    i++;
+            //}
+
+            //Color 
+            //System.Windows.Media.Color color_disputed = Avalon.Windows.Utility.ColorHelpers.Lighten(
+            //    (System.Windows.Media.Color)ColorConverter.ConvertFromString("Aqua"),
+            //        0.67f);
+
+
             s_disputedSectorFill.Freeze();
 
 
@@ -329,7 +381,7 @@ namespace Supremacy.UI
                 FontStretches.Normal);
 
             OptionsProperty = DependencyProperty.Register(
-                "Options",
+                "GameOptions",
                 typeof(GalaxyViewOptions),
                 typeof(GalaxyGridPanel),
                 new PropertyMetadata(GalaxyViewOptions.Default, OptionsChangedCallback));
@@ -341,6 +393,14 @@ namespace Supremacy.UI
                     null,
                     SelectedFleetChangedCallback,
                     SelectedFleetCoerceValueCallback));
+            SelectedTaskForceProperty = DependencyProperty.Register(
+    "SelectedTaskForce",
+    typeof(Fleet),
+    typeof(GalaxyGridPanel),
+    new PropertyMetadata(
+        null,
+        SelectedTaskForceChangedCallback,
+        SelectedTaskForceCoerceValueCallback));
             SelectedTradeRouteProperty = DependencyProperty.Register(
                 "SelectedTradeRoute",
                 typeof(TradeRoute),
@@ -408,6 +468,14 @@ namespace Supremacy.UI
         UseSitRepDetailsScreenChangedCallback));
         }
 
+//#pragma warning disable IDE0051 // Remove unused private members
+//        private static void Report(string v)
+//#pragma warning restore IDE0051 // Remove unused private members
+//        {
+//            Console.WriteLine(v);
+//            GameLog.Client.GameData.DebugFormat(v); 
+//        }
+
         public GalaxyGridPanel()
             : this(GameContext.Current.Universe.Map, ServiceLocator.Current.GetInstance<ISoundPlayer>()) { }
 
@@ -427,6 +495,14 @@ namespace Supremacy.UI
                     Key.Subtract,
                     ModifierKeys.None));
 
+            //_ = InputBindings.Add(
+            //    new KeyBinding(
+            //        GalaxyScreenCommands.MapZoom25,
+            //        Key.NumPad9,
+            //        ModifierKeys.None));
+
+
+            // CommandBindings
             _ = CommandBindings.Add(
                 new CommandBinding(
                     GalaxyScreenCommands.MapZoomIn,
@@ -437,11 +513,27 @@ namespace Supremacy.UI
                     GalaxyScreenCommands.MapZoomOut,
                     (sender, args) => ZoomOut()));
 
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GalaxyScreenCommands.MapZoom25,
+                    (sender, args) => Zoom25()));
+
+            _ = CommandBindings.Add(
+                new CommandBinding(
+                    GalaxyScreenCommands.MapZoomMax,
+                    (sender, args) => ZoomMax()));
+
             _fleetIconAdorners = new List<FleetIconAdorner>();
             _centerOnSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSectorCommand);
             _zoomInCommand = new DelegateCommand<object>(ExecuteZoomInCommand);
             _zoomOutCommand = new DelegateCommand<object>(ExecuteZoomOutCommand);
+            _zoom25Command = new DelegateCommand<object>(ExecuteZoom25Command);
+            _zoomMaxCommand = new DelegateCommand<object>(ExecuteZoomMaxCommand);
             _centerOnHomeSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnHomeSectorCommand);
+            _centerOnAccumulateSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnAccumulateSectorCommand);
+            _centerOnSystemAssault_1_SectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSystemAssault_1_SectorCommand);
+            //_centerOnSystemAssault_2_SectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSystemAssault_2_SectorCommand);
+            //_view25PercentCommand = new DelegateCommand<Sector>(ExecuteView25PercentCommand);
             _centerOn1Command = new DelegateCommand<Sector>(ExecuteCenterOn1Command);
             _centerOn2Command = new DelegateCommand<Sector>(ExecuteCenterOn2Command);
             _centerOn3Command = new DelegateCommand<Sector>(ExecuteCenterOn3Command);
@@ -452,7 +544,12 @@ namespace Supremacy.UI
             GalaxyScreenCommands.CenterOnSector.RegisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.RegisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.RegisterCommand(_zoomOutCommand);
+            GalaxyScreenCommands.MapZoom25.RegisterCommand(_zoom25Command);
+            GalaxyScreenCommands.MapZoomMax.RegisterCommand(_zoomMaxCommand);
             GalaxyScreenCommands.CenterOnHomeSector.RegisterCommand(_centerOnHomeSectorCommand);
+            GalaxyScreenCommands.CenterOnAccumulateSector.RegisterCommand(_centerOnAccumulateSectorCommand);
+            GalaxyScreenCommands.CenterOnSystemAssault_1_Sector.RegisterCommand(_centerOnSystemAssault_1_SectorCommand);
+            //GalaxyScreenCommands.CenterOnSystemAssault_2_Sector.RegisterCommand(_centerOnSystemAssault_2_SectorCommand);
             GalaxyScreenCommands.CenterOn1.RegisterCommand(_centerOn1Command);
             GalaxyScreenCommands.CenterOn2.RegisterCommand(_centerOn2Command);
             GalaxyScreenCommands.CenterOn3.RegisterCommand(_centerOn3Command);
@@ -628,6 +725,16 @@ namespace Supremacy.UI
             ZoomOut();
         }
 
+        private void ExecuteZoom25Command(object obj)
+        {
+            Zoom25();
+        }
+
+        private void ExecuteZoomMaxCommand(object obj)
+        {
+            ZoomMax();
+        }
+
         private void OnUnloaded(object sender, RoutedEventArgs args)
         {
             if (_screenModel != null)
@@ -650,6 +757,8 @@ namespace Supremacy.UI
             GalaxyScreenCommands.CenterOnSector.UnregisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.UnregisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.UnregisterCommand(_zoomOutCommand);
+            GalaxyScreenCommands.MapZoom25.UnregisterCommand(_zoom25Command);
+            GalaxyScreenCommands.MapZoomMax.UnregisterCommand(_zoomMaxCommand);
             GalaxyScreenCommands.SelectSector.UnregisterCommand(_selectSectorCommand);
             ClientEvents.ScreenRefreshRequired.Unsubscribe(OnScreenRefreshRequired);
         }
@@ -661,6 +770,7 @@ namespace Supremacy.UI
                 return;
             }
 
+            //2024-12-21
             FleetViewWrapper selectedTaskForce = _screenModel.SelectedTaskForce;
 
             if (Equals(selectedTaskForce, SelectedFleet))
@@ -730,7 +840,18 @@ namespace Supremacy.UI
         public Sector SelectedSector
         {
             get => GetValue(SelectedSectorProperty) as Sector;
-            set => SetValue(SelectedSectorProperty, value);
+            set
+            {
+                if (value != null && value.ToString() != "(0, 0)")
+                {
+                SetValue(SelectedSectorProperty, value);
+                }
+                else
+                {
+
+                }
+
+            }
         }
 
         public Sector HoveredSector
@@ -759,6 +880,30 @@ namespace Supremacy.UI
                 return playerEmpire?.Civilization;
             }
         }
+
+        //public string PlayerCivilizationAccumulatePlace
+        //{
+        //    get
+        //    {
+        //        CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
+        //        return playerEmpire?.AccumulateLocation.ToString();
+        //    }
+        //}
+
+        public string PlayerCivilizationSystemAssaultPlaces
+        {
+            // dummy - not sed
+            get
+            {
+                CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
+                string _line = "Assaults > " + playerEmpire.Assault_Accumulate_Location_1
+                    //+ "   " + playerEmpire.SystemAssault_Accumulate_Location_2
+                    ;
+                return _line;
+            }
+        }
+
+
 
         public GalaxyViewOptions Options
         {
@@ -957,9 +1102,24 @@ namespace Supremacy.UI
         private static FormattedText GetStarText(StarSystem system, Civilization playerCiv)
         {
             Civilization owner = system.Owner;
-            Brush brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
-                            ? s_colonyNameBrushes[system.OwnerID]
-                            : Brushes.White;
+            Brush brush = Brushes.Aqua;
+
+            //int _maxPOP = system.GetMaxPopulation(AppContext.LocalPlayerEmpire.Civilization.Race);
+            if (system.GetMaxPopulation(AppContext.LocalPlayerEmpire.Civilization.Race) < 81)
+                brush = Brushes.SandyBrown;
+
+            if (system.IsInhabited)
+                brush = Brushes.Black;
+
+            if (owner != null)
+            {
+                brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
+                                ? s_colonyNameBrushes[system.OwnerID]
+                                : Brushes.White;
+            }
+
+            
+
             string nameText;
             switch (system.StarType)
             {
@@ -1117,6 +1277,27 @@ namespace Supremacy.UI
             return (!(source is GalaxyGridPanel grid)) || (fleet == null) ? null : fleet.Owner != grid.PlayerCivilization ? null : value;
         }
 
+        private static void SelectedTaskForceChangedCallback(DependencyObject source,
+                                                 DependencyPropertyChangedEventArgs e)
+        {
+            if ((!(source is GalaxyGridPanel view)) || (view.SelectedTaskForceChanged == null))
+            {
+                return;
+            }
+
+            view.SelectedTaskForceChanged(
+                source,
+                new DependencyPropertyChangedEventArgs<Fleet>(e));
+        }
+
+        private static object SelectedTaskForceCoerceValueCallback(
+            DependencyObject source,
+            object value)
+        {
+            Fleet fleet = value as Fleet;
+            return (!(source is GalaxyGridPanel grid)) || (fleet == null) ? null : fleet.Owner != grid.PlayerCivilization ? null : value;
+        }
+
         private static object CoerceSelectedSectorAllegiance(DependencyObject d, object value)
         {
             try
@@ -1261,6 +1442,61 @@ namespace Supremacy.UI
             //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
             AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
         }
+
+        private void ExecuteCenterOnAccumulateSectorCommand(Sector sector)
+        {
+            //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
+            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector != null 
+                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector.Location.ToString() 
+                    != "(0, 0)")
+            {
+                SelectedSector = (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector);
+            AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].AccumulateSector);
+            }
+            else
+            {
+                //_ = MessageBox.Show("Not available", "Info", MessageBoxButton.OK);
+                SoundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+
+            }
+
+        }
+
+        private void ExecuteCenterOnSystemAssault_1_SectorCommand(Sector sector)
+        {
+            if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Sector_1 != null
+                && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Location_1.ToString()
+                != "(0, 0)")
+            {
+                SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Sector_1;
+                AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].Assault_Accumulate_Sector_1);
+            }
+            else
+            {
+                //_ = MessageBox.Show("Not available", "Info", MessageBoxButton.OK);
+                SoundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+
+            }
+        }
+
+        //private void ExecuteCenterOnSystemAssault_2_SectorCommand(Sector sector)
+        //{
+        //    if (GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Sector_2 != null
+        //        && GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Location_2.ToString()
+        //        != "(0, 0)")
+        //    {
+        //        SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Sector_2;
+        //        AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SystemAssault_Accumulate_Sector_2);
+        //    }
+        //    else
+        //    {
+        //        //_ = MessageBox.Show("Not available", "Info", MessageBoxButton.OK);
+        //        SoundPlayer.PlayFile("Resources/SoundFX/Summary.ogg");
+
+        //    }
+        //}
+
+
         private void ExecuteCenterOn1Command(Sector sector)  // Center to Quadrant 1
         {
             MapLocation loc = new MapLocation(
@@ -1313,7 +1549,7 @@ namespace Supremacy.UI
         {
             System.Windows.Forms.SendKeys.SendWait("^o"); // OptionsDialog
             //ClientSettings.Current.EnableSummaryScreen = ClientSettings.Current.EnableSummaryScreen != true;
-            //ClientSettings.Current.Save();
+            //ClientSettings.Current.SaveClientSettings();
 
         }
 
@@ -1322,10 +1558,32 @@ namespace Supremacy.UI
             ExecuteCenterOnSectorCommand(SelectedSector);
         }
 
+        //public void View25Percent()
+        //{
+        //    ExecuteZoom25Command(SelectedSector);
+        //}
+
         public void CenterOnHomeSector()
         {
             ExecuteCenterOnHomeSectorCommand(SelectedSector);
         }
+
+        public void CenterOnAccumulateSector()
+        {
+            ExecuteCenterOnAccumulateSectorCommand(SelectedSector);
+            //SelectedSector = _screenModel.SelectedSector;
+        }
+
+        public void CenterOnSystemAssault_1_Sector()
+        {
+            ExecuteCenterOnSystemAssault_1_SectorCommand(SelectedSector);
+        }
+
+
+        //public void CenterOnSystemAssault_2_Sector()
+        //{
+        //    ExecuteCenterOnSystemAssault_2_SectorCommand(SelectedSector);
+        //}
 
         public void SetHorizontalOffset(double offset, bool snapToGrid)
         {
@@ -1477,6 +1735,27 @@ namespace Supremacy.UI
             ZoomIn(false);
         }
 
+        public void Zoom25()
+        {
+            //Point point = new Point();
+            //SetScaleFactor(0.8, point);
+            Zoom25(false);
+        }
+
+        public void ZoomMax()
+        {
+            //Point point = new Point();
+            //SetScaleFactor(0.8, point);
+            ZoomMax(false);
+        }
+
+        // doesnt work 2023-05-07
+        //private void SetScaleFactor(double v)
+        //{
+        //    AutoCenterOnPoint(lastCenterPoint, false);
+        //    UpdateLayout();
+        //}
+
         private Point? GetZoomOrigin(bool zoomAroundMouse)
         {
             Point? zoomAroundPoint = null;
@@ -1532,6 +1811,14 @@ namespace Supremacy.UI
             }
 
             SetScaleFactor(scaleFactor, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7771: ZoomIN > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor=" + scaleFactor * 50
+
+            //    ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
         public void ZoomOut(Point? zoomAroundPoint)
@@ -1554,6 +1841,88 @@ namespace Supremacy.UI
             }
 
             SetScaleFactor(scaleFactor, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7772: ZoomOUT > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor=" + scaleFactor * 50
+            //    ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+        }
+
+        //public void Zoom25()
+        //{
+        //    Zoom25(false);
+        //}
+
+        public void Zoom25(bool zoomAroundMouse)
+        {
+            //SetScaleFactor(0.8, zoomAroundMouse);
+            Zoom25(GetZoomOrigin(zoomAroundMouse));
+        }
+
+        public void ZoomMax(bool zoomAroundMouse)
+        {
+            //SetScaleFactor(0.8, zoomAroundMouse);
+            ZoomMax(GetZoomOrigin(zoomAroundMouse));
+        }
+
+        public void Zoom25(Point? zoomAroundPoint)
+        {
+            //if (!CanZoom25)
+            //{
+            //    return;
+            //}
+
+            double scaleFactor = ScaleFactor;
+            if (scaleFactor % ZoomIncrement != 0)
+            {
+                scaleFactor = Math.Round(scaleFactor, 1);
+            }
+
+            scaleFactor += ZoomIncrement;
+            if (scaleFactor > MaxScaleFactor)
+            {
+                scaleFactor = MaxScaleFactor;
+            }
+
+            SetScaleFactor(0.8, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7775: Zoom25 > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor= 25 (fix) "
+            //        ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+        }
+
+        public void ZoomMax(Point? zoomAroundPoint)
+        {
+            //if (!CanZoom25)
+            //{
+            //    return;
+            //}
+
+            double scaleFactor = ScaleFactor;
+            if (scaleFactor % ZoomIncrement != 0)
+            {
+                scaleFactor = Math.Round(scaleFactor, 1);
+            }
+
+            scaleFactor += ZoomIncrement;
+            if (scaleFactor > MaxScaleFactor)
+            {
+                scaleFactor = MaxScaleFactor;
+            }
+
+            SetScaleFactor(0.2, zoomAroundPoint);
+
+            //works
+            //_text = "Step_7775: Zoom25 > zoomAroundPoint=" + zoomAroundPoint
+            //     + ", scaleFactor= 25 (fix) "
+            //        ;
+            //Console.WriteLine(_text);
+            //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
         }
 
         private Visual BuildTradeLine(TradeRoute route, Point endPoint, bool isNew)
@@ -2277,6 +2646,7 @@ namespace Supremacy.UI
                                         topMargin = -2;
                                     }
 
+                            
                                     dcStarNames.DrawText(
                                         starName,
                                         new Point(p.X + 3,
@@ -3231,6 +3601,8 @@ namespace Supremacy.UI
         public double ViewportWidth => _scrollData == null ? 0 : _scrollData.Viewport.Width;
 
         public ISoundPlayer SoundPlayer { get; } = null;
+
+        
         #endregion
 
         #region ScrollData Class

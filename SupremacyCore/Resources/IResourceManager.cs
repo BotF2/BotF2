@@ -7,10 +7,13 @@ namespace Supremacy.Resources
     public interface IResourceManager
     {
         string GetString(string key);
+        //string Get_DE_String(string key);
+        //string Get_FR_String(string key);
         string GetResourcePath(string path);
         string GetGameResourcePath(string path);
         string GetSystemResourcePath(string path);
         Uri GetResourceUri(string path);
+
     }
 
     public static class ResourceManagerExtensions

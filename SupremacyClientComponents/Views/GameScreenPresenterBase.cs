@@ -1,14 +1,21 @@
+//File:GameScreenPresenterBase.cs
 using Microsoft.Practices.Composite.Events;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
+using Supremacy.Client.Audio;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Resources;
 using Supremacy.Utility;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Media;
+
+//using System.Media;
 using System.Windows;
 using System.Windows.Input;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
@@ -22,6 +29,9 @@ namespace Supremacy.Client.Views
         private readonly IUnityContainer _container;
         private readonly IRegionManager _regionManager;
         private readonly EventHandler _commandManagerInvalidateRequeryHandler;
+        //private readonly ISoundPlayer _soundPlayer = null; // new Supremacy.Client.Audio.ISoundPlayer();
+
+        //private ISoundPlayer _soundPlayer = null;
         #endregion
 
         #region Constructors and Finalizers
@@ -161,6 +171,85 @@ namespace Supremacy.Client.Views
             }
             OnViewActivating();
             ClientEvents.ScreenActivated.Publish(new ScreenActivatedEventArgs(ViewName));
+            //ISoundPlayer _soundPlayer = new Supremacy.Client.Audio.SoundPlayer(FMODAudioEngine.Instance, AppContext);
+            IMusicPlayer _musicPlayer = new Supremacy.Client.Audio.MusicPlayer(FMODAudioEngine.Instance, AppContext);
+
+            switch (ViewName)
+            {
+                case "GalaxyScreen":
+                    PlayOGG("F1_ScreenMusic");
+                    //PlayOGG("Resources\\SoundFX\\ScreenMusic\\F1_ScreenMusic.wav");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F1_ScreenMusic.wav");
+                    break;
+                case "ColonyScreen":
+                    PlayOGG("F2_ScreenMusic");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F2_ScreenMusic.ogg");
+                    break;
+                case "ScienceScreen":
+                    PlayOGG("F3_ScreenMusic");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F3_ScreenMusic.ogg");
+                    break;
+                case "DiplomacyScreen":
+                    PlayOGG("F4_ScreenMusic");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F4_ScreenMusic.ogg");
+                    break;
+                case "IntelScreen":
+                    PlayOGG("F5_ScreenMusic");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F5_ScreenMusic.ogg");
+                    break;
+                case "F8-Screen":
+                    PlayOGG("F8_ScreenMusic");
+                    //_soundPlayer.PlayFile("Resources/SoundFX/ScreenMusic/F8_ScreenMusic.ogg");
+                    break;
+                default:
+                    Debugger.Break();
+                    break;
+            }
+   
+        }
+
+        private void PlayOGG(string _play_file)
+        {
+            //IMusicPlayer _musicPlayer = null;
+            //ISoundPlayer _soundPlayer = new Supremacy.Client.Audio.SoundPlayer();
+            //ISoundPlayer _soundPlayer = new Supremacy.Client.Audio.SoundPlayer(_play_file);
+            //ISoundPlayer _soundPlayer = null;
+            //IMusicPlayer _musicPlayer = new Supremacy.Client.Audio.MusicPlayer(FMODAudioEngine.Instance, AppContext);
+            ISoundPlayer _soundPlayer = new Supremacy.Client.Audio.SoundPlayer(FMODAudioEngine.Instance, AppContext);
+
+
+
+            //IMusicPlayer _musicPlayer = new Supremacy.Client.Audio.MusicPlayer(FMODAudioEngine.Instance, AppContext);
+            //string _file = Path.Combine(Environment.CurrentDirectory, /*"@" + */_play_file);
+            //if (File.Exists(_file))
+            //{
+            //_soundPlayer.PlayFile(_file);
+            try
+            {
+                //_musicPlayer
+                _soundPlayer.PlayAny(_play_file);
+
+                //_musicPlayer.PlayMode = PlaybackMode.None | PlaybackMode.Fade;
+                //_musicPlayer.SwitchMusic(_play_file/*+".ogg"*/);
+                //_musicPlayer.Play();
+                Console.WriteLine("Step_0611:; SwitchMusic to _play_file= > " + _play_file);
+
+                //_musicPlayer.SwitchMusic("DefaultMusic");
+                //_musicPlayer.Play();
+                //Console.WriteLine("Step_0611:; SwitchMusic to _play_file= > " + _play_file);
+            }
+            catch
+            {
+                Debugger.Break();
+            }
+
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Step_0156:; non-existing file= " + _file);
+            //    Debugger.Break();
+            //}
+
         }
 
         protected virtual void OnViewActivating() { }

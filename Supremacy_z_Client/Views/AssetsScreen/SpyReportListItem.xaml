@@ -1,0 +1,539 @@
+﻿ <!--File:SpyReportListItem.xaml  - unsused ??-->
+<scc:ThemedUserControl x:Class="Supremacy.Client.Views.SpyReportListItem"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                       xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                       xmlns:sxna="http://schemas.startreksupremacy.com/xaml/xna"
+                       xmlns:sx="http://schemas.startreksupremacy.com/xaml/core/markup"
+                       mc:Ignorable="d"
+                       d:DesignWidth="1024"
+                       d:DataContext="{x:Static scc:DesignTimeObjects.Colony}"
+                       Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                       FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                       FontWeight="{DynamicResource {x:Static scc:ClientResources.DefaultFontWeightKey}}"
+                       FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}">
+
+    <UserControl.Resources>
+        <scc:HasSystemBonusConverter x:Key="SystemBonusVisibilityConverter"
+                                 TrueValue="{x:Static Visibility.Visible}"
+                                 FalseValue="{x:Static Visibility.Collapsed}" />
+        <scc:IsNullConverter x:Key="NullValueVisibilityConverter"
+                         TrueValue="{x:Static Visibility.Collapsed}"
+                         FalseValue="{x:Static Visibility.Visible}" />
+        <Style x:Key="LinkButton"
+           TargetType="{x:Type Button}">
+            <Setter Property="Focusable"
+              Value="False" />
+            <Setter Property="IsTabStop"
+              Value="False" />
+            <Setter Property="Cursor"
+              Value="Hand" />
+            <Setter Property="FocusVisualStyle"
+              Value="{x:Null}" />
+            <Setter Property="TextBlock.Foreground"
+              Value="{DynamicResource HeaderTextBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <TextBlock x:Name="LinkText" Text="{TemplateBinding Content}" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                      Value="True">
+                                <Setter TargetName="LinkText"
+                                        Property="TextDecorations"
+                                        Value="Underline" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="100" />
+            <ColumnDefinition Width="Auto" MinWidth="80"  />
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="140" />
+            <!--<ColumnDefinition Width="Auto" MinWidth="40" SharedSizeGroup="SystemListColumn6" />-->
+            
+            
+            <!--Research + Deuterium-->
+
+
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+            <!--<ColumnDefinition Width="Auto" MinWidth="40" SharedSizeGroup="SystemListColumn2" />
+            <ColumnDefinition Width="Auto" MinWidth="40" SharedSizeGroup="SystemListColumn3" />-->
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+         
+            <!--<ColumnDefinition Width="Auto" MinWidth="30" SharedSizeGroup="SystemListColumn4" />-->
+
+            <ColumnDefinition Width ="Auto" MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="3"  />
+            <!--Food + Dilithium-->            
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="60"  />
+            
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn8" />
+            <!--Industry + DURANIUM-->            
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn9" />
+            
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="80" SharedSizeGroup="SystemListColumn10" />
+            <!--Energy + Shipyards-->            
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="100" SharedSizeGroup="SystemListColumn11" />
+            
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="170" SharedSizeGroup="SystemListColumn12" />
+            <!--Research-->             
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" />
+
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" MinWidth="120" SharedSizeGroup="SystemListColumn13" />
+             <!--Credits-->          
+            <ColumnDefinition MaxWidth="3" />
+            <ColumnDefinition Width="Auto" />
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.00001*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="0.00001*" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="> "
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"/>
+        <scc:GameButton Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="15,5,0,5"
+                        DisplayMode="Hyperlink"
+                        VerticalAlignment="Center"
+                        FontSize="18"  
+                        Label="{Binding Path=Name}"
+                        Command="{x:Static scc:NavigationCommands.NavigateToColony}"
+                        CommandParameter="{Binding FallbackValue={x:Null}}" />
+        <TextBlock Grid.Column="0"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   Text="{Binding Path=Inhabitants.PluralName}" />
+        <TextBlock Text="POPULATION ="
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
+        <scc:GameLabel Grid.Column="3"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="2"                        
+                       VerticalAlignment="Center"
+                       ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/population.png"
+                       ToolTip="{s:StringResource Key=ASSET_POPULATION_TOOLTIP}">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} / {1} ({2:0.#%})">
+                    <Binding Path="Population.CurrentValue" />
+                    <Binding Path="Population.Maximum" />
+                    <Binding Path="GrowthRate" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <TextBlock Text="MORALE ="
+                   Grid.Row="2"
+                   Grid.Column="1"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"/>
+        <scc:GameLabel Grid.Column="3"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/morale.png"
+                   Foreground="{Binding Path=Morale.CurrentValue, Converter={x:Static s:MoraleBrushConverter.Instance}}"
+                   ToolTip="{s:StringResource Key=MORALE_TOOLTIP}" >
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} ({1}) ">
+                    <Binding Path="Morale.CurrentValue" 
+                             Converter="{x:Static s:MoraleConverter.Instance}" />
+                    <Binding Path="Morale.CurrentValue" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+      <!--<TextBlock Text="RESEARCH ="
+                 Grid.Row="1"
+                 Grid.Column="6"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Right"/>
+      <scc:GameLabel Grid.Column="8"
+                 Grid.Row="1"
+                 VerticalAlignment="Center"
+                 ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                 Label="{Binding Path=Research_Net}"
+                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOLTIP}" />-->
+        <!--<TextBlock Text="1x"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="2x"
+                  Grid.Column="2"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="3x"
+                  Grid.Column="3"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="4x"
+                  Grid.Column="4"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="5x"
+                  Grid.Column="5"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="6x"
+                  Grid.Column="6"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="7x"
+                  Grid.Column="7"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="8x"
+                  Grid.Column="9"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+        <TextBlock Text="9x"
+                  Grid.Column="9"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>-->
+        <TextBlock Text="FOOD ="
+                  Grid.Column="10"
+                  Grid.Row="1"
+                  Foreground="LightGreen"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+      <scc:GameLabel Grid.Column="12"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                  Label="{Binding Path=FoodReserves.CurrentValue}"
+                  ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
+      <TextBlock Text="INDUSTRY ="
+                  Grid.Row="1"
+                  Grid.Column="14"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Foreground="Orange"/>
+      <scc:GameLabel Grid.Column="16"
+                 Grid.Row="1"
+                 VerticalAlignment="Center"
+                 ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                 Label="{Binding Path=Industry_Net}"
+                 ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
+      <TextBlock Text="ENERGY ( unused ) ="
+                Grid.Row="1"
+                Grid.Column="18"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="Yellow"/>
+      <scc:GameLabel Grid.Column="20"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                  Label="{Binding Path=Energy_Net}"
+                  ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
+
+        <TextBlock Text="RESEARCH = "
+                Grid.Row="1"
+                Grid.Column="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="LightBlue"/>
+        <TextBlock Text="  ( whole empire )     "
+                Grid.Row="2"
+                Grid.Column="20"
+                   Grid.ColumnSpan="3"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="LightBlue"/>
+        <scc:GameLabel Grid.Column="22"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  Margin="0,0,0,0"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                  Label="{Binding Path=ResearchForSpyScreen}"
+                   />        
+        <TextBlock Text="CREDITS = "
+                Grid.Row="1"
+                Grid.Column="24"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="Gold"/>
+        <TextBlock Text="  ( whole empire )     "
+                Grid.Row="2"
+                Grid.Column="24"
+                Grid.ColumnSpan="3"
+                Margin=" 0,0,15,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="Gold"/>
+        <scc:GameLabel Grid.Column="26"
+                  Grid.Row="1"
+                  VerticalAlignment="Center"
+                  Margin=" 0,0,15,0"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png"
+                  Label="{Binding Path=CreditsForSpyScreen}"
+                   />
+
+
+        <!--Second Line-->
+        <!--<TextBlock Text="DEUTERIUM ="
+                  Grid.Row="2"
+                  Grid.Column="6"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+      <scc:GameLabel Grid.Column="8"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/deuterium.png"
+                  Label="{Binding Path=NetDeuterium}"
+                  ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOLTIP}" />-->
+      <TextBlock Text="DILITHIUM ="
+                  Grid.Row="2"
+                  Grid.Column="10"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"/>
+      <scc:GameLabel Grid.Column="12"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
+                  Label="{Binding Path=Dilithium_Net}"
+                  ToolTip="{s:StringResource Key=DILITHIUM_TOOLTIP}" />
+      <TextBlock Text="DURANIUM ="
+                  Grid.Row="2" Grid.Column="14"
+                  HorizontalAlignment="Right"/>
+      <scc:GameLabel Grid.Column="16"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/duranium.png"
+                  Label="{Binding Path=Duranium_Net}"
+                  ToolTip="{s:StringResource Key=RAW_MATERIALS_TOOLTIP}" />
+        <!--<TextBlock Text="RESEARCH (empire) = "
+                Grid.Row="2"
+                Grid.Column="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Foreground="LightBlue"/>
+        <scc:GameLabel Grid.Column="22"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                  Label="{Binding Path=ResearchForSpyScreen}"
+                   />-->
+        
+        <!--ShipBuilding-->
+
+        <TextBlock Text="SHIP BUILDING ="
+                  Grid.Row="2" Grid.Column="18"
+                  HorizontalAlignment="Right"/>
+      <scc:GameLabel Grid.Column="20"
+                  Grid.Row="2"
+                  VerticalAlignment="Center"
+                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/ship.png"
+                  ToolTip="{s:StringResource Key=SHIPBUILDING_TOOLTIP}"
+                  Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} x {1}" FallbackValue="n/a">
+                    <Binding Path="Shipyard.ShipyardDesign.BuildSlotOutput" />
+                    <Binding Path="Shipyard.ShipyardDesign.BuildSlots" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <!-- Grid for Shipyards--><!--
+        <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="20" Margin="0,5,0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" MinWidth="80"/>
+                <ColumnDefinition Width="Auto" />
+                --><!--<ColumnDefinition Width="Auto" MinWidth="200"/>
+                <ColumnDefinition Width="Auto" />-->
+                <!--<ColumnDefinition Width="Auto" MinWidth="200" />
+                <ColumnDefinition Width="Auto" />-->
+                <!--<ColumnDefinition Width="Auto" MinWidth="40" />
+                <ColumnDefinition Width="Auto" />--><!--
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto"  />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.00001*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="0.00001*" />
+            </Grid.RowDefinitions>
+            --><!--<TextBlock Grid.Column="0"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                FontWeight="DemiBold"              
+                Text="Shipyard 1:  " />-->
+            <!--<TextBlock Grid.Column="0"
+                Grid.Row="1"
+               HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 2:  " />-->
+            <!--<TextBlock Grid.Column="3"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text=" Shipyard 3:  " />
+            <TextBlock Grid.Column="3"
+                Grid.Row="1"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text=" Shipyard 4:  " />-->
+            <!--<TextBlock Grid.Column="4"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 5:  " />-->
+            <!--<TextBlock Grid.Column="10"
+                Grid.Row="5"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 8:" />-->
+                    <!--<TextBlock Grid.Column="6"
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        FontWeight="DemiBold"  
+                        Text="Credits (whole Empire) = " />
+                    <TextBlock Grid.Column="6"
+                        Grid.Row="1"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        FontWeight="DemiBold"  
+                        Text="Research (whole Empire) = " />-->
+            <!--<TextBlock Grid.Column="4"
+                Grid.Row="6"
+                Grid.ColumnSpan="1"
+                VerticalAlignment="Center"
+                   FontWeight="DemiBold"  
+                Text=" Shipyard 6:" />--><!--
+            <TextBlock Grid.Column="1"
+                Grid.Row="0"
+                Grid.ColumnSpan="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[0].Project}" />
+            <TextBlock Grid.Column="1"
+                Grid.Row="1"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
+            --><!--<TextBlock Grid.Column="3"
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[2].Project}" />
+            <TextBlock Grid.Column="3"
+                Grid.Row="1"              
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />-->
+            <!--<TextBlock Grid.Column="5"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />-->
+            <!--<TextBlock Grid.Column="11"
+                Grid.Row="5"
+                Grid.ColumnSpan="2" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />-->
+                    <!--<TextBlock Grid.Column="7"
+                        Grid.Row="0"
+                        Grid.ColumnSpan="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Text="{Binding Path=CreditsForSpyScreen}" />
+                    <TextBlock Grid.Column="7"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Text="{Binding Path=ResearchForSpyScreen}" />-->
+            <!--<TextBlock Grid.Column="6"
+                Grid.Row="6"
+                Grid.ColumnSpan="3"                   
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Text="{Binding Path=Shipyard.BuildSlots[5].Project}" />--><!--
+        </Grid>-->
+      <!-- Blame Others -->
+      <!--<Border Grid.Row="6"
+             Grid.Column="0"
+             Grid.ColumnSpan="22"
+             BorderBrush="Yellow"
+             BorderThickness="1"
+             Margin="0,0,0,0"
+             Background="Black" />
+      <TextBlock Grid.Row="6"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="10,0,0,0"
+                FontWeight="DemiBold"
+                Foreground="Yellow"
+                Text="Blame Others" />
+      <scc:GameButton Grid.Column="4"
+                Grid.Row="6"
+                DisplayMode="Tiny"
+                VerticalAlignment="Center"
+                Label="Gino"
+                Foreground="Black"
+                Background="Transparent"
+                BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                BorderThickness="2"
+                Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
+                CommandParameter="{Binding FallbackValue={x:Null}}" />-->
+    </Grid>
+</scc:ThemedUserControl>

@@ -7,19 +7,21 @@
 //
 // All other rights reserved.
 
+using Supremacy.Collections;
+using Supremacy.Resources;
+using Supremacy.Scripting.Ast;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Xaml;
 using XamlReader = System.Windows.Markup.XamlReader;
 using XamlWriter = System.Windows.Markup.XamlWriter;
-
-using Supremacy.Collections;
-using Supremacy.Resources;
-using Supremacy.Utility;
 
 
 namespace Supremacy.Client
@@ -27,7 +29,7 @@ namespace Supremacy.Client
     public class ClientSettings : DependencyObject, IAttachedPropertyStore, INotifyPropertyChanged
     {
         private const string ClientSettingsFileName = "SupremacyClient..Settings.xaml";
-        readonly bool _tracingClientSettings = false;
+        //readonly bool _tracingClientSettings = false;
         public bool _XML2CSVOutput = false;
 
 
@@ -44,12 +46,13 @@ namespace Supremacy.Client
         {
             try
             {
-                // not here     _ = MessageBox.Show("New SupremacyClient..Settings.xaml generated", "INFO", MessageBoxButton.OK);
                 _attachedValues = new Dictionary<AttachableMemberIdentifier, object>();
             }
             catch
             {
-                GameLog.Client.General.ErrorFormat("Problem with SupremacyClient..Settings.xaml");
+                string _text = "Step_0281:; Problem with SupremacyClient..Settings.xaml";
+                Console.WriteLine(_text);
+                GameLog.Client.General.ErrorFormat(_text);
             }
         }
 
@@ -77,10 +80,16 @@ namespace Supremacy.Client
                 settingsDirectory,
                 ClientSettingsFileName);
 
-            if (_tracingClientSettings)
-            {
-                GameLog.Client.General.InfoFormat("SAVE     {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
-            }
+            //if (_tracingClientSettings)
+            //{
+            string _text = "SAVE"
+                + filePath //+ Environment.NewLine
+                //+ "Content: (press ALT + X for Overview)" + Environment.NewLine
+                //+ File.ReadAllText(filePath) + Environment.NewLine
+                ;
+            Console.WriteLine("Step_9446:; " + DateTime.Now + " > " +_text);
+            GameLog.Client.General.InfoFormat(_text);
+            //}
         }
 
         public event EventHandler Loaded;
@@ -90,7 +99,7 @@ namespace Supremacy.Client
             Loaded?.Invoke(null, EventArgs.Empty);
         }
 
-        public void Reload()
+        public void ReloadClientSettings()
         {
             try
             {
@@ -133,8 +142,9 @@ namespace Supremacy.Client
             }
         }
 
-        public void Save()
+        public void SaveClientSettings()
         {
+            string _text = "";
             try
             {
                 string settingsDirectory = ResourceManager.GetResourcePath("");
@@ -148,16 +158,22 @@ namespace Supremacy.Client
                     Directory.CreateDirectory(settingsDirectory);
                 }
 
-                using (FileStream fileWriter = File.Create(filePath))
-                {
-                    XamlWriter.Save(this, fileWriter);
-                }
-
-                OnSaved();
+                //if (!File.Exists(filePath))
+                //{
+                    using (FileStream fileWriter = File.Create(filePath))
+                    {
+                        XamlWriter.Save(this, fileWriter);
+                    }
+                    OnSaved();
+                //}
             }
             catch (Exception e)
             {
-                GameLog.Client.General.Error(e);
+                _text = "Step_0188:; Error at saving SupremacyClient..Settings.xaml" 
+                    + Environment.NewLine + e;
+                Console.WriteLine(_text);
+                GameLog.Client.General.Error(_text);
+                Debugger.Break();
             }
         }
 
@@ -171,6 +187,8 @@ namespace Supremacy.Client
                     settingsDirectory,
                     ClientSettingsFileName);
 
+                /*needed? .. filePath already built */ settingsDirectory = ".\\";
+
                 ClientSettings settings;
 
 
@@ -182,13 +200,16 @@ namespace Supremacy.Client
                         try
                         {
                             // filePath = SupremacyClient..Settings.xaml
-                            string _text = "for other problems: just try to deleted " + filePath + " manually from your hard disk !";
+                            string _text = "Step_0136:; for other problems: just try to deleted " 
+                                + filePath + " manually from your hard disk !";
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
+
                             settings = XamlReader.Load(fileReader) as ClientSettings ?? new ClientSettings();
 
 
-                            GameLog.Client.General.InfoFormat("LOADCORE {0}: Content: (press ALT + X for Overview)" + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
+                            GameLog.Client.General.InfoFormat("Step_0138:; LOADCORE {0}: Content: (press ALT + X for Overview)" 
+                                /*+ Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine*/, filePath/*, File.ReadAllText(filePath)*/);
 
                             if (settings == null)
                             {
@@ -202,7 +223,7 @@ namespace Supremacy.Client
 
                             //_ = System.Windows.MessageBox.Show("please stop the game and delete manually: " + Environment.NewLine + filePath, "PROBLEM",MessageBoxButton.OK);
 
-                            string _text = "LOADCORE " + filePath + ": Problem reading the file >> will be deleted" + Environment.NewLine + e;
+                            string _text = "Step_0139:; LOADCORE " + filePath + ": Problem reading the file >> will be deleted" + Environment.NewLine + e;
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
                             File.Delete(filePath);
@@ -421,6 +442,9 @@ namespace Supremacy.Client
         //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> EnableCombatScreenChanged;
         //private void OnEnableCombatScreenChanged(bool oldValue, bool newValue)
         //=> EnableCombatScreenChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        //public bool AddGerman = true;
+
         public bool EnableCombatScreen
         {
             get => (bool)GetValue(EnableCombatScreenProperty);
@@ -2887,6 +2911,107 @@ namespace Supremacy.Client
         }
         #endregion ClientWindowHeight Property
 
+        #region AddGermanText Property
+        public static readonly DependencyProperty AddGermanTextProperty = DependencyProperty.Register(
+            "AddGermanText",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> AddGermanTextChanged;
+
+        //private void OnAddGermanTextChanged(bool oldValue, bool newValue)
+        //=> AddGermanTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool AddGermanText
+        {
+            get => (bool)GetValue(AddGermanTextProperty);
+            set
+            {
+                SetValue(AddGermanTextProperty, value);
+                //GameLog.Client.General.InfoFormat("AddGermanText = {0}", value);
+                if (value)
+                {
+                    GameLog.SetRepositoryToDebug("AddGermanText");
+                }
+                else
+                {
+                    GameLog.SetRepositoryToErrorOnly("AddGermanText");
+                }
+            }
+        }
+        #endregion AddGermanText Property
+
+
+        #region AddFrenchText Property
+        public static readonly DependencyProperty AddFrenchTextProperty = DependencyProperty.Register(
+            "AddFrenchText",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> AddFrenchTextChanged;
+
+        //private void OnAddFrenchTextChanged(bool oldValue, bool newValue)
+        //=> AddFrenchTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool AddFrenchText
+        {
+            get => (bool)GetValue(AddFrenchTextProperty);
+            set
+            {
+                SetValue(AddFrenchTextProperty, value);
+                //GameLog.Client.General.InfoFormat("AddFrenchText = {0}", value);
+                if (value)
+                {
+                    GameLog.SetRepositoryToDebug("AddFrenchText");
+                }
+                else
+                {
+                    GameLog.SetRepositoryToErrorOnly("AddFrenchText");
+                }
+            }
+        }
+        #endregion AddFrenchText Property
+
+        #region AI_Controls_Player Property
+        public static readonly DependencyProperty AI_Controls_Player_Property = DependencyProperty.Register(
+            "AI_Controls_Player",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+        //public event EventHandler<PropertyChangedRoutedEventArgs<bool>> AddFrenchTextChanged;
+
+        //private void OnAddFrenchTextChanged(bool oldValue, bool newValue)
+        //=> AddFrenchTextChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
+        public bool AI_Controls_Player
+        {
+            get => (bool)GetValue(AI_Controls_Player_Property);
+            set
+            {
+                SetValue(AI_Controls_Player_Property, value);
+                //GameLog.Client.General.InfoFormat("AI_Controls_Player = {0}", value);
+                if (value)
+                {
+                    GameLog.SetRepositoryToDebug("AI_Controls_Player");
+                }
+                else
+                {
+                    GameLog.SetRepositoryToErrorOnly("AI_Controls_Player");
+                }
+            }
+        }
+        #endregion AI_Controls_Player Property
+
+
         #region WidthSpecial1 Property
         public static readonly DependencyProperty WidthSpecial1Property = DependencyProperty.Register(
             "WidthSpecial1",
@@ -3081,7 +3206,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetAll_without_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: 'Set All w/o Details' for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("#### Log.Txt: 'Set All w/o Details' for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3198,7 +3323,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetAll_and_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("    #### Log.Txt: 'SetAll_and_Details'  for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("    #### Log.Txt: 'SetAll_and_Details'  for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3314,7 +3439,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_ClearAllProperty, value);
 
-                GameLog.Client.General.InfoFormat("              #### Log.Txt: 'ClearAll'            for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("              #### Log.Txt: 'ClearAll'            for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3441,7 +3566,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_ClearAllDetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("       #### Log.Txt: 'ClearAllDetails'     for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("       #### Log.Txt: 'ClearAllDetails'     for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {
@@ -3679,7 +3804,7 @@ namespace Supremacy.Client
                 SetValue(Traces_SetSelection2Property, value);
 
 
-                GameLog.Client.General.InfoFormat("         #### Log.Txt: 'Selection 2'         for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
+                //GameLog.Client.General.InfoFormat("         #### Log.Txt: 'Selection 2'         for Traces (press ingame CTRL + P, for overview > ALT + X)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value)
                 {

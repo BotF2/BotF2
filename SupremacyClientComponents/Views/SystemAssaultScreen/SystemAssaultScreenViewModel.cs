@@ -1,4 +1,4 @@
-﻿// File:SystemAssaultScreenViewModel
+﻿// File:SystemAssaultScreenViewModel.cs
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -569,8 +569,8 @@ namespace Supremacy.Client.Views
 
                     GameLog.Client.SystemAssaultDetails.DebugFormat("GroundCombatOdds...");
                     _text =
-                        "GroundCombatOdds= " + GroundCombatOddsValue
-                        + " ( Transports: " + SelectedTransportsCombatStrength
+                        "Step_6555:; GroundCombatOdds= " + GroundCombatOddsValue
+                        + " > Transports: " + SelectedTransportsCombatStrength
                         + " vs DefenderStrength: " + defend
                         ;
                     Console.WriteLine(_text);
@@ -578,7 +578,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.Client.SystemAssault.ErrorFormat("Exception {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Client.SystemAssault.ErrorFormat("Step_6556:; Exception {0} {1}", e.Message, e.StackTrace);
                 }
 
                 //GroundCombatOddsValue = GroundCombatOddsValue / 100;
@@ -796,18 +796,21 @@ namespace Supremacy.Client.Views
 
             foreach (var item in _destroyedInvadingUnits)
             {
+                
                 _text = 
                     item.Unit.Source.Location
                     + " > " + item.Unit.ObjectID
-                    + " * " + item.Name
-                    + " * was destroyed during System Assault."
-
-
+                    + " * " + item.Name 
+                    + " * ( "+ item.Design.Key + " )" 
+                    
+                    + " was lost during System Assault."
 
                     ;
-                Console.WriteLine(_text);
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
-                civManager.SitRepEntries.Add(new ReportEntry_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
+                Console.WriteLine("Step_4765:; " + _text);
+
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[item.Unit.OwnerID];
+                _civM.SitRepEntries.Add(new ReportEntry_NoAction(item.Unit.Source.Owner, _text, "", "", SitRepPriority.Gray));
+            
             }
 
             _currentUpdate = null;

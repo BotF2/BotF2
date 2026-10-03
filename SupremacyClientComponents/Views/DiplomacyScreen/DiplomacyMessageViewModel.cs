@@ -1,4 +1,17 @@
-//File:DiplomacyMessageViewModel
+//File:DiplomacyMessageViewModel.cs
+using Microsoft.Practices.ServiceLocation;
+using Supremacy.Annotations;
+using Supremacy.Client.Dialogs;
+using Supremacy.Client.Input;
+using Supremacy.Collections;
+using Supremacy.Diplomacy;
+using Supremacy.Entities;
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Resources;
+using Supremacy.Scripting;
+using Supremacy.Text;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,19 +21,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
-using Microsoft.Practices.ServiceLocation;
-
-using Supremacy.Annotations;
-using Supremacy.Client.Dialogs;
-using Supremacy.Client.Input;
-using Supremacy.Collections;
-using Supremacy.Diplomacy;
-using Supremacy.Entities;
-using Supremacy.Game;
-using Supremacy.Resources;
-using Supremacy.Scripting;
-using Supremacy.Text;
-using Supremacy.Utility;
 
 namespace Supremacy.Client.Views
 {
@@ -42,9 +42,9 @@ namespace Supremacy.Client.Views
         private readonly ScriptExpression _requestLeadInTextScript;
 
         private readonly ScriptParameters _leadInParameters;
-#pragma warning disable IDE0044 // Add readonly modifier
+        //#pragma warning disable IDE0044 // Add readonly modifier
         private RuntimeScriptParameters _leadInRuntimeParameters;
-#pragma warning restore IDE0044 // Add readonly modifier
+        //#pragma warning restore IDE0044 // Add readonly modifier
 
 
         private readonly DelegateCommand<ICheckableCommandParameter> _setAcceptButton;
@@ -225,7 +225,7 @@ namespace Supremacy.Client.Views
 
         internal IDiplomaticExchange CreateMessage()
         {
-            return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
+            return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal_ViewModel();
         }
 
         public void Send()
@@ -245,7 +245,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                NewProposal proposal = CreateProposal();
+                NewProposal proposal = CreateProposal_ViewModel();
                 if (proposal == null)
                 {
                     return;
@@ -666,7 +666,7 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("OFFER_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                        GameLog.Client.DiplomacyDetails.DebugFormat("OFFER_DIALOG_HINT is outcommented");
+                        //Console.WriteLine("OFFER_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Request:
@@ -675,7 +675,8 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                        GameLog.Client.DiplomacyDetails.DebugFormat("REQUEST_DIALOG_HINT is outcommented");
+                        Console.WriteLine(_text);
+                        //Console.WriteLine("REQUEST_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
@@ -683,16 +684,31 @@ namespace Supremacy.Client.Views
                     //if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
                     if (element != null && element.Description != null && element.SelectedParameter != null /*&& element.ElementType != null*/)
                     {
-                        GameLog.Client.DiplomacyDetails.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
-                            element.Description.ToString(),
-                            element.SelectedParameter.ToString(),
-                            element.ElementType.ToString());
+                        _text = "Step_8731:; "
+                            + "Proposal element added to _treatyElements" + element.Description.ToString()
+                            + ", " + element.SelectedParameter.ToString()
+                            + ", " + element.ElementType.ToString()
+
+                            ;
+                        Console.WriteLine(_text);
+                        //GameLog.Client.DiplomacyDetails.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
+                        //    element.Description.ToString(),
+                        //    element.SelectedParameter.ToString(),
+                        //    element.ElementType.ToString());
                     }
-#pragma warning disable IDE0059 // Unnecessary assignment of a value
-                    st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                    _text = "Step_8732:; " // "Proposal added (Send-Button)
+                            + "Proposal added > " + element.ElementType.ToString()
+                            //+ ", " + element.SelectedParameter.ToString()
+                            //+ " > " + element.ElementType.ToString()
+                            + " > " + element.Description
+                            ;
+                    Console.WriteLine(_text);
+
+                    //st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+
                     //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                    GameLog.Client.DiplomacyDetails.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
+                    _text = "PROPOSE_DIALOG_HINT is outcommented";
+                    //Console.WriteLine(_text);
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
                     _statementElements.Add(element);
@@ -707,7 +723,15 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
-                    GameLog.Client.DiplomacyDetails.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
+                    //Console.WriteLine("DECLARE_WAR_DIALOG_HINT is outcommented");
+                    _text = "Step_8734:; " // WarDeclaration: (Send-Button)
+                            + "WarDeclaration (Send-Button) > " + element.ElementType.ToString()
+                            //+ ", " + element.SelectedParameter.ToString()
+                            //+ " > " + element.ElementType.ToString()
+                            + " > " + element.Description
+                            ;
+                    Console.WriteLine(_text);
+
                     _statementElements.Add(element);
                     break;
             }
@@ -747,7 +771,7 @@ namespace Supremacy.Client.Views
             UpdateLeadInText();
         }
 
-        private NewProposal CreateProposal(bool allowIncomplete = false)
+        private NewProposal CreateProposal_ViewModel(bool allowIncomplete = false)
         {
             if (_elements.Count == 0)
             {
@@ -822,12 +846,26 @@ namespace Supremacy.Client.Views
 
         private Statement CreateStatement()
         {
-            if (_elements.Count != 1)
+            //if (_elements.Count != 1)
+            //{
+            //    return null;
+            //}
+
+            StatementType statementType = StatementType.NoStatement;
+
+            try
             {
-                return null;
+                if (_elements.Count != 0)
+                {
+                    statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
+                }
+            }
+            catch
+            {
+
             }
 
-            StatementType statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
+
             if (statementType == StatementType.NoStatement)
             {
                 return null;
@@ -846,7 +884,7 @@ namespace Supremacy.Client.Views
             _availableElements.Clear();
 
             Diplomat diplomat = GameContext.Current.Diplomats[Sender];
-            NewProposal currentProposal = CreateProposal(allowIncomplete: true);
+            NewProposal currentProposal = CreateProposal_ViewModel(allowIncomplete: true);
             Statement currentStatement = CreateStatement();
             bool recipientIsMember = DiplomacyHelper.IsMember(_recipient, Sender);
 
@@ -874,41 +912,45 @@ namespace Supremacy.Client.Views
                      */
                     if (commendWarParameters().Any())
                     {
-                        _availableElements.Add(
-                            new DiplomacyMessageAvailableElement
-                            {
-                                ActionCategory = DiplomacyMessageElementActionCategory.Commend,
-                                ParametersCallback = commendWarParameters,
-                                ElementType = DiplomacyMessageElementType.CommendWarStatement
-                            });
+                        // no ADD at the moment
+                        //_availableElements.Add(
+                        //    new DiplomacyMessageAvailableElement
+                        //    {
+                        //        ActionCategory = DiplomacyMessageElementActionCategory.Commend,
+                        //        ParametersCallback = commendWarParameters,
+                        //        ElementType = DiplomacyMessageElementType.CommendWarStatement
+                        //    });
                     }
 
-                    _availableElements.Add(
-                        new DiplomacyMessageAvailableElement
-                        {
-                            ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
-                            ParametersCallback = denouceWarParameters,
-                            ElementType = DiplomacyMessageElementType.DenounceWarStatement
-                        });
+                    // no ADD at the moment
+                    //_availableElements.Add(
+                    //    new DiplomacyMessageAvailableElement
+                    //    {
+                    //        ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
+                    //        ParametersCallback = denouceWarParameters,
+                    //        ElementType = DiplomacyMessageElementType.DenounceWarStatement
+                    //    });
                 }
 
                 if (diplomat.CanCommendOrDenounceTreaty(_recipient, currentStatement))
                 {
-                    _availableElements.Add(
-                        new DiplomacyMessageAvailableElement
-                        {
-                            ActionCategory = DiplomacyMessageElementActionCategory.Commend,
-                            ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
-                            ElementType = DiplomacyMessageElementType.CommendTreatyStatement
-                        });
+                    // no ADD at the moment
+                    //_availableElements.Add(
+                    //    new DiplomacyMessageAvailableElement
+                    //    {
+                    //        ActionCategory = DiplomacyMessageElementActionCategory.Commend,
+                    //        ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
+                    //        ElementType = DiplomacyMessageElementType.CommendTreatyStatement
+                    //    });
 
-                    _availableElements.Add(
-                        new DiplomacyMessageAvailableElement
-                        {
-                            ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
-                            ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
-                            ElementType = DiplomacyMessageElementType.CommendTreatyStatement
-                        });
+                    // no ADD at the moment
+                    //_availableElements.Add(
+                    //    new DiplomacyMessageAvailableElement
+                    //    {
+                    //        ActionCategory = DiplomacyMessageElementActionCategory.Denounce,
+                    //        ParametersCallback = () => diplomat.GetCommendOrDenounceTreatyParameters(_recipient, currentStatement).ToList(),
+                    //        ElementType = DiplomacyMessageElementType.CommendTreatyStatement
+                    //    });
                 }
 
                 if (diplomat.CanProposeWarPact(_recipient, currentProposal))
@@ -922,7 +964,7 @@ namespace Supremacy.Client.Views
                         });
                 }
                 // add the war buttons: 1) for Declare War on lower left and 2) inside 'New Message' see declare war opption
-                if (!DiplomacyHelper.AreAtWar(Sender, _recipient))
+                if (!DiplomacyHelper.Status_AtWar(Sender, _recipient))
                 {
                     _availableElements.Add(
                         new DiplomacyMessageAvailableElement
@@ -1070,6 +1112,7 @@ namespace Supremacy.Client.Views
 
             foreach (DiplomacyMessageAvailableElement availableElement in _availableElements)
             {
+                //Add: Demand Credits or Give Credits - this is later added
                 DiplomacyMessageAvailableElement elementCopy = availableElement; // modified closure
 
                 availableElement.AddCommand = new DelegateCommand(
@@ -1197,13 +1240,29 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
         {
-            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() proposal turnSent ={0} tone ={1} recipient ={2} sender ={3} responce type = {4} proposal clause type ={5}"
-                , response.Proposal.TurnSent
-                , response.Tone
-                , response.Recipient.ShortName
-                , response.Sender.ShortName
-                , response.ResponseType.ToString()
-                , response.Proposal.Clauses[0].ClauseType.ToString());
+            string _text = "Step_3366:; Turn " + GameContext.Current.TurnNumber + " > Diplomacy " 
+                + "> sender= " + response.Sender.ShortName
+                + ", recipient= " + response.Recipient.ShortName
+
+
+
+                + ", responce type= " + response.ResponseType.ToString()
+                + ", proposal clause type= " + response.Proposal.Clauses[0].ClauseType.ToString()
+                //+ "FromResponse() proposal turnSent= " + response.Proposal.TurnSent
+            //+ "FromResponse() proposal turnSent= " + response.Proposal.TurnSent
+                //+ Supremacy.AI.UnitAI.CreateShipText(ship, out string _shipText) + " > is new ordered "
+            ;
+            //if (_writeDirectly_Fleets) 
+            Console.WriteLine(_text);
+            //_fleet_Text += _newline + _text;
+
+            //GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() proposal turnSent ={0} tone ={1} recipient ={2} sender ={3} responce type = {4} proposal clause type ={5}"
+            //    , response.Proposal.TurnSent
+            //    , response.Tone
+            //    , response.Recipient.ShortName
+            //    , response.Sender.ShortName
+            //    , response.ResponseType.ToString()
+            //    , response.Proposal.Clauses[0].ClauseType.ToString());
             if (response == null)
             {
                 throw new ArgumentNullException("response");
@@ -1235,9 +1294,14 @@ namespace Supremacy.Client.Views
                     }
                     else
                     {
-                        leadInId = response.Proposal.IsDemand()
-                            ? DiplomacyStringID.RejectDemandLeadIn
-                            : !response.Proposal.HasTreaty() ? DiplomacyStringID.RejectExchangeLeadIn : DiplomacyStringID.RejectProposalLeadIn;
+                        if (response.Proposal.IsDemand())
+                        {
+                            leadInId = DiplomacyStringID.RejectDemandLeadIn;
+                        }
+                        else
+                        {
+                            leadInId = !response.Proposal.HasTreaty() ? DiplomacyStringID.RejectExchangeLeadIn : DiplomacyStringID.RejectProposalLeadIn;
+                        }
                     }
 
                     break;
@@ -1255,7 +1319,11 @@ namespace Supremacy.Client.Views
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message.Sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
-            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message);
+
+            _text = "Step_5345:; message= " + message;
+            Console.WriteLine(_text);
+            GameLog.Core.Diplomacy.DebugFormat(_text);
+
             return message;
         }
 
@@ -1320,7 +1388,9 @@ namespace Supremacy.Client.Views
         }
 
 
+#pragma warning disable CS0067 // The event 'DiplomacyMessageViewModel.PropertyChanged' is never used
         public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067 // The event 'DiplomacyMessageViewModel.PropertyChanged' is never used
 
         public void OnPropertyChanged(bool placeHolder, string propertyName)
         {

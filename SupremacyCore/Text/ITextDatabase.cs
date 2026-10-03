@@ -60,6 +60,8 @@ namespace Supremacy.Text
     {
         private readonly ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> _techObjectTextTable;
         private readonly ClientTextDatabaseTable<IRaceTextDatabaseEntry> _raceTextTable;
+        [NonSerialized]
+        private static string _text;
 
         private ClientTextDatabase()
         {
@@ -75,7 +77,7 @@ namespace Supremacy.Text
 
             ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = database.TechObjectTextTable;
             string techObjectEntryType = typeof(ITechObjectTextDatabaseEntry).FullName;
-            XElement techObjectTableElement = doc.Root.Elements("Tables")
+            XElement techObjectTableElement = doc.Root.Elements("GameTables")
                 .Elements("Table")
                 .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType));
 
@@ -103,7 +105,7 @@ namespace Supremacy.Text
                 //    continue;
 
                 file = pathOutputfile + "_TextDatabase_List(autoCreated).csv";
-                Console.WriteLine("writing {0}", file);
+                Console.WriteLine("Step_9161:; writing {0}", file); // _TextDatabase_List(autoCreated).csv
 
                 if (file == null)
                 {
@@ -173,7 +175,7 @@ namespace Supremacy.Text
 
                 ClientTextDatabaseTable<IRaceTextDatabaseEntry> raceTable = database.RaceTextTable;
                 string raceEntryType = typeof(IRaceTextDatabaseEntry).FullName;
-                XElement raceTableElement = doc.Root.Elements("Tables")
+                XElement raceTableElement = doc.Root.Elements("GameTables")
                     .Elements("Table")
                     .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), raceEntryType));
 
@@ -214,6 +216,8 @@ namespace Supremacy.Text
             }
             catch (Exception e)
             {
+                _text = "Cannot write ... ./lib/TextDatabase__List(autoCreated).csv";
+                Console.WriteLine(_text);
                 GameLog.Core.GameData.Error("Cannot write ... ./lib/TextDatabase__List(autoCreated).csv", e);
             }
 

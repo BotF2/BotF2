@@ -1,0 +1,648 @@
+// File:EncyclopediaScreen.cs - not used at the moment > see ResearchScreen.cs !!!!
+//
+// Copyright (c) 2007 Mike Strobel
+//
+// This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+// For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+//
+// All other rights reserved.
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+
+using Microsoft.Practices.Unity;
+
+using Supremacy.Annotations;
+using Supremacy.Client.Themes;
+using Supremacy.Client.Views;
+using Supremacy.Diplomacy;
+using Supremacy.Economy;
+using Supremacy.Encyclopedia;
+using Supremacy.Game;
+using Supremacy.Orbitals;
+using Supremacy.Resources;
+using Supremacy.Tech;
+using Supremacy.Types;
+using Supremacy.Utility;
+
+namespace Supremacy.Client
+{
+    [TemplatePart(Name = "PART_ResearchFieldItemsHost", Type = typeof(Border))]
+    [TemplatePart(Name = "PART_ResearchMatrixHost", Type = typeof(Border))]
+    [TemplatePart(Name = "PART_ApplicationDetailsHost", Type = typeof(Border))]
+    [TemplatePart(Name = "PART_EncyclopediaEntries", Type = typeof(TreeView))]
+    [TemplatePart(Name = "PART_SearchText", Type = typeof(TextBox))]
+    [TemplatePart(Name = "PART_EncyclopediaViewer", Type = typeof(FlowDocumentScrollViewer))]
+    public sealed class EncyclopediaScreen
+        : GameScreen<EncyclopediaScreenPresentationModel>, IEncyclopediaScreenView, IWeakEventListener
+    {
+        //private Border _researchFieldItemsControl;
+        //private Border _researchMatrixHost;
+        private Border _applicationDetailsHost;
+        //private readonly Grid _researchFieldGrid;
+        //private readonly Grid _researchMatrixGrid;
+        private DependencyObject _selectedApplication;
+        private TreeView _researchEntryListView;
+        private TextBox _searchText;
+        private FlowDocumentScrollViewer _researchViewer;
+        //private string _text;
+
+        public EncyclopediaScreen([NotNull] IUnityContainer container) : base(container)
+        {
+
+        }
+
+        private void LoadEncyclopediaEntries()
+        {
+
+        }
+
+
+
+        private void ApplicationContainer_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsEnabled)
+            {
+                if (_selectedApplication != null)
+                {
+                    _selectedApplication.SetValue(Selector.IsSelectedProperty, false);
+                    _selectedApplication = null;
+                }
+                if (sender is ContentControl control)
+                {
+                    control.SetValue(Selector.IsSelectedProperty, true);
+                    _selectedApplication = sender as DependencyObject;
+                    if (_applicationDetailsHost != null)
+                    {
+                        ContentControl detailsContainer = new ContentControl
+                        {
+                            Content = new EncyclopediaApplicationDetails(
+                                                       ((EncyclopediaApplicationData)
+                                                        control.Content).EncyclopediaApplication,
+                                                       AppContext.LocalPlayerEmpire)
+                        };
+                        _applicationDetailsHost.Child = detailsContainer;
+                    }
+                }
+            }
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            if (_researchEntryListView != null)
+            {
+                _researchEntryListView.SelectedItemChanged -=
+                    ResearchEntryListView_SelectedItemChanged;
+            }
+            if (_searchText != null)
+            {
+                _searchText.TextChanged -= OnSearchTextChanged;
+            }
+
+            //_researchFieldItemsControl = GetTemplateChild("PART_ResearchFieldItemsHost") as Border;
+            //_researchMatrixHost = GetTemplateChild("PART_ResearchMatrixHost") as Border;
+            _applicationDetailsHost = GetTemplateChild("PART_ApplicationDetailsHost") as Border;
+            _researchEntryListView = GetTemplateChild("PART_EncyclopediaEntries") as TreeView;
+            _searchText = GetTemplateChild("PART_SearchText") as TextBox;
+            _researchViewer = GetTemplateChild("PART_EncyclopediaViewer") as FlowDocumentScrollViewer;
+
+            if (_researchEntryListView != null)
+            {
+                _researchEntryListView.SelectedItemChanged +=
+                    ResearchEntryListView_SelectedItemChanged;
+                LoadEncyclopediaEntries();
+            }
+            if (_researchViewer != null)
+            {
+                _researchViewer.Document = null;
+            }
+            if (_searchText != null)
+            {
+                _searchText.TextChanged += OnSearchTextChanged;
+            }
+        }
+
+        private void ResearchEntryListView_SelectedItemChanged(
+            object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if ((_researchViewer != null)
+                && (_researchEntryListView.SelectedItem != null)
+                && (_researchEntryListView.SelectedItem is IEncyclopediaEntry entry))
+            {
+                _researchViewer.Document = GenerateEncyclopediaDocument(
+                    entry);
+            }
+        }
+
+        private FlowDocument GenerateEncyclopediaDocument(IEncyclopediaEntry entry)
+        {
+            if (entry == null)
+            {
+                return new FlowDocument();
+            }
+
+            TechObjectDesign design = entry as TechObjectDesign;
+            FlowDocument doc = new FlowDocument();
+            EncyclopediaImageConverter imageConverter = new EncyclopediaImageConverter();
+            ResearchFieldImageConverter fiendImageConverter = new ResearchFieldImageConverter();
+
+            Run headerRun = new Run(entry.EncyclopediaHeading);
+            Paragraph headerBlock = new Paragraph(headerRun)
+            {
+                FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
+                FontSize = 16d * 96d / 72d,
+                Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
+            };
+
+            doc.Blocks.Add(headerBlock);
+
+            doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
+            doc.FontSize = 12d * 96d / 72d;
+            doc.Foreground = FindResource(ClientResources.DefaultTextForegroundBrushKey) as Brush;
+            doc.TextAlignment = TextAlignment.Left;
+
+            // EncyclopediaImage
+            Border image = new Border();
+
+            List<Paragraph> paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
+                new[] { Environment.NewLine },
+                StringSplitOptions.RemoveEmptyEntries).Select(o => new Paragraph(new Run(o))).ToList();
+
+            Paragraph firstParagraph = paragraphs.FirstOrDefault();
+            if (firstParagraph == null)
+            {
+                firstParagraph = new Paragraph();
+                doc.Blocks.Add(firstParagraph);
+            }
+
+            if (imageConverter.Convert(
+                entry.EncyclopediaImage,
+                typeof(BitmapImage),
+                null,
+                null) is BitmapImage imageSource)
+            {
+                double imageWidth = imageSource.Width;
+                double imageHeight = imageSource.Height;
+
+                double imageRatio = imageWidth / imageHeight;
+                if (imageRatio >= 1.0)
+                {
+                    imageWidth = Math.Max(200, Math.Min(imageWidth, 270));
+                    imageHeight = imageWidth / imageRatio * 2;
+                }
+                else
+                {
+                    imageHeight = Math.Max(200, Math.Min(imageHeight, 270));
+                    imageWidth = imageHeight * imageRatio * 2;
+                }
+
+                image.Width = imageWidth;
+                image.Height = imageHeight;
+                image.BorderBrush = Brushes.White;
+                image.BorderThickness = new Thickness(2.0);
+                image.CornerRadius = new CornerRadius(14.0);
+                image.Background = new ImageBrush(imageSource) { Stretch = Stretch.UniformToFill };
+
+                Thickness imageMargin = new Thickness(14, 0, 0, 14);
+                Floater imageFloater = new Floater
+                {
+                    Blocks = { new BlockUIContainer(image) },
+                    Margin = imageMargin,
+                    Width = image.Width,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Padding = new Thickness(0)
+                };
+
+                if (firstParagraph.Inlines.Any())
+                {
+                    firstParagraph.Inlines.InsertBefore(firstParagraph.Inlines.First(), imageFloater);
+                }
+                else
+                {
+                    firstParagraph.Inlines.Add(imageFloater);
+                }
+            }
+
+            doc.Blocks.AddRange(paragraphs);
+
+            if (design != null)
+            {
+                ContentControl statsControl = new ContentControl
+                {
+                    Margin = new Thickness(0, 14, 0, 0),
+                    Width = 320,
+                    Content = new TechObjectDesignViewModel
+                    {
+                        Design = design,
+                        Civilization = AppContext.LocalPlayer.Empire
+                    },
+                    Style = FindResource("TechObjectInfoPanelStyle") as Style
+                };
+
+                Paragraph statsBlock = new Paragraph(new InlineUIContainer(statsControl))
+                {
+                    TextAlignment = TextAlignment.Center,
+                    Margin = new Thickness(0)
+                };
+
+                doc.Blocks.Add(statsBlock);
+
+                Table techTable = new Table();
+                techTable.RowGroups.Add(new TableRowGroup());
+                techTable.RowGroups[0].Rows.Add(new TableRow());
+                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+                {
+                    TechCategory techCategory = field.TechCategory;
+                    TableColumn column = new TableColumn();
+                    Border techIcon = new Border();
+                    TextBlock techTextShadow = new TextBlock { Effect = new BlurEffect { Radius = 6 } };
+                    TextBlock techText = new TextBlock();
+
+                    if (design.TechRequirements[techCategory] < 1)
+                    {
+                        techIcon.Opacity = 0.25;
+                    }
+
+                    ImageBrush imageBrush = new ImageBrush(
+                        fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
+                        as ImageSource)
+                    { Stretch = Stretch.Uniform };
+
+                    techIcon.Width = 54;
+                    techIcon.Height = 45;
+                    techIcon.Padding = new Thickness(4);
+                    techIcon.BorderBrush = Brushes.White;
+                    techIcon.BorderThickness = new Thickness(2.0);
+                    techIcon.CornerRadius = new CornerRadius(7.0);
+                    techIcon.Background = imageBrush;
+
+                    techTextShadow.Text = design.TechRequirements[techCategory].ToString();
+                    techTextShadow.Foreground = Brushes.Black;
+                    techTextShadow.SetResourceReference(TextBlock.FontFamilyProperty, ClientResources.DefaultFontFamilyKey);
+                    techTextShadow.FontWeight = FontWeights.Bold;
+                    techTextShadow.FontSize = 16 * (96d / 72d);
+                    techTextShadow.HorizontalAlignment = HorizontalAlignment.Right;
+                    techTextShadow.VerticalAlignment = VerticalAlignment.Bottom;
+
+                    techText.Text = design.TechRequirements[techCategory].ToString();
+                    techText.Foreground = Brushes.White;
+                    techText.SetResourceReference(TextBlock.FontFamilyProperty, ClientResources.DefaultFontFamilyKey);
+                    techText.FontWeight = FontWeights.Normal;
+                    techText.FontSize = 16 * (96d / 72d);
+                    techText.HorizontalAlignment = HorizontalAlignment.Right;
+                    techText.VerticalAlignment = VerticalAlignment.Bottom;
+
+                    techIcon.Child = new Grid { Children = { techTextShadow, techText } };
+                    techIcon.ToolTip = string.Format(
+                        "{0} Level {1}",
+                        ResourceManager.GetString(field.Name),
+                        design.TechRequirements[techCategory]);
+
+                    techIcon.UseLayoutRounding = true;
+                    techIcon.CacheMode = new BitmapCache { SnapsToDevicePixels = true };
+
+                    _ = BindingOperations.SetBinding(
+                        techIcon.CacheMode,
+                        BitmapCache.RenderAtScaleProperty,
+                        new Binding
+                        {
+                            Source = Application.Current.MainWindow,
+                            Path = new PropertyPath(ClientProperties.ScaleFactorProperty),
+                            Mode = BindingMode.OneWay
+                        });
+
+                    BlockUIContainer techIconContainer = new BlockUIContainer(techIcon);
+
+                    techTable.Columns.Add(column);
+                    techTable.RowGroups[0].Rows[0].Cells.Add(new TableCell(techIconContainer));
+                }
+
+                techTable.ClearFloaters = WrapDirection.Both;
+                techTable.Margin = new Thickness(0, 14, 0, 0);
+                techTable.CellSpacing = 7.0;
+
+                doc.Blocks.Add(techTable);
+            }
+
+            return doc;
+        }
+
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            _ = Dispatcher.BeginInvoke(
+                DispatcherPriority.Background,
+                (Action)RefreshEncyclopediaEntries);
+        }
+
+        private void RefreshEncyclopediaEntries()
+        {
+            if (_researchEntryListView == null)
+            {
+                return;
+            }
+
+            IEnumerable<ICollectionView> groupViews = (from groupItem in _researchEntryListView.Items.OfType<TreeViewItem>()
+                                                       select groupItem.ItemsSource).OfType<ICollectionView>();
+
+            //show also minor ships ... but how :-)
+
+            foreach (ICollectionView groupView in groupViews)
+            {
+                groupView.Refresh();
+            }
+        }
+
+        //protected override Size ArrangeOverride(Size arrangeBounds)
+        //{
+        //    Size result = base.ArrangeOverride(arrangeBounds);
+        //    foreach (ColumnDefinition column in _researchFieldGrid.ColumnDefinitions)
+        //    {
+        //        column.Width = new GridLength(
+        //            1.0 / _researchFieldGrid.ColumnDefinitions.Count
+        //            * _researchMatrixHost.ActualWidth,
+        //            GridUnitType.Pixel);
+        //    }
+        //    foreach (ColumnDefinition column in _researchMatrixGrid.ColumnDefinitions)
+        //    {
+        //        column.Width = new GridLength(
+        //            1.0 / _researchMatrixGrid.ColumnDefinitions.Count
+        //            * _researchMatrixHost.ActualWidth,
+        //            GridUnitType.Pixel);
+        //    }
+        //    return result;
+        //}
+
+        public override void RefreshScreen()
+        {
+            base.RefreshScreen();
+            //if (_researchMatrixHost != null)
+            //{
+            //    BuildApplicationMatrix();
+            //}
+            //if (_researchFieldItemsControl != null)
+            //{
+            //    BuildResearchFields();
+            //}
+            foreach (Distribution<int> distribution in
+                AppContext.LocalPlayerEmpire.Research.Distributions.Children)
+            {
+                PropertyChangedEventManager.AddListener(
+                    distribution,
+                    this,
+                    string.Empty);
+            }
+            if (_applicationDetailsHost != null)
+            {
+                _applicationDetailsHost.Child = null;
+            }
+            LoadEncyclopediaEntries();
+        }
+
+        //public void SelectApplication(EncyclopediaApplication application)
+        //{
+        //    if (_researchMatrixGrid == null)
+        //        return;
+
+        //    var parent = _researchMatrixGrid.Parent as FrameworkElement;
+        //    while ((parent != null)
+        //           && !(parent.Parent is Selector))
+        //    {
+        //        parent = parent.Parent as FrameworkElement;
+        //    }
+        //    if ((parent != null) && parent.IsDescendantOf(this))
+        //    {
+        //        parent.SetValue(Selector.IsSelectedProperty, true);
+        //    }
+        //    _researchMatrixGrid.BringIntoView();
+
+        //    if (_selectedApplication != null)
+        //    {
+        //        _selectedApplication.SetValue(Selector.IsSelectedProperty, false);
+        //        _selectedApplication = null;
+        //    }
+        //    if (_applicationDetailsHost != null)
+        //    {
+        //        if (application != null)
+        //        {
+        //            foreach (Grid internalGrid in _researchMatrixGrid.Children)
+        //            {
+        //                foreach (ContentControl appContainer in internalGrid.Children)
+        //                {
+        //                    if (((EncyclopediaApplicationData)appContainer.Content).EncyclopediaApplication == application)
+        //                    {
+        //                        var detailsContainer = new ContentControl();
+
+        //                        _selectedApplication = appContainer;
+        //                        _selectedApplication.SetValue(Selector.IsSelectedProperty, true);
+
+        //                        detailsContainer.Content = new EncyclopediaApplicationDetails(
+        //                            application,
+        //                            AppContext.LocalPlayerEmpire);
+        //                        _applicationDetailsHost.Child = detailsContainer;
+
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _applicationDetailsHost.Child = null;
+        //        }
+        //    }
+        //}
+
+        public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            PlayerOrderService.AddOrder(
+                new UpdateResearchOrder(
+                    AppContext.LocalPlayerEmpire.Civilization));
+            return true;
+        }
+    }
+
+    public class EncyclopediaFieldData
+    {
+        private readonly ResearchPool _pool;
+
+        public ResearchField Field { get; }
+
+        public Distribution<int> Distribution => _pool.Distributions[Field.FieldID];
+
+        public int TechLevel => _pool.GetTechLevel(Field);
+
+        public ResearchProject CurrentProject => _pool.GetCurrentProject(Field);
+
+        public EncyclopediaFieldData(ResearchField field, ResearchPool pool)
+        {
+            Field = field ?? throw new ArgumentNullException("field");
+            _pool = pool ?? throw new ArgumentNullException("pool");
+        }
+    }
+
+    public class EncyclopediaApplicationData
+    {
+        private readonly ResearchPool _pool;
+
+        //var civM = GameContext.Current.CivilizationManagers[Owner];
+
+        public string DisplayText
+        {
+            get
+            {
+                StringBuilder result = new StringBuilder(ResourceManager.GetString(EncyclopediaApplication.Name));
+                if (IsResearching)
+                {
+                    _ = result.AppendFormat(
+                        " ({0:0%})",
+                        _pool.GetCurrentProject(EncyclopediaApplication.Field).Progress.PercentFilled);
+
+                    // now included into SitRep
+                    //GameLog.Client.Research.DebugFormat("Turn {0}: {1} done to Research {2}"
+                    //    , GameContext.Current.TurnNumber
+                    //    , _pool.GetCurrentProject(_application.Field).Progress.PercentFilled
+                    //    , _application.Field.TechCategory.ToString()                        
+                    //    );
+                    //civM.SitRepEntries.Add(new ResearchStatusSitRepEntry(Owner, finishedApp, newDesigns))
+                }
+                return result.ToString();
+            }
+        }
+
+        public ResearchApplication EncyclopediaApplication { get; }
+
+        public bool IsResearched => _pool.IsResearched(EncyclopediaApplication);
+
+        public bool IsResearching => _pool.IsResearching(EncyclopediaApplication);
+
+        public int TechLevel => EncyclopediaApplication.Level;
+
+        public EncyclopediaApplicationData(ResearchApplication application, ResearchPool pool)
+        {
+            EncyclopediaApplication = application ?? throw new ArgumentNullException("application");
+            _pool = pool ?? throw new ArgumentNullException("pool");
+        }
+    }
+
+    public class EncyclopediaApplicationDetails
+    {
+        private readonly CivilizationManager _civM;
+
+        public ResearchApplication EncyclopediaApplication { get; }
+
+        public bool IsResearched => _civM.Research.IsResearched(EncyclopediaApplication);
+
+        public bool IsResearching => _civM.Research.IsResearching(EncyclopediaApplication);
+
+        public int TechLevel => EncyclopediaApplication.Level;
+
+        public ICollection<TechObjectDesign> DependentBuildings
+        {
+            get
+            {
+                List<TechObjectDesign> results = new List<TechObjectDesign>();
+                TechCategory techCategory = TechCategory.BioTech;
+                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+                {
+                    if (field.Applications.Contains(EncyclopediaApplication))
+                    {
+                        techCategory = field.TechCategory;
+                        break;
+                    }
+                }
+                if (EncyclopediaApplication.Level > 0)
+                {
+                    foreach (ProductionFacilityDesign design in _civM.TechTree.ProductionFacilityDesigns)
+                    {
+                        if ((design.TechRequirements[techCategory] == EncyclopediaApplication.Level)
+                            && !results.Contains(design))
+                        {
+                            results.Add(design);
+                        }
+
+                    }
+                    foreach (Buildings.BuildingDesign design in _civM.TechTree.BuildingDesigns)
+                    {
+                        if ((design.TechRequirements[techCategory] == EncyclopediaApplication.Level)
+                            && !results.Contains(design))
+                        {
+                            results.Add(design);
+                        }
+                    }
+                    foreach (OrbitalBatteryDesign design in _civM.TechTree.OrbitalBatteryDesigns)
+                    {
+                        if ((design.TechRequirements[techCategory] == EncyclopediaApplication.Level)
+                            && !results.Contains(design))
+                        {
+                            results.Add(design);
+                        }
+                    }
+                    foreach (ShipyardDesign design in _civM.TechTree.ShipyardDesigns)
+                    {
+                        if ((design.TechRequirements[techCategory] == EncyclopediaApplication.Level)
+                            && !results.Contains(design))
+                        {
+                            results.Add(design);
+                        }
+                    }
+                    foreach (StationDesign design in _civM.TechTree.StationDesigns)
+                    {
+                        if ((design.TechRequirements[techCategory] == EncyclopediaApplication.Level)
+                            && !results.Contains(design))
+                        {
+                            results.Add(design);
+                        }
+                    }
+                }
+                return results;
+            }
+        }
+
+        public ICollection<ShipDesign> DependentShips
+        {
+            get
+            {
+                List<ShipDesign> results = new List<ShipDesign>();
+                TechCategory techCategory = TechCategory.BioTech;
+                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
+                {
+                    if (field.Applications.Contains(EncyclopediaApplication))
+                    {
+                        techCategory = field.TechCategory;
+                        break;
+                    }
+                }
+                foreach (ShipDesign design in _civM.TechTree.ShipDesigns)
+                {
+                    if ((design.TechRequirements[techCategory] == EncyclopediaApplication.Level)
+                        && (EncyclopediaApplication.Level > 0) && !results.Contains(design))
+                    {
+                        results.Add(design);
+                    }
+                }
+                return results;
+            }
+        }
+
+        public EncyclopediaApplicationDetails(ResearchApplication application, CivilizationManager civM)
+        {
+            EncyclopediaApplication = application ?? throw new ArgumentNullException("application");
+            _civM = civM ?? throw new ArgumentNullException("civM");
+        }
+    }
+}

@@ -38,18 +38,21 @@ namespace Supremacy.Universe
     }
 
     /// <summary>
-    /// Defines a galactic sector.
+    /// Defines a galactic _sector.
     /// </summary>
     [Serializable]
     public class Sector : IEquatable<Sector>, INotifyPropertyChanged
     {
         private MapLocation _location;
+        //private int _defense_value_sector;
+
 
         [NonSerialized]
         private Lazy<StarSystem> _system;
 
-        [NonSerialized]
+        //[NonSerialized]
         private Lazy<Station> _station;
+
 
         /// <summary>
         /// Gets the map location of this <see cref="Sector"/>.
@@ -63,7 +66,16 @@ namespace Supremacy.Universe
         /// <value>The system.</value>
         public StarSystem System
         {
-            get => _system.Value;
+            get
+            {
+                if (_system == null)
+                {
+                    return null;
+                }
+                //StarSystem _system
+                return _system.Value;
+            }
+
             internal set
             {
                 _system = new Lazy<StarSystem>(() => value);
@@ -92,6 +104,31 @@ namespace Supremacy.Universe
             }
         }
 
+        public int GetDefenseValueSector()
+        {
+            Sector _sector = System.Sector;
+            if (_sector == null || _sector.System == null || _sector.System.Colony == null)
+                return 1;
+
+            int _defense = 10;
+
+            if (_sector.Station != null)
+                _defense += _sector.Station.Fire_Power_Orbital / 200;
+
+            _defense += _sector.System.Colony.Population.CurrentValue;
+
+            if (_sector.System.Colony.OrbitalBatteries.Count > 0)
+            {
+                var battery = _sector.System.Colony.OrbitalBatteries[0];
+                _defense += _sector.System.Colony.OrbitalBatteries.Count *
+                           ((battery.Design.PrimaryWeapon.Count * battery.Design.PrimaryWeapon.Damage) +
+                            (battery.Design.SecondaryWeapon.Count * battery.Design.SecondaryWeapon.Damage));
+            }
+
+            //_sector.DefenseValueSector = _defense;
+            return _defense;
+        }
+
         public int TradeRouteIndicator
         {
             get
@@ -101,24 +138,24 @@ namespace Supremacy.Universe
                     return 99;
                 }
 
-                Table popReqTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopReq"];
-                //Table popModTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
+                Table popReqTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopReq"];
+                //Table popModTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopMultipliers"];
 
                 int popForTradeRoute;
 
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
+                CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner.CivID];
 
                 /*
                  * See what the minimum population level is for a new trade route for the
                  * current civilization.  If one is not specified, use the default.
                  */
-                popForTradeRoute = popReqTable[civManager.Civilization.Key] != null
-                    ? Number.ParseInt32(popReqTable[civManager.Civilization.Key][0])
+                popForTradeRoute = popReqTable[_civM.Civilization.Key] != null
+                    ? Number.ParseInt32(popReqTable[_civM.Civilization.Key][0])
                     : Number.ParseInt32(popReqTable[0][0]);
 
-                int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
+                string _text = "int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;";
 
-                return possibleTradeRoutes;
+                return System.Colony.Population.CurrentValue / popForTradeRoute;
 
             }
         }
@@ -281,9 +318,9 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
-        /// Equalses the specified sector.
+        /// Equalses the specified _sector.
         /// </summary>
-        /// <param name="sector">The sector.</param>
+        /// <param name="sector">The _sector.</param>
         /// <returns>
         /// <c>true</c> if <paramref name="sector"/> is equal to this <see cref="Sector"/>;
         /// otherwise, <c>false</c>.
@@ -296,7 +333,7 @@ namespace Supremacy.Universe
                 return false;
             }
 
-            return sector._location == _location; //&& sector._station == _station && sector._system == _system);
+            return sector._location == _location; //&& _sector._station == _station && _sector._system == _system);
         }
 
         /// <summary>
@@ -395,7 +432,7 @@ namespace Supremacy.Universe
         {
             if (sector == null)
             {
-                throw new ArgumentNullException("sector");
+                throw new ArgumentNullException("_sector");
             }
 
             StarSystem system = sector.System;
@@ -421,7 +458,7 @@ namespace Supremacy.Universe
         {
             if (sector == null)
             {
-                throw new ArgumentNullException("sector");
+                throw new ArgumentNullException("_sector");
             }
 
             return GameContext.Current.Universe.FindAt<Fleet>(sector.Location);
@@ -431,7 +468,7 @@ namespace Supremacy.Universe
         {
             if (sector == null)
             {
-                throw new ArgumentNullException("sector");
+                throw new ArgumentNullException("_sector");
             }
 
             if (civ == null)

@@ -31,7 +31,7 @@ namespace Supremacy.Universe
         private int _targetColonyId;
         private int _credits;
         private string _text;
-        private readonly string newline = Environment.NewLine;
+        private readonly string _newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the <see cref="Colony"/> from which the <see cref="TradeRoute"/> originates.
@@ -78,7 +78,7 @@ namespace Supremacy.Universe
                     float baseModSource = 0.025f;
                     float baseModTarget = 0.05f;
 
-                    Data.Table baseResProdTable = GameContext.Current.Tables.GameOptionTables["TradeRoutePopMultipliers"];
+                    Data.Table baseResProdTable = GameContext.Current.GameTables.GameOptionTables["TradeRoutePopMultipliers"];
                     if (baseResProdTable != null)
                     {
                         try
@@ -170,25 +170,33 @@ namespace Supremacy.Universe
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits);
+                    int _creditsFromTradeRoute = (int)((1.0 + bonus) * Credits) / 4;
 
-                    _text = "Turn " + GameContext.Current.TurnNumber
-                        + ": Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute=" 
+                    // to often = everytime it is click > do it on GameEngine = once per turn
+                    _text = "Step_4888:; Turn " + GameContext.Current.TurnNumber
+                        + ": Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute= "
                         + _creditsFromTradeRoute
+                        + " for " + empire
+                        + "; from = " + TargetColony.Name
+                        + " " + TargetColony.Location
+                        + "; to Source= " + SourceColony.Name
+                        + " " + SourceColony.Location
                         ;
                     Console.WriteLine(_text);
-                    GameLog.Core.TradeRoutesDetails.DebugFormat(_text);
+
+
+                    //GameLog.Core.TradeRoutesDetails.DebugFormat(_text);
                     // 2021-10-16: Credits devided by 4
                     return _creditsFromTradeRoute;
                 }
                 catch (Exception e)
                 {
-                    _text = "Turn " + GameContext.Current.TurnNumber
+                    _text = "Step_4889:; Turn " + GameContext.Current.TurnNumber
                         + "#### problem with TradeRoute "
                         + Credits
                         ;
                     Console.WriteLine(_text);
-                    GameLog.Core.TradeRoutes.ErrorFormat(_text + newline + e);
+                    GameLog.Core.TradeRoutes.ErrorFormat(_text + _newline + e);
                     return Credits;
                 }
 

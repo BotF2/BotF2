@@ -1,7 +1,7 @@
 // Remove the DEBUG condition if you want to always check for not optimizable values at the small expense of runtime speed
-#if DEBUG___
-#define THROW_IF_NOT_OPTIMIZABLE
-#endif
+//#if DEBUG___
+//#define THROW_IF_NOT_OPTIMIZABLE
+//#endif
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
@@ -126,8 +126,11 @@ namespace Supremacy.IO.Serialization
         /// The Default setting for the PreserveDecimalScale property.
         /// </summary>
         public static bool DefaultPreserveDecimalScale;
-        private string _text;
-        private string newline;
+
+
+        //private string _text;
+        //private readonly string _newline = Environment.NewLine;
+
         private bool _trace;
 
         // Marker to denote that all elements in a typed array are optimizable
@@ -923,6 +926,8 @@ namespace Supremacy.IO.Serialization
         public void WriteObject(object value)
         {
             _trace = false;  // turn true, even for getting some loaded or saved game content
+            string _newline = Environment.NewLine;
+            string _text = "";
 
             if (value == null)
             {
@@ -1331,7 +1336,7 @@ namespace Supremacy.IO.Serialization
             {
                 if (_trace)
                 {
-                    _text = "Write Object (isTypeRecreatable): " + newline + "Write Object:; " + value.ToString();
+                    _text = "Write Object (isTypeRecreatable): " + Environment.NewLine + "Write Object:; " + value.ToString();
                     Console.WriteLine(_text);
                     GameLog.Core.SaveLoadDetails.DebugFormat(_text);
                 }
@@ -1440,6 +1445,7 @@ namespace Supremacy.IO.Serialization
                     catch (OutOfMemoryException)
                     {
                         GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+                        Console.WriteLine("Ran out of memory serializing game data.  Failed on type=" + value.GetType().Name);
                         GameLog.Client.General.FatalFormat("Ran out of memory serializing game data.  Failed on type '{0}'.", value.GetType().Name);
                     }
                 }
@@ -2780,7 +2786,8 @@ namespace Supremacy.IO.Serialization
         /// Internal implementation to store a non-null Byte[].
         /// </summary>
         /// <param name="values">The Byte[] to store.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(byte[] values)
         {
             Write7bitEncodedSigned32BitValue(values.Length);
@@ -2891,7 +2898,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="optimizeFlags">A BitArray indicating which of the elements which are optimizable; 
         /// a reference to constant FullyOptimizableValueArray if all the elements are optimizable; or null
         /// if none of the elements are optimizable.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(short[] values, BitArray optimizeFlags)
         {
             WriteTypedArrayTypeCode(optimizeFlags, values.Length);
@@ -2940,7 +2947,8 @@ namespace Supremacy.IO.Serialization
         /// <param name="optimizeFlags">A BitArray indicating which of the elements which are optimizable; 
         /// a reference to constant FullyOptimizableValueArray if all the elements are optimizable; or null
         /// if none of the elements are optimizable.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
         private void writeArray(long[] values, BitArray optimizeFlags)
         {
             WriteTypedArrayTypeCode(optimizeFlags, values.Length);
@@ -3160,10 +3168,19 @@ namespace Supremacy.IO.Serialization
         /// <param name="typeCode">The SerializedType to store.</param>
         private void WriteTypeCode(SerializedType typeCode)
         {
+            try
+            {
             Write((byte)typeCode);
 #if DEBUG
             typeUsage[(int)typeCode]++;
 #endif
+            }
+            catch (Exception)
+            {
+
+                typeUsage[(int)typeCode]++;
+                Debugger.Break();
+            }
         }
 
         ///// <summary>
@@ -3506,12 +3523,12 @@ namespace Supremacy.IO.Serialization
             StringBuilder sb = new StringBuilder("Type Usage Dump\r\n---------------\r\n");
             for (int i = 0; i < 256; i++)
             {
-#if DEBUG
+//#if DEBUG
                 if (typeUsage[i] != 0)
                 {
-                    sb.AppendFormat("{0, 8:n0}: {1}\r\n", typeUsage[i], (SerializedType)i);
+                    sb.AppendFormat("Step_1229:; {0, 8:n0}: {1}\r\n", typeUsage[i], (SerializedType)i);
                 }
-#endif
+//#endif
             }
             Console.WriteLine(sb);
         }
@@ -3673,6 +3690,8 @@ namespace Supremacy.IO.Serialization
         /// <param name="stream">The stream containing the serialized data</param>
         public SerializationReader(Stream stream) : base(stream)
         {
+            // too often - at each .autosav 
+            //Console.WriteLine("Step_0231:; SerializationReader...");
             _binaryFormatter = new BinaryFormatter
             {
                 AssemblyFormat = FormatterAssemblyStyle.Simple
@@ -3681,17 +3700,36 @@ namespace Supremacy.IO.Serialization
             _endPosition = ReadInt32();
             stream.Position = _endPosition;
 
+            // unneccessary "stream.read" moves position to the next byte and destroys everything !!
+
+            //_text = "";
+            //string _hex = "";
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    var value = stream.Position;
+            //    _hex = stream.ReadByte().ToString("X");
+            //    _text += _hex + " ";
+            //    Console.WriteLine("Step_0236:; stream.Position > " + i + " = " + _hex);
+
+            //}
+            //Console.WriteLine(_text);
+
             _stringTokenList = new string[ReadOptimizedInt32()];
             for (int i = 0; i < _stringTokenList.Length; i++)
             {
                 _stringTokenList[i] = base.ReadString();
+                //Console.WriteLine("Step_0234:; _stringTokenList > " + i + " = " + _stringTokenList[i]);
             }
+            // too often - at each .autosav 
+            //Console.WriteLine("Step_0232:; _stringTokenList was read...");
 
             _objectTokens = new object[ReadOptimizedInt32()];
             for (int i = 0; i < _objectTokens.Length; i++)
             {
+                //Console.WriteLine("Step_0235:; _objectTokens > " + i + " was read...");
                 _objectTokens[i] = ReadObject();
             }
+
             stream.Position = 4;
         }
         #endregion Constructor
@@ -3701,7 +3739,9 @@ namespace Supremacy.IO.Serialization
         private readonly int _endPosition;
         private readonly object[] _objectTokens;
         private readonly string[] _stringTokenList;
-        private string _text;
+        //[NonSerialized]
+        //private string _text;
+        //private var _x;
         #endregion
 
         #region Properties
@@ -3723,9 +3763,10 @@ namespace Supremacy.IO.Serialization
             {
                 return default;
             }
-            _text = "De-Serialized: " + result.ToString();
+            // to often
+            //_text = "Step_0430: De-Serialized: " + result.ToString();
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
             return (T)result;
         }
@@ -4529,9 +4570,9 @@ namespace Supremacy.IO.Serialization
             int length = ReadOptimizedInt32();
             object[] result =
                 (object[])(elementType == null ? new object[length] : Array.CreateInstance(elementType, length));
-            _text = "De-Serializing: " + result.ToString();
+            //_text = "Step_0440: De-Serializing: " + result.ToString();
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
             for (int i = 0; i < result.Length; i++)
             {
                 SerializedType t = (SerializedType)ReadByte();
@@ -4563,9 +4604,9 @@ namespace Supremacy.IO.Serialization
                     result[i] = ProcessObject(t);
                 }
             }
-            _text = "De-Serialized: " + result.ToString();
+            //_text = "Step_0441: De-Serialized: " + result.ToString();
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Core.SaveLoadDetails.DebugFormat(_text);
 
             return result;
         }
@@ -4623,11 +4664,22 @@ namespace Supremacy.IO.Serialization
         public string ReadOptimizedString()
         {
             SerializedType typeCode = ReadTypeCode();
+            string _text = "";
 
-            if (typeCode < SerializedType.NullType)
+            try
             {
-                return ReadTokenizedString((int)typeCode);
+                if (typeCode < SerializedType.NullType)
+                {
+                    return ReadTokenizedString((int)typeCode);
+                }
             }
+            catch
+            {
+                _text = "Step_3355:; ### BIG problem at reading something";
+                Console.WriteLine(_text);
+                return null;
+            }
+
 
             switch (typeCode)
             {
@@ -4694,7 +4746,24 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Type instance.</returns>
         public Type ReadOptimizedType(bool throwOnError)
         {
-            return Type.GetType(ReadOptimizedString(), throwOnError);
+            string _text;
+            try
+            {
+                return Type.GetType(ReadOptimizedString());
+            }
+            catch
+            {
+                //throwOnError;
+                _text = "Step_9333:; ##### Error on > Type.GetType(ReadOptimizedString())";
+                //if (_writeDirectly_Colony) 
+                    Console.WriteLine(_text);
+
+                //Debugger.Break();
+                
+                //_colony_full_Report += _text + _newline;
+                return Type.GetType(ReadOptimizedString());
+            }
+
         }
 
         /// <summary>
@@ -5177,29 +5246,29 @@ namespace Supremacy.IO.Serialization
                                 result.SetValue(value, i);
                             }
                         }
-                        _text = "SerializedType= ";
-                        if (defaultElementType.Name == "MapLocation")
-                        {
-                            _text += "MapLocation=";
-                            foreach (var item in result)
-                            {
-                                _text += item.ToString();
-                            }
-                        }
-                        else if (defaultElementType.Name == "ForeignPower") 
-                            _text += "ForeignPower.Count=" + result.Length;
-                        else if (defaultElementType.Name == "Diplomat") 
-                            _text += "Diplomat.Count=" + result.Length;
-                        else
-                        {
-                            _text += " unknown defaultElementType.Name or default >> " + defaultElementType.Name;
-                        }
-                      
+                        //_text = "Step_0480: SerializedType= ";
+                        //if (defaultElementType.Name == "MapLocation")
+                        //{
+                        //    _text += "MapLocation=";
+                        //    foreach (var item in result)
+                        //    {
+                        //        _text += item.ToString();
+                        //    }
+                        //}
+                        //else if (defaultElementType.Name == "ForeignPower") 
+                        //    _text += "ForeignPower.Count=" + result.Length;
+                        //else if (defaultElementType.Name == "Diplomat") 
+                        //    _text += "Diplomat.Count=" + result.Length;
+                        //else
+                        //{
+                        //    _text += " unknown defaultElementType.Name or default >> " + defaultElementType.Name;
+                        //}
+
 
 
                         //Console.WriteLine(_text);
-                        GameLog.Client.SaveLoadDetails.DebugFormat(_text);
-                        
+                        //GameLog.Client.SaveLoadDetails.DebugFormat(_text);
+
                         return result;
                     }
             }
@@ -5213,6 +5282,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>An object instance.</returns>
         private object ProcessObject(SerializedType typeCode)
         {
+            string _text;
             switch (typeCode)
             {
                 case SerializedType.NullType:
@@ -5224,7 +5294,20 @@ namespace Supremacy.IO.Serialization
                 default:
                     if (typeCode < SerializedType.NullType)
                     {
-                        return ReadTokenizedString((int)typeCode);
+                        try
+                        {
+                            if (typeCode < SerializedType.NullType)
+                            {
+                                return ReadTokenizedString((int)typeCode);
+                            }
+                        }
+                        catch
+                        {
+                            _text = "Step_3356:; ### BIG problem at reading something";
+                            Console.WriteLine();
+                            return ReadTokenizedString((int)typeCode);
+                        }
+
                     }
 
                     switch (typeCode)
@@ -5314,9 +5397,22 @@ namespace Supremacy.IO.Serialization
                         case SerializedType.ZeroByteType:
                             return (byte)0;
                         case SerializedType.OtherType:
-                            //_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
-                            //Console.WriteLine(_text);
-                            return _binaryFormatter.Deserialize(BaseStream);
+                            //var _x ;
+                            //try
+                            //{
+                                return _binaryFormatter.Deserialize(BaseStream);
+                            //}
+                            //catch
+                            //{
+                            //    return null;
+                            //}
+                        //var _x = _binaryFormatter.Deserialize(BaseStream);
+                        //if (_x == null)
+                        //    _x = 0;
+                        ////_text = "SerializedType.OtherType= ";// + reader.BytesRemaining;
+                        ////Console.WriteLine(_text);
+                        ////return _binaryFormatter.Deserialize(BaseStream);
+                        //return _x;
                         case SerializedType.UInt16Type:
                             return ReadUInt16();
                         case SerializedType.ZeroUInt16Type:
@@ -5385,28 +5481,28 @@ namespace Supremacy.IO.Serialization
                         case SerializedType.OwnedDataSerializableAndRecreatableType:
                             {
                                 Type structType = ReadOptimizedType();
-                                _text = "SerializedType.OwnedDataSerializableAndRecreatableType= " + structType.ToString();
-                                if (
-                                    structType.ToString() != "Supremacy.Types.Meter" &&
-                                    structType.ToString() != "Supremacy.Universe.Planet" &&
-                                    structType.ToString() != "Supremacy.Universe.StarSystem" &&
-                                    !structType.ToString().Contains("Supremacy.Collections.CollectionBase") &&
-                                    !structType.ToString().Contains("Supremacy.Diplomacy") &&
+                                //_text = "Step_0198: SerializedType.OwnedDataSerializableAndRecreatableType= " + structType.ToString();
+                                //if (
+                                //    structType.ToString() != "Supremacy.Types.Meter" &&
+                                //    structType.ToString() != "Supremacy.Universe.Planet" &&
+                                //    structType.ToString() != "Supremacy.Universe.StarSystem" &&
+                                //    !structType.ToString().Contains("Supremacy.Collections.CollectionBase") &&
+                                //    !structType.ToString().Contains("Supremacy.Diplomacy") &&
 
 
-                                    structType.ToString() != "Supremacy.Diplomacy.DiplomacyData"
+                                //    structType.ToString() != "Supremacy.Diplomacy.DiplomacyData"
 
-                                        )
-                                {
-                                    //Console.WriteLine(_text);
-                                    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
-                                    _text += "";
-                                }
+                                //        )
+                                //{
+                                //    //Console.WriteLine(_text);
+                                //    GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+                                //    _text += "";
+                                //}
 
-                                    object result = PrepareNewObject(structType);
-                                    ReadOwnedData((IOwnedDataSerializable)result, null);
-                                    return result;
-                                
+                                object result = PrepareNewObject(structType);
+                                ReadOwnedData((IOwnedDataSerializable)result, null);
+                                return result;
+
                             }
                         case SerializedType.OptimizedEnumType:
                             {
@@ -5467,6 +5563,7 @@ namespace Supremacy.IO.Serialization
                             }
                         default:
                             {
+                                //_text = _newline; // dummy
                                 _text = "switch (typeCode) FAILED";
                                 Console.WriteLine(_text);
                                 object result = ProcessArrayTypes(typeCode, null);
@@ -5636,7 +5733,7 @@ namespace Supremacy.IO.Serialization
         #endregion
 
         #region Debug
-        [Conditional("DEBUG")]
+        //[Conditional("DEBUG")]
         public void DumpStringTables(ArrayList list)
         {
             list.AddRange(_stringTokenList);

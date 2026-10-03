@@ -9,6 +9,7 @@
 
 using Supremacy.Collections;
 using Supremacy.Combat;
+using Supremacy.Client;
 using Supremacy.Game;
 using Supremacy.Network;
 using Supremacy.Types;
@@ -17,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
+using System.Windows;
 
 namespace Supremacy.Client
 {
@@ -282,6 +284,16 @@ namespace Supremacy.Client
         public abstract void HostGame(string playerName);
         public abstract void HostSinglePlayerGame(GameOptions options, int empireId);
         public abstract void LoadSinglePlayerGame(string fileName);
+
+        //public abstract void MDialogShow(string _header, string _message); //, MessageDialogButtons _buttons/*, out MessageDialogResult _dialog_result*/)
+        //{
+        //return;
+        //    //_ = 
+        //    //MessageDialog.Show
+        //    //("", _header, _message); //, MessageBoxButton.OK);
+        //        //(_header, _message, MessageBoxButton.OK);
+        //    //return _dialog_result;
+        //}
 
         public void HostSinglePlayerGame()
         {

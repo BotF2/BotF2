@@ -2,6 +2,7 @@
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.ServiceLocation;
+using nRoute.Components;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
@@ -15,12 +16,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
 
-    public class DiplomacyScreenViewModel : ViewModelBase<INewDiplomacyScreenView, DiplomacyScreenViewModel>
+    public class DiplomacyScreenViewModel : ViewModelBase<IDiplomacyScreenViewSecond, DiplomacyScreenViewModel>
     {
 
         private bool _isMembershipButtonVisible;
@@ -74,6 +76,7 @@ namespace Supremacy.Client.Views
         public bool localIsHost => ServiceLocator.Current.GetInstance<IAppContext>().IsGameHost;
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
+        //private /*readonly*/ ObservableCollection<ForeignPowerViewModel> _foreignPowersNew;
 
         /*
           DISPLAY MODE
@@ -88,6 +91,8 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
 
+        private readonly DelegateCommand _makeProposalCommand;
+
         private readonly DelegateCommand _nonAgressionCommand;
         private readonly DelegateCommand _affiliationCommand;
         private readonly DelegateCommand _defenceAllianceCommand;
@@ -95,6 +100,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _membershipCommand;
         private readonly DelegateCommand _editMessageCommand;
         private readonly DelegateCommand _sendMessageCommand;
+        private readonly DelegateCommand _canExecuteSendMessageCommand;
         private readonly DelegateCommand _cancelMessageCommand;
         private readonly DelegateCommand _resetGraphCommand;
         private readonly DelegateCommand<DiplomacyGraphNode> _setSelectedGraphNodeCommand;
@@ -106,7 +112,7 @@ namespace Supremacy.Client.Views
             ForeignPowers = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
             // DISPLAY MODE
             _setDisplayModeCommand = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetDisplayModeComand, CanExecuteSetDisplayModeComand);
-            
+
 
             _commendCommand = new DelegateCommand(ExecuteCommendCommand, CanExecuteCommendCommand);
             _denounceCommand = new DelegateCommand(ExecuteDenounceCommand, CanExecuteDenounceCommand);
@@ -116,17 +122,20 @@ namespace Supremacy.Client.Views
             _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
 
+            _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
+
             _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
             _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
             _defenceAllianceCommand = new DelegateCommand(ExecuteDefenceAllianceCommand, CanExecuteDefenceAllianceCommand);
             _fullAllianceCommand = new DelegateCommand(ExecuteFullAllianceCommand, CanExecuteFullAllianceCommand);
             _membershipCommand = new DelegateCommand(ExecuteMembershipCommand, CanExecuteMembershipCommand);
-            _editMessageCommand = new DelegateCommand(ExecuteEditMessageCommand, CanExecuteEditMessageCommand);
-            _sendMessageCommand = new DelegateCommand(ExecuteSendMessageCommand, CanExecuteSendMessageCommand);
-            _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
+            _editMessageCommand = new DelegateCommand(Execute_Message_Edit_Command, Can_Execute_Message_Edit_Command);
+            _sendMessageCommand = new DelegateCommand(Execute_Message_Send_Command, Can_Execute_Message_Send_Command);
+            _canExecuteSendMessageCommand = new DelegateCommand(Execute_Message_Send_Command, Can_Execute_Message_Send_Command);
+            _cancelMessageCommand = new DelegateCommand(Execute_Message_Cancel_Command, Can_Execute_Message_Cancel_Command);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
-            Refresh();
+            Refresh(); // just do this refresh .. other one's will lead to crash
         }
 
 
@@ -215,11 +224,17 @@ namespace Supremacy.Client.Views
 
         private void ExecuteMakeProposalCommand()
         {
+            ForeignPowerViewModel foreignPower;
 
-            if (!CanExecuteNewProposalCommandCore(out ForeignPowerViewModel foreignPower))
+            if (!CanExecuteNewProposalCommandCore(out foreignPower))
             {
                 return;
             }
+
+            string _text = "NOT anymore?";
+            _text = "Step_3348:; next one leeds to > System.Windows.Data Error: 1";
+            
+            //Console.WriteLine(_text);
 
             foreignPower.OutgoingMessage = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
             foreignPower.OutgoingMessage.Edit();
@@ -229,7 +244,9 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
-            //Refresh(); crashes
+            _text = "Step_3335:; maybe crash";
+            //Console.WriteLine(_text);
+            Refresh(); //crashes or not anymore ?
         }
 
         #region DeclareWarCommandButton
@@ -323,7 +340,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            Refresh();
         }
         #endregion EndWarCommandButton
 
@@ -331,7 +348,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -378,7 +395,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion OpenBordersCommandButton
 
@@ -386,7 +403,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteAcceptRejectDictionaryCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel foreignPower);
         }
         private bool CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel selectedForeignPower)
@@ -409,7 +426,7 @@ namespace Supremacy.Client.Views
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -457,7 +474,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -511,7 +528,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            Refresh();
         }
         #endregion AffiliationCommandButton
 
@@ -519,7 +536,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -567,14 +584,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            Refresh();
         }
         #endregion DefenceAllianceCommandButton
 
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
-            //Refresh();
+            Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -615,14 +632,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            // Refresh();
+            Refresh();
         }
         #endregion FullAllianceCommandButton
 
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
-            // Refresh();
+            Refresh();
             return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -663,11 +680,11 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
+            Refresh();
         }
         #endregion MembershipCommandButton
 
-        private bool CanExecuteEditMessageCommand()
+        private bool Can_Execute_Message_Edit_Command()
         {
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox; //&&
                                                                      //SelectedForeignPower != null &&
@@ -675,41 +692,56 @@ namespace Supremacy.Client.Views
                                                                      //!SelectedForeignPower.OutgoingMessage.IsEditing;
         }
 
-        private void ExecuteEditMessageCommand()
+        private void Execute_Message_Edit_Command()
         {
-            if (!CanExecuteEditMessageCommand())
+            if (!Can_Execute_Message_Edit_Command())
             {
                 return;
             }
+            string _text = "";
 
             if (SelectedForeignPower != null &&
                 SelectedForeignPower.OutgoingMessage != null &&
                 !SelectedForeignPower.OutgoingMessage.IsEditing)
             {
+                string _description_text = "no description of the message";
+                if (SelectedForeignPower.OutgoingMessage != null
+                    && SelectedForeignPower.OutgoingMessage.Elements[0] != null
+                    && SelectedForeignPower.OutgoingMessage.Elements[0].Description != null
+                    )
+                {
+                    _description_text = SelectedForeignPower.OutgoingMessage.Elements[0].Description;
+                }
+
+                _text = "Step_8835:; Edit-Button pressed for OutgoingMessage > " + _description_text;
+                Console.WriteLine(_text);
+
                 SelectedForeignPower.OutgoingMessage.Edit();
                 OnCommandVisibilityChanged();
                 OnIsMessageEditInProgressChanged();
             }
         }
 
-        private bool CanExecuteSendMessageCommand()
+        private bool Can_Execute_Message_Send_Command()
         {
-            return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
-                   SelectedForeignPower != null &&
-                   SelectedForeignPower.OutgoingMessage != null &&
-                   SelectedForeignPower.OutgoingMessage.IsEditing; //&&
-                                                                   //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
+            return DisplayMode == DiplomacyScreenDisplayMode.Outbox
+                   && SelectedForeignPower != null
+                   && SelectedForeignPower.OutgoingMessage != null
+                   && SelectedForeignPower.OutgoingMessage.IsEditing
+                   && SelectedForeignPower.OutgoingMessage.Elements.Count != 0
+                   ; //&&
+                     //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
-        private void ExecuteSendMessageCommand()
+        private void Execute_Message_Send_Command()
         {
-            if (!CanExecuteSendMessageCommand())
+            if (!Can_Execute_Message_Send_Command())
             {
                 return;
             }
 
             SelectedForeignPower.OutgoingMessage.Send();
-            GameLog.Client.DiplomacyDetails.DebugFormat("Diplo Message: SEND button pressed...");
+            //GameLog.Client.DiplomacyDetails.DebugFormat("Diplo Message: SEND button pressed...");
             if (SelectedForeignPower != null && SelectedForeignPower.OutgoingMessage != null)
             {
                 int _selectedID = SelectedForeignPower.Counterparty.CivID;
@@ -734,12 +766,24 @@ namespace Supremacy.Client.Views
                         }
                         else { _cancelationTrustDictionary.Add(_selectedID, trust); }
 
-                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, regard * -1);
-                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, trust * -1);
+                        DiplomacyHelper.Apply_TrustChange("WarDeclaration", regard * -1,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
+                        DiplomacyHelper.ApplyRegardChange("WarDeclaration", trust * -1,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
                     }
 
                 }
             }
+
+            string _description_text = "no description of the message";
+            if (SelectedForeignPower.OutgoingMessage != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0] != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0].Description != null
+                )
+            {
+                _description_text = SelectedForeignPower.OutgoingMessage.Elements[0].Description;
+            }
+
+            String _text = "Step_8835:; Send-Button pressed for OutgoingMessage > " + _description_text;
+            Console.WriteLine(_text);
 
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
 
@@ -747,7 +791,7 @@ namespace Supremacy.Client.Views
             OnIsMessageEditInProgressChanged();
         }
 
-        private bool CanExecuteCancelMessageCommand()
+        private bool Can_Execute_Message_Cancel_Command()
         {
 
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
@@ -755,14 +799,16 @@ namespace Supremacy.Client.Views
                    SelectedForeignPower.OutgoingMessage != null;
         }
 
-        private void ExecuteCancelMessageCommand()
+        private void Execute_Message_Cancel_Command()
         {
-            if (!CanExecuteCancelMessageCommand())
+            if (!Can_Execute_Message_Cancel_Command())
             {
                 return;
             }
 
             int _selectedID = SelectedForeignPower.Counterparty.CivID;
+
+            string _text = "";
 
             foreach (DiplomacyMessageElement element in SelectedForeignPower.OutgoingMessage.StatementElements)
             {
@@ -773,15 +819,27 @@ namespace Supremacy.Client.Views
                     int? trust = _cancelationTrustDictionary[_selectedID];
                     if (regard != null)
                     {
-                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)regard);
+                        DiplomacyHelper.Apply_TrustChange("WarDeclaration_2", (int)regard,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
                     }
 
                     if (trust != null)
                     {
-                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)trust);
+                        DiplomacyHelper.ApplyRegardChange("WarDeclaration_2", (int)trust,SelectedForeignPower.Owner, SelectedForeignPower.Counterparty);
                     }
                 }
             }
+
+            string _description_text = "no description of the message";
+            if (SelectedForeignPower.OutgoingMessage != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0] != null
+                && SelectedForeignPower.OutgoingMessage.Elements[0].Description != null
+                )
+            {
+                _description_text = SelectedForeignPower.OutgoingMessage.Elements[0].Description;
+            }
+
+            _text = "Step_8833:; Cancel-Button pressed for OutgoingMessage > " + _description_text;
+            Console.WriteLine(_text);
 
             SelectedForeignPower.OutgoingMessage.Cancel();
             SelectedForeignPower.OutgoingMessage = null;
@@ -826,7 +884,9 @@ namespace Supremacy.Client.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //#pragma warning disable IDE0051 // Remove unused private members
         private void RaisePropertyChanged(string propertyName)
+        //#pragma warning restore IDE0051 // Remove unused private members
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -849,6 +909,9 @@ namespace Supremacy.Client.Views
         {
             base.InvalidateCommands();
 
+            //_text = "Step_9337:; InvalidateCommands check... for Diplomacy";
+            //Console.WriteLine(_text);
+
             _setDisplayModeCommand.RaiseCanExecuteChanged();
 
             _commendCommand.RaiseCanExecuteChanged();
@@ -858,18 +921,20 @@ namespace Supremacy.Client.Views
             _declareWarCommand.RaiseCanExecuteChanged();
             _endWarCommand.RaiseCanExecuteChanged();
             _openBordersCommand.RaiseCanExecuteChanged();
-            _nonAgressionCommand.RaiseCanExecuteChanged();
+            _openBordersCommand.RaiseCanExecuteChanged();
+            _makeProposalCommand.RaiseCanExecuteChanged();
             _affiliationCommand.RaiseCanExecuteChanged();
             _defenceAllianceCommand.RaiseCanExecuteChanged();
             _fullAllianceCommand.RaiseCanExecuteChanged();
             _editMessageCommand.RaiseCanExecuteChanged();
             _sendMessageCommand.RaiseCanExecuteChanged();
+            _canExecuteSendMessageCommand.RaiseCanExecuteChanged();
             _cancelMessageCommand.RaiseCanExecuteChanged();
 
-            if (_selectedForeignPower != null)
-            {
-                _selectedForeignPower.InvalidateCommands();
-            }
+            _selectedForeignPower?.InvalidateCommands();
+
+            //_text = "Step_9338:; InvalidateCommands checked for Diplomacy";
+            //Console.WriteLine(_text);
         }
 
         private void OnTurnStarted(GameContextEventArgs args)
@@ -881,8 +946,9 @@ namespace Supremacy.Client.Views
         {
             PlayerCivilization = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
 
+            //PerformRefreshForeignPowers();
             RefreshForeignPowers();
-            RefreshRelationshipGraph();
+            //RefreshRelationshipGraph();
         }
 
         #region Overrides of ViewModelBase<INewDiplomacyScreenView,DiplomacyScreenViewModel>
@@ -919,6 +985,7 @@ namespace Supremacy.Client.Views
         public ICommand DeclareWarCommand => _declareWarCommand;
         public ICommand EndWarCommand => _endWarCommand;
         public ICommand OpenBordersCommand => _openBordersCommand;
+        public ICommand MakeProposalCommand => _makeProposalCommand;
         public ICommand NonAgressionCommand => _nonAgressionCommand;
         public ICommand AffiliationCommand => _affiliationCommand;
         public ICommand DefenceAllianceCommand => _defenceAllianceCommand;
@@ -928,6 +995,13 @@ namespace Supremacy.Client.Views
         public ICommand EditMessageCommand => _editMessageCommand;
 
         public ICommand SendMessageCommand => _sendMessageCommand;
+        public ICommand CanExecuteSendMessage => _canExecuteSendMessageCommand;
+        //{
+        //    get
+        //    {
+        //        return _canExecuteSendMessageCommand;
+        //    }
+        //}
 
         public ICommand CancelMessageCommand => _cancelMessageCommand;
 
@@ -1055,6 +1129,11 @@ namespace Supremacy.Client.Views
         {
             return _selectedForeignPower;
         }
+
+        //public DiplomacyMessageViewModel OutgoingMessage() // new 2023-09-30
+        //{
+        //    return null;
+        //}
         public void UpdateSelectedForeignPower()
         {
             OnSelectedForeignPowerChanged();
@@ -1070,10 +1149,13 @@ namespace Supremacy.Client.Views
 
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
+
             if (AreNewMessageCommandsVisible) { }
             OnAreNewMessageCommandsVisibleChanged();
+
             if (IsMembershipButtonVisible) { }
             OnMembershipButtonVisibleChanged();
+
             if (IsFullAllianceButtonVisible) { }
             OnFullAllianceButtonVisibleChanged();
         }
@@ -1217,6 +1299,7 @@ namespace Supremacy.Client.Views
         public event EventHandler DisplayModeChanged;
 
         private DiplomacyScreenDisplayMode _displayMode;
+        //private string _text;
 
         public DiplomacyScreenDisplayMode DisplayMode
         {
@@ -1275,42 +1358,94 @@ namespace Supremacy.Client.Views
 
         private void RefreshForeignPowers()
         {
+            //if (_foreignPowers.Count > 0)
+            //    _foreignPowers.Clear();  // crashes due to the screen has a selected one
+
             Civilization selectedForeignPower = SelectedForeignPower?.Counterparty;
 
             SelectedForeignPower = null;
+            string _text;
 
-            _foreignPowers.Clear();
+            //_foreignPowers = ForeignPowerViewModel(foreignPower);
+
+            //foreach (var item in _foreignPowers)
+            //{
+
+            //}
+
+            //for (int i = 1; i < _foreignPowers.Count; i++)
+            //{
+            //    _foreignPowers[i].
+            //}
+
+            //_text = "dummy" + _text;
 
 
             int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
             Diplomat playerDiplomat = Diplomat.Get(playerEmpireId);
 
+            //_foreignPowers = null;
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
-                //Console.WriteLine("RefreshForeignPowers... " + civ.Name);
-                if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
+
+                if (civ.CivID == playerEmpireId
+                    || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID)
+                    || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
                 {
                     continue;
                 }
 
+                foreach (var item in _foreignPowers)
+                {
+                    string _a = item.Counterparty.ToString();
+                    string _b = civ.ToString();
+
+                    if (_a == _b)
+                    {
+
+                        goto Skip_Add_Existing_Ones;
+                    }
+                    else
+                    {
+                        _text = "x";
+                    }
+                }
+                //Console.WriteLine("Step_9332:; RefreshForeignPowers... " + civ.Name);
+
                 ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
                 ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
-                _foreignPowers.Add(foreignPowerViewModel);
-                // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
-                //, foreignPowerViewModel.Status
-                //, foreignPowerViewModel.CounterpartyRegard
-                //, foreignPowerViewModel.CounterpartyTrust
-                //);
+                if (!_foreignPowers.Contains(foreignPowerViewModel))
+                {
+                    _foreignPowers.Add(foreignPowerViewModel);
+                    _foreignPowers.Distinct();
             }
 
+            // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
+            //, foreignPowerViewModel.Status
+            //, foreignPowerViewModel.CounterpartyRegard
+            //, foreignPowerViewModel.CounterpartyTrust
+            //);
+
+Skip_Add_Existing_Ones:;
+        }
+
+            //_foreignPowers = _foreignPowers.Distinct();
+            //_foreignPowers = _foreignPowersNew;
+
+        //
+
+        //SelectedForeignPower:;
             if (selectedForeignPower != null)
             {
                 SelectedForeignPower = _foreignPowers.FirstOrDefault(o => o.Counterparty.CivID == selectedForeignPower.CivID);
             }
         }
 
-        private void RefreshRelationshipGraph()
+        //#pragma warning disable IDE0051 // Remove unused private members
+        private void RefreshRelationshipGraph()  // de-activated atm ... this is just a gimmick content
+                                                 //#pragma warning restore IDE0051 // Remove unused private members
         {
             int count = GameContext.Current.Civilizations.Count;
             List<DiplomacyGraphNode> nodes = new List<DiplomacyGraphNode>(count);
@@ -1365,9 +1500,9 @@ namespace Supremacy.Client.Views
                 //    return DiplomacyMessageElementType.OfferBreakAgreementClause;
                 //case ClauseType.RequestBreakAgreement:
                 //    return DiplomacyMessageElementType.RequestBreakAgreementClause;
-                case ClauseType.OfferGiveCredits:
+                case ClauseType.OfferCredits:
                     return DiplomacyMessageElementType.OfferGiveCreditsClause;
-                case ClauseType.RequestGiveCredits:
+                case ClauseType.RequestCredits:
                     return DiplomacyMessageElementType.RequestGiveCreditsClause;
                 //case ClauseType.OfferGiveResources:
                 //    return DiplomacyMessageElementType.OfferGiveResourcesClause;
@@ -1430,9 +1565,9 @@ namespace Supremacy.Client.Views
                 //case DiplomacyMessageElementType.RequestBreakAgreementClause:
                 //    return ClauseType.RequestBreakAgreement;
                 case DiplomacyMessageElementType.OfferGiveCreditsClause:
-                    return ClauseType.OfferGiveCredits;
+                    return ClauseType.OfferCredits;
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
-                    return ClauseType.RequestGiveCredits;
+                    return ClauseType.RequestCredits;
                 //case DiplomacyMessageElementType.OfferGiveResourcesClause:
                 //    return ClauseType.OfferGiveResources;
                 //case DiplomacyMessageElementType.RequestGiveResourcesClause:
@@ -1506,5 +1641,161 @@ namespace Supremacy.Client.Views
                     return StatementType.NoStatement;
             }
         }
+
+        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (!Equals(field, newValue))
+            {
+                field = newValue;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+
+            return false;
+        }
+
+        private System.Windows.Data.BindingBase turnsSinceLastStatusChange;
+
+        public System.Windows.Data.BindingBase TurnsSinceLastStatusChange { get => turnsSinceLastStatusChange; set => SetProperty(ref turnsSinceLastStatusChange, value); }
+
+        //private ActionCommand refreshForeignPowers;
+
+        //public ICommand RefreshForeignPowers
+        //{
+        //    get
+        //    {
+
+        //        if (refreshForeignPowers == null)
+        //        {
+        //            refreshForeignPowers = new ActionCommand(PerformRefreshForeignPowers);
+        //        }
+
+        //        return refreshForeignPowers;
+        //    }
+        //}
+
+        private void PerformRefreshForeignPowers()
+        {
+            //if (_foreignPowers.Count > 0)
+            //    _foreignPowers.Clear();  // crashes due to the screen has a selected one
+
+            Civilization selectedForeignPower = SelectedForeignPower?.Counterparty;
+
+            SelectedForeignPower = null;
+
+
+            int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
+            Diplomat playerDiplomat = Diplomat.Get(playerEmpireId);
+
+
+            //_foreignPowers.Clear();
+            _foreignPowers.Distinct();
+
+
+            //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    yourObservableCollection.Add(newItem);
+            //    // oder yourObservableCollection.Clear();
+            //    // oder yourObservableCollection.RemoveAt(index);
+            //}));
+
+
+            foreach (Civilization civ in GameContext.Current.Civilizations)
+            {
+
+                if (civ.CivID == playerEmpireId
+                    || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID)
+                    || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
+                {
+                    continue;
+                }
+                //Console.WriteLine("Step_9332:; RefreshForeignPowers... " + civ.Name);
+
+                ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
+                ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
+
+                //if (!_foreignPowers.Contains(foreignPowerViewModel))
+                //{
+                _foreignPowers.Add(foreignPowerViewModel);
+                //}
+
+                // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
+                //, foreignPowerViewModel.Status
+                //, foreignPowerViewModel.CounterpartyRegard
+                //, foreignPowerViewModel.CounterpartyTrust
+                //);
+            }
+
+            //var _foreignPowersNew = _foreignPowers.Distinct();
+            //_foreignPowers = _foreignPowersNew;
+
+            if (selectedForeignPower != null)
+            {
+                SelectedForeignPower = _foreignPowers.FirstOrDefault(o => o.Counterparty.CivID == selectedForeignPower.CivID);
+            }
+        }
+
+        //private ActionCommand refreshForeignPowers;
+
+        //public ICommand RefreshForeignPowers
+        //{
+        //    get
+        //    {
+        //        if (refreshForeignPowers == null)
+        //        {
+        //            refreshForeignPowers = new ActionCommand(PerformRefreshForeignPowers1);
+        //        }
+
+        //        return refreshForeignPowers;
+        //    }
+        //}
+
+        //private void PerformRefreshForeignPowers1()
+        //{
+        //}
+        //private System.Windows.Data.BindingBase counterpartyLocation => "Hello";
+        ////{
+        ////    return "Hello";
+        ////    //SelectedForeignPower = _foreignPowers.FirstOrDefault(o => o.Counterparty.CivID == selectedForeignPower.CivID);
+        ////}
+
+        //public System.Windows.Data.BindingBase CounterpartyLocation { get => "Hello";/*counterpartyLocation*/; set => SetProperty(ref counterpartyLocation, value); }
+        ////#region IsEnabledButtonEditMessageCommand Property
+
+        //[field: NonSerialized]
+        //public event EventHandler IsEnabledButtonEditMessageCommandHandler;
+
+        //public bool IsEnabledButtonEditMessageCommand
+        //{
+        //    get
+        //    {
+        //        return Can_Execute_Message_Edit_Command();
+        //    }
+
+        //}
+
+
+
+        //protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
+        //{
+        //    IsEnabledButtonEditMessageCommandHandler.Raise(this);
+        //    OnPropertyChanged("IsEnabledButtonEditMessageCommand");
+        //}
+
+        //private bool _isEnabledButtonEditMessageCommand = false;
+
+        //public bool IsEnabledButtonEditMessageCommand { get => Can_Execute_Message_Edit_Command(); set => SetProperty(ref _isEnabledButtonEditMessageCommand, value); }
+
+        //private bool canExecuteEditMessageCommand;
+
+        //public bool Can_Execute_Message_Edit_Command { get => canExecuteEditMessageCommand; set => SetProperty(ref canExecuteEditMessageCommand, value); }
+
+        //protected virtual void OnIsEnabledButtonEditMessageCommandChanged()
+        //{
+        //    SelectedGraphNodeChanged.Raise(this);
+        //    OnPropertyChanged("IsEnabledButtonEditMessageCommand");
+        //}
+
+        //#endregion
     }
 }

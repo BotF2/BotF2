@@ -35,6 +35,7 @@ namespace Supremacy.Client.Views
 
             _ = InputBindings.Add(new KeyBinding(DebugCommands.RevealMap, Key.F, ModifierKeys.Control)); // lift Fog of War
             _ = InputBindings.Add(new KeyBinding(DebugCommands.CheatMenu, Key.C, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(DebugCommands.OutputMapSectorInfo, Key.Q, ModifierKeys.Control)); // Map output or .Alt
             _ = InputBindings.Add(new KeyBinding(DebugCommands.OutputMap, Key.M, ModifierKeys.Alt)); // Map output
 
             // _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.M, ModifierKeys.Control)); // Military view
@@ -45,6 +46,8 @@ namespace Supremacy.Client.Views
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomIn, Key.OemPlus, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.Subtract, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.OemMinus, ModifierKeys.Control));
+
+            //_ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoom25, Key.NumPad9, ModifierKeys.Control));
 
 
             _ = CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand, ExecuteEscapeCommand, CanExecuteEscapeCommand));

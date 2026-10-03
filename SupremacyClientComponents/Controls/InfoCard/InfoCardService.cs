@@ -14,6 +14,7 @@ using Supremacy.Types;
 using System.Linq;
 
 using Supremacy.Utility;
+using System.Diagnostics;
 
 namespace Supremacy.Client.Controls
 {
@@ -497,8 +498,23 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                _infoCardCache.RemoveCollectedEntries();
-                return new ReadOnlyCollection<InfoCard>(_infoCardCache.Values.ToList());
+                try
+                {
+                    _infoCardCache.RemoveCollectedEntries();
+                    if (_infoCardCache.Values.Count > 0)
+                    {
+                        Debugger.Break();
+                    }
+                    return new ReadOnlyCollection<InfoCard>(_infoCardCache.Values.ToList());
+                } 
+                catch
+                {
+                    _infoCardCache.RemoveCollectedEntries();
+                    var _emptyReadOnlyCollection = _infoCardCache.Values.ToList();
+                    return null;
+                }
+                //_infoCardCache.RemoveCollectedEntries();
+                //return new ReadOnlyCollection<InfoCard>(_infoCardCache.Values.ToList());
             }
         }
 

@@ -65,6 +65,8 @@ namespace Supremacy.Economy
         /// <value>The DURANIUM used.</value>
         public int DuraniumUsed => ResourcesInvested[ResourceType.Duranium];
 
+        public int IndustryCapacity => Shipyard.GetBuildOutput(0);
+
         public bool HasDuraniumShortage
         {
             get => GetFlag(BuildProjectFlags.DuraniumShortage);
@@ -189,11 +191,11 @@ namespace Supremacy.Economy
     [Serializable]
     public class ShipRepairProject : ShipBuildProject
     {
-#pragma warning disable IDE0044 // Add readonly modifier
+//#pragma warning disable IDE0044 // Add readonly modifier
         private int _repairTargetId;
         private int _laborRequired;
         private ResourceValueCollection _resourcesRequired;
-#pragma warning restore IDE0044 // Add readonly modifier
+//#pragma warning restore IDE0044 // Add readonly modifier
 
         /// <summary>
         /// Gets the description of the ship being repaired.

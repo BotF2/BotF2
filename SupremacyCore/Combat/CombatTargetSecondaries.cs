@@ -85,7 +85,7 @@ namespace Supremacy.Combat
             }
             if (!_targetSecondaries.ContainsKey(source.ObjectID))
             {
-                _targetSecondaries[source.ObjectID] = CombatHelper.GetDefaultHoldFireCiv();
+                _targetSecondaries[source.ObjectID] = CombatHelper.GetDefault_OnlyReturnFireCiv_888();
                 //throw new ArgumentException("No target two has been set for the specified source");
             }
             GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetTwo() targeting {1}", source.Name, _targetSecondaries[source.ObjectID]);

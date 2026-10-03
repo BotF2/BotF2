@@ -41,7 +41,7 @@ namespace Supremacy.Tech
         private readonly HashSet<int> _orbitalBatteryDesigns;
         private static string _text;
         private static string line;
-        private static readonly string separator;
+        private static readonly string separator = ";";
         private static string file;
 
 
@@ -418,7 +418,7 @@ namespace Supremacy.Tech
 
                     file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
 
-                    Console.WriteLine("writing {0}", file);
+                    Console.WriteLine("Step_9120: writing {0}", file); // _TechTrees_List(autoCreated).csv
                     file = null; // quick offline
 
                     if (file == null)
@@ -510,19 +510,21 @@ namespace Supremacy.Tech
 
                         try
                         {
-                            //var civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
-                            //if (civManager == null)
+                            //var _civM = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
+                            //if (_civM == null)
                             //    continue;
                             TechTree techTree = new TechTree(xmlTree);
-                            string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
-                            file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
-                            StreamWriter streamWriter = new StreamWriter(file);
-
                             bool _streamWriterWorks = false;
 
                             bool _traceTechTrees = false;
                             if (_traceTechTrees == true)
                             {
+
+                            string pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                            file = pathOutputFile + "_TechTrees_List(autoCreated).csv";
+                            StreamWriter streamWriter = new StreamWriter(file);
+
+
                                 string owner = xmlTree.GetAttribute("Civilization");
                                 string category = "";
 
@@ -590,7 +592,7 @@ namespace Supremacy.Tech
                                         streamWriter.WriteLine(line);
                                 }
                             }
-                            streamWriter.Close();
+                            //streamWriter.Close();
                         }
                         catch (Exception e)
                         {
@@ -609,15 +611,15 @@ namespace Supremacy.Tech
                         // If the civilization is not part of the current game, then we don't need it's data
                         try
                         {
-                            CivilizationManager civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
-                            if (civManager == null)
+                            CivilizationManager _civM = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
+                            if (_civM == null)
                             {
                                 continue;
                             }
 
                             TechTree techTree = new TechTree(xmlTree);
                             techTree.Merge(defaultTechTree);
-                            civManager.TechTree = techTree;
+                            _civM.TechTree = techTree;
                         }
                         catch (Exception e)
                         {

@@ -1,0 +1,382 @@
+﻿<!-- File:CTRL_F01_Dialog.xaml
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.CTRL_F01_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="980"
+            Height="750"
+            Foreground="{DynamicResource HeaderTextBrush}"
+            VerticalAlignment="Center"
+            Margin="0,10,0,10"
+            Padding="0,10,0,10"
+            FontSize="24"
+            Background="Black"
+            SnapsToDevicePixels="True">
+
+  <!--Source
+  https://en.wikipedia.org/wiki/Starship_Enterprise
+  https://www.ex-astris-scientia.org/starship_database.htm
+  
+  https://startrek.de/universum/Raumschiffe/
+  -->
+
+  <DockPanel LastChildFill="True">
+    
+
+        <StackPanel DockPanel.Dock="Right"
+                Margin="0,12,0,0"
+                Orientation="Vertical"
+                HorizontalAlignment="Left">
+            <!--Header-->
+            <StackPanel Orientation="Horizontal">
+                
+                <Button x:Name="Accept0Button"  MinWidth="100" Height="28" Margin="30,0,10,10"
+                  Command="{x:Static local:GenericCommands.AcceptCommand}" IsCancel="True"
+                  Style="{DynamicResource LCARS_StandardButtonStyle}">
+                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                </Button>
+
+                <TextBlock Text="{s:StringResource DIALOG_CTRL_F01_HEADER}"
+                           Margin="80,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>
+                
+                <!--<TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="for lift Fog of War (SinplePlayer Only) > use the new CTRL + F"
+                           Margin="10,0,30,3" VerticalAlignment="Center" FontSize="14" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                </TextBlock>-->
+              
+                
+            </StackPanel>
+            <!--End of Header-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                  <RowDefinition Height="40"/>
+                  <RowDefinition Height="40"/>
+                  <RowDefinition Height="40"/>
+                  <RowDefinition Height="40"/>
+                  <RowDefinition Height="40"/>
+                  <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto"
+                     MinHeight="01" />
+                    <!--MinHeight before 27-->
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="299"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="130"/> <!-- Launch -->
+                 
+                  <ColumnDefinition Width="70"/>
+                  <ColumnDefinition Width="50"/>
+                  <ColumnDefinition Width="50"/>
+                  <ColumnDefinition Width="50"/>
+                  <ColumnDefinition Width="50"/>
+                  <ColumnDefinition Width="70"/>
+                  <ColumnDefinition Width="90"/>
+                  <ColumnDefinition Width="0"/>
+                  <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+
+                <TextBlock Grid.Row="2" Grid.Column="3" FontSize="38" Text=" " HorizontalAlignment="Center"/>
+                <!--<StackPanel Orientation="Horizontal" Grid.ColumnSpan="6" >-->
+             
+<TextBlock Grid.Row="4" Grid.Column="3" FontSize="18" Text="Launch" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="4" FontSize="18" Text="Crew" HorizontalAlignment="Center"/>
+<!--<TextBlock Grid.Row="3" Grid.Column="5" FontSize="18" Text="Energy" HorizontalAlignment="Center"/>-->
+<TextBlock Grid.Row="4" Grid.Column="5" FontSize="18" Text="Length" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="6" FontSize="18" Text="Wide" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="7" FontSize="18" Text="Height" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="8" FontSize="18" Text="Decks" HorizontalAlignment="Center"/>
+<TextBlock Grid.Row="4" Grid.Column="9" FontSize="18" Text="Tons" HorizontalAlignment="Left"/>
+<TextBlock Grid.Row="4" Grid.Column="10" FontSize="18" Text="Warp" HorizontalAlignment="Left"/>
+<!--<TextBlock Grid.Row="3" Grid.Column="11" FontSize="18" Text="Cloak" HorizontalAlignment="Center"/>-->
+<TextBlock Grid.Row="4" Grid.Column="11" FontSize="18" Text="" HorizontalAlignment="Center"/>
+<!--<TextBlock Grid.Row="3" Grid.Column="12" FontSize="18" Text="" HorizontalAlignment="Center"/>-->
+<TextBlock Grid.Row="4" Grid.Column="12" FontSize="18" Text="" HorizontalAlignment="Center"/>
+                    <!--<TextBlock Text="Food"/>-->
+
+                    <!--<TextBlock Text="Food(3), Construction(3), Energy-production(4), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(2), Trade(6), Mining(3), Diplomacy(6)" 
+                           Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+                    </TextBlock>-->
+                <!--</StackPanel>-->
+
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <Border Grid.Row="5" Grid.ColumnSpan="13" Background="#4c5c68" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="5" Text="Enterprise NX-01 > Cpt. Archer" Margin="10,0,0,0"/>
+                <TextBlock Grid.Row="5" Grid.Column="3" Text="2151-2161" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="4" Text="83"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="5" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="9" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="10" Text="5.06"  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="5" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="5" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+                <!--</StackPanel>-->
+              
+              
+              <!--<StackPanel Orientation="Horizontal" Grid.Row="6" Margin="0,0,0,0">-->
+              <Border Grid.Row="6" Grid.ColumnSpan="13" Background="SlateGray" Margin="0,-5,0,0"></Border>
+              <TextBlock Grid.Row="6" Text="USS Discovery NCC-1031" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="6" Grid.Column="3" Text="2256 -  . . ." HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="4" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="5" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="9" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="10" Text=""  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="6" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="6" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+              <!--</StackPanel>-->
+
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--Food(2), Construction(4), Energy-production(3), Intelligence(3), Cloak-ability(2),
+      Research(4), Troop-strength(3), Trade(5), Mining(5), Diplomacy(3)-->
+                <Border Grid.Row="7" Grid.ColumnSpan="13" Background="#4c5c68" Margin="0,-5,0,0"></Border>                
+                <TextBlock Grid.Row="7" Text="1701    > Cpt. Kirk and more" Margin="10,0,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="7" Grid.Column="3" Text="2245-2285" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="4" Text="430"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="5" Text="289"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="6" Text="127"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="7" Text="73"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="8" Text="22"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="9" Text="190"  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="7" Grid.Column="10" Text="6.0"  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="7" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="7" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+
+              <!--<Hyperlink NavigateUri="https://www.ex-astris-scientia.org/scans/constitution1.htm" RequestNavigate="DoLink"> Images </Hyperlink>-->
+                <!--<TextBlock Grid.Row="7" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->                  
+                                    <!--Food(2), Construction(4), Energy-production(3), Intelligence(3), Cloak-ability(2),
+      Research(4), Troop-strength(3), Trade(5), Mining(5), Diplomacy(3)-->
+                    
+                    
+                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                          <!--Food(3), Construction(2), Energy-production(3), Intelligence(5), Cloak-ability(6),
+      Research(5), Troop-strength(4), Trade(3), Mining(3), Diplomacy(3)-->
+                <Border Grid.Row="8" Grid.ColumnSpan="13" Background="SlateGray" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="8" Text="1701 A > Cpt. Kirk" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="8" Grid.Column="3" Text="2286-2293" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="4" Text="400"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="5" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="9" Text=""  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="8" Grid.Column="10" Text=""  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="8" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="8" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+                <!--<TextBlock Grid.Row="8" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--Food(3), Construction(6), Energy-production(4), Intelligence(2), Cloak-ability(4),
+      Research(2), Troop-strength(6), Trade(2), Mining(5), Diplomacy(3)-->
+                <Border Grid.Row="9" Grid.ColumnSpan="13" Background="#4c5c68" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="9" Text="1701 B > Cpt. Hariman" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="9" Grid.Column="3" Text="2293-2329" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="4" Text="880"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="5" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="9" Text=""  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="9" Grid.Column="10" Text=""  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="9" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="9" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+                <!--<TextBlock Grid.Row="9" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                <!--Food(2), Construction(5), Energy-production(2), Intelligence(6), Cloak-ability(2),
+      Research(2), Troop-strength(4), Trade(2), Mining(5), Diplomacy(3)-->
+                <Border Grid.Row="10" Grid.ColumnSpan="13" Background="SlateGray" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="10" Text="1701 C > Cpt. Garrett" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="10" Grid.Column="3" Text="2332-2344" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="4" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="5" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="9" Text=""  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="10" Grid.Column="10" Text=""  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="10" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="10" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+                <!--<TextBlock Grid.Row="10" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                          <!--Food(4), Construction(4), Energy-production(3), Intelligence(4), Cloak-ability(1),-->
+      <!--Research(5), Troop-strength(6), Trade(3), Mining(3), Diplomacy(4)-->
+                <Border Grid.Row="11" Grid.ColumnSpan="13" Background="#4c5c68" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="11" Text="1701 D > Cpt. Picard" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="11" Grid.Column="3" Text="2363-2371" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="4" Text="855"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="5" Text="642"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="9" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="10" Text="9.2"  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="11" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="11" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+                <!--<TextBlock Grid.Row="11" Grid.Column="12" Text="DUMMY"  HorizontalAlignment="Center"/>-->
+                <!--</StackPanel>-->
+                    
+                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+                          <!--Food(5), Construction(9), Energy production(5), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(4), Trade(1), Mining(3), Diplomacy(1)-->
+                <Border Grid.Row="12" Grid.ColumnSpan="13" Background="SlateGray" Margin="0,-5,0,0"></Border>
+                <TextBlock Grid.Row="12" Text="1701 E > Cpt. Picard" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="12" Grid.Column="3" Text="2372-2384" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="4" Text="855"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="5" Text="685"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="6" Text="250"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="7" Text="88"  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="9" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="10" Text="9.7"  HorizontalAlignment="Left"/>
+                <TextBlock Grid.Row="12" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="12" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+                <!--<TextBlock Grid.Row="12" Grid.Column="12" Text="DUMMY" />-->
+                <!--</StackPanel>-->
+
+
+              <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+              <!--Food(5), Construction(9), Energy production(5), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(4), Trade(1), Mining(3), Diplomacy(1)-->
+              <Border Grid.Row="13" Grid.ColumnSpan="13" Background="#4c5c68" Margin="0,-5,0,0"></Border>
+              <TextBlock Grid.Row="13" Text="USS Defiant NX-74205" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="13" Grid.Column="3" Text="2370-2375" HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="4" Text="40"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="5" Text="170"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="6" Text="134"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="7" Text="30"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="9" Text="355"  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="13" Grid.Column="10" Text="9.982"  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="13" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="13" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+              <!--<TextBlock Grid.Row="14" Grid.Column="12" Text="DUMMY" />-->
+              <!--</StackPanel>-->
+
+              <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+              <!--Food(5), Construction(9), Energy production(5), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(4), Trade(1), Mining(3), Diplomacy(1)-->
+              <Border Grid.Row="14" Grid.ColumnSpan="13" Background="SlateGray" Margin="0,-5,0,0"></Border>
+              <TextBlock Grid.Row="14" Text="USS Voyager > Cpt. Janeway" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="14" Grid.Column="3" Text="2371-2378" HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="4" Text="150"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="5" Text="300"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="6" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="7" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="8" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="9" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="10" Text="9.975"  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="14" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="14" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+              <!--<TextBlock Grid.Row="13" Grid.Column="12" Text="DUMMY" />-->
+              <!--</StackPanel>-->
+
+              <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+              <!--Food(5), Construction(9), Energy production(5), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(4), Trade(1), Mining(3), Diplomacy(1)-->
+              <Border Grid.Row="15" Grid.ColumnSpan="13" Background="#4c5c68" Margin="0,-5,0,0"></Border>
+              <TextBlock Grid.Row="15" Text="USS Prometheus NX-74913" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="15" Grid.Column="3" Text="2374 -  . . ." HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="4" Text="2"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="5" Text="415"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="6" Text="170"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="7" Text="113"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="8" Text="16"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="9" Text="850"  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="15" Grid.Column="10" Text="9.975"  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="15" Grid.Column="11" Text=""  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="15" Grid.Column="12" Text=""  HorizontalAlignment="Left"/>
+              <!--<TextBlock Grid.Row="15" Grid.Column="12" Text="DUMMY" />-->
+              <!--</StackPanel>-->
+
+              <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+              <!--Food(5), Construction(9), Energy production(5), Intelligence(3), Cloak-ability(1),
+      Research(6), Troop-strength(4), Trade(1), Mining(3), Diplomacy(1)-->
+              
+              
+              <!--<Border Grid.Row="16" Grid.ColumnSpan="13" Background="SlateGray" Margin="0,-5,0,0"></Border>
+              <TextBlock Grid.Row="16" Text="1701 E > Cpt. Picard" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="16" Grid.Column="3" Text="2100-2100" HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="4" Text="855"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="5" Text="5"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="6" Text="*6*"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="7" Text="3"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="8" Text="1"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="9" Text="1"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="10" Text="9.7"  HorizontalAlignment="Left"/>
+              <TextBlock Grid.Row="16" Grid.Column="11" Text="1"  HorizontalAlignment="Center"/>
+              <TextBlock Grid.Row="16" Grid.Column="12" Text="9,7"  HorizontalAlignment="Left"/>-->
+              
+              
+              <!--<TextBlock Grid.Row="16" Grid.Column="12" Text="DUMMY" />-->
+              <!--</StackPanel>-->
+
+                <!--<TextBlock Grid.Row="13" Text="" Grid.ColumnSpan="13" Background="#FFFFFFFF" Margin="10,0,20,0" HorizontalAlignment="Left"/>
+
+                <TextBlock Grid.Row="14" Text="{s:StringResource DIALOG_CTRL_F01_TEXT_2}" Foreground="{DynamicResource HeaderTextBrush}"
+                           Grid.ColumnSpan="13" TextWrapping="Wrap"  Background="#FF000000" Margin="10,0,20,0" HorizontalAlignment="Left" />-->
+
+            </Grid>
+        </StackPanel>
+
+        <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
+              Command="{x:Static local:GenericCommands.CancelCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,0,0">
+        <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
+      </Button>-->
+    <!--</StackPanel>-->
+      
+    <!--<TabControl x:Name="OptionsRegion"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.TracesPages}">
+      <TabControl.ItemContainerStyle>
+        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+          <Setter Property="Header"
+                  Value="Traces Settings" />
+                  --><!--Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />--><!--
+        </Style>
+      </TabControl.ItemContainerStyle>
+    </TabControl>-->
+      
+  </DockPanel>
+</scc:Dialog>

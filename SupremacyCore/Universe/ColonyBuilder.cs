@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using System;
+using System.Diagnostics;
 using Supremacy.Economy;
 using Supremacy.Tech;
 
@@ -36,7 +37,7 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Food);
-                    _ = colony.ActivateFacility(ProductionCategory.Food);
+                    _ = colony.Facility_Activate(ProductionCategory.Food);
                 }
             }
 
@@ -48,7 +49,19 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Industry);
-                    _ = colony.ActivateFacility(ProductionCategory.Industry);
+                    _ = colony.Facility_Activate(ProductionCategory.Industry);
+                }
+            }
+
+            //Another 2 Industry, not activated !
+            if (industryFacility != null)
+            {
+                int facilityCount = pop / industryFacility.LaborCost;
+                colony.SetFacilityType(ProductionCategory.Industry, industryFacility);
+                for (int i = 0; i < 2; i++)
+                {
+                    colony.AddFacility(ProductionCategory.Industry);
+                    //_ = colony.Facility_Activate(ProductionCategory.Industry);
                 }
             }
 
@@ -60,19 +73,28 @@ namespace Supremacy.Universe
                 for (int i = 0; i < facilityCount; i++)
                 {
                     colony.AddFacility(ProductionCategory.Energy);
-                    _ = colony.ActivateFacility(ProductionCategory.Energy);
+                    _ = colony.Facility_Activate(ProductionCategory.Energy);
                 }
             }
+
+            bool _newGame = true;
+            //bool _newGame = false;
 
             ProductionFacilityDesign researchFacility = TechTreeHelper.GetBestFacilityDesign(colony, ProductionCategory.Research);
             if (researchFacility != null)
             {
                 int facilityCount = pop / researchFacility.LaborCost / 2;
                 colony.SetFacilityType(ProductionCategory.Research, researchFacility);
-                for (int i = 0; i < facilityCount; i++)
+
+                // just one
+                for (int i = 0; i < 1; i++)
                 {
                     colony.AddFacility(ProductionCategory.Research);
-                    _ = colony.ActivateFacility(ProductionCategory.Research);
+                    _ = colony.Facility_Activate(ProductionCategory.Research);
+                    if (!_newGame)
+                    {
+                        Debugger.Break();
+                    }
                 }
             }
 
@@ -81,10 +103,16 @@ namespace Supremacy.Universe
             {
                 int facilityCount = pop / (intelligenceFacility.LaborCost * 10);
                 colony.SetFacilityType(ProductionCategory.Intelligence, intelligenceFacility);
-                for (int i = 0; i < facilityCount; i++)
+
+                // just one
+                for (int i = 0; i < 1; i++)
                 {
                     colony.AddFacility(ProductionCategory.Intelligence);
-                    _ = colony.ActivateFacility(ProductionCategory.Intelligence);
+                    _ = colony.Facility_Activate(ProductionCategory.Intelligence);
+                    if (!_newGame)
+                    {
+                        Debugger.Break();
+                    }
                 }
             }
         }

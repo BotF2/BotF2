@@ -7,6 +7,7 @@
 
 using Supremacy.Economy;
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -24,6 +25,7 @@ namespace Supremacy.Scripting.Events
 
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
+        private string _text;
 
         public ReligiousHolidayEvent()
         {
@@ -59,7 +61,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >= 30)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // before 30
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c => c.IsEmpire &&
@@ -67,7 +69,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
@@ -93,7 +95,7 @@ namespace Supremacy.Scripting.Events
 
                     _affectedProjects.ForEach(p => p.IsPaused = true);
 
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);
@@ -101,12 +103,19 @@ namespace Supremacy.Scripting.Events
                     _ = target.Morale.AdjustCurrent(+5);
                     target.Morale.UpdateAndReset();
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
 
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(civManager.Civilization, target));
-                    }
+                    //_civM?.SitRepEntries.Add(new ReligiousHolidaySitRepEntry(_civM.Civilization, target));
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                        , _text + ResourceManager.GetString("RELIGIOUS_HOLIDAY_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT")
+                        , "ScriptedEvents/ReligiousHoliday.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("RELIGIOUS_HOLIDAY_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/ReligiousHoliday.png";
                 }
 
                 return;

@@ -21,7 +21,7 @@ namespace Supremacy.Client
         public const string f10_Pages = "f10_Pages";
         public const string f11_Pages = "f11_Pages";
         public const string f12_Pages = "f12_Pages";
-        public const string FakeDialog = "FakeDialog";  // planed: emtpy dialog - used in future for updating screens behind
+        //public const string FakeDialog = "FakeDialog";  // planed: emtpy dialog - used in future for updating screens behind
         public const string NavigationMenu = "NavigationMenu";
         public const string GameScreens = "GameScreens";
         public const string Dialogs = "Dialogs";

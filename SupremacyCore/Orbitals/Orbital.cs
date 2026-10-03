@@ -1,4 +1,4 @@
-// File:Orbital.cs
+// File:Orbital.cs   ( for search only: Orbitals.cs )
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -30,8 +30,10 @@ namespace Supremacy.Orbitals
         private Meter _shieldStrength;
         private Meter _cloakStrength;
         private Meter _camouflagedMeter;
-        private Meter _firePower;
-        private string _text;
+
+        [NonSerialized]
+        private int _firePower;
+        //private string _text;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -59,7 +61,19 @@ namespace Supremacy.Orbitals
         /// Gets the fire power.
         /// </summary>
         /// <value>The crew.</value>
-        public Meter FirePower => _firePower;
+        public int Fire_Power_Orbital
+        {
+            get
+            {
+                return _firePower;
+                //return this.OrbitalDesign.SecondaryWeapon.Damage * ;
+            }
+            set
+            {
+                _firePower = value;
+
+            }
+        }
 
         /// <summary>
         /// Gets the hull strength.
@@ -125,7 +139,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                Data.Table rankTable = GameContext.Current.Tables.GameOptionTables["ExperienceRanks"];
+                Data.Table rankTable = GameContext.Current.GameTables.GameOptionTables["ExperienceRanks"];
                 for (int i = 0; i < rankTable.Rows.Count; i++)
                 {
                     if (int.TryParse(rankTable[i][0], out int minimum))
@@ -145,7 +159,7 @@ namespace Supremacy.Orbitals
         /// Gets the crew experience rank as a string.
         /// </summary>
         /// <value>The experience rank as a string.</value>
-        public string ExperienceRankString => GameContext.Current.Tables.EnumTables["ExperienceRank"][ExperienceRank.ToString()][0];
+        public string ExperienceRankString => GameContext.Current.GameTables.EnumTables["ExperienceRank"][ExperienceRank.ToString()][0];
 
         /// <summary>
         /// Gets the crew experience rank.
@@ -173,8 +187,9 @@ namespace Supremacy.Orbitals
             _cloakStrength = new Meter(design.CloakStrength, 0, design.CloakStrength);
             _camouflagedMeter = new Meter(design.CamouflagedStrength, 0, design.CamouflagedStrength);
 
-            int _fp = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
-            _firePower = new Meter(_fp, 0, _fp);
+            //int _fp = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
+            _firePower = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
+            //_firePower = _fp;
         }
 
         /// <summary>
@@ -202,12 +217,12 @@ namespace Supremacy.Orbitals
             // TODO Disabling Negative treasury stuff because it's apparently not working properly.
             // To be re-instated when properly fixed.
             // don't regenerate hull damage if empire treasury is in the red
-            /*if (Owner != null)
-            {
-                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
-                if (civManager.Credits.CurrentValue <= 0)
-                    return;
-            }*/
+            //if (Owner != null)
+            //{
+            //    CivilizationManager _civM = GameContext.Current.CivilizationManagers[Owner];
+            //    if (civManager.Credits.CurrentValue <= 0)
+            //        return;
+            //}
 
             double increase = 0.01;
 
@@ -336,10 +351,11 @@ namespace Supremacy.Orbitals
             _cloakStrength = (Meter)reader.ReadObject();
             _camouflagedMeter = (Meter)reader.ReadObject();
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
-            _firePower = (Meter)reader.ReadObject();
+            _firePower = (int)reader.ReadObject();
 
+            //string _text;
 
-            _text = "Orbital: " 
+            string _text = "Step_7322:; Orbital: "
                 + "crew=" + _crew
                 + ", exp=" + _experienceLevel
                 + ", hull=" + _hullStrength
@@ -350,7 +366,12 @@ namespace Supremacy.Orbitals
                 + ", firepower=" + _firePower
                 ;
             //Console.WriteLine(_text);
-            GameLog.Core.SaveLoadDetails.DebugFormat(_text);
+
+            if (_firePower > 0)  // oh .. does it work ???
+            {
+                //Debugger.Break();
+            }
+            //GameLog.Core.SaveLoad.DebugFormat(_text);
         }
     }
 

@@ -1,4 +1,4 @@
-// ClientCommands.cs
+// File:ClientCommands.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using System.Windows.Input;
-
 using Microsoft.Practices.Composite.Presentation.Commands;
 
 namespace Supremacy.Client.Commands
@@ -42,6 +41,28 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand CTRL_F10_Command = new CompositeCommand(true); // 
         public static readonly CompositeCommand CTRL_F11_Command = new CompositeCommand(true);
         public static readonly CompositeCommand CTRL_F12_Command = new CompositeCommand(true);
+
+        public static readonly CompositeCommand CTRL_0_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_1_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_2_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_3_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_4_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_5_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_6_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_7_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_8_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand CTRL_9_Command = new CompositeCommand(true);
+
+        public static readonly CompositeCommand SHIFT_0_Command = new CompositeCommand(true);  
+        public static readonly CompositeCommand SHIFT_1_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_2_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_3_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_4_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_5_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_6_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_7_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_8_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand SHIFT_9_Command = new CompositeCommand(true);
 
         public static readonly CompositeCommand S0_Command = new CompositeCommand(true);  // Start Single Player Empire x
         public static readonly CompositeCommand S1_Command = new CompositeCommand(true);
@@ -102,7 +123,6 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand Hotkey_Alt_Y = new CompositeCommand(true);
         public static readonly CompositeCommand Hotkey_Alt_Z = new CompositeCommand(true);
 
-        public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
         public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ShowSettingsFileCommand = new CompositeCommand(true);
@@ -124,7 +144,6 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand CancelCommand = new CompositeCommand(true);
         public static readonly CompositeCommand EndTurn = new CompositeCommand(true);
         public static readonly CompositeCommand ShowEndOfTurnSummary = new CompositeCommand(true);
-        //public static readonly CompositeCommand ShowShipOverview = new CompositeCommand(true);
         public static readonly CompositeCommand SendChatMessage = new CompositeCommand(true);
         public static readonly CompositeCommand EndGame = new CompositeCommand(true);
         public static readonly CompositeCommand Exit = new CompositeCommand(false);

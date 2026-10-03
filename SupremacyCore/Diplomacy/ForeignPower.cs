@@ -7,19 +7,17 @@
 //
 // All other rights reserved.
 
-using System;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
-
-using System.Linq;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System;
+using System.Dynamic;
+using System.Linq;
 
 namespace Supremacy.Diplomacy
 {
@@ -53,7 +51,9 @@ namespace Supremacy.Diplomacy
         public IResponse LastResponseReceived { get; set; }
         public PendingDiplomacyAction PendingAction { get; set; }
 
-        private string _text;
+        //[NonSerialized]
+        //private string _text;
+        //private string _detailImage;
 
         //     public bool IsTotalWarInPlace { get; set; }
 
@@ -69,6 +69,9 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("counterparty");
             }
 
+            //string _text = "";
+            //string _text += "s" + _text;  // dummy - do not remove
+
             _regardEvents = new CollectionBase<RegardEvent>();
             _diplomacyData = new DiplomacyDataInternal(owner.CivID, counterparty.CivID);
 
@@ -79,6 +82,8 @@ namespace Supremacy.Diplomacy
         public bool IsContactMade => _diplomacyData.IsContactMade();
 
         public int LastStatusChange => _diplomacyData.LastStatusChange;
+
+        //public string ForeignPowerLocation - no, don't cheat Homeworlds location 
 
         public int TurnsSinceLastStatusChange
         {
@@ -122,6 +127,22 @@ namespace Supremacy.Diplomacy
         public DiplomacyDataInternal DiplomacyData => _diplomacyData;
 
         public IDiplomacyData CounterpartyDiplomacyData => GameContext.Current.DiplomacyData[CounterpartyID, OwnerID];
+
+        public String All_Info
+        {
+            get
+            {
+                string _all_info ="Step_6672:; "
+                    + Owner 
+                    + ", Counterparty= " + Counterparty
+                    + " > " + this.DiplomacyData.Status
+
+                    ;
+                return _all_info;
+            }
+        }
+
+
 
         public Civilization Owner
         {
@@ -265,11 +286,8 @@ namespace Supremacy.Diplomacy
                 if (civ == owner ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
                 {
-                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
-                        new WarDeclaredSitRepEntry(
-                            civ,
-                            owner,
-                            counterparty));
+                    GameContext.Current.CivilizationManagers[civ]
+                        .SitRepEntries.Add(new WarDeclaredSitRepEntry(civ, owner, counterparty));
                 }
             }
         }
@@ -278,16 +296,22 @@ namespace Supremacy.Diplomacy
         {
             Civilization owner = Owner;
             Civilization counterparty = Counterparty;
+            string _text;
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsHuman && (civ == counterparty ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
                 {
+                    //"The {0} denounce the {1} for war against the {2}."
+                        _text = "The " + owner + " denounce the " + counterparty + " for war against the " + victim;
+                    //_detailImage = counterparty.InsigniaPath.ToString();
                     GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
-                        new DenounceWarSitRepEntry(
-                            owner,
-                            counterparty,
-                            victim));
+                        new ReportEntry_ShowDiplo(owner, _text, _text, counterparty.InsigniaPath, SitRepPriority.RedYellow));
+                        //new DenounceWarSitRepEntry(
+                        //    owner,
+                        //    counterparty,
+                        //    victim));
                 }
             }
         }
@@ -295,16 +319,20 @@ namespace Supremacy.Diplomacy
         {
             Civilization owner = Owner;
             Civilization counterparty = Counterparty;
+            string _text;
+
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsHuman && (civ == counterparty ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
                 {
-                    GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
-                        new CommendWarSitRepEntry(
-                            owner,
-                            counterparty,
-                            victim));
+                    _text = "The " + owner + "commend the " + counterparty + " in their war against the " + victim;
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
+                        new ReportEntry_ShowDiplo(owner, _text, _text, owner.InsigniaPath, SitRepPriority.Red));
+                            //owner,
+                            //counterparty,
+                            //victim)
+                        ; 
                 }
             }
         }
@@ -349,11 +377,8 @@ namespace Supremacy.Diplomacy
                 if (civ == owner ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
                 {
-                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
-                        new ViolateTreatySitRepEntry(
-                            civ,
-                            aggressor,
-                            counterparty));
+                    GameContext.Current.CivilizationManagers[civ]
+                        .SitRepEntries.Add(new ViolateTreatySitRepEntry(civ, aggressor, counterparty));
                 }
             }
         }
@@ -647,34 +672,34 @@ namespace Supremacy.Diplomacy
             LastResponseReceived = reader.Read<Response>();
             PendingAction = (PendingDiplomacyAction)reader.ReadOptimizedInt32();
             //IsTotalWarInPlace = reader.ReadBoolean();
-            _text = "reading ";
-            _text += "OwnerID=" + OwnerID + " vs " + CounterpartyID
+            //_text = "Step_0830: reading ";
+            //_text += "OwnerID=" + OwnerID + " vs " + CounterpartyID
 
-                + ", _regardEv.Count=" + _regardEvents.Count
-                + ", _dipDate=NOT DONE" 
-                + ", Psent=" + ProposalSent
-                + ", Preceiv=" + ProposalReceived
-                + ", LPsent=" + LastProposalSent
-                + ", LPr=" + LastProposalSent
+            //    + ", _regardEv.Count=" + _regardEvents.Count
+            //    + ", _dipDate=NOT DONE" 
+            //    + ", Psent=" + ProposalSent
+            //    + ", Preceiv=" + ProposalReceived
+            //    + ", LPsent=" + LastProposalSent
+            //    + ", LPr=" + LastProposalSent
 
-                + ", STsent=" + StatementSent
-                + ", STreceiv=" + StatementReceived
-                + ", LSTsent=" + LastStatementSent
-                + ", LSTreceiv=" + LastStatementReceived
+            //    + ", STsent=" + StatementSent
+            //    + ", STreceiv=" + StatementReceived
+            //    + ", LSTsent=" + LastStatementSent
+            //    + ", LSTreceiv=" + LastStatementReceived
 
-                + ", Rsent=" + ResponseSent
-                + ", Rreceiv=" + ResponseReceived
-                + ", LRsent=" + LastResponseSent
-                + ", LRPreceiv=" + LastResponseReceived
-                + ", Pending=" + PendingAction
-                ;
-            foreach (var item in _regardEvents)
-            {
-                _text += item.Turn;
-            }
+            //    + ", Rsent=" + ResponseSent
+            //    + ", Rreceiv=" + ResponseReceived
+            //    + ", LRsent=" + LastResponseSent
+            //    + ", LRPreceiv=" + LastResponseReceived
+            //    + ", Pending=" + PendingAction
+            //    ;
+            //foreach (var item in _regardEvents)
+            //{
+            //    _text += item.Turn;
+            //}
 
             //Console.WriteLine(_text);
-            GameLog.Client.SaveLoadDetails.DebugFormat(_text);
+            //GameLog.Client.SaveLoadDetails.DebugFormat(_text);
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)

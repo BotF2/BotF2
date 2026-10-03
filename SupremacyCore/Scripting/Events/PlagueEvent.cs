@@ -6,6 +6,7 @@
 // All other rights reserved.
 
 using Supremacy.Game;
+using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
@@ -19,6 +20,10 @@ namespace Supremacy.Scripting.Events
     {
 
         private int _occurrenceChance = 200;
+
+        [NonSerialized]
+        private string _text;
+
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
@@ -42,7 +47,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 30)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 10)  // not before 30
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -51,7 +56,7 @@ namespace Supremacy.Scripting.Events
                         RandomHelper.Chance(_occurrenceChance));
 
                 IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
-                    .Where(CanTargetCivilization)
+                    .Where(CanTargetEventCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
@@ -69,31 +74,59 @@ namespace Supremacy.Scripting.Events
                             return;
                         }
                     }
-                    Entities.Civilization targetCiv = target.Owner;
+                    Entities.Civilization targetEventCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     int population = target.Population.CurrentValue;
                     int health = target.Health.CurrentValue;
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population before = {1}, health before = {2}", targetColonyId, population, health);
 
-                    if (game.Universe.FindOwned<Colony>(targetCiv).Count > 1)
+                    if (game.Universe.FindOwned<Colony>(targetEventCiv).Count > 1)
                     {
                         GameLog.Client.GameData.DebugFormat("colony amount > 1 for: {0}", target.Name);
                     }
 
-                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
-                    if (civManager != null)
-                    {
-                        civManager.SitRepEntries.Add(new PlagueSitRepEntry(civManager.Civilization, target));
-                    }
+                    //CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+                    //_civM?.SitRepEntries.Add(new PlagueSitRepEntry(_civM.Civilization, target));
+
+                    CivilizationManager _civM = GameContext.Current.CivilizationManagers[targetEventCiv.CivID];
+
+                    _text = target.Location + " " + target.Name + " > ";
+                    _civM?.SitRepEntries.Add(new ReportEntry_ShowColony(_civM.Civilization, target
+                        , _text + ResourceManager.GetString("PLAGUE_HEADER_TEXT")
+                        , _text + ResourceManager.GetString("PLAGUE_DETAIL_TEXT")
+                        , "ScriptedEvents/Plague.png", SitRepPriority.RedYellow));
+
+                    //                    public override string DetailText => string.Format(ResourceManager.GetString("PLAGUE_DETAIL_TEXT"), Colony.Name, Colony.Location);
+                    //public override string DetailImage => "vfs:///Resources/Images/ScriptedEvents/Plague.png";
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    _ = target.Population.AdjustCurrent(-(population / 3));
+                    _ = target.Population.AdjustCurrent(-(population / 4));
                     target.Population.UpdateAndReset();
-                    _ = target.Health.AdjustCurrent(-(health / 2));
+                    _ = target.Health.AdjustCurrent(-(health / 4));
                     target.Health.UpdateAndReset();
 
-                    GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
+                    _text = "Step_5498:; Turn " + GameContext.Current.TurnNumber + ": " + target.Location + " " + target.Name
+                            + " > Plaque (Event). Down: Population " + -population / 4 + " (new: " + target.Population.CurrentValue 
+                            + "), Health " + -health / 4 + " (new: " + target.Health.CurrentValue;
+                    Console.WriteLine(_text);
+                    GameLog.Core.Events.DebugFormat(_text);
+                    //GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);
+
+                    //var fac = target.GetActiveFacilities(Economy.ProductionCategory.Intelligence);
+
+                    //for ( var i = 0;)
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Food);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Industry);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Energy);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Research);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Intelligence);
+
+                    //target.Facility_Activate(Economy.ProductionCategory.Food);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Industry);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Energy);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Research);
+                    //target.Facility_Deactivate(Economy.ProductionCategory.Intelligence);
 
                     GameContext.Current.Universe.UpdateSectors();
                 }

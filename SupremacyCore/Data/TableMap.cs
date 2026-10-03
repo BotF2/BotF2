@@ -255,7 +255,7 @@ namespace Supremacy.Data
                     //int i = 0;
                     _ = newTable.Name + ": ";
 
-                    //int tableRowMax = _tables.newTable.Rows.Count;
+                    //int tableRowMax = _game_tables.newTable.Rows.Count;
                     ////for (int i = 0; Table(newTable); i++)
                     //    foreach (var entry in newTable.Rows.Count)
                     //        for (int i = 0; Table(newTable); i++)

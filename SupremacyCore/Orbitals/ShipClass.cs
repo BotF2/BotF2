@@ -26,7 +26,7 @@ namespace Supremacy.Orbitals
         Scout,
         FastAttack, // Destroyer and Frigate
         Cruiser,
-        HeavyCruiser,
+        HeavyCruiser,  
         StrikeCruiser,
         Command
     }

@@ -4502,7 +4502,7 @@
             </summary><value>The offset at which the line starts.</value></member><member name="P:ActiproSoftware.Windows.Controls.SyntaxEditor.ITextViewLine.Text"><summary>
             Gets or sets the text of the line, excluding the line terminator.
             </summary><value>The text of the line, excluding the line terminator.</value><remarks>
-            If more than one document line are encompassed on the view line, a single newline character
+            If more than one document line are encompassed on the view line, a single _newline character
             will represent the line terminator.
             </remarks></member><member name="P:ActiproSoftware.Windows.Controls.SyntaxEditor.ITextViewLine.TextRangeIncludingLineTerminator"><summary>
             Gets the <see cref="T:ActiproSoftware.Text.TextRange" /> that indicates the text range of the line, including the line terminator if there is a hard line break on the line.

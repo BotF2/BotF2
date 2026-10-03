@@ -7,14 +7,14 @@
 //
 // All other rights reserved.
 
+using Supremacy.Types;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
-
-using Supremacy.Types;
 
 namespace Supremacy.Resources
 {
@@ -24,8 +24,8 @@ namespace Supremacy.Resources
         private static readonly Regex KeyRegex = new Regex(@"^\[([^\[]+)\]$", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private readonly Dictionary<string, string> _strings;
-        private static string _text;
-        private static readonly string newline = Environment.NewLine;
+        //private static string _text;
+        //private static readonly string _newline = Environment.NewLine;
 
         public ICollection<string> Keys => _strings.Keys;
 
@@ -50,15 +50,17 @@ namespace Supremacy.Resources
 
         public static StringTable Load(string fileName)
         {
+            string _text;
             if (!File.Exists(fileName))
             {
-                string _text = "#### ....could not find " + fileName;
+                _text = "Step_0135:;  ....could not find " + fileName + " (causes a FileNotFound) but en.txt is fine";
                 //GameLog.Client.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 
-                throw new FileNotFoundException(
-                    "String table file could not be located: "
-                    + fileName);
+                //
+                //throw new FileNotFoundException(
+                //    "String table file could not be located: "
+                //    + fileName);
             }
 
             string key = null;
@@ -108,29 +110,39 @@ namespace Supremacy.Resources
 
             }
 
-            _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
-            foreach (var item in result._strings)
-            {
-                _text += newline + item.Key + ";\"" + item.Value + "\"";
-            }
-            string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"),"EN-Txt-Content");
-    
-    
-            //file = file.Replace(".\\", "");
-            try
-            {
-                StreamWriter streamWriter = new StreamWriter(file + ".txt");
-                streamWriter.Write(_text);
-                streamWriter.Close();
 
-                streamWriter = new StreamWriter(file + ".csv");
-                streamWriter.Write(_text);
-                streamWriter.Close();
-            }
-            catch (Exception)
+            _text = "Step_0134:; " + DateTime.Now + " > no output for EN-Txt-Content ( " + fileName + " )";
+            Console.WriteLine(_text);
+            GameLog.Core.General.DebugFormat(_text);
+            // doesn't work
+            //if (ClientSettings.)
+            bool _en_txt_Output = false;
+            if (_en_txt_Output)
             {
+                _text = "EN.txt_Content-Key;Value;empty1;empty2;empty3";
+                foreach (var item in result._strings)
+                {
+                    _text += Environment.NewLine + item.Key + ";\"" + item.Value + "\"";
+                }
+                string file = Path.Combine(ResourceManager.GetResourcePath("Resources\\Data"), "EN-Txt-Content");
 
-                //throw;
+
+                //file = file.Replace(".\\", "");
+                try
+                {
+                    StreamWriter streamWriter = new StreamWriter(file + ".txt");
+                    streamWriter.Write(_text);
+                    streamWriter.Close();
+
+                    streamWriter = new StreamWriter(file + ".csv");
+                    streamWriter.Write(_text);
+                    streamWriter.Close();
+                }
+                catch (Exception)
+                {
+
+                    //throw;
+                }
             }
 
             return result;

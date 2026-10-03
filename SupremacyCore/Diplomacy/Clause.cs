@@ -79,8 +79,8 @@ namespace Supremacy.Diplomacy
 
             switch (clause.ClauseType)
             {
-                case ClauseType.OfferGiveCredits:
-                case ClauseType.RequestGiveCredits:
+                case ClauseType.OfferCredits:
+                case ClauseType.RequestCredits:
                     clause.Data = 0;
                     break;
 
@@ -132,10 +132,10 @@ namespace Supremacy.Diplomacy
                 //case ClauseType.RequestBreakAgreement:
                 //    visitor.VisitRequestBreakAgreementClause(clause);
                 //    break;
-                case ClauseType.OfferGiveCredits:
+                case ClauseType.OfferCredits:
                     visitor.VisitOfferGiveCreditsClause(clause);
                     break;
-                case ClauseType.RequestGiveCredits:
+                case ClauseType.RequestCredits:
                     visitor.VisitRequestGiveCreditsClause(clause);
                     break;
                 //case ClauseType.OfferGiveResources:

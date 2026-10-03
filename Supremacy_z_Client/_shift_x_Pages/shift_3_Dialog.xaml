@@ -1,0 +1,572 @@
+﻿<!-- File:ctrl_SHIFT_3_Dialog.xaml  - Memory Alpha Links to German(!) sites
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.SHIFT_3_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            Width="1000"
+            Height="750"
+            Background="Black"
+            SnapsToDevicePixels="True">
+
+
+  <DockPanel LastChildFill="True">
+
+    <!--<Grid Margin="0,4,0,4"
+          Background="Black"
+          ScrollViewer.CanContentScroll="True"
+          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+          ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="30" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>-->
+
+
+    <StackPanel DockPanel.Dock="Left" Orientation="Vertical" HorizontalAlignment="Left" Margin="3,0,0,0">
+
+      <StackPanel Orientation="Horizontal">
+        <Button x:Name="Accept0Button"
+          Command="{x:Static local:GenericCommands.AcceptCommand}"
+          Style="{DynamicResource LCARS_StandardButtonStyle}"
+          IsCancel="True" HorizontalAlignment="Left"
+                Width="150"
+                Height="20"
+          Margin="0,0,10,10">
+          <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+        </Button>
+
+        <TextBlock Text="   * FEDERATION  STAR  SHIP  CLASSES *"
+                   Margin="10,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
+                           >
+        </TextBlock>
+      </StackPanel>
+
+      <TextBlock TextWrapping="NoWrap">
+        °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        MAJORS >>
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/United_Federation_of_Planets"
+          > UFP </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Terran_Empire"
+          > Terran </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Romulan"
+          > Romulan </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Klingon"
+          > Klingon </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cardassian"
+          > Cardassian </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Dominion"
+          > Dominion </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Borg"
+          > Borg </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="http://botf2.square7.ch/wiki/index.php?title=Category:Races"
+          > Game-WIKI </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://intl.startrek.com/shows"
+          > Shows </Hyperlink>
+
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+
+        -
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        SERIES >
+
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Star_Trek_series"
+          > ALL </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Enterprise"
+          > ENT </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Strange_New_Worlds"
+          > SNW </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Discovery"
+          > DIS </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Original_Series"
+          > TOS </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Animated_Series"
+          > TAS </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Next_Generation"
+          > TNG </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Deep_Space_Nine"
+          > DS9 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Voyager"
+          > VOY </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Short_Treks"
+          > ST </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Picard"
+          > PIC </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Lower_Decks"
+          > LD </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Prodigy"
+          > PRO </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Untitled_Section_31_series"
+          > S31 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/DIS_Season_3"
+          > DIS </Hyperlink>
+      </TextBlock>
+
+
+
+      <TextBlock TextWrapping="Wrap">
+
+        -
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        MOVIES >
+
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Star_Trek_films"
+          > ALL </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Motion_Picture"
+          > ST01 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_II:_The_Wrath_of_Khan"
+          > ST02 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_III:_The_Search_for_Spock"
+          > ST03 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_IV:_The_Voyage_Home"
+          > ST04 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_V:_The_Final_Frontier"
+          > ST05 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_VI:_The_Undiscovered_Country"
+          > ST06 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Generations"
+          > ST07 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_First_Contact"
+          > ST08 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_Insurrection"
+          > ST09 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Nemesis"
+          > ST10 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_(film)"
+          > ST11 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Into_Darkness"
+          > ST12 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_Beyond"
+          > ST13 </Hyperlink>
+
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek_XIV"
+          > ST14 </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+
+        -
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        Federation Ship Classes > A >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Danube_class"
+          > x </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Sarajevo_type"
+          > x </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Danube_class"
+          > x </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        B >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Bajoran"
+          > Bajorans </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Baku"
+          > Baku </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        C >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cairn"
+          > Cairn </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Caldonian"
+          > Caldonians </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        D >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Danube_class"
+          > Danube ( SPY II ) </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Caldonian"
+          > Caldonians </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        E >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Edo"
+          > Edo </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/El-Aurian"
+          > El-Aurians </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        H >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Haakonian"
+          > Haakonians </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Halkan"
+          > Halkans </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        K >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Kaelon"
+          > Kaelon </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Karemma"
+          > Karemma </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        L >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ledosian"
+          > Ledosians </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Lissepian"
+          > Lissepians </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        N >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nausicaan"
+          > Nausicaan </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Nechani"
+          > Nechani </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        R >                              <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakhari"
+          > Rakhari </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Rakosan"
+          > Rakosans </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Ramatisian"
+          > Ramatisians </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        S >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Sarajevo_type"
+          > Sarajevo-NX ( SPY I )</Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Serosian"
+          > Serosians </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        T >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tak_Tak"
+          > Tak Tak </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Takaran"
+          > Takarans </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        T >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/T'Lani"
+          > T'Lani </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Tosk"
+          > ( Tosk ) </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        V >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Federation_mission_scoutship"
+          > Venture ( SPY III ) </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Valakian"
+          > ( Valakians ) </Hyperlink>
+      </TextBlock>
+
+      <TextBlock TextWrapping="Wrap">
+        X >
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xanthan_marmot"
+          > Xanthans </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xepolite"
+          > Xepolites </Hyperlink>
+        -
+        <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Xindi"
+          > Xindi </Hyperlink>
+      </TextBlock>
+
+      <!--<TextBlock TextWrapping="NoWrap">
+          °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap">
+          SHIPS >
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Spacecraft_classifications"
+          > ALL </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Registry"
+          > REGISTRY </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Scout_ships"
+          > Scouts </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Destroyer"
+          > Destroyer </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Cruiser"
+          > Cruiser </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Flagship"
+          > Command or Flag Ship </Hyperlink>
+
+        </TextBlock>
+
+        <TextBlock TextWrapping="NoWrap">
+          °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap">
+          TIMELINE >
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Timeline#Background_information"
+          > ALL </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/22nd_century"
+          > 21xx </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/23rd_century"
+          > 22xx </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/24th_century"
+          > 23xx </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/25th_century"
+          > 24xx </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/32nd_century"
+          > 31xx </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://thestartrekchronologyproject.blogspot.com/2009/09/and-now-conclusion.html"
+          > Footage </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Production_timeline"
+          > Productions </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_timeline#Alternate_realities"
+          > ALTERED </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Alternate_reality"
+          > ALTERNATE </Hyperlink>
+
+
+        </TextBlock>
+
+        <TextBlock TextWrapping="NoWrap">
+          °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap">
+          MORE (not included) >
+
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Star_Trek:_The_Next_Generation_-_Birth_of_the_Federation"
+          > BotE </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Planetary_defense_system"
+          > OrbB </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Fixed_installations"
+          > Stations </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Shipyards"
+          > Shipyards </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors"
+          > Sectors </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects"
+          > Galaxy Objects </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks"
+          > ST ranks </Hyperlink>
+
+
+        </TextBlock>
+
+        <TextBlock TextWrapping="NoWrap">
+          °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+        </TextBlock>
+
+        <TextBlock TextWrapping="Wrap">
+          Other links >
+
+          -
+          <Hyperlink NavigateUri="https://www.ex-astris-scientia.org/"
+          > Ex Astris (english only) </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://intl.startrek.com/database"
+          > StarTrek.com </Hyperlink>
+
+
+          -
+          <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Star_Trek"
+          > Wikipedia </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Sectors"
+          > . </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Category:Celestial_objects"
+          > . </Hyperlink>
+
+          -
+          <Hyperlink NavigateUri="https://memory-alpha.fandom.com/wiki/Starfleet_ranks"
+          > . </Hyperlink>
+
+
+        </TextBlock>-->
+
+
+    </StackPanel>
+
+    <!--</Grid>-->
+
+
+  </DockPanel>
+</scc:Dialog>

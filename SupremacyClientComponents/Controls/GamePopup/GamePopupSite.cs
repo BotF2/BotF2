@@ -1,3 +1,5 @@
+//File:GamePopupSite.cs
+using Supremacy.Client.Controls;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;

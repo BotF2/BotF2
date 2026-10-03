@@ -23,7 +23,7 @@ namespace Supremacy.Client
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Supremacy.Data.Table table = GameContext.Current.Tables.MoraleTables["MoraleLabels"];
+            Supremacy.Data.Table table = GameContext.Current.GameTables.MoraleTables["MoraleLabels"];
             int morale = (int)value;
             string result = value.ToString();
             if (table != null)
@@ -58,7 +58,7 @@ namespace Supremacy.Client
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Supremacy.Data.Table table = GameContext.Current.Tables.MoraleTables["MoraleColors"];
+            Supremacy.Data.Table table = GameContext.Current.GameTables.MoraleTables["MoraleColors"];
             int morale = (int)value;
             if (table != null)
             {

@@ -460,10 +460,7 @@ namespace Supremacy.Client.Controls
             }
             else
             {
-                if (popupSite != null)
-                {
-                    popupSite.RemoveCanvasChild(popup._popupRoot);
-                }
+                popupSite?.RemoveCanvasChild(popup._popupRoot);
 
                 popup._popupRoot.Child = null;
 

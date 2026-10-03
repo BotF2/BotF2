@@ -347,12 +347,20 @@ namespace Supremacy.Orbitals
 
                 foreach (XmlElement name in element["ShipNames"])
                 {
-
+                    
                     _possibleNames.Add(name.InnerText.Trim(), 0);
 
-                    _text = "ShipNames - Possible Name for " + Name + " " + name.InnerText.Trim();
-                    //Console.WriteLine(_text);
-                    GameLog.Core.GameData.DebugFormat(_text);
+                    bool _checkForProblems = false;
+                    //bool _checkForProblems = true;
+                    if (_checkForProblems) // for shipnames
+                    {
+                        // in TechObjects do not outcomment ShipNames
+                        // don't give it two times the same name > Exception thrown: 'System.ArgumentException' in mscorlib.dll
+                        _text = "Step_4567:; ShipNames - Possible Name for " + Name + " > " + name.InnerText.Trim();
+                        Console.WriteLine(_text);
+                        GameLog.Core.GameData.DebugFormat(_text);
+                    }
+
                 }
             }
         }
@@ -474,13 +482,13 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager _civM = GameContext.Current.CivilizationManagers[owner];
             Ship ship = new Ship(this);
 
             //string shipDesign = ship.ShipDesign.Name;
 
 
-            if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true && civManager.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
+            if (TechTreeHelper.MeetsTechLevels(_civM, ship.ShipDesign) != true && _civM.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
             {
                 GameLog.Core.GameData.DebugFormat("{0}, {1}, {2}, {3}, {4}, {5}, ship highest tech level is {6} for {7}, exceeding current Techlevel",
 
@@ -550,11 +558,11 @@ namespace Supremacy.Orbitals
             int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
             if (fuelNeeded > 0)
             {
-                _ = ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
+                _ = ship.FuelReserve.AdjustCurrent(_civM.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
 
                 _text = ship.ObjectID + " " + ship.Name + " ( " + ship.ShipDesign + " ) got " + fuelNeeded + "fuel (=Dilithium)";
                 Console.WriteLine(_text);
-                GameLog.Core.DeuteriumDetails.DebugFormat(_text);
+                GameLog.Core.Deuterium.DebugFormat(_text);
             }
 
             // default we want to be "camouflaged"
@@ -565,9 +573,9 @@ namespace Supremacy.Orbitals
 
             GameContext.Current.Universe.Objects.Add(ship);
 
-            civManager.MapData.SetExplored(location, true);
-            civManager.MapData.SetScanned(location, true, SensorRange);
-            civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
+            _civM.MapData.SetExplored(location, true);
+            _civM.MapData.SetScanned(location, true, SensorRange);
+            _civM.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
 
             spawnedInstance = ship;
             return true;

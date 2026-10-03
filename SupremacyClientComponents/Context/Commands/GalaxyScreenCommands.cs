@@ -41,17 +41,27 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand SetOverviewMode = new CompositeCommand();
         public static readonly CompositeCommand MapZoomIn = new CompositeCommand();
         public static readonly CompositeCommand MapZoomOut = new CompositeCommand();
+        public static readonly CompositeCommand MapZoom25 = new CompositeCommand();
+        public static readonly CompositeCommand MapZoomMax = new CompositeCommand();
         public static readonly CompositeCommand SelectTaskForce = new CompositeCommand();
         public static readonly CompositeCommand AddShipToTaskForce = new CompositeCommand();
         public static readonly CompositeCommand RemoveShipFromTaskForce = new CompositeCommand();
         public static readonly CompositeCommand SelectSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnSector = new CompositeCommand();
+        public static readonly CompositeCommand MapZooom25 = new CompositeCommand();
+
         public static readonly CompositeCommand CenterOnHomeSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOn1 = new CompositeCommand();
         public static readonly CompositeCommand CenterOn2 = new CompositeCommand();
         public static readonly CompositeCommand CenterOn3 = new CompositeCommand();
         public static readonly CompositeCommand CenterOn4 = new CompositeCommand();
         public static readonly CompositeCommand SummaryOnOff = new CompositeCommand();
+
+        public static readonly CompositeCommand CenterOnAccumulateSector = new CompositeCommand();
+        public static readonly CompositeCommand CenterOnSystemAssault_1_Sector = new CompositeCommand();
+        public static readonly CompositeCommand CenterOnSystemAssault_2_Sector = new CompositeCommand();
+
+
         public static readonly CompositeCommand ToggleTaskForceCloak = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCamouflage = new CompositeCommand();
         public static readonly CompositeCommand IssueTaskForceOrder = new CompositeCommand();
@@ -117,7 +127,9 @@ namespace Supremacy.Client.Commands
         public IIndexedCollection<TechObject> Objects => _objects;
 
         #region Implementation of ICheckableCommandParameter
+#pragma warning disable CS0067 // The event 'ScrapCommandArgs.InnerParameterChanged' is never used
         public event EventHandler InnerParameterChanged;
+#pragma warning restore CS0067 // The event 'ScrapCommandArgs.InnerParameterChanged' is never used
         public event EventHandler IsCheckedChanged;
 
         public bool Handled { get; set; }

@@ -75,7 +75,7 @@ namespace Supremacy.Universe
 
             _text = colony.Population.CurrentValue.ToString();
             if (_text.Length == 2) _text = " " + _text;
-            GameLog.Core.CivsAndRacesDetails.DebugFormat("Turn {0};{4};Pop;{5};ShipYardSlots;{6};Buildings;ColonyValue= {7};{1};{2};{3}"
+            GameLog.Core.CivsAndRaces.DebugFormat("Turn {0};{4};Pop;{5};ShipYardSlots;{6};Buildings;ColonyValue= {7};{1};{2};{3}"
                 , GameContext.Current.TurnNumber
                 , colony.Owner
                 , colony.Name
