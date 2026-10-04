@@ -127,6 +127,11 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("Colonies");
         }
 
+        public string All_Root ()
+        {
+            return SelectedColony.All_Root;
+        }
+
         public IEnumerable<Colony> Colonies
         {
             get => _colonies; // doesn't work >> .OrderByDescending(c => c.Name).ToList(); // 2024-03-17

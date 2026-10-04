@@ -4965,8 +4965,6 @@ namespace Supremacy.Game
                                     ;
                                 if (_writeDirectly) Console.WriteLine(_text);
                                 //GameLog.Core.ProductionDetails.DebugFormat(_text);
-
-
                             }
                             else
                             {

@@ -729,6 +729,7 @@ namespace Supremacy.Diplomacy
             string _text;
             string _diplomacyBasicsSummary_Text = "";
             //string _newline = Environment.NewLine;
+            bool _bool_offer_sent = false;
 
             bool _writeDirectly = true;
             bool _player_is_human = GameEngine.IsCivM_Human_Player(_civM_1);
@@ -967,6 +968,7 @@ namespace Supremacy.Diplomacy
                                 var _newProposal = new NewProposal(_civ1, _civ2, _clauses);
                                 if (_newProposal != null)
                                 {
+                                    _bool_offer_sent = true;
                                     _text = "Step_9451:; AI sent Proposal > TreatyOpenBorders from " + _civ1
                                             + " to " + _civ2
                                             ;
@@ -1185,7 +1187,11 @@ namespace Supremacy.Diplomacy
 
                 //Console.WriteLine(_text_header + _all_attack_location_text + " > from Step_7703 = _all_attack_location_text");
 
-                //Debugger.Break();
+                if (_bool_offer_sent)
+                {
+                    Debugger.Break();
+                }
+
             }
 
 
@@ -1280,6 +1286,7 @@ namespace Supremacy.Diplomacy
             //List<Civilization> _possibleTargetCivs = new List<Civilization>();
 
             Target_CivList_Update_and_TargetColonies(_civ1, _civ2);
+            _text = "just DUMMY " + _civM_1 + _civM_2;
 
 
 
@@ -1524,7 +1531,7 @@ namespace Supremacy.Diplomacy
                 _text = "break_1302 - line 1496 > just for info > Do_AI_for_AtWar";
                 Console.WriteLine(_text);
 
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_civM_1.Target_CivList != null && _civM_1.Target_CivList.Count > 0)
@@ -1919,7 +1926,7 @@ namespace Supremacy.Diplomacy
 
                     if (_player_is_human)
                     {
-                        //Debugger.Break(); 
+                        Debugger.Break();
                     }
 
                 }

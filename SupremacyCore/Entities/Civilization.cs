@@ -263,6 +263,11 @@ namespace Supremacy.Entities
                     break;
             }
 
+            Trait_Fighting = _trait_Fighting;
+            Trait_Greedy = _trait_Greedy;
+            Trait_Ruthless = _trait_Ruthless;
+            Trait_Xenophobia = _trait_Xenophobia;
+
             //if (_traits.Contains("Warlike")) _baseMoraleLevel -= 2;
             //if (_traits.Contains("Peaceful")) _baseMoraleLevel += 2;
             //if (_traits.Contains("Superiority")) _baseMoraleLevel += 3;

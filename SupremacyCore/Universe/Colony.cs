@@ -449,6 +449,15 @@ namespace Supremacy.Universe
         /// <value>The name.</value>
         public override string Name => base.Name ?? (System?.Name);
 
+        public string All_Root
+        {
+            get
+            {
+                return "HAllo";
+                //return  base.Name;
+            }
+        }
+
         public string LocationStringColony
         {
             get

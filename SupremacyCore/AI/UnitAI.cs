@@ -125,10 +125,10 @@ namespace Supremacy.AI
             // finds also _fleets with ID -1 ... maybe Colonizer which disappered and just deleted in next round?
 
 
-            _text = "Step_1103:; "+ DateTime.Now 
+            _text = "Step_1103:; " + DateTime.Now
                 + " > UnitAI.Do_0_Turn_Unit begins...for "
-                + _civ.Key + " #####################   " ;
-            if (_writeDirectly_Fleets) 
+                + _civ.Key + " #####################   ";
+            if (_writeDirectly_Fleets)
                 Console.WriteLine(_text);
 
             if (_civ.IsHuman)
@@ -172,6 +172,11 @@ namespace Supremacy.AI
                 if (/*!_is_owner_human && */_is_playerCiv_AI_controlled && _fleet.LowestFuelLevel < 3        // running out of fuel
                     && _fleet.IsConstructor == false) // not for Constructors on "Rescue Mission"
                 {
+                    if (_fleet.Owner.IsHuman)
+                    {
+                        Debugger.Break();
+                    }
+
                     _fleet.Route.Clear();
                     MapLocation _nearestFriendly_location = MapHelper.FindNearestFriendlySector(_fleet);
                     Sector _nearestFriendly_sector = new Sector(_nearestFriendly_location);
@@ -249,30 +254,30 @@ namespace Supremacy.AI
                     goto All_Done_UnitAI;
                 }
 
-                if (_fleet.IsConstructor) 
+                if (_fleet.IsConstructor)
                     DoConstructionShip(_fleet); // Constructor get the first "GetEscort"
-                                                                      //_checkShips_Colony = true;
-                if (_fleet.IsColonizer) 
+                                                //_checkShips_Colony = true;
+                if (_fleet.IsColonizer)
                     DoColonyShip(_fleet);
                 //_checkShips_Scout = true;
-                if (_fleet.IsScout) 
+                if (_fleet.IsScout)
                     DoScout(_fleet);
                 //_checkShips_Medical = true;
-                if (_fleet.IsMedical) 
+                if (_fleet.IsMedical)
                     DoMedical(_fleet);
                 //_checkShips_Spy = true;
-                if (_fleet.IsSpy) 
+                if (_fleet.IsSpy)
                     DoSpy(_fleet);
 
                 //_checkShips_Diplomatic = true;
-                if (_fleet.IsDiplomatic) 
+                if (_fleet.IsDiplomatic)
                     DoDiplomaticFleet(_fleet);
                 //_checkShips_Science = true;
-                if (_fleet.IsScience) 
+                if (_fleet.IsScience)
                     DoScienceShip(_fleet);
 
                 //_checkShips_Transport = true;
-                if (_fleet.IsTransport) 
+                if (_fleet.IsTransport)
                     DoTransportShip(_fleet);
 
                 // let transport ships explore instead of doing nothing at the beginning
@@ -1950,7 +1955,7 @@ namespace Supremacy.AI
             //if (_is_owner_human)
             if (_is_owner_human)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_fleet.Order == FleetOrders.IdleOrder)
@@ -1992,6 +1997,11 @@ namespace Supremacy.AI
             {
                 _fleet.Activity = UnitActivity.NoActivity;
                 _fleet.Route.Clear();
+            }
+
+            if (_is_owner_human)
+            {
+                //Debugger.Break();
             }
 
             //Science Ship
@@ -2125,6 +2135,11 @@ namespace Supremacy.AI
                 //  GameLog.Core.AI.DebugFormat("Nothing to do for diplomacy _fleet {0}", _fleet.ObjectID);
                 //}
                 //}
+            }
+
+            if (_fleet.Owner.IsHuman)
+            {
+                Debugger.Break();
             }
 
             if (_fleet.Sector == _civM.HomeSystem.Sector && _civM.Z_Ship_Diplomatic_Available > 1) // and nothing to 
@@ -2386,7 +2401,7 @@ namespace Supremacy.AI
 
             if (_is_owner_human)
             {
-                //Debugger.Break();    //checkconstruction // for search + finding this place
+                Debugger.Break();    //checkconstruction // for search + finding this place
             }
 
             //List<Fleet> allCivFleets = GameContext.Current.Universe.FindOwned<Fleet>(_civ).ToList();
@@ -2398,68 +2413,70 @@ namespace Supremacy.AI
                 goto SectorHasAlreadyStation;
             }
 
-
-
-
             //bool _checkShips_Construction = true;
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Construction)
 
-
-            // Borg + System in Sector + No station + No _location owner ( Borg can not colonize )
-            bool _bool_Borg_can_build_station = false;
-
-            if (_fleet.Owner.Key == "BORG"
-                //&& _fleet.Sector.Station == null > this was checked before
-                )
+            if (_fleet.Owner.Key == "BORG")
             {
-                if (_fleet.Sector.System != null
-                && _fleet.Sector.System.StarType != StarType.NeutronStar // not at these !
-                && _fleet.Sector.System.StarType != StarType.BlackHole
-                )
-                {
-                    _bool_Borg_can_build_station = true;
-                }
-                else
-                {
-                    //if (_fleet.Sector.System == null)
-                    //{
-                    _bool_Borg_can_build_station = true;
-                    //}
-                }
+                DoConstructionShip_BORG(_fleet, _allConstructFleetsHere);
+                goto EndofConstructionShip;
             }
 
-            //&& !_fleet.Sector.IsOwned
-            ////&& _fleet.Sector.IsOwned
-            ////&& _fleet.Sector.Station == null
-            ////&& _fleet.Sector.System != null
-            //&& _fleet.Sector.System.StarType != StarType.NeutronStar
-            //&& _fleet.Sector.System.StarType != StarType.BlackHole
-            ////&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
+            //// Borg + System in Sector + No station + No _location owner ( Borg can not colonize )
+            //bool _bool_Borg_can_build_station = false;
+
+            //if (_fleet.Owner.Key == "BORG"
+            //    //&& _fleet.Sector.Station == null > this was checked before
+            //    )
+            //{
+            //    if (_fleet.Sector.System != null
+            //    && _fleet.Sector.System.StarType != StarType.NeutronStar // not at these !
+            //    && _fleet.Sector.System.StarType != StarType.BlackHole
+            //    )
+            //    {
+            //        _bool_Borg_can_build_station = true;
+            //    }
+            //    else
+            //    {
+            //        //if (_fleet.Sector.System == null)
+            //        //{
+            //        _bool_Borg_can_build_station = true;
+            //        //}
+            //    }
+            //}
+
+            ////&& !_fleet.Sector.IsOwned
+            //////&& _fleet.Sector.IsOwned
+            //////&& _fleet.Sector.Station == null
+            //////&& _fleet.Sector.System != null
+            ////&& _fleet.Sector.System.StarType != StarType.NeutronStar
+            ////&& _fleet.Sector.System.StarType != StarType.BlackHole
+            //////&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
 
 
-            if (_bool_Borg_can_build_station)  // "occupy" system for not falling into other hands - Borg can't colonize !
-            {
-                _fleet.Activity = UnitActivity.BuildStation; // Borg building
-                //_fleet.Order = FleetOrders.BuildStationOrder;
+            //if (_bool_Borg_can_build_station)  // "occupy" system for not falling into other hands - Borg can't colonize !
+            //{
+            //    _fleet.Activity = UnitActivity.BuildStation; // Borg building
+            //    //_fleet.Order = FleetOrders.BuildStationOrder;
 
-                _text += " - Order to build a station...";
-                if (_writeDirectly_Fleets)
-                {
-                    Console.WriteLine(_text);
-                    _fleet_Text += _newline + _text;
-                }
+            //    _text += " - Order to build a station...";
+            //    if (_writeDirectly_Fleets)
+            //    {
+            //        Console.WriteLine(_text);
+            //        _fleet_Text += _newline + _text;
+            //    }
 
 
-                if (!_allConstructFleetsHere.Any(_f => _f.Order.PercentComplete != null && _f.Order.PercentComplete > 0))
-                {
+            //    if (!_allConstructFleetsHere.Any(_f => _f.Order.PercentComplete != null && _f.Order.PercentComplete > 0))
+            //    {
 
-                    BuildStation(_fleet, _allConstructFleetsHere); // Borg building
-                    //_fleet.Activity = UnitActivity.Hold;
-                    //_fleet.Route.Clear();
-                }
-                goto EndofConstructionShip;
+            //        BuildStation(_fleet, _allConstructFleetsHere); // Borg building
+            //        //_fleet.Activity = UnitActivity.Hold;
+            //        //_fleet.Route.Clear();
+            //    }
+            //    goto EndofConstructionShip;
 
-            } // end of BORG
+            //} // end of BORG
 
 
             if (_is_owner_human)
@@ -2492,8 +2509,18 @@ namespace Supremacy.AI
             //else
             //{
             // important to have it here
-            if (_fleet.Activity != UnitActivity.Hold // taking part into other ship constructing
-                && _fleet.Activity != UnitActivity.Mission) // if already building, don't search new _bestSector
+
+            bool _new_aim_for_BuildStaton_is_needed = true;
+
+            if (_fleet.Activity == UnitActivity.Hold
+                || _fleet.Activity == UnitActivity.Mission)
+            {
+                _new_aim_for_BuildStaton_is_needed = false;
+            }
+
+            //if (_fleet.Activity != UnitActivity.Hold // taking part into other ship constructing
+                //&& _fleet.Activity != UnitActivity.Mission) // if already building, don't search new _bestSector
+            if (_new_aim_for_BuildStaton_is_needed == true)
             {
                 //_fleet.Activity = UnitActivity.NoActivity;
 
@@ -2851,6 +2878,66 @@ namespace Supremacy.AI
         EndofConstructionShip:;
             //}
             //End of ShipType.Construction
+        }
+
+        private static void DoConstructionShip_BORG(Fleet _fleet, List<Fleet> _allConstructFleetsHere)
+        {
+            // Borg + System in Sector + No station + No _location owner ( Borg can not colonize )
+            bool _bool_Borg_can_build_station = false;
+            string _text = "";
+
+            if (_fleet.Owner.Key == "BORG"
+                //&& _fleet.Sector.Station == null > this was checked before
+                )
+            {
+                if (_fleet.Sector.System != null
+                && _fleet.Sector.System.StarType != StarType.NeutronStar // not at these !
+                && _fleet.Sector.System.StarType != StarType.BlackHole
+                )
+                {
+                    _bool_Borg_can_build_station = true;
+                }
+                else
+                {
+                    //if (_fleet.Sector.System == null)
+                    //{
+                    _bool_Borg_can_build_station = true;
+                    //}
+                }
+            }
+
+            //&& !_fleet.Sector.IsOwned
+            ////&& _fleet.Sector.IsOwned
+            ////&& _fleet.Sector.Station == null
+            ////&& _fleet.Sector.System != null
+            //&& _fleet.Sector.System.StarType != StarType.NeutronStar
+            //&& _fleet.Sector.System.StarType != StarType.BlackHole
+            ////&& _fleet.Sector.System.StarType != StarType.RadioPulsar 
+
+
+            if (_bool_Borg_can_build_station)  // "occupy" system for not falling into other hands - Borg can't colonize !
+            {
+                _fleet.Activity = UnitActivity.BuildStation; // Borg building
+                //_fleet.Order = FleetOrders.BuildStationOrder;
+
+                _text += " - Order to build a station...";
+                if (_writeDirectly_Fleets)
+                {
+                    Console.WriteLine(_text);
+                    _fleet_Text += Environment.NewLine + _text;
+                }
+
+
+                if (!_allConstructFleetsHere.Any(_f => _f.Order.PercentComplete != null && _f.Order.PercentComplete > 0))
+                {
+
+                    BuildStation(_fleet, _allConstructFleetsHere); // Borg building
+                    //_fleet.Activity = UnitActivity.Hold;
+                    //_fleet.Route.Clear();
+                }
+                //goto EndofConstructionShip;
+
+            } // end of BORG
         }
 
         private static void DoConstructionShip_new_destination_is_needed(Fleet _fleet, out Sector _best_SectorForStation)
@@ -5451,13 +5538,18 @@ namespace Supremacy.AI
             IEnumerable<Fleet> diplomaticShips = GameContext.Current.Universe.FindOwned<Fleet>(_fleet.Owner).Where(s => s.IsDiplomatic);
             List<Colony> possibleColonies = new List<Colony>();
             GetFleetOwnerOutOfShips(_fleet);
+
+
+
             if (_fleet.Owner != null)
             {
                 possibleColonies = GameContext.Current.Universe.Find<Colony>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location)
-                && mapData.IsExplored(s.Location)
-                && s.Owner != _fleet.Owner)
+                .Where(s =>
+                // mapData.IsScanned(s.Location) 2026-10-03
+                //&& mapData.IsExplored(s.Location) 2026-10-03
+                //&& 
+                s.Owner != _fleet.Owner)
                 //In fuel range
                 .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, _fleet)
                 //Where we can enter the _location
@@ -5495,7 +5587,7 @@ namespace Supremacy.AI
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
             if (_is_owner_human)
             {
-                //Debugger.Break();
+                Debugger.Break();
             }
             return true;
         }
@@ -5772,7 +5864,7 @@ namespace Supremacy.AI
                 //  GameLog.Client.AI.DebugFormat("Damn, no Science System of Empire found, possible colonies = {0}", possibleSystems.Count());
 
                 _fleet.Order = FleetOrders.ExploreOrder;
-                
+
                 _result = null;
                 return false;
             }

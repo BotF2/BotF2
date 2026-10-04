@@ -93,12 +93,12 @@ namespace Supremacy.AI
 
                     Print_all_Build_Projects(_all_Build_Projects); // print to Debug _output = console
 
-                    if (_colony.Owner.IsHuman)
+                    if (_colony.Owner.IsHuman && _colony.Name == "Sol")
                     {
                         Print_Colony_Owner_IsHuman(_colony, _civM);  // prints Step_11-02 notification only
 
-                        _text = "just press F5 = next one";
-                        Debugger.Break();
+                        _text = "here: foreach colony - just press F5 = next one";
+                        //Debugger.Break();
                     }
 
                     //_text = _newline + "Step_1103:; " + GameEngine.LocationString(_colony.Location.ToString()) + " * " + _name_col + " (ID=" + _colony.ObjectID
@@ -607,6 +607,8 @@ namespace Supremacy.AI
 
             SkipFacilities_1:
 
+
+
                 // Build as a Prio
                 if (_available_item.BuildDesign.Key.Contains("SOLAR_ARRAY")
                     || _available_item.BuildDesign.Key.Contains("WIND_TURBINES")
@@ -632,16 +634,23 @@ namespace Supremacy.AI
                     }
                 }
 
+                Checkfor_Build_OrbBatteries(_colony, _available_item);
 
-                if (/*_itemToBuild_Facility == null && */_available_item.BuildDesign.Key.Contains("Battery"))
-                {
-                    // each 8 turns one more OrbBat is fine
-                    if (_colony.OrbitalBatteries_Total < GameContext.Current.TurnNumber / 8 && _colony.OrbitalBatteries_Total < 49)
-                    {
-                        _itemToBuild_Facility = _available_item;
-                        _itemToBuild = _available_item;
-                    }
-                }
+                //if (/*_itemToBuild_Facility == null && */_available_item.BuildDesign.Key.Contains("Battery"))
+                //{
+                //    int _orbBat_needed = GameContext.Current.TurnNumber / 8;
+                //    if (_colony.Name == _colony.Owner.HomeSystemName)
+                //    {
+                //        _orbBat_needed = 19;
+                //    }
+
+                //    // each 8 turns one more OrbBat is fine
+                //    if (_colony.OrbitalBatteries_Total < _orbBat_needed && _colony.OrbitalBatteries_Total < 49)
+                //    {
+                //        _itemToBuild_Facility = _available_item;
+                //        _itemToBuild = _available_item;
+                //    }
+                //}
                 // if nothing yet build Battery or next: better...
 
 
@@ -666,6 +675,11 @@ namespace Supremacy.AI
                 }
 
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+                if (_colony.Owner.IsHuman)
+                {
+                    //Debugger.Break(); // Colony_Step_75_CheckFor_All_Build_Projects
+                }
             }
 
             //_text = "Step_1109:; Finish of ColonyAI.Do_0_Turn_Unit ";
@@ -674,6 +688,28 @@ namespace Supremacy.AI
 
         } // End of Do_0_Turn_Unit
 
+        private static void Checkfor_Build_OrbBatteries(Colony _colony, BuildProject _available_item)
+        {
+
+            if (_available_item.BuildDesign.Key.Contains("Battery") 
+                && _colony.BuildQueue.Count < 2
+                )
+            {
+                int _orbBat_needed = GameContext.Current.TurnNumber / 8;
+                if (_colony.Name == _colony.Owner.HomeSystemName)
+                {
+                    _orbBat_needed = 19;
+                }
+
+                // each 8 turns one more OrbBat is fine
+                if (_colony.OrbitalBatteries_Total < _orbBat_needed && _colony.OrbitalBatteries_Total < 49)
+                {
+                    _itemToBuild_Facility = _available_item;
+                    _itemToBuild = _available_item;
+                }
+            }
+        }
+
         private static void CheckFor_OFF_ShipProduction(Colony _colony)
         {
             CivilizationManager _civM = GameContext.Current.CivilizationManagers[_colony.Owner.CivID];
@@ -681,68 +717,9 @@ namespace Supremacy.AI
             //_civM.ShipBuildOrdered_Check();
 
             string _newline = Environment.NewLine;
-            //string _text;
-
-            //// Ship Building
-            //int _shipNeeded_colony = _civM.Z_Ship_Colony_Needed;// - _civM.Z_Ship_Colony_Available - _civM.Z_Ship_Colony_Ordered;
-            //int _civM.Z_Ship_Construction_Needed = _civM.Z_Ship_Construction_Needed;// - _civM.Z_Ship_Construction_Available - _civM.Z_Ship_Construction_Ordered;
-            //int _civM.Z_Ship_Medical_Needed = _civM.Z_Ship_Medical_Needed;// - _civM.Z_Ship_Medical_Available - _civM.Z_ShipMedicalOrdered;
-            //int _civM.Z_Ship_Spy_Needed = _civM.Z_Ship_Spy_Needed;// - _civM.Z_Ship_Spy_Available - _civM.Z_ShipSpyOrdered;
-            //int _civM.Z_Ship_Diplomatic_Needed = _civM.Z_Ship_Diplomatic_Needed;// - _civM.Z_Ship_Diplomatic_Available - _civM.Z_ShipDiplomaticOrdered;
-            //int _civM.Z_Ship_Science_Needed = _civM.Z_Ship_Science_Needed;// - _civM.Z_Ship_Science_Available - _civM.Z_ShipScienceOrdered;
-            //int _civM.Z_Ship_Scout_Needed = _civM.Z_Ship_Scout_Needed;// - _civM.Z_Ship_Scout_Available - _civM.Z_ShipScoutOrdered;
-            //int _civM.Z_Ship_FastAttack_Needed = _civM.Z_Ship_FastAttack_Available;// - _civM.Z_Ship_FastAttack_Available - _civM.Z_ShipFastAttackOrdered;
-            ////int _shipNeeded_destroyer = _civM. - _civM.Z_ShipDestroyerAvailable - _civM.Z_ShipDestroyerOrdered;
-            //int _civM.Z_Ship_Cruiser_Needed = _civM.Z_Ship_Cruiser_Needed;// - _civM.Z_Ship_Cruiser_Available - _civM.Z_ShipCruiserOrdered;
-            //int _civM.Z_Ship_StrikeCruiser_Needed = _civM.Z_Ship_StrikeCruiser_Needed;// - _civM.Z_Ship_StrikeCruiser_Available - _civM.Z_ShipStrikeCruiserOrdered;
-            //int _civM.Z_Ship_HeavyCruiser_Needed = _civM.Z_Ship_HeavyCruiser_Needed;// - _civM.Z_Ship_HeavyCruiser_Available - _civM.Z_ShipHeavyCruiserOrdered;
-            //int _civM.Z_Ship_Command_Needed = _civM.Z_Ship_Command_Needed;// - _civM.Z_ShipCommandAvailable - _civM.Z_ShipCommandOrdered;
-            //int _civM.Z_Ship_Transport_Needed = _civM.Z_Ship_Transport_Needed;// - _civM.Z_Ship_Transport_Available - _civM.Z_ShipTransportOrdered;
-
 
 
             Dictionary<ShipType, Tuple<int, string>> _listPrioShipBuild_tmp = new Dictionary<ShipType, Tuple<int, string>>();
-            //Dictionary<ShipType, int> _listPrioShipBuild = new Dictionary<ShipType, int>();
-
-            //Tuple<int, string> _add = new Tuple<int, string>(_civM.Z_Ship_Colony_Needed * -1, "Colony");
-            //if (_civM.Z_Ship_Colony_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Colony, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Construction_Needed * -1, "Construction");
-            //if (_civM.Z_Ship_Construction_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Construction, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Medical_Needed * -1, "Medical");
-            //if (_civM.Z_Ship_Medical_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Medical, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Spy_Needed * -1, "Spy");
-            //if (_civM.Z_Ship_Spy_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Spy, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Diplomatic_Needed * -1, "Diplomatic");
-            //if (_civM.Z_Ship_Diplomatic_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Diplomatic, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Science_Needed * -1, "Science");
-            //if (_civM.Z_Ship_Science_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Science, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Scout_Needed * -1, "Scout");
-            //if (_civM.Z_Ship_Scout_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Scout, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_FastAttack_Needed * -1, "FastAttack");
-            //if (_civM.Z_Ship_FastAttack_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.FastAttack, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Cruiser_Needed * -1, "Cruiser");
-            //if (_civM.Z_Ship_Cruiser_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Cruiser, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_StrikeCruiser_Needed * -1, "StrikeCruiser");
-            //if (_civM.Z_Ship_StrikeCruiser_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.StrikeCruiser, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_HeavyCruiser_Needed * -1, "HeavyCruiser");
-            //if (_civM.Z_Ship_HeavyCruiser_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.HeavyCruiser, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Command_Needed * -1, "Command");
-            //if (_civM.Z_Ship_Command_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Command, _add);
-
-            //_add = new Tuple<int, string>(_civM.Z_Ship_Transport_Needed * -1, "Transport");
-            //if (_civM.Z_Ship_Transport_Needed > 0) _listPrioShipBuild_tmp.Add(ShipType.Transport, _add);
-
 
             //Dictionary<ShipType,int> _listPrioShipBuild = _listPrioShipBuild_tmp.OrderByDescending(_l => _l.Value).ToList(); // doesn't sort
             //_listPrioShipBuild = _listPrioShipBuild_tmp.OrderByDescending(_l => _l.Value).ToList(); // doesn't sort
@@ -1224,8 +1201,8 @@ namespace Supremacy.AI
 
             if (_colony.Name == _check_colony)
             {
-                _text = "Press F5 = next one";
-                Debugger.Break();
+                _text = "Press F5 = next one"; // Colony_Step_01_Check_Population
+                //Debugger.Break(); // Colony_Step_01_Check_Population
             }
 
             if (_bool_colony_is_AI_Controlled == false)
@@ -1626,7 +1603,7 @@ namespace Supremacy.AI
             if (_colony.Name == _text)
             {
                 Console.WriteLine("Step_3552:; break for Colony > " + _text);
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (!_colony.Owner.Is_AI_Controlled)
@@ -1864,7 +1841,7 @@ namespace Supremacy.AI
                     //+ "Credits.Current= " + _civM.Credits.CurrentValue
                     //+ ", Costs= " + _cost
                     //+ ", _industryNeeded= " + _industryNeeded
-                    //+ ", prodOutput= " + prodOutput.ToString()
+                    //+ ", _prod_output= " + _prod_output.ToString()
                     //+ ", _turnsNeeded= " + _turnsNeeded
                     //+ " > IsRushed for " + s.Project
                     + " on " + _name_col + " " + _owner_col
@@ -2037,7 +2014,7 @@ namespace Supremacy.AI
                 //                .Where(availableResources.ContainsKey)
                 //                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
                 //    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
-                //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))) <= 5.0)
                 //{
                 //    _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
                 //}
@@ -2108,7 +2085,7 @@ namespace Supremacy.AI
                         //+ "Credits.Current= " + _civM.Credits.CurrentValue
                         + ", Costs= "
                         + ", _industryNeeded= " + item.IndustryRemaining
-                        //+ ", prodOutput= " + prodOutput.ToString()
+                        //+ ", _prod_output= " + _prod_output.ToString()
                         + ", _turnsNeeded= " + item.TurnsRemaining
                         //+ " > IsRushed for " + s.Project
                         + " Available = " + item.BuildDesign
@@ -2155,7 +2132,7 @@ namespace Supremacy.AI
                 //    + "; " + _owner_col
                 //    + "; Morale=; " + _colony.Morale
                 //    + "; UnitOutput=;" + _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
-                //    + "; prodOutput=;" + prodOutput
+                //    + "; _prod_output=;" + _prod_output
                 //;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
@@ -2232,7 +2209,7 @@ namespace Supremacy.AI
                 //            + " on; " + _name_col
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
-                //            //+ "; prodOutput=;" + prodOutput // per unit
+                //            //+ "; _prod_output=;" + _prod_output // per unit
                 //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + _toBuildText
 
@@ -2244,19 +2221,19 @@ namespace Supremacy.AI
                         + " ; " + _owner_col
                         + " > Colony_Step_60_Handle_Basic_Structures=;"
                         + " > Morale=; " + _colony.Morale
-                        //+ "; prodOutput=;" + prodOutput // per unit
+                        //+ "; _prod_output=;" + _prod_output // per unit
                         + "; Industry_Net=;" + _colony.Industry_Net
                         + "; BuildQueue.Count=; " + _colony.BuildQueue.Count
                         + _toBuildText
 
                     //+ "; MathCeiling=; " + Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                    //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput)))
+                    //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output)))
                     ;
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
 
                 //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                //    * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 9999.0)  // now 9999.0 instead of 5.0 > puts something on ..
+                //    * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))) <= 9999.0)  // now 9999.0 instead of 5.0 > puts something on ..
                 //    
 
                 //.. put some on build list for buy option
@@ -2270,7 +2247,7 @@ namespace Supremacy.AI
                             + " ; " + _owner_col
                             + " > Colony_Step_60_Handle_Basic_Structures"
                             + "; Morale=; " + _colony.Morale
-                            + "; prodOutput=;" + prodOutput
+                            + "; _prod_output=;" + prodOutput
                             + "; Industry_Net=;" + _colony.Industry_Net
                             + "; > Added to Build=;" + structureProject.BuildDesign.ToString()
 
@@ -2288,7 +2265,7 @@ namespace Supremacy.AI
                 //                            + "; " + _owner_col
                 //+ " Added to Build"
                 //                            + "; Morale=; " + _colony.Morale
-                //                            + "; prodOutput=;" + prodOutput
+                //                            + "; _prod_output=;" + _prod_output
                 //                            + "; ToBuildonSlots.Count=;" + projects.Count
 
                 //                            ;
@@ -2402,7 +2379,7 @@ namespace Supremacy.AI
                 //    + "; " + _owner_col
                 //    + "; Morale=; " + _colony.Morale
                 //    + "; UnitOutput=;" + _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
-                //    + "; prodOutput=;" + prodOutput
+                //    + "; _prod_output=;" + _prod_output
                 //;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
@@ -2479,7 +2456,7 @@ namespace Supremacy.AI
                 //            + " on; " + _name_col
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
-                //            //+ "; prodOutput=;" + prodOutput // per unit
+                //            //+ "; _prod_output=;" + _prod_output // per unit
                 //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + _toBuildText
 
@@ -2491,18 +2468,18 @@ namespace Supremacy.AI
                         + " ; " + _owner_col
                         + " > Colony_Step_40_Build_for_LaborPool"
                         + "; Morale=; " + colony.Morale
-                        //+ "; prodOutput=;" + prodOutput // per unit
+                        //+ "; _prod_output=;" + _prod_output // per unit
                         + "; Industry_Net=;" + colony.Industry_Net
                         //+ "; ToBuild=;" + _toBuildText
                         + "; BuildQueue.Count=" + colony.BuildQueue.Count
                     //+ "; MathCeiling=; " + Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                    //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput)))
+                    //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output)))
                     ;
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
 
                 //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                //    * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 9999.0)  // now 9999.0 instead of 5.0 > puts something on ..
+                //    * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))) <= 9999.0)  // now 9999.0 instead of 5.0 > puts something on ..
                 //    
 
                 //.. put some on build list for buy option
@@ -2515,7 +2492,7 @@ namespace Supremacy.AI
                 //            + " on; " + _name_col
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
-                //            + "; prodOutput=;" + prodOutput
+                //            + "; _prod_output=;" + _prod_output
                 //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + structureProject.BuildDesign.ToString()
 
@@ -2535,7 +2512,7 @@ namespace Supremacy.AI
                 //                            + "; " + _owner_col
                 //+ " Added to Build"
                 //                            + "; Morale=; " + _colony.Morale
-                //                            + "; prodOutput=;" + prodOutput
+                //                            + "; _prod_output=;" + _prod_output
                 //                            + "; ToBuildonSlots.Count=;" + projects.Count
 
                 //                            ;
@@ -2701,7 +2678,7 @@ namespace Supremacy.AI
                 //                .Where(availableResources.ContainsKey)
                 //                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
                 //    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
-                //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))) <= 5.0)
                 //{
                 //    _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
                 //}
@@ -3057,7 +3034,7 @@ namespace Supremacy.AI
                     //                .Where(availableResources.ContainsKey)
                     //                .All(r => availableResources[r] >= p.GetCurrentResourceCost(r)))
                     //    .OrderBy(p => p.BuildDesign.BuildCost).FirstOrDefault();
-                    //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 5.0)
+                    //if (structureProject != null && Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))) <= 5.0)
                     //{
                     //    _colony.BuildQueue.Add(new BuildQueueItem(structureProject));
                     //}
@@ -3154,7 +3131,7 @@ namespace Supremacy.AI
 
                             //_turns_needed = Math.Ceiling(structureProject.GetCurrentIndustryCost()
                             //                        // _colony.GetProductionModifier(ProductionCategory.Industry).Bonus  // does a DivideByZeroException
-                            //                        + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput));
+                            //                        + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output));
                         }
                         catch
                         {
@@ -3174,7 +3151,7 @@ namespace Supremacy.AI
                         //+ "; Credits.Current= " + _civM.Credits.CurrentValue
                         //+ " > Math.Ceiling= " + Math.Ceiling(structureProject.GetCurrentIndustryCost()
                         //                        / _colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                        //                        + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))
+                        //                        + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))
                         //+ " on " + _name_col + " " + GameEngine.LocationString(_colony.Location.ToString())
                         //+ "  ..( max. 8)"
                         ;
@@ -3183,7 +3160,7 @@ namespace Supremacy.AI
 
                         //if (Math.Ceiling(structureProject.GetCurrentIndustryCost()
                         //    / _colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                        //    + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))
+                        //    + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))
 
                         if (_turns_needed < 2.0)
                         {
@@ -3215,7 +3192,7 @@ namespace Supremacy.AI
                                 //+ "; Credits.Current= " + _civM.Credits.CurrentValue
                                 //+ " > Math.Ceiling= " + Math.Ceiling(structureProject.GetCurrentIndustryCost()
                                 //                        / _colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                                //                        + (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))
+                                //                        + (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))
                                 //+ " on " + _name_col + " " + GameEngine.LocationString(_colony.Location.ToString())
                                 ;
                             if (_writeDirectly_Colony) Console.WriteLine(_text);
@@ -3273,7 +3250,7 @@ namespace Supremacy.AI
 
             if (_buildDuration < 2) //Colony_Step_85_Handle_Build_Anything
             {
-                double prodOutput = _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
+                double _prod_output = _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
                     * (_colony.Morale.CurrentValue / (0.5f * MoraleHelper.MaxValue))
                     * (1.0 + _colony.GetProductionModifier(ProductionCategory.Industry).Efficiency);
 
@@ -3283,7 +3260,7 @@ namespace Supremacy.AI
                 //    + "; " + _owner_col
                 //    + "; Morale=; " + _colony.Morale
                 //    + "; UnitOutput=;" + _colony.GetFacilityType(ProductionCategory.Industry).UnitOutput
-                //    + "; prodOutput=;" + prodOutput
+                //    + "; _prod_output=;" + _prod_output
                 //;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
@@ -3378,7 +3355,7 @@ namespace Supremacy.AI
                 //                + " on; " + _name_col
                 //                + "; " + _owner_col
                 //                + "; Morale=; " + _colony.Morale
-                //                //+ "; prodOutput=;" + prodOutput // per unit
+                //                //+ "; _prod_output=;" + _prod_output // per unit
                 //                + "; Industry_Net=;" + _colony.Industry_Net
                 //                + "; Available=;" + item.BuildDesign
 
@@ -3405,16 +3382,7 @@ namespace Supremacy.AI
                 //else
                 if (obProject != null)
                 {
-                    _toBuildText = obProject.BuildDesign.ToString();
-                    if (/*_itemToBuild_Facility == null && */obProject.BuildDesign.Key.Contains("BATTERY"))
-                    {
-                        // each 6 turns one more OrbBat is fine
-                        if (_colony.OrbitalBatteries_Total < GameContext.Current.TurnNumber / 6)
-                        {
-                            _itemToBuild_Facility = obProject;
-                            _itemToBuild = obProject;
-                        }
-                    }
+                    Checkfor_Build_OrbBatteries(_colony, obProject);
                     // if nothing yet build Battery or next: better...
                 }
 
@@ -3425,12 +3393,12 @@ namespace Supremacy.AI
                             + " ; " + _owner_col
                         + " > Colony_Step_85_Handle_Build_Anything"
                             + "; Morale=; " + _colony.Morale
-                            //+ "; prodOutput=;" + prodOutput // per unit
+                            //+ "; _prod_output=;" + _prod_output // per unit
                             + "; Industry_Net=;" + _colony.Industry_Net
                             + "; ToBuild=;" + _toBuildText
                             + "; BuildQueue.Count= " + _colony.BuildQueue.Count
                         //+ "; MathCeiling=; " + Math.Ceiling(anyProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                        //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput)))
+                        //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output)))
                         ;
                     if (_writeDirectly_Colony) Console.WriteLine(_text);
                     _colony_full_Report += _newline + _text;
@@ -3441,7 +3409,7 @@ namespace Supremacy.AI
                 //            + " on; " + _name_col
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
-                //            //+ "; prodOutput=;" + prodOutput // per unit
+                //            //+ "; _prod_output=;" + _prod_output // per unit
                 //            + "; Industry_Net=;" + _colony.Industry_Net
                 //            + "; ToBuild=;" + _toBuildText
 
@@ -3452,18 +3420,18 @@ namespace Supremacy.AI
                         + " > " + _name_col
                         + " ; " + _owner_col
                         + " ; Morale=; " + _colony.Morale
-                        //+ "; prodOutput=;" + prodOutput // per unit
+                        //+ "; _prod_output=;" + _prod_output // per unit
                         + "; Industry_Net=;" + _colony.Industry_Net
                         + "; Colony_Step_85_Handle_Build_Anything=;" + _toBuildText
                         + "; BuildQueue.Count=" + _colony.BuildQueue.Count
                     //+ "; MathCeiling=; " + Math.Ceiling(anyProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                    //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput)))
+                    //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output)))
                     ;
                 if (_writeDirectly_Colony) Console.WriteLine(_text);
                 _colony_full_Report += _newline + _text;
 
                 //if (anyProject != null && Math.Ceiling(anyProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
-                //    * (_colony.TotalFacilities[ProductionCategory.Industry].Value * prodOutput))) <= 9999.0)  // now 9999.0 instead of 5.0 > puts something on ..
+                //    * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output))) <= 9999.0)  // now 9999.0 instead of 5.0 > puts something on ..
                 //    
 
                 //.. put some on build list for buy option
@@ -3503,7 +3471,7 @@ namespace Supremacy.AI
                             + " > " + _name_col
                             + " ; " + _owner_col
                             + " ; Morale=; " + _colony.Morale
-                            + "; prodOutput=;" + prodOutput
+                            + "; _prod_output=;" + _prod_output
                             + "; Industry_Net=;" + _colony.Industry_Net
                             + "; Added_to_Build=;" + _itemToBuild.BuildDesign.ToString()
 
@@ -3527,7 +3495,7 @@ namespace Supremacy.AI
                 //            + " on; " + _name_col
                 //            + "; " + _owner_col
                 //            + "; Morale=; " + _colony.Morale
-                //            + "; prodOutput=;" + prodOutput
+                //            + "; _prod_output=;" + _prod_output
                 //            + "; ToBuildonSlots.Count=;" + projects.Count
 
                 //            ;
@@ -3553,7 +3521,9 @@ namespace Supremacy.AI
                 //        _colony_full_Report += _newline + _text;
                 //    }
                 //}
+                Checkfor_Build_OrbBatteries(_colony, _itemToBuild);
             }
+            Checkfor_Build_OrbBatteries(_colony, _itemToBuild);
         }
         //End of Colony_Step_85_Handle_Build_Anything
 
@@ -3606,7 +3576,7 @@ namespace Supremacy.AI
                         //    + "Credits.Current= " + _civM.Credits.CurrentValue
                         //    + ", Costs= " + _cost
                         //    + ", _industryNeeded= " + _industryNeeded
-                        //    + ", prodOutput= " + (int)prodOutput
+                        //    + ", _prod_output= " + (int)_prod_output
                         //    + ", _turnsNeeded= " + _turnsNeeded
                         //    + " > IsRushed for " + s.Project
                         //    + " on " + _name_col + " " + s.Project.Location
@@ -4170,7 +4140,7 @@ namespace Supremacy.AI
                     //            + "_civM.Z_Ship_Colony_Needed= " + _civM.Z_Ship_Colony_Needed
                     //        //+ ", Costs= " + _cost
                     //        //+ ", _industryNeeded= " + _industryNeeded
-                    //        //+ ", prodOutput= " + prodOutput.ToString()
+                    //        //+ ", _prod_output= " + _prod_output.ToString()
                     //        //+ ", _turnsNeeded= " + _turnsNeeded
                     //        //+ " > IsRushed for " + s.Project
                     //        //+ " on " + _name_col + " " + s.Project.Location
