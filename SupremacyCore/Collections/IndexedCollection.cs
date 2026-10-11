@@ -1126,10 +1126,26 @@ namespace Supremacy.Collections
                 //try can't be done here 
                 //try { 
 
-                    IEnumerable<TSource> sourceEnum = sourceCollection.AsEnumerable();
-                    foreach (TSource resultItem in sourceEnum.Where(expr.Compile()))
+                    // Avoid calling AsEnumerable() and Enumerable.Where here to prevent
+                    // accidental recursion into this extension method. Iterate the
+                    // collection via its enumerator and apply the compiled predicate
+                    // directly.
+                    Func<TSource, bool> predicate = expr.Compile();
+                    IEnumerator<TSource> enumerator = sourceCollection.GetEnumerator();
+                    try
                     {
-                        yield return resultItem;
+                        while (enumerator.MoveNext())
+                        {
+                            TSource resultItem = enumerator.Current;
+                            if (predicate(resultItem))
+                            {
+                                yield return resultItem;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        (enumerator as IDisposable)?.Dispose();
                     }
                 //}
                 //catch

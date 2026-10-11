@@ -421,8 +421,20 @@ namespace Supremacy.Economy
                 }
 
             }
+            string _total_research_distribution_just_for_debug = "";
 
-
+            if(GameEngine.AI_IsPlayer_AI_Controlled)
+            {
+                _total_research_distribution_just_for_debug =
+                        " - Total " + (100 * (
+                        _distributions[0].Value
+                        + _distributions[1].Value
+                        + _distributions[2].Value
+                        + _distributions[3].Value
+                        + _distributions[4].Value
+                        + _distributions[5].Value
+                        )).ToString();
+            }
 
             distributionSummary += " - Bio " + _distributions[0].Value.ToString()/* + ", "*/
                     + " - Comp. " + _distributions[1].Value.ToString()/* + ", "*/
@@ -430,14 +442,7 @@ namespace Supremacy.Economy
                     + " - Energy " + _distributions[3].Value.ToString()/* + ", "*/
                     + " - Prop. " + _distributions[4].Value.ToString()/* + ", "*/
                     + " - Weapon " + _distributions[5].Value.ToString()/* + ", "*/
-                    + " - Total " + (100*(
-                    _distributions[0].Value 
-                    +_distributions[1].Value 
-                    +_distributions[2].Value 
-                    +_distributions[3].Value 
-                    +_distributions[4].Value 
-                    +_distributions[5].Value
-                    )).ToString()/* + ", "*/
+                    + _total_research_distribution_just_for_debug
                     ;
             //distributionSummary += "- Gained = " + researchPoints;
 

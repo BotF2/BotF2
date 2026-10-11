@@ -235,10 +235,11 @@ namespace Supremacy.Universe
             // TODO Disabled this for now as it turns out that it is still able to fail to place homeworlds.
             // Tried to rework the loop so that either it restarted the placement process or tried to re-place
             // this failing homeworld with a smaller distance requirement. But it keeps failing or crashing.
-            /*if (GameContext.Current.IsMultiplayerGame)
-            {
-                return (int)(0.3f * (float)size);  // min distance would be of 30% of the full map distance, higher than that it starts to be difficult to place all 5 empires
-            }*/
+
+            //if (GameContext.Current.IsMultiplayerGame)
+            //{
+            //    return (int)(0.3f * (float)size);  // min distance would be of 30% of the full map distance, higher than that it starts to be difficult to place all 5 empires
+            //}
 
             // Ensure empireCount has a positive value to avoid a divide-by-zero error.
             int empireCount = Math.Max(1, GameContext.Current.Civilizations.Count(o => o.IsEmpire));
@@ -246,7 +247,8 @@ namespace Supremacy.Universe
             // new 2019-09-28: try to avoid crashes at TINY galaxies
             int minDistance = size / empireCount;
 
-            if (GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Cluster)
+            if (GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Elliptical 
+                || GameContext.Current.GameOptions.GalaxyShape == GalaxyShape.Cluster)
             {
                 minDistance--;
                 if (minDistance < 1)
@@ -254,13 +256,13 @@ namespace Supremacy.Universe
                     minDistance = 1;
                 }
             }
-            _text = "Step_0519:; GalaxySize= " + size
+
+            _text = "GalaxySize= " + size
                 + ", EmpireCount= " + empireCount
                 + ", MinDistanceBetweenHomeworlds = " + minDistance
                 ;
-            Console.WriteLine(_text);
-            GameLog.Core.GalaxyGenerator.DebugFormat("GalaxySize = {0}, EmpireCount = {1}, MinDistanceBetweenHomeworlds = {2}"
-                , size, empireCount, minDistance);
+            Console.WriteLine("Step_0519:; > " + _text);
+            //GameLog.Core.GalaxyGenerator.DebugFormat(_text);
 
             return minDistance;
         }
@@ -405,9 +407,10 @@ namespace Supremacy.Universe
                             }
                         }
                     }
+
                     _text = "Step_1258:; ### MapContent-Count:;" + count;
                     Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);// hiding info in Log.txt
 
                     _text = "Step_1226:; Searching for Crash: next: systemNamesList";
                     Console.WriteLine(_text);
@@ -453,7 +456,7 @@ namespace Supremacy.Universe
                     }
                     _text = "Step_1281:; ### Systems-Count:;" + count;
                     Console.WriteLine(_text);
-                    GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                    //GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
                     break;
                 }
@@ -969,6 +972,15 @@ namespace Supremacy.Universe
 
                 positions.RemoveAt(iPosition);
             }
+
+            _text =
+                "PlaceEmpireHomeworlds was done " 
+                //+ empireCivs[index].Name
+                ////+ " placed at " + positions[iPosition]
+                //+ " as " + empireCivs[index].CivilizationType
+                ;
+            Console.WriteLine("Step_0539:; > " + _text);
+            GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
 
             return true;
         }

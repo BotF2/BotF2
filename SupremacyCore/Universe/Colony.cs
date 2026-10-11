@@ -124,6 +124,8 @@ namespace Supremacy.Universe
         private string _inhabitantId;
         private string _locationColonyString;
         private bool _isProductionAutomated;
+        private bool _is_AI_handling_colony_instead_of_Human_Player;
+
         private Meter _morale;
         private short _originalOwnerId;
         private Meter _population;
@@ -447,7 +449,18 @@ namespace Supremacy.Universe
         /// Gets or sets the name of this <see cref="Colony"/>.
         /// </summary>
         /// <value>The name.</value>
-        public override string Name => base.Name ?? (System?.Name);
+        public override string Name
+        {
+            get
+            {
+                string name = (System?.Name);
+                if (this.IsProductionAutomated)
+                {
+                    name += (" ( Auto )");
+                }
+                return base.Name ?? name;
+            }
+        }
 
         public string All_Root
         {
@@ -657,6 +670,11 @@ namespace Supremacy.Universe
         {
             get => _isProductionAutomated || !Owner.IsHuman;
             set => _isProductionAutomated = value;
+        }
+        public bool AI_is_handling_colony_instead_of_Human_Player
+        {
+            get => _is_AI_handling_colony_instead_of_Human_Player;// || !Owner.IsHuman;
+            set => _is_AI_handling_colony_instead_of_Human_Player = value;
         }
 
         /// <summary>

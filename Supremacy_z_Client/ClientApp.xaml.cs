@@ -573,24 +573,28 @@ namespace Supremacy.Client
                     if (!File.Exists(file))
                     {
                         StreamWriter streamWriter = new StreamWriter(file);
-                        streamWriter.WriteLine("IF this file doesn't exist before it is re-created out of the code ! ");
-                        streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("if the game crash after first start...");
-                        streamWriter.WriteLine("...make sure you have the requirements installed:");
-                        streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("a) XNA Framework 3.1 Redistributable (make sure 3.1 ..... 4.0 or higher doesn't work)");
-                        streamWriter.WriteLine("Microsoft XNA Framework 3.1 https://www.microsoft.com/en-us/download/details.aspx?id=15163");
-                        streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("b) is the program at a folder with write access ?");
-                        streamWriter.WriteLine("- not program folders");
-                        streamWriter.WriteLine("- maybe c:/User/YourUserName/RiseoftheUFP");
-                        streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("c) if still problems > see /Resources/FIXES FOR COMMON PROBLEMS.txt");
-                        streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("d) https://appuals.com/how-to-fix-folder-keeps-reverting-to-read-only-on-windows-10/ > file access in windows 11 might be controled by your security app. Try putting SupremacyClient.exe in an exclusion from read-only protection in the security app.)");
-                        streamWriter.WriteLine(" ");
-                        streamWriter.WriteLine("e) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
-                        streamWriter.WriteLine(" ");
+                        streamWriter.Write(
+                            "IF this file doesn't exist before it is re-created out of the code!\n"+ "\n"
+                            +
+                            "if the game crashes after the first start...\n" + 
+                            "...make sure you have the requirements installed:\n" + "\n"
+                            +
+                            "a) XNA Framework 3.1 Redistributable (make sure 3.1 is used — 4.0 or higher will not work)\n" +
+                            "Microsoft XNA Framework 3.1: https://www.microsoft.com/en-us/download/details.aspx?id=15163\n"+ "\n"
+                            +
+                            "b) Is the program in a folder with write access?\n" +
+                            "- Do not use Program Files\n" +
+                            "- Recommended: C:/Users/YourUserName/RiseoftheUFP\n"+ "\n" 
+                            +
+                            "c) If problems persist, see /Resources/FIXES FOR COMMON PROBLEMS.txt\n"+ "\n" 
+                            +
+                            "d) Windows file access / security:\n" +
+                            "File access in Windows 10/11 might be controlled by your security app.\n" +
+                            "Try putting SupremacyClient.exe in an exclusion/allowlist in your security app.\n" +
+                            "(Ref: https://appuals.com/how-to-fix-folder-keeps-reverting-to-read-only-on-windows-10/)\n"+ "\n" 
+                            +
+                            "e) For more info, see: http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview\n\n"
+                        );
 
                         streamWriter.Close();
                     }

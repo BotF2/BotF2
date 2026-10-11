@@ -475,7 +475,7 @@ namespace Supremacy.AI
                         _colony.BuildQueue.Add(new BuildQueueItem(new ProductionFacilityBuildProject(_colony, _colony.GetFacilityType(ProductionCategory.Research))));
                         _text = "Step_1244:; " + GameEngine.LocationString(_colony.Location.ToString())
 
-                                + " > " + _name_col + ", Owner= " + _owner_col
+                                + " > " + _name_col + " ; " + _owner_col
                                 + " > Colony_Step_80_Handle_Flex_Production on "
                                 + " > ordered one more facility for > Research"
                                 ;
@@ -690,6 +690,10 @@ namespace Supremacy.AI
 
         private static void Checkfor_Build_OrbBatteries(Colony _colony, BuildProject _available_item)
         {
+            if (_available_item == null)
+            {
+                Debugger.Break();
+            }
 
             if (_available_item.BuildDesign.Key.Contains("Battery") 
                 && _colony.BuildQueue.Count < 2
@@ -1242,7 +1246,7 @@ namespace Supremacy.AI
             if (_colony.Name == _check_colony)
             {
                 _text = "Press F5 = next one";
-                Debugger.Break();
+                //Debugger.Break(); // Colony_Step_01_Check_Population
             }
 
 

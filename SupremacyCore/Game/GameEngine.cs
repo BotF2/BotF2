@@ -3298,13 +3298,13 @@ namespace Supremacy.Game
                 try
                 {
                     CivilizationManager _civM = GameContext.Current.CivilizationManagers[_civ.CivID];
-
                     _civM.TotalPopulation.Reset();
 
                     //_text = "";
 
                     foreach (Colony _colony in _civM.Colonies)
                     {
+                        _colony.AI_is_handling_colony_instead_of_Human_Player = GameEngine.AI_IsPlayer_AI_Controlled;
                         _colony.Population.Maximum = _colony.Population_Max;
 
                         int popChange = 0;
@@ -3491,7 +3491,8 @@ namespace Supremacy.Game
                         + " - Energy: " + _colony.Facilities_Active3_Energy + " / " + _colony.Facilities_Total3_Energy
                         + " - Research: " + _colony.Facilities_Active4_Research + " / " + _colony.Facilities_Total4_Research
                         + " - Intel: " + _colony.Facilities_Active5_Intelligence + " / " + _colony.Facilities_Total5_Intelligence
-                        + " - Pop: " + _colony.Population.CurrentValue + " / " + _colony.Population_Max
+                        + " - Pop: " + GameEngine.Do_x_Digit_String(3, _colony.Population.CurrentValue.ToString())
+                        + " / " + _colony.Population_Max
                         + "  for " + _colony.Name
                         ;
 
@@ -4953,9 +4954,10 @@ namespace Supremacy.Game
 
                                 _colony.BuildSlots[0].Project.Advance(ref tmpIndustry, tmpResources);
 
-                                _text = "Step_4230:;"
-                                    + " Turn " + GameContext.Current.TurnNumber
-                                    + "; " + GameEngine.LocationString(_colony.Location.ToString())
+                                _text = /*"Step_4230:;"*/
+                                    //+ " Turn " + GameContext.Current.TurnNumber
+                                    //+ "; " + 
+                                    GameEngine.LocationString(_colony.Location.ToString())
                                     + " BUY: "
                                     + _creditsCosts + " credits applied to "
                                     + _colony.BuildSlots[0].Project.BuildDesign.Name + " on "
@@ -4963,8 +4965,9 @@ namespace Supremacy.Game
                                     + _civ.Name + " ) "
                                     //+ _civM_1.Credits.LastChange + " last change "
                                     ;
-                                if (_writeDirectly) Console.WriteLine(_text);
+                                if (_writeDirectly) Console.WriteLine("Step_4230:;" + _text);
                                 //GameLog.Core.ProductionDetails.DebugFormat(_text);
+                                _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_colony.Owner, _colony, _text, _text, "", SitRepPriority.Gray));
                             }
                             else
                             {
@@ -5315,9 +5318,10 @@ namespace Supremacy.Game
                                 + " industry output:  " + _slot.Project.BuildDesign
                                 + "  is " + _slot.Project.PercentComplete
                                 + " complete - "
-                                + " used: Dur=" + duraniumUsed
-                                + ", Dil=" + dilithiumUsed
-                                + ", Deu=" + deuteriumUsed
+                                + " used: Dur=" + GameEngine.Do_x_Digit_String(3, duraniumUsed.ToString())
+                                + ", Dil=" + GameEngine.Do_x_Digit_String(2, dilithiumUsed.ToString())
+                                + ", Deu=" + GameEngine.Do_x_Digit_String(3, deuteriumUsed.ToString())
+
                                 ;
 
                                 _civM.SitRepEntries.Add(new ReportEntry_ShowColony(_civ, _colony, _text2, _text2, "", SitRepPriority.GrayDark));
@@ -6271,23 +6275,23 @@ namespace Supremacy.Game
                     _text = GameEngine.LocationString(col.Location.ToString()) //+ " " "Colony"
                                                                                //+ _civM_1.Civilization.Key
                                                                                //+ " Colony" /*+ col.Name*/
-                    + ": Pop> " + col.Population + " /G " + col.GrowthRate
-                    + " /H " + col.Health
-                    + " /Mor " + col.Morale
+                    + ": Pop> " + GameEngine.Do_x_Digit_String(3, col.Population.ToString()) + " /G " + col.GrowthRate
+                    + " /H " + GameEngine.Do_x_Digit_String(3, col.Health.ToString())
+                    + " /Mor " + GameEngine.Do_x_Digit_String(3, col.Morale.ToString())
 
-                    + ", Dil> " + col.Dilithium_Net
-                    + ", Deu> " + col.Deuterium_Net
-                    + ", Dur> " + col.Duranium_Net
+                    + ", Dil> " + GameEngine.Do_x_Digit_String(3, col.Dilithium_Net.ToString())
+                    + ", Deu> " + GameEngine.Do_x_Digit_String(3, col.Deuterium_Net.ToString())
+                    + ", Dur> " + GameEngine.Do_x_Digit_String(3, col.Duranium_Net.ToString())
 
-                    + ", Res> " + col.Research_Net
-                    + ", Int> " + col.Intelligence_Net
+                    + ", Res> " + GameEngine.Do_x_Digit_String(3, col.Research_Net.ToString())
+                    + ", Int> " + GameEngine.Do_x_Digit_String(3, col.Intelligence_Net.ToString())
 
-                    + ", Ind> " + col.Industry_Net
-                    + ", En> " + col.Energy_Net
+                    + ", Ind> " + GameEngine.Do_x_Digit_String(3, col.Industry_Net.ToString())
+                    + ", En> " + GameEngine.Do_x_Digit_String(3, col.Energy_Net.ToString())
 
 
-                    + ", Food> " + col.FoodReserves
-                    + " / " + col.FoodReserves.LastChange
+                    + ", Food> " + GameEngine.Do_x_Digit_String(3, col.FoodReserves.ToString())
+                    + " / " + GameEngine.Do_x_Digit_String(3, col.FoodReserves.LastChange.ToString())
 
                     + "  for " + col.Name
                     ;

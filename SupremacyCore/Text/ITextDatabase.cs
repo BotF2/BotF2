@@ -46,6 +46,7 @@ namespace Supremacy.Text
         string Custom1 { get; set; }
         string Custom2 { get; set; }
 
+
     }
 
     public interface IRaceTextDatabaseEntry : ILocalizedTextDatabaseEntry
@@ -77,7 +78,7 @@ namespace Supremacy.Text
 
             ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = database.TechObjectTextTable;
             string techObjectEntryType = typeof(ITechObjectTextDatabaseEntry).FullName;
-            XElement techObjectTableElement = doc.Root.Elements("GameTables")
+            XElement techObjectTableElement = doc.Root.Elements("Tables")
                 .Elements("Table")
                 .FirstOrDefault(e => string.Equals((string)e.Attribute("EntryType"), techObjectEntryType));
 

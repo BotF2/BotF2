@@ -548,10 +548,10 @@ namespace Supremacy.Game
                         "TreatyOpenBorders");
                     _agreement_text = _agreement_text.Replace("TreatyOpenBordersTreatyOpenBorders",
                         "TreatyOpenBorders");
-                    
+
                     if (_agreement_text != "")
                     {
-                    Console.WriteLine("Step_1774:; " + _agreement_text);
+                        Console.WriteLine("Step_1774:; " + _agreement_text);
                     }
 
 
@@ -579,10 +579,10 @@ namespace Supremacy.Game
                     _sb.Append(GameEngine.Do_x_Digit_String(4, item.Trust.ToString()));
 
                     _sb.Append(" > FirePowerSpace: ");
-                    _sb.Append(GameEngine.Do_x_Digit_String(5, 
+                    _sb.Append(GameEngine.Do_x_Digit_String(5,
                         GameContext.Current.CivilizationManagers[item.OwnerID].FirePowerSpace.ToString()));
                     _sb.Append(" vs ");
-                    _sb.Append(GameEngine.Do_x_Digit_String(5, 
+                    _sb.Append(GameEngine.Do_x_Digit_String(5,
                         GameContext.Current.CivilizationManagers[item.CounterpartyID].FirePowerSpace.ToString()));
                     //_sb.Append(" > ContactDuration= ");
                     //_sb.Append(GameEngine.Do_x_Digit_String(3, item.ContactDuration.ToString()));
@@ -618,7 +618,7 @@ namespace Supremacy.Game
         public static void Output_File(string _folder, string _file_name, string _output_text)
         {
 
-            string _file = Path.Combine(ResourceManager.GetResourcePath(_folder), _file_name); 
+            string _file = Path.Combine(ResourceManager.GetResourcePath(_folder), _file_name);
             if (!string.IsNullOrEmpty(_file))
             {
                 StreamWriter streamWriter = new StreamWriter(_file);
@@ -851,34 +851,45 @@ namespace Supremacy.Game
 
         public string AA_Report_GameContext
         {
-            get {
-                string _newline = Environment.NewLine;
-                string _report_gamecontext = "Step_4002:; " + DateTime.Now + " > GameContext: "
-                    + "TurnNumber= " + GameContext.Current.TurnNumber /*+ _newline*/
-                    + ", IsMultiplayerGame= " + IsMultiplayerGame
-                    + ", GameMod" + GameMod
-                    + ", _nextObjectId= " + _nextObjectId + _newline
-                    + ", GameOptions= > see the GameOptions" + GameOptions.ToString() + _newline
-                    + ", GameTables(Enum/GameOptions/Morale/Universe)= > see the tables-files" /*+ GameTables.ToString()*/ + _newline
-                    + ", CivilizationManagers.Count= " + CivilizationManagers.Count + _newline
-                    + ", AgreementMatrix= " + GameContext.Current.TurnNumber + _newline
-                    + ", Civilizations.Count= " + Civilizations.Count + " > see Civilization.xml" + _newline
-                    + ", DiplomacyData= " + DiplomacyData.ToString() + _newline
-                    + ", DiplomatsDatabase= " + DiplomacyDatabase.ToString() + _newline
-                    + ", Diplomats.Count= " + Diplomats.Count + _newline
-                    + ", Races.Count= " + Races.Count + " > see Races.xml" + _newline
-                    + ", ResearchMatrix= " + ResearchMatrix.ToString() + _newline
-                    + ", ScriptedEvents= > mostly see > see ScriptedEvents.xml" /*+ ScriptedEvents.ToString()*/ + _newline
-                    + ", SectorClaims= " + SectorClaims.ToString() + _newline
-                    + ", StrategyDatabase.Count= " + StrategyDatabase.Count + " > always 0 ?" + _newline
+            get
+            {
+                //string _newline = Environment.NewLine;
+                string _diplomatsDatabase = DiplomacyDatabase.ToString();
+                string _strategyDatabase = StrategyDatabase.Count.ToString();
+                string _universe_MAP_height = Universe.Map.Height.ToString();
+                string _universe_MAP_width = Universe.Map.Width.ToString();
+                string _universe_MAP_sectors = Universe.Map.ToString();
+                string _universe_Objects = Universe.Objects.ToString();
 
-                    + ", TechDatabase= > see TechObj_x_*.xml" + TechDatabase.ToString() + _newline
-                    + ", TechTrees=  > see TechTrees.xml" /*+ TechTrees.ToString()*/ + _newline
-                    + ", Universe= " + Universe.ToString() + _newline
-                    + "END of GameContext" + _newline
-                    ;
+                string nl = Environment.NewLine;
+                string _report_gamecontext =
+                    $"Step_4002:; {DateTime.Now} > GameContext: " +
+                    $"TurnNumber= {GameContext.Current.TurnNumber}, " +
+                    $"IsMultiplayerGame= {IsMultiplayerGame}, " +
+                    $"GameMod= {GameMod}, " +
+                    $"_nextObjectId= {_nextObjectId}{nl}" +
+                    $"GameOptions= > see the GameOptions{GameOptions}{nl}" +
+                    $"GameTables(Enum/GameOptions/Morale/Universe)= > see the tables-files{nl}" +
+
+                    $"AgreementMatrix= {GameContext.Current.TurnNumber}{nl}" +
+                    $"Civilizations.Count= {Civilizations.Count} > see Civilization.xml{nl}" +
+                    $"CivilizationManagers.Count= {CivilizationManagers.Count}{nl}" +
+                    $"DiplomacyData= {DiplomacyData}{nl}" +
+                    $"DiplomatsDatabase= {_diplomatsDatabase}{nl}" +
+                    $"Diplomats.Count= {Diplomats.Count}{nl}" +
+                    $"Races.Count= {Races.Count} > see Races.xml{nl}" +
+                    $"ResearchMatrix= {ResearchMatrix}{nl}" +
+                    $"ScriptedEvents= > mostly see > see ScriptedEvents.xml{nl}" +
+                    $"SectorClaims= {SectorClaims}{nl}" +
+                    $"StrategyDatabase.Count= {_strategyDatabase} > always 0 ?{nl}" +
+                    $"TechDatabase= > see TechObj_x_*.xml{TechDatabase}{nl}" +
+                    $"TechTrees=  > see TechTrees.xml{nl}" +
+                    $"Universe= {Universe}{nl}" +
+                    $"END of GameContext{nl}"
+                ;
                 return _report_gamecontext
-                    ; }
+                    ;
+            }
         }
 
         public TechTreeMap TechTrees

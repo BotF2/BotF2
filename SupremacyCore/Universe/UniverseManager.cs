@@ -59,9 +59,6 @@ namespace Supremacy.Universe
         private SectorMap _map;
         private UniverseObjectSet _objects;
         private GameObjectLookupCollection<Civilization, Colony> _homeColonyLookup;
-        //private string _text;
-        //private bool _checkLoading = true;
-        //private readonly string _newline = Environment.NewLine;
 
         /// <summary>
         /// Gets the map of the game universe.
@@ -336,6 +333,8 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public bool ScrapNonStructures(Colony _colony)
         {
+            string _text = "";
+
             if (_colony == null)
             {
                 return false;
@@ -397,6 +396,8 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public bool Scrap(TechObject target)
         {
+            string _text = "";
+
             if (target == null)
             {
                 return false;
@@ -785,7 +786,7 @@ namespace Supremacy.Universe
 
         private void PrintColony(Colony item)
         {
-            _text = "Step_4360:"
+            string _text = "Step_4360:"
                 + "; " + item.Location
                 + "; " + item.ObjectID
                 + ";Colony"
@@ -812,7 +813,7 @@ namespace Supremacy.Universe
         }
         private void Print(Ship item)
         {
-            _text = "Step_4380:"
+            string _text = "Step_4380:"
                 + "; " + item.Location
                 + "; Ship"
 
@@ -848,7 +849,7 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-            _text = "Step_0355:; " + DateTime.Now + " > Deserializing stations...";
+            string _text = "Step_0355:; " + DateTime.Now + " > Deserializing stations...";
             Console.WriteLine(_text);
             //GameLog.Core.SaveLoad.DebugFormat(_text);
 
@@ -887,6 +888,8 @@ namespace Supremacy.Universe
         {
             _objects = new UniverseObjectSet();
             _map = new SectorMap(reader.ReadByte(), reader.ReadByte());
+
+            string _text = "";
 
             //foreach (var item in _map)
             //{
@@ -930,7 +933,7 @@ namespace Supremacy.Universe
 
         }
 
-        [NonSerialized]
-        private string _text;
+        //[NonSerialized]
+        //private string _text;
     }
 }
