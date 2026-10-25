@@ -140,9 +140,9 @@ namespace Supremacy.Combat
                     _sectorString = FriendlyAssets.First().Location.ToString();
 
                     // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
-                    foreach (CombatUnit ncs in fa.NonCombatShips)   // only NonCombat ships 
+                    foreach (CombatUnit ncs in fa.Ships_NonCombat)   // only NonCombat ships 
                     {
-                        civ = fa.NonCombatShips.First().Owner;
+                        civ = fa.Ships_NonCombat.First().Owner;
                         // Update X 25 june 2019 Total Strength instead of just Firepower
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + ncs.Firepower)
@@ -151,9 +151,9 @@ namespace Supremacy.Combat
                                 );
                     }
 
-                    foreach (CombatUnit cs in fa.CombatShips)   // only combat ships
+                    foreach (CombatUnit cs in fa.Ships_Combat)   // only combat ships
                     {
-                        civ = fa.CombatShips.First().Owner;
+                        civ = fa.Ships_Combat.First().Owner;
                         // Update X 25 june 2019 Total Strength instead of just Firepower
                         _friendlyEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_friendlyEmpireStrength + cs.Firepower)
@@ -216,9 +216,9 @@ namespace Supremacy.Combat
                     Civilization civ = GameContext.Current.Civilizations.First();
                     _sectorString = HostileAssets.First().Location.ToString();
 
-                    foreach (CombatUnit ncs in ha.NonCombatShips)   // only NonCombat ships 
+                    foreach (CombatUnit ncs in ha.Ships_NonCombat)   // only NonCombat ships 
                     {
-                        civ = ha.NonCombatShips.First().Owner;
+                        civ = ha.Ships_NonCombat.First().Owner;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
                         _allHostileEmpireStrength = Convert.ToInt32(
                                 Convert.ToDouble(_allHostileEmpireStrength + ncs.Firepower)
@@ -227,9 +227,9 @@ namespace Supremacy.Combat
                                 );
                     }
 
-                    foreach (CombatUnit cs in ha.CombatShips)   // only combat ships
+                    foreach (CombatUnit cs in ha.Ships_Combat)   // only combat ships
                     {
-                        civ = ha.CombatShips.First().Owner;
+                        civ = ha.Ships_Combat.First().Owner;
                         // _allHostileEmpireStrength += _cs.FirePower;
                         // Update X 25 june 2019 Total Strenght instead of just Firepower
 
@@ -626,7 +626,7 @@ namespace Supremacy.Combat
 
                 foreach (CombatAssets ha in HostileAssets)
                 {
-                    foreach (CombatUnit _cs in ha.CombatShips)   // only combat ships 
+                    foreach (CombatUnit _cs in ha.Ships_Combat)   // only combat ships 
                     {
                         if (civShortName == _cs.Owner.ShortName)
                         {
@@ -637,7 +637,7 @@ namespace Supremacy.Combat
                         }
                     }
 
-                    foreach (CombatUnit ncs in ha.NonCombatShips)   // only NonCombat ships 
+                    foreach (CombatUnit ncs in ha.Ships_NonCombat)   // only NonCombat ships 
                     {
                         //civStrengthValues[_ncs.Owner.ToString()] += CalculateStrength_Ship_NonCombat_in_CombatUpdate(_ncs);
                         if (civShortName == ncs.Owner.ShortName)
@@ -721,7 +721,7 @@ namespace Supremacy.Combat
 
         //        foreach (CombatAssets _ha in HostileAssets)
         //        {
-        //            foreach (CombatUnit _cs in _ha.CombatShips)   // only combat ships 
+        //            foreach (CombatUnit _cs in _ha.Ships_Combat)   // only combat ships 
         //            {
         //                if (_civ_short_name == _cs.Owner.ShortName)
         //                {
@@ -732,7 +732,7 @@ namespace Supremacy.Combat
         //                }
         //            }
 
-        //            foreach (CombatUnit _ncs in _ha.NonCombatShips)   // only NonCombat ships 
+        //            foreach (CombatUnit _ncs in _ha.Ships_NonCombat)   // only NonCombat ships 
         //            {
         //                //civStrengthValues[_ncs.Owner.ToString()] += CalculateStrength_Ship_NonCombat_in_CombatUpdate(_ncs);
         //                if (_civ_short_name == _ncs.Owner.ShortName)
@@ -854,7 +854,7 @@ namespace Supremacy.Combat
 
                 foreach (CombatAssets _ha in HostileAssets)
                 {
-                    foreach (CombatUnit _cs in _ha.CombatShips)   // only combat ships
+                    foreach (CombatUnit _cs in _ha.Ships_Combat)   // only combat ships
                     {
                         if (_civ_short_name == _cs.Owner.ShortName)
                         {
@@ -865,7 +865,7 @@ namespace Supremacy.Combat
                             _ = _otherAssetsLocal.Remove(_ha);
                         }
                     }
-                    foreach (CombatUnit _ncs in _ha.NonCombatShips)   // only NonCombat ships
+                    foreach (CombatUnit _ncs in _ha.Ships_NonCombat)   // only NonCombat ships
                     {
                         if (_civ_short_name == _ncs.Owner.ShortName)
                         {
@@ -984,14 +984,14 @@ namespace Supremacy.Combat
                 //{
                 //    if (_asset.HasSurvivingAssets)
                 //    {
-                //        _text = "Step_3382:; cUpda: friendlyAssets(_assets.CombatShips.Count)=; " + _asset.CombatShips.Count;
+                //        _text = "Step_3382:; cUpda: friendlyAssets(_assets.Ships_Combat.Count)=; " + _asset.Ships_Combat.Count;
                 //        //if (Write_Combat_Directly) Console.WriteLine(_text);
                 //        //_CombatUpdate_Text += _text;
-                //        //GameLog.Core.CombatDetails.DebugFormat("cUpda: friendlyAssets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
+                //        //GameLog.Core.CombatDetails.DebugFormat("cUpda: friendlyAssets(_assets.Ships_Combat.Count)={0}", _h_assets.Ships_Combat.Count);
                 //        friendlyAssets++;
                 //    }
                 //    //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", _cs.Owner.Key, pair.Owner.Key);
-                //    foreach (CombatUnit ship in _asset.CombatShips)
+                //    foreach (CombatUnit ship in _asset.Ships_Combat)
                 //    {
                 //        currentCivStrength += ship.Firepower;
                 //        _text = "Step_3383:; cUpda: added Firepower into; " + ship.Owner.Key
@@ -1038,14 +1038,14 @@ namespace Supremacy.Combat
                 //{
                 //    if (_asset.HasSurvivingAssets)
                 //    {
-                //        _text = "Step_3392:; cUpda: hostileAssets(_assets.CombatShips.Count)=; " + _asset.CombatShips.Count;
+                //        _text = "Step_3392:; cUpda: hostileAssets(_assets.Ships_Combat.Count)=; " + _asset.Ships_Combat.Count;
                 //        if (Write_Combat_Directly) Console.WriteLine(_text); 
                 //        _CombatUpdate_Text += _text;
-                //        //GameLog.Core.CombatDetails.DebugFormat("cUpda: hostileAssets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
+                //        //GameLog.Core.CombatDetails.DebugFormat("cUpda: hostileAssets(_assets.Ships_Combat.Count)={0}", _h_assets.Ships_Combat.Count);
                 //        hostileAssets++;
                 //    }
 
-                //    foreach (CombatUnit ship in _asset.CombatShips)
+                //    foreach (CombatUnit ship in _asset.Ships_Combat)
                 //    {
                 //        currentCivStrength += ship.Firepower;
                 //        _text = "Step_3393:; cUpda: added Firepower into; " + ship.Owner.Key
@@ -1107,14 +1107,14 @@ namespace Supremacy.Combat
             {
                 if (asset.HasSurvivingAssets)
                 {
-                    _text = "Step_3382:; cUpda: _assets(_assets.CombatShips.Count)=; " + asset.CombatShips.Count;
+                    _text = "Step_3382:; cUpda: _assets(_assets.Ships_Combat.Count)=; " + asset.Ships_Combat.Count;
                     if (Write_Combat_Directly) Console.WriteLine(_text);
                     _CombatUpdate_Text += _text;
-                    //GameLog.Core.CombatDetails.DebugFormat("cUpda: _assets(_assets.CombatShips.Count)={0}", _h_assets.CombatShips.Count);
+                    //GameLog.Core.CombatDetails.DebugFormat("cUpda: _assets(_assets.Ships_Combat.Count)={0}", _h_assets.Ships_Combat.Count);
                     //_assets++;
                 }
                 //GameLog.Core.CombatDetails.DebugFormat("calculating empireStrengths for Ship.Owner = {0} and Empire = {1}", _cs.Owner.Key, pair.Owner.Key);
-                foreach (CombatUnit ship in asset.CombatShips)
+                foreach (CombatUnit ship in asset.Ships_Combat)
                 {
                     _currentCivStrength += ship.Firepower;
                     _text = "Step_3383:; cUpda: added Firepower into; " + ship.Owner.Key

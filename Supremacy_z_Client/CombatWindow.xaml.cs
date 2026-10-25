@@ -345,7 +345,7 @@ namespace Supremacy.Client
 
 
                 }
-                else if (_playerAssets.HasSurvivingAssets || _playerAssets.EscapedShips.Count > 0)
+                else if (_playerAssets.HasSurvivingAssets || _playerAssets.Ships_Escaped.Count > 0)
                 {
                     _combatText += string.Format(ResourceManager.GetString("COMBAT_VICTORY"));
 
@@ -437,18 +437,18 @@ namespace Supremacy.Client
             PopulateUnitTrees();
 
             //We need combat assets to be able to engage
-            EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
+            EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.Ships_Combat.Count > 0) || (fa.Station != null));
             //We need combat assets to be able to rush the opposition
-            RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
+            RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.Ships_Combat.Count > 0);
             //There needs to be transports in the opposition to be able to target them
             TransportsButton.IsEnabled = _update.HostileAssets.Any(h => h.IsTransport);
             //We need at least 3 ships to create a formation
-            FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
+            FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.Ships_Combat.Count >= 3);
             //We need assets to be able to retreat
-            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0); // && fa.Owner != fa.Sector.Station.Owner);
+            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.Ships_Combat.Count > 0 || fa.Ships_NonCombat.Count > 0); // && fa.Owner != fa.Sector.Station.Owner);
             //Can hail
 
-            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null); //(update.RoundNumber == 1);
+            HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.Ships_Combat.Count > 0 || fa.Ships_NonCombat.Count > 0 || fa.Station != null); //(update.RoundNumber == 1);
 
             UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
             LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
@@ -514,36 +514,36 @@ namespace Supremacy.Client
                     shootingPlayerCivs.Add(friendlyAssets.Station.Owner);
 
                 }
-                if (friendlyAssets.CombatShips != null)
+                if (friendlyAssets.Ships_Combat != null)
                 {
-                    foreach (CombatUnit shipStats in friendlyAssets.CombatShips)
+                    foreach (CombatUnit shipStats in friendlyAssets.Ships_Combat)
                     {
                         _ = FriendlyCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
 
                     }
                 }
-                if (friendlyAssets.NonCombatShips != null)
+                if (friendlyAssets.Ships_NonCombat != null)
                 {
-                    foreach (CombatUnit shipStats in friendlyAssets.NonCombatShips)
+                    foreach (CombatUnit shipStats in friendlyAssets.Ships_NonCombat)
                     {
                         _ = FriendlyNonCombatantItems.Items.Add(shipStats);
                         shootingPlayerCivs.Add(shipStats.Owner);
 
                     }
                 }
-                foreach (CombatUnit shipStats in friendlyAssets.DestroyedShips)
+                foreach (CombatUnit shipStats in friendlyAssets.Ships_Destroyed)
                 {
                     _ = FriendlyDestroyedItems.Items.Add(shipStats);
 
                 }
 
-                foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
+                foreach (CombatUnit shipStats in friendlyAssets.Ships_Assimilated)
                 {
                     _ = FriendlyAssimilatedItems.Items.Add(shipStats);
                 }
 
-                foreach (CombatUnit shipStats in friendlyAssets.EscapedShips)
+                foreach (CombatUnit shipStats in friendlyAssets.Ships_Escaped)
                 {
                     _ = FriendlyEscapedItems.Items.Add(shipStats);
 
@@ -572,27 +572,27 @@ namespace Supremacy.Client
                     otherCivs.Add(hostileAssets.Station.Owner);
 
                 }
-                foreach (CombatUnit shipStats in hostileAssets.CombatShips)
+                foreach (CombatUnit shipStats in hostileAssets.Ships_Combat)
                 {
                     _ = HostileCombatantItems.Items.Add(shipStats);
                     otherCivs.Add(shipStats.Owner);
                 }
-                foreach (CombatUnit shipStats in hostileAssets.NonCombatShips)
+                foreach (CombatUnit shipStats in hostileAssets.Ships_NonCombat)
                 {
                     _ = HostileNonCombatantItems.Items.Add(shipStats);
                     otherCivs.Add(shipStats.Owner);
                 }
-                foreach (CombatUnit shipStats in hostileAssets.EscapedShips)
+                foreach (CombatUnit shipStats in hostileAssets.Ships_Escaped)
                 {
                     _ = HostileEscapedItems.Items.Add(shipStats);
 
                 }
-                foreach (CombatUnit shipStats in hostileAssets.DestroyedShips)
+                foreach (CombatUnit shipStats in hostileAssets.Ships_Destroyed)
                 {
                     _ = HostileDestroyedItems.Items.Add(shipStats);
 
                 }
-                foreach (CombatUnit shipStats in hostileAssets.AssimilatedShips)
+                foreach (CombatUnit shipStats in hostileAssets.Ships_Assimilated)
                 {
                     _ = HostileAssimilatedItems.Items.Add(shipStats);
                 }
@@ -644,7 +644,7 @@ namespace Supremacy.Client
             _targeted_civ_1 = (Civilization)radioButton1.DataContext;
 
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _targeted_civ_2.ShortName);
-            string _text_combatWindow = "Step_5486:; Primary Target is set to .. > " + _targeted_civ_1.ShortName;
+            string _text_combatWindow = "Step_5486:; TargetButton1_Click is set to .. > " + _targeted_civ_1.ShortName;
             Console.WriteLine(_text_combatWindow);
             //GameLog.Core.CombatDetails.DebugFormat(_text_combatWindow); //theTargeted1Civ);
 
@@ -662,8 +662,8 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))))
-                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.Ships_Combat.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))))
+                || _update.HostileAssets.Any(ha => ha.Ships_NonCombat.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
 
         }
 
@@ -688,8 +688,8 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))))
-               || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.Ships_Combat.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))))
+               || _update.HostileAssets.Any(ha => ha.Ships_NonCombat.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _targeted_civ_1) || (ncs.Owner == _targeted_civ_2))));
         }
 
         private void OnOrderButtonClicked(object sender, RoutedEventArgs e)

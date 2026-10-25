@@ -132,8 +132,10 @@ namespace Supremacy.Diplomacy
 
                 _text = "due to " + _reason
                         + " > " + _trust_delta
-                        + " in relation of " + _civ1
-                        + " vs " + _civ2
+                        + " for " + _civ2
+                        + " vs " + _civ1
+                        //+ " in relation of " + _civ1
+
                         ;
                 // crash for empty exchange
                 //GameContext.Current.CivilizationManagers[_civ1].SitRepEntries
@@ -177,8 +179,10 @@ namespace Supremacy.Diplomacy
 
                 _text = "due to " + _reason
                     + " > " + _regard_delta
-                    + " in relation of " + _civ1
-                    + " vs " + _civ2
+                    + " for " + _civ2
+                    + " vs " + _civ1
+                    //+ " in relation of " + _civ1
+
                     ;
                 // crash for empty exchange
                 //GameContext.Current.CivilizationManagers[_civ1].SitRepEntries
@@ -617,7 +621,7 @@ namespace Supremacy.Diplomacy
                         Diplomacy.DiplomacyHelper.Diplomacy_7_Response_Sent(_civ2_foreign_power.ResponseSent);//  Second.4 = responseSent
                                                                                                               //}
                     }
-                    //_civM_1.Target_CivList.Add(_civ2);
+                    //_civM_1.Assault_Target_CivList.Add(_civ2);
                 }
                 //}
 
@@ -844,7 +848,7 @@ namespace Supremacy.Diplomacy
 
                 if (_player_is_human)
                 {
-                    _text = "_break_1302 - just for info > Diplomacy_1_Basics";
+                    _text = "_break_1302 - just for info > Diplomacy_1_Basics > for switch (_foreignPowerStatus)";
                     Console.WriteLine(_text);
 
                     Debugger.Break(); // for switch (_foreignPowerStatus)
@@ -1254,10 +1258,13 @@ namespace Supremacy.Diplomacy
             _text = "Step_9444:; " + _turns_ago + " turns ago" + " was DiplomacyData.LastStatusChange, _random_end_war= " + _random_end_war;
             Console.WriteLine(_text);
 
-            if (_civ1.Key == GameEngine.Played_or_Tested_Civ())
+            string _test_civ = GameEngine.Played_or_Tested_Civ();
+            if (_civ1.Key == _test_civ)
             {
-                //Debugger.Break(); // Do_AI_for_AtWar
+                Debugger.Break(); // Do_AI_for_AtWar
             }
+
+            Target_CivList_Update_and_TargetColonies(_civ1, _civ2);
 
             if (_random_end_war == 1
                 //&& _random_end_war == 1
@@ -1285,8 +1292,8 @@ namespace Supremacy.Diplomacy
 
             //List<Civilization> _possibleTargetCivs = new List<Civilization>();
 
-            Target_CivList_Update_and_TargetColonies(_civ1, _civ2);
-            _text = "just DUMMY " + _civM_1 + _civM_2;
+            //Target_CivList_Update_and_TargetColonies(_civ1, _civ2);
+            //_text = "just DUMMY " + _civM_1 + _civM_2;
 
 
 
@@ -1385,21 +1392,10 @@ namespace Supremacy.Diplomacy
             //}
 
 
-
-
-
-
-
-
             //Debugger.Break()
             //if (_civ_1.IsHuman && _foreignPowerStatus != ForeignPowerStatus.NoContact) { Debugger.Break(); }
 
-
-
-
             //Console.WriteLine(_all_attack_location_text + "        > from Step_7725 = _all_attack_location_text");
-
-
 
             _text = "Step_7718:; Do_13_Diplomacy > "
                         + "_civM_1.Assault_Location"
@@ -1470,30 +1466,32 @@ namespace Supremacy.Diplomacy
             List<Civilization> _target_help_list = new List<Civilization>() { _civ1 };
 
             //_target_help_list.Add(_civ_1);
-            if (_civM_1.Target_CivList == null
-                || _civM_1.Target_CivList.Count == 0)
+            if (_civM_1.Assault_Target_CivList == null
+                || _civM_1.Assault_Target_CivList.Count == 0)
             {
-                _civM_1.Target_CivList = _target_help_list;
+                _civM_1.Assault_Target_CivList = _target_help_list;
             }
-            else
-            {
-                //_civM_1.Target_CivList.AddRange(_possibleTargetCivs);
+
+
+            //else
+            //{
+                //_civM_1.Assault_Target_CivList.AddRange(_possibleTargetCivs);
                 _target_help_list.AddRange(_possibleTargetCivs);
 
-                //_target_help_list = _civM_1.Target_CivList;
+                //_target_help_list = _civM_1.Assault_Target_CivList;
                 //_target_help_list = _target_help_list;
-                _civM_1.Target_CivList = _target_help_list.Distinct().ToList();
+                _civM_1.Assault_Target_CivList = _target_help_list.Distinct().ToList();
 
                 //Debugger.Break()
                 //if (_civ_1.IsHuman && _foreignPowerStatus != ForeignPowerStatus.NoContact) { Debugger.Break(); }
 
-            }
+            //}
 
 
             //if (_possibleTargetCivs.Count > 0)
             //{
-            //    //_civM_1.Target_CivList = _possibleTargetCivs;
-            //    _civM_1.Target_CivList.AddRange(_possibleTargetCivs);
+            //    //_civM_1.Assault_Target_CivList = _possibleTargetCivs;
+            //    _civM_1.Assault_Target_CivList.AddRange(_possibleTargetCivs);
             //}
 
 
@@ -1528,23 +1526,37 @@ namespace Supremacy.Diplomacy
 
             if (_player_is_human)
             {
-                _text = "break_1302 - line 1496 > just for info > Do_AI_for_AtWar";
+                _text = "break_1303 - about line 1536 > just for info > Do_AI_for_AtWar";
                 Console.WriteLine(_text);
 
-                //Debugger.Break();
+                Debugger.Break();
             }
 
-            if (_civM_1.Target_CivList != null && _civM_1.Target_CivList.Count > 0)
+            if (_civM_1.Assault_Target_CivList != null && _civM_1.Assault_Target_CivList.Count > 0)
             {
+                foreach (var item in _civM_1.Assault_Target_CivList)
+                {
+                    _text = "Step_1306:; > " + item.Key + " is part of Assault_Target_CivList of > " + _civ1.Key;
+                    Console.WriteLine(_text);
+                }
+
                 // see next lines
-                if (_civM_1.Target_CivList[0].Key == _civ1.Key)
+                if (_civM_1.Assault_Target_CivList[0].Key == _civ1.Key)
                 {
 
                     goto Skipped_Target_Colony;
                 }
 
+                if (_player_is_human)
+                {
+                    _text = "break_1306 - about line 1546 > just for info > Do_AI_for_AtWar";
+                    Console.WriteLine(_text);
 
-                foreach (var _item in _civM_1.Target_CivList)
+                    Debugger.Break();
+                }
+
+
+                foreach (var _item in _civM_1.Assault_Target_CivList)
                 {
                     MapLocation _loc_1 = _civM_1.HomeSystem.Location;
 
@@ -1827,8 +1839,8 @@ namespace Supremacy.Diplomacy
                 string _atWarText = "";
 
                 if (_foreignPowerStatus == ForeignPowerStatus.AtWar
-                        && _civM_1.Target_CivList != null
-                        && _civM_1.Target_CivList.Count > 0
+                        && _civM_1.Assault_Target_CivList != null
+                        && _civM_1.Assault_Target_CivList.Count > 0
                         )
                 {
 
@@ -1836,7 +1848,7 @@ namespace Supremacy.Diplomacy
                     //_target_colonies_locations.Add(_civ_1, 99);  // avoid an empty Dictionary
 
 
-                    //foreach (var _item in _civM_1.Target_CivList)
+                    //foreach (var _item in _civM_1.Assault_Target_CivList)
                     //{
                     //    MapLocation _loc_1 = _civM_1.HomeSystem.Location;
                     //    MapLocation _loc_2 = GameContext.Current.CivilizationManagers[_item.CivID].HomeSystem.Location;

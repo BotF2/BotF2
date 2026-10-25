@@ -50,10 +50,10 @@ namespace Supremacy.Game
 
         private readonly UniverseObjectList<Colony> _colonies;
         public List<CivHistory> _civHist_List = new List<CivHistory>();
-        public List<string> _traits_civ_list = new List<string>();
+        //public List<string> _traits_civ_list = new List<string>();
 
         private List<Civilization> _spiedCivList;
-        private List<Civilization> _targetCivList;
+        //private List<Civilization> _targetCivList;
 
         public List<string> _neededShiptypesList;
 
@@ -193,9 +193,9 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
-            _targetCivList = new List<Civilization>();
+            //_targetCivList = new List<Civilization>();
             _civHist_List = new List<CivHistory>();
-            _traits_civ_list = new List<string>();
+            //_traits_civ_list = new List<string>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -222,7 +222,7 @@ namespace Supremacy.Game
 
             _civId = civilization.CivID;
             _research = new ResearchPool(civilization, game.ResearchMatrix);
-            _targetCivList = new List<Civilization>();
+            //_targetCivList = new List<Civilization>();
         }
 
         //public CivilizationManager(List<StealCredits> stealCreditsSpyOperation)
@@ -1054,9 +1054,9 @@ namespace Supremacy.Game
 
 
         public List<Civilization> SpiedCivList => _spiedCivList;
-        public List<string> TraitsCivList => _traits_civ_list;
-        //public List<Civilization> Target_CivList => _targetCivList;
-        public List<Civilization> Target_CivList { get; /*private*/ set; } = new List<Civilization>();
+        //public List<string> TraitsCivList => _traits_civ_list;
+        //public List<Civilization> Assault_Target_CivList => _targetCivList;
+        public List<Civilization> Assault_Target_CivList { get; /*private*/ set; } = new List<Civilization>();
 
         public List<MapLocation> Locations_To_Explore { get; /*private*/ set; } = new List<MapLocation>();
 
@@ -1648,7 +1648,7 @@ namespace Supremacy.Game
         //    //
         //    //foreach (var item in _civList)
         //    //{
-        //    //    GameLog.Client.Intel.DebugFormat("Updated the Target_CivList = {0}", item);
+        //    //    GameLog.Client.Intel.DebugFormat("Updated the Assault_Target_CivList = {0}", item);
         //    //}
         //}
 

@@ -2088,7 +2088,7 @@ namespace Supremacy.AI
 
             if (_is_owner_human)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
 
@@ -2147,7 +2147,7 @@ namespace Supremacy.AI
 
             if (_fleet.Owner.IsHuman)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_fleet.Sector == _civM.HomeSystem.Sector && _civM.Z_Ship_Diplomatic_Available > 1) // and nothing to 
@@ -2301,7 +2301,7 @@ namespace Supremacy.AI
             //if (_checkFleetOrders == true && _checkOnlyPlayersUnits && _checkShips_Medical)
             if (GameEngine.IsCivM_Human_Player(_civM))
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             //Medical
@@ -3010,20 +3010,27 @@ namespace Supremacy.AI
 
                 //var _location = MapHelper.FindNearestFriendlySector(_fleet);
                 //_best_SectorForStation = new Sector(_location);
-                if (_bool_is_player_human)
-                {
-                    Debugger.Break();
-                }
-                MapLocation _best_location = _civM.Locations_To_Build_Stations.Last();
-                _text = "Step_6521:; " + CreateUpdateFleetText(_fleet, out _fleet_Text)
-                    + " > _best_location= " + _best_location;
-                if (_writeDirectly_Fleets) Console.WriteLine(_text);
 
+                //if (_bool_is_player_human)
+                //{
+                //    Debugger.Break();
+                //}
 
                 _best_SectorForStation = new Sector(_civM.Locations_To_Build_Stations.Last());
                 _best_SectorForStation_Name = _best_SectorForStation.Name;
                 _best_SectorForStation_Location = _best_SectorForStation.Location;
                 _civM.Locations_To_Build_Stations.Remove(_civM.Locations_To_Build_Stations.Last());
+
+                //MapLocation _best_location = _civM.Locations_To_Build_Stations.Last();
+                _text = "Step_6521:; " + CreateUpdateFleetText(_fleet, out _fleet_Text)
+                    + " > _best_SectorForStation_Location= " + _best_SectorForStation_Location;
+                //if (_writeDirectly_Fleets) 
+                    //Console.WriteLine(_text);
+
+                if (_bool_is_player_human)
+                {
+                    //Debugger.Break();
+                }
             }
             else
             {
@@ -3579,7 +3586,7 @@ namespace Supremacy.AI
 
                 + " ; " + GameEngine.Do_x_Digit_String(5, fleet.ObjectID.ToString()) + " ;Fleet"
                 + " ; " + GameEngine.Do_x_String(24, fleet.Ships[0].Design.ToString())
-                + " ; " + GameEngine.Do_x_String(17, fleet.Name)
+                + " ; " + GameEngine.Do_x_String(18, fleet.Name)
 
                 + " ; AITypeUnit= " + fleet.AITypeUnit // without " " infront of it
                 + " ; " + fleet.Activity
@@ -4701,574 +4708,579 @@ namespace Supremacy.AI
         /// <param name="_fleet"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static bool DoConstruFindBestSector(Fleet _fleet, List<Fleet> _construction_fleets, out Sector _bestSector)
-        {
-            _bestSector = null;
-            bool _is_owner_human = _fleet.Owner.IsHuman;
+        //public static bool DoConstruFindBestSector(Fleet _fleet, List<Fleet> _construction_fleets, out Sector _bestSector)
+        //{
+        //    _bestSector = null;
+        //    bool _is_owner_human = _fleet.Owner.IsHuman;
 
-            if (_fleet == null || _fleet.ObjectID < 0)
-            {
-                //_bestSector = null;
-                return false;
-            }
+        //    if (_fleet == null || _fleet.ObjectID < 0)
+        //    {
+        //        //_bestSector = null;
+        //        return false;
+        //    }
 
-            string _bestSectorName = "NO BEST SECTOR";
-            string _newline = Environment.NewLine;
-
-            string _text = "Step_6520:; " + CreateUpdateFleetText(_fleet, out _fleet_Text)
-                + " > DoConstruFindBestSector.... ";
-            if (_writeDirectly_Fleets) Console.WriteLine(_text);
-
-            _fleet.GetCiv(_fleet, out Civilization _civ);
-            bool bool_is_player_human = _civ.IsHuman;
-
-            //GameLog.Client.AI.DebugFormat(_text);
-
-            _fleet.GetCivM(_fleet, out CivilizationManager _civM);
-
-            if (_civM.Locations_To_Build_Stations.Count > 1)
-            {
-                if (bool_is_player_human)
-                {
-                    //Debugger.Break();
-                }
-                MapLocation _best_location = _civM.Locations_To_Build_Stations.Last();
-                _text = "Step_6521:; " + CreateUpdateFleetText(_fleet, out _fleet_Text)
-                    + " > _best_location= " + _best_location;
-                if (_writeDirectly_Fleets) Console.WriteLine(_text);
-
-                _bestSector = new Sector(_civM.Locations_To_Build_Stations.Last());
-                _civM.Locations_To_Build_Stations.Remove(_civM.Locations_To_Build_Stations.Last());
-                return true;
-            }
-
-            GetFleetOwnerOutOfShips(_fleet);
-
-            if (_fleet == null)
-            {
-                Debugger.Break();
-                //throw new ArgumentNullException(nameof(_fleet));
-            }
-
-            _fleet.Activity = UnitActivity.NoActivity;
-
-            if (_fleet.Ships.Count == 0)
-            {
-                //_bestSector = null;
-                return false;
-            }
-
-            bool _write = _writeDirectly_Fleets;
-            //_write = true;
-            _write = false;
-
-            //_fleet.GetCivM(_fleet, out CivilizationManager _civM);
-
-            //if (_civM.StrandedShipsSector != null)
-            //{
-
-            //    _bestSector = _civM.StrandedShipsSector;
-            //    return true;
-            //}
-
-
-            //_text = "DoConstruFindBestSector: ";
-            //int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
-            //_text += _newline + "halfMapWidthX= " + halfMapWidthX.ToString();
-            //if (_write) Console.WriteLine(halfMapWidthX);
-
-            //int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
-            //_text += _newline + "halfMapHeightY= " + halfMapHeightY.ToString();
-            //if (_write) Console.WriteLine(halfMapHeightY);
-
-            //int thirdMapWidthX = GameContext.Current.Universe.Map.Width / 3;
-            //_text += _newline + "thirdMapWidthX= " + thirdMapWidthX.ToString();
-            //if (_write) Console.WriteLine(thirdMapWidthX);
-
-            //int thirdMapHeightY = GameContext.Current.Universe.Map.Height / 3;
-            //_text += _newline + "thirdMapHeightY= " + thirdMapHeightY.ToString();
-            //if (_write) Console.WriteLine(thirdMapHeightY);
-
-            //int quarterMapWidthX = GameContext.Current.Universe.Map.Width / 4;
-            //_text += _newline + "quarterMapWidthX= " + quarterMapWidthX.ToString();
-            //if (_write) Console.WriteLine(quarterMapWidthX);
-
-            //int quarterMapHeightY = GameContext.Current.Universe.Map.Height / 4;
-            //_text += _newline + "quarterMapHeightY= " + quarterMapHeightY.ToString();
-            //if (_write) Console.WriteLine(quarterMapHeightY);
-
-            //int lengthQuarterMap = (int)Math.Sqrt((int)Math.Pow(quarterMapWidthX, 2) + (int)Math.Pow(quarterMapHeightY, 2));
-            //_text += _newline + "lengthQuarterMap= " + lengthQuarterMap.ToString();
-            //if (_write) Console.WriteLine(lengthQuarterMap);
-
-            //int lengthThirdMap = (int)Math.Sqrt((int)Math.Pow(thirdMapWidthX, 2) + (int)Math.Pow(thirdMapHeightY, 2));
-            //_text += _newline + "lengthThirdMap= " + lengthThirdMap.ToString();
-            //if (_write) Console.WriteLine(lengthThirdMap);
-
-            //if (_write) Console.WriteLine(_text);
-
-
-            //_write = true;
-            ////_write = false;
-            //switch (_fleet.Owner.Key)
-            //{
-            //    case "BORG":
-            //    //{
-            //    //    _text = "Step_6560: DoConstruFindBestSector for Borg";
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-            //    //    //GameLog.Client;.AI.DebugFormat(_text);
-            //    //    int borgX = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X;
-            //    //    int borgXDelta = Math.Abs(GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X - halfMapWidthX) / 4;
-            //    //    int borgY = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y;
-            //    //    int borgYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y) / 4;
-
-            //    //    MapLocation borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location;
-            //    //    List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
-            //    //        .Where(s => s.Location != null
-            //    //        && s.Sector.Station == null
-            //    //        && s.Location.X >= halfMapWidthX + borgXDelta && s.Location.X <= borgX
-            //    //        && s.Location.Y <= Math.Abs(halfMapHeightY - borgYDelta) && s.Location.Y >= borgY + borgYDelta)
-            //    //        //&& s.Location == borgHomeLocation)                         
-            //    //        .ToList();
-
-            //    //    if (objectsAlongCenterAxis.Count == 0)
-            //    //    {
-            //    //        _bool_bestSector = null;
-            //    //        return false;
-            //    //    }
-            //    //    // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), _fleet.Owner.Key);
-            //    //    try
-            //    //    {
-            //    //        objectsAlongCenterAxis.Sort((a, b) =>
-            //    //            GetValue_Station(a.Sector, _fleet, objectsAlongCenterAxis)
-            //    //            .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAlongCenterAxis)));
-            //    //    }
-            //    //    catch
-            //    //    {
-            //    //        _text = "unable to sort objects for Borg station location";
-            //    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
-            //    //        GameLog.Client.AI.DebugFormat(_text);
-            //    //        _bool_bestSector = null;
-            //    //        return false;
-            //    //    }
-            //    //    List<Fleet> otherConstructors = GameContext.Current.Universe.Find<Fleet>()
-            //    //            .Where(o => o.Owner != _fleet.Owner && o.IsConstructor || o.MultiFleetHasAConstructor).ToList();
-            //    //    List<Sector> _sectors = new List<Sector>();
-            //    //    foreach (UniverseObject anObject in objectsAlongCenterAxis)
-            //    //    {
-            //    //        _sectors.Add(anObject.Sector);
-            //    //    }
-            //    //    foreach (Fleet aFleet in otherConstructors)
-            //    //    {
-            //    //        if (_sectors.Any(o => o == aFleet.Sector))
-            //    //        {
-            //    //            _ = _sectors.Remove(aFleet.Sector);
-            //    //        }
-            //    //    }
-
-            //    //    _bool_bestSector = _sectors.Last(); //objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
-
-            //    //    if (_bool_bestSector == null)
-            //    //    {
-            //    //        return false;
-            //    //    }
-
-            //    //    _text = "Borg station selected _location  at " + _bool_bestSector.Location + " " + _bool_bestSector.Name;
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-            //    //    // GameLog.Core.AI.DebugFormat(_text);
-            //    //    return true;
-            //    //}
-
-            //    case "DOMINION":
-            //    //{
-            //    //    _text = "Step_6580: DoConstruFindBestSector for DOMINION";
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-            //    //    //GameLog.Client.AI.DebugFormat("Dominion");
-            //    //    int domX = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X;
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(domX);
-            //    //    int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X) / 4;
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(domXDelta);
-            //    //    int domY = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y;
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(domY);
-            //    //    int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y) / 4;
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(domYDelta);
-
-            //    //    List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
-            //    //        // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, _fleet))
-            //    //        .Where(s => s.Location != null
-            //    //        && s.Sector.Station == null
-            //    //        && s.Location.X <= Math.Abs(halfMapWidthX - domXDelta) && s.Location.X > domX
-            //    //        && s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY)
-            //    //        // find a list of objects in some _location around Dom side of galactic center
-            //    //        .ToList();
-            //    //    //foreach (var item in objectsAlongCenterAxis)
-            //    //    //{
-            //    //    //    _text = item.Location
-            //    //    //        + " " + item.Name
-            //    //    //        + " " + item.ObjectID
-
-            //    //    //        ;
-            //    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-
-            //    //    //    //if (item.ObjectType != )
-            //    //    //}
-
-
-            //    //    if (objectsAlongCenterAxis.Count == 0)
-            //    //    {
-            //    //        _bool_bestSector = null;
-            //    //        return false;
-            //    //    }
-            //    //    //GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), _fleet.Owner.Key);
-
-            //    //    try
-            //    //    {
-            //    //        _text = "try objectsAlongCenterAxis... for _fleet" + _fleet.ObjectID + " " + _fleet.Name + " " + _fleet.ClassName;
-            //    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
-
-            //    //        objectsAlongCenterAxis.Sort((a, b) =>
-            //    //       GetValue_Station(a.Sector, _fleet, objectsAlongCenterAxis)
-            //    //       .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAlongCenterAxis)));
-
-            //    //    }
-            //    //    catch
-            //    //    {
-            //    //        _text = "unable to sort objects for Dominion station location";
-            //    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
-            //    //        GameLog.Client.AI.DebugFormat(_text);
-            //    //        _bool_bestSector = null;
-            //    //        return false;
-            //    //    }
-            //    //    _bool_bestSector = objectsAlongCenterAxis.Last().Sector; //[objectsAlongCenterAxis.Count - 1].Sector;
-            //    //    if (_bool_bestSector == null)
-            //    //    {
-            //    //        return false;
-            //    //    }
-
-            //    //    _text = "Dominion station selected _location  at " + _bool_bestSector.Location + " " + _bool_bestSector.Name;
-            //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
-            //    //    // GameLog.Core.AI.DebugFormat(_text);
-            //    //    return true;
-            //    //}
-            //    case "KLINGONS":
-            //    case "TERRANEMPIRE":
-            //    case "FEDERATION":
-            //    case "ROMULANS":
-            //    case "CARDASSIANS":
-            //        {
-            //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, _fleet.Owner);
-
-            if (_is_owner_human)
-            {
-                //Debugger.Break();
-            }
-
-            Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Sector;
-
-            int xloc = GameContext.Current.Universe.Map.Width / 2;
-            int yloc = GameContext.Current.Universe.Map.Height / 2;
-
-            MapLocation _center = new MapLocation(xloc, yloc);
-
-            List<Sector> _availableSectors = new List<Sector> { homeSector };
-            List<Sector> _maybeSectors = new List<Sector> { homeSector };
-
-
-            //List<UniverseObject> objectsAroundHome = GameContext.Current.Universe.Objects
-            //    .Where(s => s.Location != null
-            //    && s.ObjectType != UniverseObjectType.Ship
-            //    && s.ObjectType != UniverseObjectType.Fleet
-            //    //&& s.ObjectType != UniverseObjectType.StarSystem.bla
-            //    && s.Sector.Station == null
-            //    && s.Sector.Owner == null
-            //    && GetDistanceTo(_center, s.Location) < xloc - 3 // but if there is a system + BORG don't colonize... > ToDo 2025-03-16
-            //    )  // do not build at the edge of the map
-            //       //&& GetDistanceTo(_center, s.Location) < lengthThirdMap)
-            //    .ToList();
-
-
-
-            int _distance = 5;
-
-        _SearchAvailableSectorsOnceAgain:
-
-            //int _sectorOwnerID = 999;
-            //if (_se)
-
-            _availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance)/*.Where(s => s.Owner.CivID != _fleet.OwnerID)*/.ToList();
-
-
-
-            //List<UniverseObject> _allCivFleets = GameContext.Current.Universe.Objects
-            //    .Where(o => o.ObjectType == UniverseObjectType.Ship
-            //    && o.OwnerID == _fleet.OwnerID
-            //    && o.CanMove
-            //    ).ToList();
-
-            //foreach (var item in _allCivFleets)
-            //{
-            //    //if (item.ObjectType.)
-            //}
-
-            //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-            if (_is_owner_human)
-            {
-
-                Debugger.Break(); // in DoConstruFindBestSector
-            }
-
-            string _availableSectorsText = "";
-
-            if (_availableSectors != null)
-            {
-
-
-                foreach (var _sector in _availableSectors)
-                {
-                    int _distance2 = MapLocation.GetDistance(_sector.Location, homeSector.Location);
-
-                    if (_distance2 != _distance - 0)  // not all sectors > too much > only the far away
-                    {
-                        continue;
-                    }
-
-                    _text = "Step_6913:; "
-                         + "" + _fleets_Summary
-                         + " >  DistfromHome > " + GameEngine.Do_x_Digit_String(2, _distance2.ToString())
-                         + ", Value for Station= " + GetValue_Station(_sector, _fleet)//, objectsAroundHome)
-                         + " for " + _sector.Location
-                         + " " + _sector.Name
-                        ;
-
-                    //if (_write) 
-                    //Console.WriteLine(_text);
-                    _availableSectorsText += _newline + _text;
-                    //_fleet_Text += Environment.NewLine + _text;
-
-                    if (_sector.System != null)
-                    {
-                        if (_sector.System.StarType == StarType.BlackHole
-                            || _sector.System.StarType == StarType.NeutronStar
-                            || _sector.System.StarType == StarType.XRayPulsar
-                            || _sector.System.StarType == StarType.RadioPulsar
-                            || _sector.System.StarType == StarType.Quasar
-
-                            )
-                            _text += "";
-
-
-                    }
-                    else
-                    {
-                        if (_is_owner_human)
-                        {
-                            //Debugger.Break();
-                        }
-
-                        if (_fleet.Owner.Key == "BORG" /*&& !_sector.IsOwned*/ && _sector.Station == null)
-                        {
-                            _maybeSectors.Add(_sector);
-                        }
-                        else if (!_sector.IsOwned && _sector.Station == null) // owned _location = no build _order
-
-                        {
-                            // only add if BORG (they don't colonize but need to occupy sectors with planets
-                            //if (_fleet.Owner.Key == "BORG" && !_sector.IsOwned && _sector.Station == null)
-                            //{
-                            //    _maybeSectors.Add(_sector);
-                            //}
-                            //else
-                            //{
-                            if (GetDistanceTo(_center, _sector.Location) > xloc - 2 || GetDistanceTo(_center, _sector.Location) > yloc - 2) // do not build at the edge of the map
-                            {
-                                if (FleetHelper.IsSectorWithinFuelRange(_sector, _fleet) && _sector.Station == null)
-                                {
-                                    _maybeSectors.Add(_sector);
-                                }
-
-                            }
-
-                            //}
-                        }
-
-                    }
-
-                }
-            }
-
-            if (_is_owner_human)
-            {
-                //Debugger.Break();
-            }
-
-            //_availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance).ToList();
-
-            if (_maybeSectors != null && _maybeSectors.Count < 1)
-            {
-                _distance += 1;
-                goto _SearchAvailableSectorsOnceAgain;
-            }
-
-            //_fleet.GetCivM(_fleet, out CivilizationManager _civM);
-
-
-            Console.WriteLine(_availableSectorsText + " from Step_5553");
-
-            Dictionary<MapLocation, int> _sectorValues = new Dictionary<MapLocation, int>();
-            string _text_sectorValues = "";
-
-            foreach (var _sect in _maybeSectors)
-            {
-                int _val = GetValue_Station(_sect, _fleet);
-
-                _sectorValues.Add(_sect.Location, _val);
-                _text_sectorValues += _newline + "Step_3321:; " + _fleet.Owner + ": " + _sect.Location + ", val= " + _val
-
-                    ;
-            }
-
-            //Console.WriteLine(_text_sectorValues + " from Step_5554");
-
-            if (_is_owner_human)
-            {
-                //Debugger.Break();
-            }
-
-            try
-            {
-                _maybeSectors.Sort((a, b) =>
-                              GetValue_Station(a, _fleet)//, _maybeSectors)
-                              .CompareTo(GetValue_Station(b, _fleet)));//, _maybeSectors)));
-
-                _bestSector = _maybeSectors.Last();
-                _bestSectorName = _bestSector.Name;
-
-                if (_bestSector != null)
-                {
-                    _text = "Step_6914:; "
-                             + "" + _fleets_Summary
-                             //+ " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
-                             //+ ", Value for Station= " + GetValue_Station(_sector, _fleet, objectsAroundHome)
-                             + " > _bestSector= " + _bestSector.Location
-                            //+ " " + _sector.Name
-                            ;
-
-                    //if (_write) 
-                    Console.WriteLine(_text);
-
-                    return true;
-                }
-
-
-                //if (_maybeSectors.Count > _civM.Z_Ship_Construction_Available + _civM.Z_Ship_Construction_Ordered - 1)
-                //{
-                //    _civM.Z_Ship_Construction_Needed += 1;
-                //}
-            }
-            catch { _bestSector = null; return false; }
-
-            //try
-            //{
-            //    objectsAroundHome.Sort((a, b) =>
-            //                  GetValue_Station(a.Sector, _fleet, objectsAroundHome)
-            //                  .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAroundHome)));
-            //}
-            //catch { _bool_bestSector = null; return false; }
-
-
-
-            //if (objectsAroundHome.Count == 0)
-            //{
-            //    _bool_bestSector = null;
-            //    return false;
-            //}
-
-            // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAroundHome.Count(), _fleet.Owner.Key);
-
-            // old stuff - only objects were checked, but not all sectors
-            //try
-            //{
-            //    objectsAroundHome.Sort((a, b) =>
-            //                  GetValue_Station(a.Sector, _fleet, objectsAroundHome)
-            //                  .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAroundHome)));
-            //}
-            //catch { _bool_bestSector = null; return false; }
-
-            try
-            {
-                //string _obj = "";
-                //foreach (var item in objectsAroundHome)
-                //{
-                //    int distance = MapLocation.GetDistance(item.Location, homeSector.Location);
-                //    _text = "Step_6915:; "
-                //         + "" + _fleets_Summary
-                //         + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, distance.ToString())
-                //         + ", Value for Station= " + GetValue_Station(item.Sector, _fleet, objectsAroundHome)
-                //         + " for (object) " + item.Location
-                //         + " " + item.Name + " "
-
-                //        ;
-                //    if (_write) Console.WriteLine(_text);
-                //    _fleet_Text += Environment.NewLine + _text;
-
-                //    //_obj += _newline + _text;
-                //}
-                //if (_writeDirectly_Colony) Console.WriteLine(_obj);
-
-                //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                if (_is_owner_human)
-                {
-                    //Debugger.Break();
-                }
-
-
-
-                //_bool_bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
-
-                //2024-12-28
-                //_bestSector = _maybeSectors.Last();
-
-                _text = "Step_6550:; "
-                    + "" + CreateUpdateFleetText(_fleet, out _fleet_Text)
-                    + _newline + ": _location selected for station build for "
-                    + " > " + GameEngine.LocationString(_bestSector.Location.ToString())
-                    + " Name = " + _bestSectorName
-
-                     ;
-                //if (_writeDirectly_Fleets)
-                Console.WriteLine(_text);
-                //_fleets_Summary += _newline + _text;
-
-                //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-                if (_is_owner_human)
-                {
-                    //Debugger.Break();
-                }
-
-                // GameLog.Core.AI.DebugFormat(_text);
-            }
-            catch { _bestSector = null; return false; }
-
-
-            //return _bestSector != null;
-            //}
-
-            //default: // non of the Empires
-            //_bestSector = null;
-            _text = "Step_7759:; " + CreateUpdateFleetText(_fleet, out _fleet_Text) + " > no _location for station";
-            //if (_writeDirectly_Fleets) 
-            Console.WriteLine(_text);
-            //GameLog.Core.AI.DebugFormat(_text);
-
-            //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
-            if (_is_owner_human)
-            {
-                Debugger.Break();
-            }
-
-            return false; // could not find _location for station
-            //}
-        }
+        //    string _bestSectorName = "NO BEST SECTOR";
+        //    string _newline = Environment.NewLine;
+
+        //    string _text = "Step_6520:; " + CreateUpdateFleetText(_fleet, out _fleet_Text)
+        //        + " > DoConstruFindBestSector.... ";
+        //    if (_writeDirectly_Fleets) Console.WriteLine(_text);
+
+        //    _fleet.GetCiv(_fleet, out Civilization _civ);
+        //    bool bool_is_player_human = _civ.IsHuman;
+
+        //    //GameLog.Client.AI.DebugFormat(_text);
+
+        //    _fleet.GetCivM(_fleet, out CivilizationManager _civM);
+
+        //    if (_civM.Locations_To_Build_Stations.Count > 1)
+        //    {
+        //        if (bool_is_player_human)
+        //        {
+        //            //Debugger.Break();
+        //        }
+        //        Sector _best_SectorForStation = new Sector(_civM.Locations_To_Build_Stations.Last());
+        //        string _best_SectorForStation_Name = _best_SectorForStation.Name;
+        //        MapLocation _best_SectorForStation_Location = _best_SectorForStation.Location;
+        //        _civM.Locations_To_Build_Stations.Remove(_civM.Locations_To_Build_Stations.Last());
+
+        //        //MapLocation _best_location = _civM.Locations_To_Build_Stations.Last();
+        //        _text = "Step_6521:; " + CreateUpdateFleetText(_fleet, out _fleet_Text)
+        //            + " > _best_SectorForStation_Location= " + _best_SectorForStation_Location;
+        //        if (_writeDirectly_Fleets)
+        //            Console.WriteLine(_text);
+
+
+        //        return true;
+        //    }
+
+        //    GetFleetOwnerOutOfShips(_fleet);
+
+        //    if (_fleet == null)
+        //    {
+        //        Debugger.Break();
+        //        //throw new ArgumentNullException(nameof(_fleet));
+        //    }
+
+        //    _fleet.Activity = UnitActivity.NoActivity;
+
+        //    if (_fleet.Ships.Count == 0)
+        //    {
+        //        //_bestSector = null;
+        //        return false;
+        //    }
+
+        //    bool _write = _writeDirectly_Fleets;
+        //    //_write = true;
+        //    _write = false;
+
+        //    //_fleet.GetCivM(_fleet, out CivilizationManager _civM);
+
+        //    //if (_civM.StrandedShipsSector != null)
+        //    //{
+
+        //    //    _bestSector = _civM.StrandedShipsSector;
+        //    //    return true;
+        //    //}
+
+
+        //    //_text = "DoConstruFindBestSector: ";
+        //    //int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
+        //    //_text += _newline + "halfMapWidthX= " + halfMapWidthX.ToString();
+        //    //if (_write) Console.WriteLine(halfMapWidthX);
+
+        //    //int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
+        //    //_text += _newline + "halfMapHeightY= " + halfMapHeightY.ToString();
+        //    //if (_write) Console.WriteLine(halfMapHeightY);
+
+        //    //int thirdMapWidthX = GameContext.Current.Universe.Map.Width / 3;
+        //    //_text += _newline + "thirdMapWidthX= " + thirdMapWidthX.ToString();
+        //    //if (_write) Console.WriteLine(thirdMapWidthX);
+
+        //    //int thirdMapHeightY = GameContext.Current.Universe.Map.Height / 3;
+        //    //_text += _newline + "thirdMapHeightY= " + thirdMapHeightY.ToString();
+        //    //if (_write) Console.WriteLine(thirdMapHeightY);
+
+        //    //int quarterMapWidthX = GameContext.Current.Universe.Map.Width / 4;
+        //    //_text += _newline + "quarterMapWidthX= " + quarterMapWidthX.ToString();
+        //    //if (_write) Console.WriteLine(quarterMapWidthX);
+
+        //    //int quarterMapHeightY = GameContext.Current.Universe.Map.Height / 4;
+        //    //_text += _newline + "quarterMapHeightY= " + quarterMapHeightY.ToString();
+        //    //if (_write) Console.WriteLine(quarterMapHeightY);
+
+        //    //int lengthQuarterMap = (int)Math.Sqrt((int)Math.Pow(quarterMapWidthX, 2) + (int)Math.Pow(quarterMapHeightY, 2));
+        //    //_text += _newline + "lengthQuarterMap= " + lengthQuarterMap.ToString();
+        //    //if (_write) Console.WriteLine(lengthQuarterMap);
+
+        //    //int lengthThirdMap = (int)Math.Sqrt((int)Math.Pow(thirdMapWidthX, 2) + (int)Math.Pow(thirdMapHeightY, 2));
+        //    //_text += _newline + "lengthThirdMap= " + lengthThirdMap.ToString();
+        //    //if (_write) Console.WriteLine(lengthThirdMap);
+
+        //    //if (_write) Console.WriteLine(_text);
+
+
+        //    //_write = true;
+        //    ////_write = false;
+        //    //switch (_fleet.Owner.Key)
+        //    //{
+        //    //    case "BORG":
+        //    //    //{
+        //    //    //    _text = "Step_6560: DoConstruFindBestSector for Borg";
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+        //    //    //    //GameLog.Client;.AI.DebugFormat(_text);
+        //    //    //    int borgX = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X;
+        //    //    //    int borgXDelta = Math.Abs(GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X - halfMapWidthX) / 4;
+        //    //    //    int borgY = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y;
+        //    //    //    int borgYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y) / 4;
+
+        //    //    //    MapLocation borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location;
+        //    //    //    List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+        //    //    //        .Where(s => s.Location != null
+        //    //    //        && s.Sector.Station == null
+        //    //    //        && s.Location.X >= halfMapWidthX + borgXDelta && s.Location.X <= borgX
+        //    //    //        && s.Location.Y <= Math.Abs(halfMapHeightY - borgYDelta) && s.Location.Y >= borgY + borgYDelta)
+        //    //    //        //&& s.Location == borgHomeLocation)                         
+        //    //    //        .ToList();
+
+        //    //    //    if (objectsAlongCenterAxis.Count == 0)
+        //    //    //    {
+        //    //    //        _bool_bestSector = null;
+        //    //    //        return false;
+        //    //    //    }
+        //    //    //    // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), _fleet.Owner.Key);
+        //    //    //    try
+        //    //    //    {
+        //    //    //        objectsAlongCenterAxis.Sort((a, b) =>
+        //    //    //            GetValue_Station(a.Sector, _fleet, objectsAlongCenterAxis)
+        //    //    //            .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAlongCenterAxis)));
+        //    //    //    }
+        //    //    //    catch
+        //    //    //    {
+        //    //    //        _text = "unable to sort objects for Borg station location";
+        //    //    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
+        //    //    //        GameLog.Client.AI.DebugFormat(_text);
+        //    //    //        _bool_bestSector = null;
+        //    //    //        return false;
+        //    //    //    }
+        //    //    //    List<Fleet> otherConstructors = GameContext.Current.Universe.Find<Fleet>()
+        //    //    //            .Where(o => o.Owner != _fleet.Owner && o.IsConstructor || o.MultiFleetHasAConstructor).ToList();
+        //    //    //    List<Sector> _sectors = new List<Sector>();
+        //    //    //    foreach (UniverseObject anObject in objectsAlongCenterAxis)
+        //    //    //    {
+        //    //    //        _sectors.Add(anObject.Sector);
+        //    //    //    }
+        //    //    //    foreach (Fleet aFleet in otherConstructors)
+        //    //    //    {
+        //    //    //        if (_sectors.Any(o => o == aFleet.Sector))
+        //    //    //        {
+        //    //    //            _ = _sectors.Remove(aFleet.Sector);
+        //    //    //        }
+        //    //    //    }
+
+        //    //    //    _bool_bestSector = _sectors.Last(); //objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
+
+        //    //    //    if (_bool_bestSector == null)
+        //    //    //    {
+        //    //    //        return false;
+        //    //    //    }
+
+        //    //    //    _text = "Borg station selected _location  at " + _bool_bestSector.Location + " " + _bool_bestSector.Name;
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+        //    //    //    // GameLog.Core.AI.DebugFormat(_text);
+        //    //    //    return true;
+        //    //    //}
+
+        //    //    case "DOMINION":
+        //    //    //{
+        //    //    //    _text = "Step_6580: DoConstruFindBestSector for DOMINION";
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+        //    //    //    //GameLog.Client.AI.DebugFormat("Dominion");
+        //    //    //    int domX = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X;
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(domX);
+        //    //    //    int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.X) / 4;
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(domXDelta);
+        //    //    //    int domY = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y;
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(domY);
+        //    //    //    int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Location.Y) / 4;
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(domYDelta);
+
+        //    //    //    List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+        //    //    //        // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, _fleet))
+        //    //    //        .Where(s => s.Location != null
+        //    //    //        && s.Sector.Station == null
+        //    //    //        && s.Location.X <= Math.Abs(halfMapWidthX - domXDelta) && s.Location.X > domX
+        //    //    //        && s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY)
+        //    //    //        // find a list of objects in some _location around Dom side of galactic center
+        //    //    //        .ToList();
+        //    //    //    //foreach (var item in objectsAlongCenterAxis)
+        //    //    //    //{
+        //    //    //    //    _text = item.Location
+        //    //    //    //        + " " + item.Name
+        //    //    //    //        + " " + item.ObjectID
+
+        //    //    //    //        ;
+        //    //    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+        //    //    //    //    //if (item.ObjectType != )
+        //    //    //    //}
+
+
+        //    //    //    if (objectsAlongCenterAxis.Count == 0)
+        //    //    //    {
+        //    //    //        _bool_bestSector = null;
+        //    //    //        return false;
+        //    //    //    }
+        //    //    //    //GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), _fleet.Owner.Key);
+
+        //    //    //    try
+        //    //    //    {
+        //    //    //        _text = "try objectsAlongCenterAxis... for _fleet" + _fleet.ObjectID + " " + _fleet.Name + " " + _fleet.ClassName;
+        //    //    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
+
+        //    //    //        objectsAlongCenterAxis.Sort((a, b) =>
+        //    //    //       GetValue_Station(a.Sector, _fleet, objectsAlongCenterAxis)
+        //    //    //       .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAlongCenterAxis)));
+
+        //    //    //    }
+        //    //    //    catch
+        //    //    //    {
+        //    //    //        _text = "unable to sort objects for Dominion station location";
+        //    //    //        if (_writeDirectly_Colony) Console.WriteLine(_text);
+        //    //    //        GameLog.Client.AI.DebugFormat(_text);
+        //    //    //        _bool_bestSector = null;
+        //    //    //        return false;
+        //    //    //    }
+        //    //    //    _bool_bestSector = objectsAlongCenterAxis.Last().Sector; //[objectsAlongCenterAxis.Count - 1].Sector;
+        //    //    //    if (_bool_bestSector == null)
+        //    //    //    {
+        //    //    //        return false;
+        //    //    //    }
+
+        //    //    //    _text = "Dominion station selected _location  at " + _bool_bestSector.Location + " " + _bool_bestSector.Name;
+        //    //    //    if (_writeDirectly_Colony) Console.WriteLine(_text);
+        //    //    //    // GameLog.Core.AI.DebugFormat(_text);
+        //    //    //    return true;
+        //    //    //}
+        //    //    case "KLINGONS":
+        //    //    case "TERRANEMPIRE":
+        //    //    case "FEDERATION":
+        //    //    case "ROMULANS":
+        //    //    case "CARDASSIANS":
+        //    //        {
+        //    //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, _fleet.Owner);
+
+        //    if (_is_owner_human)
+        //    {
+        //        //Debugger.Break();
+        //    }
+
+        //    Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[_fleet.Owner].Sector;
+
+        //    int xloc = GameContext.Current.Universe.Map.Width / 2;
+        //    int yloc = GameContext.Current.Universe.Map.Height / 2;
+
+        //    MapLocation _center = new MapLocation(xloc, yloc);
+
+        //    List<Sector> _availableSectors = new List<Sector> { homeSector };
+        //    List<Sector> _maybeSectors = new List<Sector> { homeSector };
+
+
+        //    //List<UniverseObject> objectsAroundHome = GameContext.Current.Universe.Objects
+        //    //    .Where(s => s.Location != null
+        //    //    && s.ObjectType != UniverseObjectType.Ship
+        //    //    && s.ObjectType != UniverseObjectType.Fleet
+        //    //    //&& s.ObjectType != UniverseObjectType.StarSystem.bla
+        //    //    && s.Sector.Station == null
+        //    //    && s.Sector.Owner == null
+        //    //    && GetDistanceTo(_center, s.Location) < xloc - 3 // but if there is a system + BORG don't colonize... > ToDo 2025-03-16
+        //    //    )  // do not build at the edge of the map
+        //    //       //&& GetDistanceTo(_center, s.Location) < lengthThirdMap)
+        //    //    .ToList();
+
+
+
+        //    int _distance = 5;
+
+        //_SearchAvailableSectorsOnceAgain:
+
+        //    //int _sectorOwnerID = 999;
+        //    //if (_se)
+
+        //    _availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance)/*.Where(s => s.Owner.CivID != _fleet.OwnerID)*/.ToList();
+
+
+
+        //    //List<UniverseObject> _allCivFleets = GameContext.Current.Universe.Objects
+        //    //    .Where(o => o.ObjectType == UniverseObjectType.Ship
+        //    //    && o.OwnerID == _fleet.OwnerID
+        //    //    && o.CanMove
+        //    //    ).ToList();
+
+        //    //foreach (var item in _allCivFleets)
+        //    //{
+        //    //    //if (item.ObjectType.)
+        //    //}
+
+        //    //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
+        //    if (_is_owner_human)
+        //    {
+
+        //        Debugger.Break(); // in DoConstruFindBestSector
+        //    }
+
+        //    string _availableSectorsText = "";
+
+        //    if (_availableSectors != null)
+        //    {
+
+
+        //        foreach (var _sector in _availableSectors)
+        //        {
+        //            int _distance2 = MapLocation.GetDistance(_sector.Location, homeSector.Location);
+
+        //            if (_distance2 != _distance - 0)  // not all sectors > too much > only the far away
+        //            {
+        //                continue;
+        //            }
+
+        //            _text = "Step_6913:; "
+        //                 + "" + _fleets_Summary
+        //                 + " >  DistfromHome > " + GameEngine.Do_x_Digit_String(2, _distance2.ToString())
+        //                 + ", Value for Station= " + GetValue_Station(_sector, _fleet)//, objectsAroundHome)
+        //                 + " for " + _sector.Location
+        //                 + " " + _sector.Name
+        //                ;
+
+        //            //if (_write) 
+        //            //Console.WriteLine(_text);
+        //            _availableSectorsText += _newline + _text;
+        //            //_fleet_Text += Environment.NewLine + _text;
+
+        //            if (_sector.System != null)
+        //            {
+        //                if (_sector.System.StarType == StarType.BlackHole
+        //                    || _sector.System.StarType == StarType.NeutronStar
+        //                    || _sector.System.StarType == StarType.XRayPulsar
+        //                    || _sector.System.StarType == StarType.RadioPulsar
+        //                    || _sector.System.StarType == StarType.Quasar
+
+        //                    )
+        //                    _text += "";
+
+
+        //            }
+        //            else
+        //            {
+        //                if (_is_owner_human)
+        //                {
+        //                    //Debugger.Break();
+        //                }
+
+        //                if (_fleet.Owner.Key == "BORG" /*&& !_sector.IsOwned*/ && _sector.Station == null)
+        //                {
+        //                    _maybeSectors.Add(_sector);
+        //                }
+        //                else if (!_sector.IsOwned && _sector.Station == null) // owned _location = no build _order
+
+        //                {
+        //                    // only add if BORG (they don't colonize but need to occupy sectors with planets
+        //                    //if (_fleet.Owner.Key == "BORG" && !_sector.IsOwned && _sector.Station == null)
+        //                    //{
+        //                    //    _maybeSectors.Add(_sector);
+        //                    //}
+        //                    //else
+        //                    //{
+        //                    if (GetDistanceTo(_center, _sector.Location) > xloc - 2 || GetDistanceTo(_center, _sector.Location) > yloc - 2) // do not build at the edge of the map
+        //                    {
+        //                        if (FleetHelper.IsSectorWithinFuelRange(_sector, _fleet) && _sector.Station == null)
+        //                        {
+        //                            _maybeSectors.Add(_sector);
+        //                        }
+
+        //                    }
+
+        //                    //}
+        //                }
+
+        //            }
+
+        //        }
+        //    }
+
+        //    if (_is_owner_human)
+        //    {
+        //        //Debugger.Break();
+        //    }
+
+        //    //_availableSectors = MapHelper.GetSectorsWithinRadius(_fleet.Sector, _distance).ToList();
+
+        //    if (_maybeSectors != null && _maybeSectors.Count < 1)
+        //    {
+        //        _distance += 1;
+        //        goto _SearchAvailableSectorsOnceAgain;
+        //    }
+
+        //    //_fleet.GetCivM(_fleet, out CivilizationManager _civM);
+
+
+        //    Console.WriteLine(_availableSectorsText + " from Step_5553");
+
+        //    Dictionary<MapLocation, int> _sectorValues = new Dictionary<MapLocation, int>();
+        //    string _text_sectorValues = "";
+
+        //    foreach (var _sect in _maybeSectors)
+        //    {
+        //        int _val = GetValue_Station(_sect, _fleet);
+
+        //        _sectorValues.Add(_sect.Location, _val);
+        //        _text_sectorValues += _newline + "Step_3321:; " + _fleet.Owner + ": " + _sect.Location + ", val= " + _val
+
+        //            ;
+        //    }
+
+        //    //Console.WriteLine(_text_sectorValues + " from Step_5554");
+
+        //    if (_is_owner_human)
+        //    {
+        //        //Debugger.Break();
+        //    }
+
+        //    try
+        //    {
+        //        _maybeSectors.Sort((a, b) =>
+        //                      GetValue_Station(a, _fleet)//, _maybeSectors)
+        //                      .CompareTo(GetValue_Station(b, _fleet)));//, _maybeSectors)));
+
+        //        _bestSector = _maybeSectors.Last();
+        //        _bestSectorName = _bestSector.Name;
+
+        //        if (_bestSector != null)
+        //        {
+        //            _text = "Step_6914:; "
+        //                     + "" + _fleets_Summary
+        //                     //+ " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, _distance2.ToString())
+        //                     //+ ", Value for Station= " + GetValue_Station(_sector, _fleet, objectsAroundHome)
+        //                     + " > _bestSector= " + _bestSector.Location
+        //                    //+ " " + _sector.Name
+        //                    ;
+
+        //            //if (_write) 
+        //            Console.WriteLine(_text);
+
+        //            return true;
+        //        }
+
+
+        //        //if (_maybeSectors.Count > _civM.Z_Ship_Construction_Available + _civM.Z_Ship_Construction_Ordered - 1)
+        //        //{
+        //        //    _civM.Z_Ship_Construction_Needed += 1;
+        //        //}
+        //    }
+        //    catch { _bestSector = null; return false; }
+
+        //    //try
+        //    //{
+        //    //    objectsAroundHome.Sort((a, b) =>
+        //    //                  GetValue_Station(a.Sector, _fleet, objectsAroundHome)
+        //    //                  .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAroundHome)));
+        //    //}
+        //    //catch { _bool_bestSector = null; return false; }
+
+
+
+        //    //if (objectsAroundHome.Count == 0)
+        //    //{
+        //    //    _bool_bestSector = null;
+        //    //    return false;
+        //    //}
+
+        //    // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAroundHome.Count(), _fleet.Owner.Key);
+
+        //    // old stuff - only objects were checked, but not all sectors
+        //    //try
+        //    //{
+        //    //    objectsAroundHome.Sort((a, b) =>
+        //    //                  GetValue_Station(a.Sector, _fleet, objectsAroundHome)
+        //    //                  .CompareTo(GetValue_Station(b.Sector, _fleet, objectsAroundHome)));
+        //    //}
+        //    //catch { _bool_bestSector = null; return false; }
+
+        //    try
+        //    {
+        //        //string _obj = "";
+        //        //foreach (var item in objectsAroundHome)
+        //        //{
+        //        //    int distance = MapLocation.GetDistance(item.Location, homeSector.Location);
+        //        //    _text = "Step_6915:; "
+        //        //         + "" + _fleets_Summary
+        //        //         + " >  DistfromHome > " + GameEngine.Do_x_Digit_String( 2, distance.ToString())
+        //        //         + ", Value for Station= " + GetValue_Station(item.Sector, _fleet, objectsAroundHome)
+        //        //         + " for (object) " + item.Location
+        //        //         + " " + item.Name + " "
+
+        //        //        ;
+        //        //    if (_write) Console.WriteLine(_text);
+        //        //    _fleet_Text += Environment.NewLine + _text;
+
+        //        //    //_obj += _newline + _text;
+        //        //}
+        //        //if (_writeDirectly_Colony) Console.WriteLine(_obj);
+
+        //        //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
+        //        if (_is_owner_human)
+        //        {
+        //            //Debugger.Break();
+        //        }
+
+
+
+        //        //_bool_bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
+
+        //        //2024-12-28
+        //        //_bestSector = _maybeSectors.Last();
+
+        //        _text = "Step_6550:; "
+        //            + "" + CreateUpdateFleetText(_fleet, out _fleet_Text)
+        //            + _newline + ": _location selected for station build for "
+        //            + " > " + GameEngine.LocationString(_bestSector.Location.ToString())
+        //            + " Name = " + _bestSectorName
+
+        //             ;
+        //        //if (_writeDirectly_Fleets)
+        //        Console.WriteLine(_text);
+        //        //_fleets_Summary += _newline + _text;
+
+        //        //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
+        //        if (_is_owner_human)
+        //        {
+        //            //Debugger.Break();
+        //        }
+
+        //        // GameLog.Core.AI.DebugFormat(_text);
+        //    }
+        //    catch { _bestSector = null; return false; }
+
+
+        //    //return _bestSector != null;
+        //    //}
+
+        //    //default: // non of the Empires
+        //    //_bestSector = null;
+        //    _text = "Step_7759:; " + CreateUpdateFleetText(_fleet, out _fleet_Text) + " > no _location for station";
+        //    //if (_writeDirectly_Fleets) 
+        //    Console.WriteLine(_text);
+        //    //GameLog.Core.AI.DebugFormat(_text);
+
+        //    //if (_checkFleetOrders == true && _checkOnlyPlayersUnits)
+        //    if (_is_owner_human)
+        //    {
+        //        Debugger.Break();
+        //    }
+
+        //    return false; // could not find _location for station
+        //    //}
+        //}
 
         /// <summary>
         /// Determines the value of a <see cref="Civilization"/> providing

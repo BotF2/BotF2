@@ -149,10 +149,13 @@
                                            Foreground="Black"
                                            Text="{s:StringResource AFFILIATION_TEXT}"
                                            HorizontalAlignment="Center" />-->
+                  <!--<TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+             FontSize="18pt" HorizontalAlignment="Center" Foreground="Black"
+Text="{Binding Path=All_Root, Mode=OneWay}}"
+                           />-->
                   <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
              FontSize="18pt" HorizontalAlignment="Center" Foreground="Black"
-Text="{Binding Path=All_Root, Mode=TwoWay, Converter={StaticResource UpperCaseConverter}}"
-
+Text="{Binding Path=Turnnumber, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            />
                                 
                   

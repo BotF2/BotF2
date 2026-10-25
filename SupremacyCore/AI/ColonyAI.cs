@@ -634,7 +634,11 @@ namespace Supremacy.AI
                     }
                 }
 
-                Checkfor_Build_OrbBatteries(_colony, _available_item);
+                //if (_available_item != null)
+                //{
+                //Checkfor_Build_OrbBatteries(_colony, _available_item); // from Colony_Step_75_CheckFor_All_Build_Projects
+                //}
+
 
                 //if (/*_itemToBuild_Facility == null && */_available_item.BuildDesign.Key.Contains("Battery"))
                 //{
@@ -693,6 +697,7 @@ namespace Supremacy.AI
             if (_available_item == null)
             {
                 Debugger.Break();
+                return;
             }
 
             if (_available_item.BuildDesign.Key.Contains("Battery") 
@@ -2220,7 +2225,7 @@ namespace Supremacy.AI
                 //        ;
                 //if (_writeDirectly_Colony) Console.WriteLine(_text);
 
-                _text = "Step_1258:; " + GameEngine.LocationString(_colony.Location.ToString()) //+ " > Colony_Step_60_Handle_Basic_Structures"
+                _text = "Step_1257:; " + GameEngine.LocationString(_colony.Location.ToString()) //+ " > Colony_Step_60_Handle_Basic_Structures"
                         + " > " + _name_col
                         + " ; " + _owner_col
                         + " > Colony_Step_60_Handle_Basic_Structures=;"
@@ -2228,7 +2233,7 @@ namespace Supremacy.AI
                         //+ "; _prod_output=;" + _prod_output // per unit
                         + "; Industry_Net=;" + _colony.Industry_Net
                         + "; BuildQueue.Count=; " + _colony.BuildQueue.Count
-                        + _toBuildText
+                        + " = " + _toBuildText
 
                     //+ "; MathCeiling=; " + Math.Ceiling(structureProject.GetCurrentIndustryCost() / (_colony.GetProductionModifier(ProductionCategory.Industry).Bonus
                     //        * (_colony.TotalFacilities[ProductionCategory.Industry].Value * _prod_output)))
@@ -3525,9 +3530,9 @@ namespace Supremacy.AI
                 //        _colony_full_Report += _newline + _text;
                 //    }
                 //}
-                Checkfor_Build_OrbBatteries(_colony, _itemToBuild);
+                //Checkfor_Build_OrbBatteries(_colony, _itemToBuild);
             }
-            Checkfor_Build_OrbBatteries(_colony, _itemToBuild);
+            //Checkfor_Build_OrbBatteries(_colony, _itemToBuild);
         }
         //End of Colony_Step_85_Handle_Build_Anything
 

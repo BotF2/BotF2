@@ -1681,7 +1681,7 @@ namespace Supremacy.WCF
                 //    {
                 //        countStation = 2;  // counting value for Station = 2 ships
                 //        GameLog.Core.Combat.DebugFormat("generated blanketOrder = {3} for {0} (Count friendly = {1} vs {2})",
-                //        ownerAssets.Owner, enemyAssets.CombatShips.Count + countStation, ownerAssets.CombatShips.Count + 1, blanketOrder);
+                //        ownerAssets.Owner, enemyAssets.Ships_Combat.Count + countStation, ownerAssets.Ships_Combat.Count + 1, blanketOrder);
                 //    }
                 //}
 

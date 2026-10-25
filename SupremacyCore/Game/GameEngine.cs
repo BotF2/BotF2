@@ -2513,7 +2513,7 @@ namespace Supremacy.Game
             //            Diplomacy.DiplomacyHelper.Diplomacy_7_Response_Sent(_diplomat_civ2.ResponseSent);//  Second.4 = responseSent
             //            //}
             //        }
-            //        //_civM_1.Target_CivList.Add(_civ2);
+            //        //_civM_1.Assault_Target_CivList.Add(_civ2);
             //    }
             //    //}
 
@@ -2525,7 +2525,7 @@ namespace Supremacy.Game
             //    }
 
 
-            //    //_civM_1.Target_CivList.Add(_civ2);
+            //    //_civM_1.Assault_Target_CivList.Add(_civ2);
 
             //    //if (_civM_1.Assault_TargetCiv == null)
             //    //{
@@ -2924,25 +2924,25 @@ namespace Supremacy.Game
             //        //    Debugger.Break();
             //        //}
 
-            //        //_civM_1.Target_CivList.AddRange(_civ2.);
-            //        //_civM_1.Target_CivList.Distinct();
+            //        //_civM_1.Assault_Target_CivList.AddRange(_civ2.);
+            //        //_civM_1.Assault_Target_CivList.Distinct();
             //        _possibleTargetCivs.Add(_civ2);
             //        _possibleTargetCivs.Distinct();
 
             //    }
             //    List<Civilization> _target_help_list = new List<Civilization>() { _civ1 };
             //    //_target_help_list.Add(_civ1);
-            //    if (GameContext.Current.CivilizationManagers[_civ1].Target_CivList == null
-            //        || GameContext.Current.CivilizationManagers[_civ1].Target_CivList.Count == 0)
+            //    if (GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList == null
+            //        || GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList.Count == 0)
             //    {
-            //        GameContext.Current.CivilizationManagers[_civ1].Target_CivList = _target_help_list;
+            //        GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList = _target_help_list;
             //    }
             //    else
             //    {
-            //        GameContext.Current.CivilizationManagers[_civ1].Target_CivList.AddRange(_possibleTargetCivs);
-            //        _target_help_list = GameContext.Current.CivilizationManagers[_civ1].Target_CivList;
+            //        GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList.AddRange(_possibleTargetCivs);
+            //        _target_help_list = GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList;
             //        //_target_help_list = _target_help_list;
-            //        GameContext.Current.CivilizationManagers[_civ1].Target_CivList = _target_help_list.Distinct().ToList();
+            //        GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList = _target_help_list.Distinct().ToList();
 
             //        //Debugger.Break()
             //        //if (_civ1.IsHuman && _foreignPowerStatus != ForeignPowerStatus.NoContact) { Debugger.Break(); }
@@ -2952,8 +2952,8 @@ namespace Supremacy.Game
 
             //    //if (_possibleTargetCivs.Count > 0)
             //    //{
-            //    //    //GameContext.Current.CivilizationManagers[_civ1].Target_CivList = _possibleTargetCivs;
-            //    //    GameContext.Current.CivilizationManagers[_civ1].Target_CivList.AddRange(_possibleTargetCivs);
+            //    //    //GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList = _possibleTargetCivs;
+            //    //    GameContext.Current.CivilizationManagers[_civ1].Assault_Target_CivList.AddRange(_possibleTargetCivs);
             //    //}
 
 
@@ -2963,15 +2963,15 @@ namespace Supremacy.Game
             //    string _atWarText = "";
 
             //    if (_foreignPowerStatus == ForeignPowerStatus.AtWar
-            //            && _civM_1.Target_CivList != null
-            //            && _civM_1.Target_CivList.Count > 0)
+            //            && _civM_1.Assault_Target_CivList != null
+            //            && _civM_1.Assault_Target_CivList.Count > 0)
             //    {
 
             //        _target_ColoniesLocations = new Dictionary<Civilization, int>();
             //        _target_ColoniesLocations.Add(_civ1, 99);
 
 
-            //        foreach (var _item in _civM_1.Target_CivList)
+            //        foreach (var _item in _civM_1.Assault_Target_CivList)
             //        {
             //            MapLocation _loc_1 = _civM_1.HomeSystem.Location;
             //            MapLocation _loc_2 = GameContext.Current.CivilizationManagers[_item.CivID].HomeSystem.Location;
@@ -6771,20 +6771,25 @@ namespace Supremacy.Game
             }
 
             bool _writeDirectly = true;
+            //int _ships_count = 0;
 
             string _text = LocationString(_combat[0].Location.ToString()) + " > Red Alert";
             for (int i = 0; i < _combat.Count(); i++)
             {
 
                 CivilizationManager _civM = GameContext.Current.CivilizationManagers[_combat[i].OwnerID];
-                _text += " > " + _civM.Civilization.Key + " > ";
+                _text += " > " + _civM.Civilization.Key + " = ";
 
-                if (_combat[i].CombatShips != null)
-                {
-                    _text += _combat[i].CombatShips.Count + " armed ship";
-                    if (_combat[i].CombatShips.Count > 1)
+                int _ships_count = 0;
+
+                if (_combat[i].Ships_Combat != null) { _ships_count += _combat[i].Ships_Combat.Count;}
+                if (_combat[i].Ships_NonCombat != null) { _ships_count += _combat[i].Ships_NonCombat.Count;}
+                if (_combat[i].Ships_Assimilated != null) { _ships_count += _combat[i].Ships_Assimilated.Count;}
+
+                    _text += _ships_count + " ships";
+                    if (_ships_count > 1)
                         _text += ResourceManager.GetString("PLURAL_S"); // plural s
-                }
+
 
                 if (_combat[i].Station != null)
                 {
@@ -6796,7 +6801,8 @@ namespace Supremacy.Game
             // second loop to inform any party 
             for (int i = 0; i < _combat.Count(); i++)
             {
-                GameContext.Current.CivilizationManagers[_combat[i].OwnerID].SitRepEntries.Add(new ReportEntry_CoS(_combat[i].Owner, _combat[i].Location, _text, "", "", SitRepPriority.RedYellow));
+                GameContext.Current.CivilizationManagers[_combat[i].OwnerID].SitRepEntries.Add(
+                    new ReportEntry_CoS(_combat[i].Owner, _combat[i].Location, _text, "", "", SitRepPriority.RedYellow));
             }
 
             _text = "Step_0876:; " + _text;

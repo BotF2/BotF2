@@ -97,8 +97,8 @@ namespace Supremacy.Combat
             // LaterShips
 
             // _allRetreatShips
-            // EscapedShips
-            // AssimilatedShips
+            // Ships_Escaped
+            // Ships_Assimilated
             // Ships "Destroyed"
 
             
@@ -141,11 +141,11 @@ namespace Supremacy.Combat
                 //        if (!RandomHelper.Chance(5) && (ship.Item1 != null))
                 //        {
                 //            CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
-                //            if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
+                //            if (!ownerAssets.Ships_Escaped.Contains(ship.Item1)) // escaped ships cannot escape again
                 //            {
-                //                ownerAssets.EscapedShips.Add(ship.Item1);
-                //                _ = ownerAssets.CombatShips.Remove(ship.Item1);
-                //                _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
+                //                ownerAssets.Ships_Escaped.Add(ship.Item1);
+                //                _ = ownerAssets.Ships_Combat.Remove(ship.Item1);
+                //                _ = ownerAssets.Ships_NonCombat.Remove(ship.Item1);
                 //                _ = _combatShips.Remove(ship);
 
                 //                _text =
@@ -187,11 +187,11 @@ namespace Supremacy.Combat
                 //    if (!RandomHelper.Chance(2) && (ship.Item1 != null)) // 2 = 50% to retreat
                 //    {
                 //        CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
-                //        if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
+                //        if (!ownerAssets.Ships_Escaped.Contains(ship.Item1)) // escaped ships cannot escape again
                 //        {
-                //            ownerAssets.EscapedShips.Add(ship.Item1);
-                //            _ = ownerAssets.CombatShips.Remove(ship.Item1);
-                //            _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
+                //            ownerAssets.Ships_Escaped.Add(ship.Item1);
+                //            _ = ownerAssets.Ships_Combat.Remove(ship.Item1);
+                //            _ = ownerAssets.Ships_NonCombat.Remove(ship.Item1);
                 //            _ = _combatShips.Remove(ship);
 
                 //            _text =
@@ -246,12 +246,12 @@ namespace Supremacy.Combat
                         if (target.Item1.Source is Ship && assimilationSuccessful)
                         {
                             CombatAssets ownerAssets = GetAssets(target.Item1.Owner);
-                            if (!ownerAssets.EscapedShips.Contains(target.Item1)) // escaped ships cannot escape again
+                            if (!ownerAssets.Ships_Escaped.Contains(target.Item1)) // escaped ships cannot escape again
                             {
-                                ownerAssets.EscapedShips.Add(target.Item1);
-                                _ = ownerAssets.CombatShips.Remove(target.Item1);
-                                _ = ownerAssets.NonCombatShips.Remove(target.Item1);
-                                ownerAssets.AssimilatedShips.Add(target.Item1);
+                                ownerAssets.Ships_Escaped.Add(target.Item1);
+                                _ = ownerAssets.Ships_Combat.Remove(target.Item1);
+                                _ = ownerAssets.Ships_NonCombat.Remove(target.Item1);
+                                ownerAssets.Ships_Assimilated.Add(target.Item1);
                                 _ = _combatShips.Remove(target);
 
                                 _text = (
@@ -2364,7 +2364,7 @@ namespace Supremacy.Combat
                     //GameLog.Core.CombatDetails.DebugFormat("Combatent {0} {1} IsDestroid ={2} if true see second line Hull ={3}", combatent.Item1.Source.ObjectID, combatent.Item1.Name, combatent.Item1.IsDestroyed, combatent.Item1.HullStrength);
                     CombatAssets Assets = GetAssets(combatent.Item1.Owner);
 
-                    _ = Assets.AssimilatedShips.Remove(combatent.Item1);
+                    _ = Assets.Ships_Assimilated.Remove(combatent.Item1);
                     _text = ("Step_3256:; " + _sectorString + " > Combatent was destroyed: " + combatent.Item1.Source.ObjectID + " " + combatent.Item1.Name + " " + combatent.Item1.Source.Design);
                     if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                     _combat_Automated_full_Report += _newline + _text;
@@ -2378,16 +2378,16 @@ namespace Supremacy.Combat
                             _text = ("Step_3886:; "
                                 + combatent.Item1.Source.Location +
                                 " > REMOVE DESTROYED Name of Owner = " + Assets.Owner.Name
-                                + ", Assets.CombatShips = " + Assets.CombatShips.Count
-                                + ", Assets.NonCobatShips = " + Assets.NonCombatShips.Count);
+                                + ", Assets.Ships_Combat = " + Assets.Ships_Combat.Count
+                                + ", Assets.NonCobatShips = " + Assets.Ships_NonCombat.Count);
                             //if (_write_directly_AutomatedCombat) Console.WriteLine(_text);
                             _combat_Automated_full_Report += _newline + _text;
                             //GameLog.Core.CombatDetails.DebugFormat(_text);
 
 
-                            if (!Assets.DestroyedShips.Contains(combatent.Item1))
+                            if (!Assets.Ships_Destroyed.Contains(combatent.Item1))
                             {
-                                Assets.DestroyedShips.Add(combatent.Item1);
+                                Assets.Ships_Destroyed.Add(combatent.Item1);
 
                                 // this SitRep is double
 
@@ -2452,12 +2452,12 @@ namespace Supremacy.Combat
                             {
                                 countDestroyed++;
 
-                                _ = Assets.CombatShips.Remove(combatent.Item1);
+                                _ = Assets.Ships_Combat.Remove(combatent.Item1);
                                 continue;
                             }
                             else
                             {
-                                _ = Assets.NonCombatShips.Remove(combatent.Item1);
+                                _ = Assets.Ships_NonCombat.Remove(combatent.Item1);
                                 continue;
                             }
 
@@ -2474,9 +2474,9 @@ namespace Supremacy.Combat
                     }
                     else if (_combatShips.Contains(_combatStation))
                     {
-                        if (!Assets.DestroyedShips.Contains(combatent.Item1))
+                        if (!Assets.Ships_Destroyed.Contains(combatent.Item1))
                         {
-                            Assets.DestroyedShips.Add(combatent.Item1);
+                            Assets.Ships_Destroyed.Add(combatent.Item1);
                             _text = combatent.Item1.Source.Location
                                 + CreateShipText(combatent.Item1, out string _shipText)
                             //+ " " + combatent.Item1.Source.Sector.Name
@@ -2783,16 +2783,16 @@ namespace Supremacy.Combat
                         //GameLog.Core.CombatDetails.DebugFormat("Step_6284: " + _text);
 
                         CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
-                        if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                        if (!ownerAssets.Ships_Escaped.Contains(ship.Item1))
                         {
                             _text = (_sectorString + " > END Escaped ships = " + ship.Item1.Name + " " + ship.Item1.Description);
                             Console.WriteLine("Step_6286:; " + _text);
                             _combat_Automated_full_Report += _newline + _text;
                             //GameLog.Core.CombatDetails.DebugFormat("Step_6286:; " + _text);
 
-                            ownerAssets.EscapedShips.Add(ship.Item1);
-                            _ = ownerAssets.CombatShips.Remove(ship.Item1);
-                            _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
+                            ownerAssets.Ships_Escaped.Add(ship.Item1);
+                            _ = ownerAssets.Ships_Combat.Remove(ship.Item1);
+                            _ = ownerAssets.Ships_NonCombat.Remove(ship.Item1);
                             _ = _combatShips.Remove(ship);
 
                             CivilizationManager _civM = GameContext.Current.CivilizationManagers[ship.Item1.Owner.CivID];

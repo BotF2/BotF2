@@ -489,6 +489,7 @@ namespace Supremacy.Client
             }
             return null;
         }
+
         #endregion
 
         [UsedImplicitly]
@@ -1017,6 +1018,7 @@ namespace Supremacy.Client
                 return _shell;
             }
         }
-        #endregion
+        #endregion Bootstrapper Class
+
     }
 }

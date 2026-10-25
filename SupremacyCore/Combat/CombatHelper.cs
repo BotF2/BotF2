@@ -103,25 +103,40 @@ namespace Supremacy.Combat
             {
                 if (_civNameList[i] != null)
                 {
-                    if (i == 0) { _civName1 = _civNameList[i]; _civInsigniaOther1 = _civNameList[i]; _civInsigniaOther1 = _civInsigniaOther1.Replace(" ", ""); }
-                    if (i == 1)
+                    switch (i)  
+
+                    //if (i == 0) 
                     {
-                        _civName2 = _civNameList[i];
+                        case 0:
+                        _civName1 = _civNameList[i]; 
+                        _civInsigniaOther1 = _civNameList[i]; 
+                        _civInsigniaOther1 = _civInsigniaOther1.Replace(" ", "");
+                            break;
+                        //}
+                        //if (i == 1)
+                        //{
+                        case 1:
+                            _civName2 = _civNameList[i];
                         _civInsigniaOther2 = _civNameList[i]; _civInsigniaOther2 = _civInsigniaOther2.Replace(" ", "");
                         _civStatus2 = _civStatusList[i - 1];
-                        //CivStatus2 = _civStatus2;
-                    }
-                    if (i == 2)
-                    {
-                        _civName3 = _civNameList[i];
+                            //CivStatus2 = _civStatus2;
+                            break;
+                    //}
+                    //if (i == 2)
+                    //{
+                        case 2:
+                            _civName3 = _civNameList[i];
                         _civInsigniaOther3 = _civNameList[i - 1]; _civInsigniaOther3 = _civInsigniaOther3.Replace(" ", "");
                         //_civStatus3 = CivStatus3;
-                    }
-                    if (i == 3)
-                    {
+                        break;
+                        //}
+                        //if (i == 3)
+                        //{
+                        case 3:
                         _civName4 = _civNameList[i];
                         _civInsigniaOther4 = _civNameList[i - 1]; _civInsigniaOther4 = _civInsigniaOther4.Replace(" ", "");
                         //_civStatus4 = CivStatus4;
+                        break;
                     }
                 }
             }
@@ -267,7 +282,7 @@ namespace Supremacy.Combat
                 }
 
 
-                foreach (CombatUnit _cs in _hostileAssets[i].CombatShips)   // only combat ships 
+                foreach (CombatUnit _cs in _hostileAssets[i].Ships_Combat)   // only combat ships 
                 {
                     if (_civName == _cs.Owner.ShortName)
                     {
@@ -279,7 +294,7 @@ namespace Supremacy.Combat
                     }
                 }
 
-                foreach (CombatUnit _ncs in _hostileAssets[i].NonCombatShips)   // only NonCombat ships 
+                foreach (CombatUnit _ncs in _hostileAssets[i].Ships_NonCombat)   // only NonCombat ships 
                 {
                     _civ_strength_values[_ncs.Owner.ToString()] += Convert.ToInt32(Convert.ToDouble(_right_side_Strength + _ncs.Firepower)
                             + (Convert.ToDouble(_ncs.ShieldStrength + _ncs.HullStrength)
@@ -442,7 +457,7 @@ namespace Supremacy.Combat
                     }
                     if (ship.IsCombatant)
                     {
-                        assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
+                        assets[ship.Owner].Ships_Combat.Add(new CombatUnit(ship));
 
                         if (ship.IsCamouflaged)
                         {
@@ -458,7 +473,7 @@ namespace Supremacy.Combat
                     }
                     else
                     {
-                        assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
+                        assets[ship.Owner].Ships_NonCombat.Add(new CombatUnit(ship));
 
                         if (ship.IsCamouflaged)
                         {
@@ -535,11 +550,11 @@ namespace Supremacy.Combat
                 }
                 if (ship.IsCombatant)
                 {
-                    assets[ship.Owner].CombatShips.Add(new CombatUnit(ship));
+                    assets[ship.Owner].Ships_Combat.Add(new CombatUnit(ship));
                 }
                 else
                 {
-                    assets[ship.Owner].NonCombatShips.Add(new CombatUnit(ship));
+                    assets[ship.Owner].Ships_NonCombat.Add(new CombatUnit(ship));
                 }
                 //}
             }
@@ -633,26 +648,26 @@ namespace Supremacy.Combat
         /// Determines whether the given <see cref="Civilization"/>s will
         /// fight alongside each other
         /// </summary>
-        /// <param name="firstCiv"></param>
-        /// <param name="secondCiv"></param>
+        /// <param name="_civ1"></param>
+        /// <param name="_civ2"></param>
         /// <returns></returns>
-        public static bool WillFightAlongside(Civilization firstCiv, Civilization secondCiv)
+        public static bool WillFightAlongside(Civilization _civ1, Civilization _civ2)
         {
-            if (firstCiv == null)
+            if (_civ1 == null)
             {
-                throw new ArgumentNullException(nameof(firstCiv));
+                throw new ArgumentNullException(nameof(_civ1));
             }
-            if (secondCiv == null)
+            if (_civ2 == null)
             {
-                throw new ArgumentNullException(nameof(secondCiv));
+                throw new ArgumentNullException(nameof(_civ2));
             }
 
-            IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
+            IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[_civ1, _civ2];
             if (diplomacyData == null)
             {
                 return false;
             }
-            if (firstCiv != secondCiv)
+            if (_civ1 != _civ2)
             {
                 switch (diplomacyData.Status)
                 {
@@ -675,7 +690,7 @@ namespace Supremacy.Combat
             CombatOrders orders = new CombatOrders(owner, assets.CombatID);
             string _text = "";
 
-            foreach (CombatUnit ship in assets.CombatShips)  // CombatShips
+            foreach (CombatUnit ship in assets.Ships_Combat)  // Ships_Combat
             {
                 orders.SetOrder(ship.Source, order);
 
@@ -699,7 +714,7 @@ namespace Supremacy.Combat
                 }
             }
 
-            foreach (CombatUnit ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            foreach (CombatUnit ship in assets.Ships_NonCombat) // Ships_NonCombat (decided by carrying weapons)
             {
                 orders.SetOrder(ship.Source, (order == CombatOrder.Engage) ? CombatOrder.Standby : order);
                 orders.SetOrder(ship.Source, (order == CombatOrder.Rush) ? CombatOrder.Standby : order);
@@ -749,7 +764,7 @@ namespace Supremacy.Combat
             CombatTargetPrimaries targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
             string _text = "";
 
-            foreach (CombatUnit ship in assets.CombatShips)  // all CombatShips  of civ should get this target in the CombatTargetPrimaries dictionary
+            foreach (CombatUnit ship in assets.Ships_Combat)  // all Ships_Combat  of civ should get this target in the CombatTargetPrimaries dictionary
             {
                 if (target.CivID == -1 || target == null)
                 {
@@ -770,7 +785,7 @@ namespace Supremacy.Combat
                 //GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
-            foreach (CombatUnit ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            foreach (CombatUnit ship in assets.Ships_NonCombat) // Ships_NonCombat (decided by carrying weapons)
             {
                 if (target.CivID == -1)
                 {
@@ -805,7 +820,7 @@ namespace Supremacy.Combat
             Civilization owner = assets.Owner;
             CombatTargetSecondaries targetTwo = new CombatTargetSecondaries(owner, assets.CombatID);
 
-            foreach (CombatUnit ship in assets.CombatShips)  // all CombatShips get target
+            foreach (CombatUnit ship in assets.Ships_Combat)  // all Ships_Combat get target
             {
                 if (target.CivID == -1 || target == null) // UPDATE X 04 july 2019 manualy re-do update from ken, to fix targetTwo bug
                 {
@@ -819,7 +834,7 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("Combat Ship {0} with target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
-            foreach (CombatUnit ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
+            foreach (CombatUnit ship in assets.Ships_NonCombat) // Ships_NonCombat (decided by carrying weapons)
             {
                 if (target.CivID == -1)
                 {

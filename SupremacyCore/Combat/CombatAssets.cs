@@ -32,11 +32,11 @@ namespace Supremacy.Combat
             CombatID = combatId;
             OwnerID = owner.CivID;
             Location = location;
-            CombatShips = new List<CombatUnit>();
-            NonCombatShips = new List<CombatUnit>();
-            EscapedShips = new List<CombatUnit>();
-            DestroyedShips = new List<CombatUnit>();
-            AssimilatedShips = new List<CombatUnit>();
+            Ships_Combat = new List<CombatUnit>();
+            Ships_NonCombat = new List<CombatUnit>();
+            Ships_Escaped = new List<CombatUnit>();
+            Ships_Destroyed = new List<CombatUnit>();
+            Ships_Assimilated = new List<CombatUnit>();
         }
         public CombatAssets()
         {
@@ -49,17 +49,36 @@ namespace Supremacy.Combat
 
         public MapLocation Location { get; }
 
+        public string All_info_CombatAssets 
+        {
+            get
+            {
+                return this.Location + " > " + Owner 
+                    + ": CS= " + Ships_Combat.Count
+                    + ", NCS= " + Ships_NonCombat.Count
+                    + ", KILL= " + this.Ships_Destroyed.Count
+                    //+ ", RET= " + this.re.Count
+                    + ", ESC= " + this.Ships_Escaped.Count
+                    + ", ASSIMI= " + this.Ships_Assimilated.Count
+                    + ", STATION= " + Station
+                    //+ ", ASSIMI= " + this..Count
+
+                    ;
+            } 
+        
+        }
+
         public Sector Sector => GameContext.Current.Universe.Map[Location];
 
-        public List<CombatUnit> CombatShips { get; }
+        public List<CombatUnit> Ships_Combat { get; }
 
-        public List<CombatUnit> NonCombatShips { get; }
+        public List<CombatUnit> Ships_NonCombat { get; }
 
-        public List<CombatUnit> EscapedShips { get; }
+        public List<CombatUnit> Ships_Escaped { get; }
 
-        public List<CombatUnit> DestroyedShips { get; }
+        public List<CombatUnit> Ships_Destroyed { get; }
 
-        public List<CombatUnit> AssimilatedShips { get; }
+        public List<CombatUnit> Ships_Assimilated { get; }
 
         public CombatUnit Station { get; set; }
 
@@ -67,12 +86,12 @@ namespace Supremacy.Combat
         {
             get
             {
-                    if (CombatShips.Any(cs => cs.Source != null && cs.Source.OrbitalDesign.ShipType == "Transport"))
+                    if (Ships_Combat.Any(cs => cs.Source != null && cs.Source.OrbitalDesign.ShipType == "Transport"))
                     {
                         return true;
                     }
 
-                    if (NonCombatShips.Any(ncs => ncs.Source != null && ncs.Source.OrbitalDesign.ShipType == "Transport"))
+                    if (Ships_NonCombat.Any(ncs => ncs.Source != null && ncs.Source.OrbitalDesign.ShipType == "Transport"))
                     {
                         return true;
                     }
@@ -85,12 +104,12 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (CombatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Spy"))
+                if (Ships_Combat.Any(cs => cs.Source.OrbitalDesign.ShipType == "Spy"))
                 {
                     return true;
                 }
 
-                if (NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Spy"))
+                if (Ships_NonCombat.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Spy"))
                 {
                     return true;
                 }
@@ -103,12 +122,12 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (CombatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Diplomatic"))
+                if (Ships_Combat.Any(cs => cs.Source.OrbitalDesign.ShipType == "Diplomatic"))
                 {
                     return true;
                 }
 
-                if (NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Diplomatic"))
+                if (Ships_NonCombat.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Diplomatic"))
                 {
                     return true;
                 }
@@ -117,31 +136,31 @@ namespace Supremacy.Combat
             }
         }
 
-        public bool HasSurvivingAssets => CombatShips.Count > 0 || NonCombatShips.Count > 0 || (Station?.IsDestroyed == false);
-        public bool HasEscapedAssets => EscapedShips.Count > 0;
+        public bool HasSurvivingAssets => Ships_Combat.Count > 0 || Ships_NonCombat.Count > 0 || (Station?.IsDestroyed == false);
+        public bool HasEscapedAssets => Ships_Escaped.Count > 0;
         public void UpdateAllSources()
         {
-            foreach (CombatUnit shipStats in CombatShips)
+            foreach (CombatUnit shipStats in Ships_Combat)
             {
                 shipStats.UpdateSource();
             }
 
-            foreach (CombatUnit shipStats in NonCombatShips)
+            foreach (CombatUnit shipStats in Ships_NonCombat)
             {
                 shipStats.UpdateSource();
             }
 
-            foreach (CombatUnit shipStats in EscapedShips)
+            foreach (CombatUnit shipStats in Ships_Escaped)
             {
                 shipStats.UpdateSource();
             }
 
-            foreach (CombatUnit shipStats in DestroyedShips)
+            foreach (CombatUnit shipStats in Ships_Destroyed)
             {
                 shipStats.UpdateSource();
             }
 
-            foreach (CombatUnit shipStats in AssimilatedShips)
+            foreach (CombatUnit shipStats in Ships_Assimilated)
             {
                 shipStats.UpdateSource();
             }
